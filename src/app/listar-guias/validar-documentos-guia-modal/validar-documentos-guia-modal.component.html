@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Validar Documentos de la Guía {{guia.numeroGuia}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <form (submit)="validar(documentoAutogenerado)">
+        <div class="form-row align-items-center">
+          <div class="col-7 col-md-8">
+            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Autogenerado" [(ngModel)]="documentoAutogenerado"
+              name="autogenerado" required>
+          </div>
+          <div class="col btn-group">
+            <button [disabled]="documentoAutogenerado === ''" type="submit" class="btn btn-primary mb-2">Validar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="pb-2 mt-4 mb-2">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Código</th>
+                  <th scope="col">Razón Social</th>
+                  <th scope="col">Contacto</th>
+                  <th scope="col">Dirección</th>
+                  <th scope="col">Fecha de Creación</th>
+                  <th scope="col">Validado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let documentoGuia of guia.documentosGuia">
+                  <td scope="col">{{documentoGuia.documento.documentoAutogenerado }}</td>
+                  <td scope="col">{{documentoGuia.documento.razonSocialDestino}}</td>
+                  <td scope="col">{{documentoGuia.documento.contactoDestino}}</td>
+                  <td scope="col">{{documentoGuia.documento.direccion}}</td>
+                  <td scope="col">{{documentoService.getFechaCreacion(documentoGuia.documento)}}</td>
+                  <td scope="col">{{documentoGuia.validado ? 'Sí': 'No'}}</td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="button-group col text-right">
+        <button type="button" class="btn btn-outline-danger" (click)="retirarNoValidados()">
+          Quitar no Validados
+        </button>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,182 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Registrar Envio Individual</h2>
+    </div>
+  </div>
+  <div class="col-2 text-right">
+    <div class="pb-2 mt-4 mb-2">
+      <a class="btn btn-primary" [href]="rutaManual" target="_blank">
+        Manual de Registro
+      </a>
+    </div>
+  </div>
+
+</div>
+<app-datos-buzon></app-datos-buzon>
+
+<div class="row justify-content-center">
+  <div class="col-12">
+    <div class="card mb-2">
+      <div class="card-header">
+        <h5>Datos del Envío</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="documentoForm" (ngSubmit)="onSubmit(documentoForm.value)">
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="sedeDespacho">Sede Despacho *</label>
+                <select class="form-control" id="sedeDespacho">
+                  <option>LA MOLINA</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="nroDocumento">Nro. Documento</label>
+                <input class="form-control" type="text" name="nroDocumento" formControlName="nroDocumento" id="">
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="plazoDistribucion">Plazo de Distribución *</label>
+                <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion" (change)="onPlazoDistribucionSelected($event)">
+                  <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">{{plazoDistribucion.nombre}}</option>
+                </select>
+                <span *ngIf="!documentoForm.get('plazoDistribucion').valid && documentoForm.get('plazoDistribucion').touched" class="text-danger small">
+                  Es necesario ingresar el plazo de distribución
+                </span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="tipoDocumento">Tipo de Documento *</label>
+                <select class="form-control" id="tipoDocumento" formControlName="tipoDocumento">
+                  <option *ngFor="let tipoDocumento of tiposDocumento" [ngValue]="tipoDocumento">{{tipoDocumento.nombre}}</option>
+                </select>
+                <span *ngIf="!documentoForm.get('tipoDocumento').valid && documentoForm.get('tipoDocumento').touched" class="text-danger small">
+                  Es necesario ingresar el tipo de documento
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="tipoSeguridad">Tipo de Seguridad *</label>
+                <select class="form-control" id="tipoSeguridad" formControlName="tipoSeguridad">
+                  <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">{{tipoSeguridad.nombre}}</option>
+                </select>
+                <span *ngIf="!documentoForm.get('tipoSeguridad').valid && documentoForm.get('tipoSeguridad').touched" class="text-danger small">
+                  Es necesario ingresar el tipo de seguridad
+                </span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="tipoServicio">Tipo de Servicio *</label>
+                <select class="form-control" id="tipoServicio" formControlName="tipoServicio">
+                  <option *ngFor="let tipoServicio of tiposServicio" [ngValue]="tipoServicio">{{tipoServicio.nombre}}</option>
+                </select>
+                <span *ngIf="!documentoForm.get('tipoServicio').valid && documentoForm.get('tipoServicio').touched" class="text-danger small">
+                  Es necesario ingresar el tipo de servicio
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row comunicacionDestino" formGroupName="comunicacionDestino">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="razonSocial">Razón Social</label>
+                <input class="form-control" type="text" name="razonSocial" id="razonSocial" formControlName="razonSocial">
+                <span *ngIf="!documentoForm.get('comunicacionDestino').valid && documentoForm.get('comunicacionDestino').touched" class="text-danger small">
+                  Tiene que ingresar la Razón Social o el Contacto
+                </span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="contacto">Contacto</label>
+                <input class="form-control" type="text" name="contacto" id="contacto" formControlName="contacto">
+              </div>
+            </div>
+
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="departamento">Departamento *</label>
+                <select class="form-control" id="departamento" [(ngModel)]="departamento" [ngModelOptions]="{standalone: true}" (change)="onDepartamentoSelectedChanged(departamento)">
+                  <option *ngFor="let departamento of departamentos" [ngValue]="departamento">{{departamento.nombre}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="provincia">Provincia *</label>
+                <select class="form-control" id="provincia" [(ngModel)]="provincia" [ngModelOptions]="{standalone: true}" (change)="onProvinciaSelectedChanged(provincia)">
+                  <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{provincia.nombre}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="distrito">Distrito *</label>
+                <select class="form-control" id="distrito" formControlName="distrito">
+                  <option *ngFor="let distrito of distritos" [ngValue]="distrito">{{distrito.nombre}}</option>
+                </select>
+                <span *ngIf="!documentoForm.get('distrito').valid && documentoForm.get('distrito').touched" class="text-danger small">
+                  Es necesario ingresar el distrito
+                </span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input class="form-control" type="text" name="telefono" id="telefono" formControlName="telefono">
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="direccion">Dirección *</label>
+                <input class="form-control" type="text" name="telefono" id="direccion" formControlName="direccion">
+                <span *ngIf="!documentoForm.get('direccion').valid && documentoForm.get('direccion').touched" class="text-danger small">
+                  Es necesario ingresar la dirección
+                </span>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="referencia">Referencia *</label>
+                <input class="form-control" type="text" name="referencia" id="referencia" formControlName="referencia">
+                <span *ngIf="!documentoForm.get('referencia').valid && documentoForm.get('referencia').touched" class="text-danger small">
+                  Es necesario ingresar alguna referencia
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
+            <label for="autorizacion">
+              Autorización
+            </label>
+            <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion" (change)="onChangeFile($event.srcElement.files[0])" accept=".msg">
+          </div>
+          <div class="row">
+            <div class="button-group col text-right">
+              <button class="btn btn-outline-success" [disabled]="!documentoForm.valid">
+                Registrar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

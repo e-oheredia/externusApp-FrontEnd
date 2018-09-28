@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Custodiar Envios Masivos</h2>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col-4">
+    <form (submit)="abrir(masivoAutogenerado)">
+      <div class="form-row align-items-center">
+        <div class="col-7 col-md-8">
+          <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Autogenerado" [(ngModel)]="masivoAutogenerado"
+            name="autogenerado" required>
+        </div>
+        <div class="col btn-group">
+          <button [disabled]="masivoAutogenerado === ''" type="submit" class="btn btn-primary mb-2">Abrir</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row" *ngIf="enviosMasivosCreados.length !== 0; else mensaje">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Código</th>
+          <th scope="col">Remitente</th>
+          <th scope="col">Área</th>
+          <th scope="col">Tipo de Documento</th>
+          <th scope="col">Tipo de Servicio</th>
+          <th scope="col">Tipo de Seguridad</th>
+          <th scope="col">Plazo de Distribución</th>
+          <th scope="col">Autorizado</th>
+          <th scope="col">Fecha de Creación</th>
+          <th scope="col">Cantidad de Documentos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let envioMasivoCreado of enviosMasivosCreados">
+          <td scope="col">{{envioMasivoCreado.masivoAutogenerado }}</td>
+          <td scope="col">{{envioMasivoCreado.buzon.nombre}}</td>
+          <td scope="col">{{envioMasivoCreado.buzon.area.nombre}}</td>
+          <td scope="col">{{envioMasivoCreado.tipoDocumento.nombre}}</td>
+          <td scope="col">{{envioMasivoCreado.tipoServicio.nombre}}</td>
+          <td scope="col">{{envioMasivoCreado.tipoSeguridad.nombre}}</td>
+          <td scope="col">{{envioMasivoCreado.plazoDistribucion.nombre}}</td>
+          <td scope="col">{{envioMasivoCreado.autorizado ? "Sí" : "No"}}</td>
+          <td scope="col">{{documentoService.getFechaCreacion(envioMasivoCreado.documentos[0])}}</td>
+          <td scope="col">{{envioMasivoCreado.documentos.length}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No tienes envíos masivos a custodiar
+      </div>
+    </div>
+  </div>
+</ng-template>

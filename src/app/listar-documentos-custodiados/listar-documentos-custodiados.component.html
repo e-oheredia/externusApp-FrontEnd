@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Documentos Custodiados</h2>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="documentosCustodiados.length !== 0;else mensaje">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Código</th>
+          <th scope="col">Remitente</th>
+          <th scope="col">Área</th>
+          <th scope="col">Tipo de Documento</th>
+          <th scope="col">Tipo de Servicio</th>
+          <th scope="col">Tipo de Seguridad</th>
+          <th scope="col">Plazo de Distribución</th>
+          <th scope="col">Razón Social</th>
+          <th scope="col">Contacto</th>
+          <th scope="col">Dirección</th>
+          <th scope="col">Autorizado</th>
+          <th scope="col">Fecha de Creación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let documentoCustodiado of documentosCustodiados">
+          <td scope="col">{{documentoCustodiado.documentoAutogenerado }}</td>
+          <td scope="col">{{documentoCustodiado.envio.buzon.nombre}}</td>
+          <td scope="col">{{documentoCustodiado.envio.buzon.area.nombre}}</td>
+          <td scope="col">{{documentoCustodiado.envio.tipoDocumento.nombre}}</td>
+          <td scope="col">{{documentoCustodiado.envio.tipoServicio.nombre}}</td>
+          <td scope="col">{{documentoCustodiado.envio.tipoSeguridad.nombre}}</td>
+          <td scope="col">{{documentoCustodiado.envio.plazoDistribucion.nombre}}</td>
+          <td scope="col">{{documentoCustodiado.razonSocialDestino}}</td>
+          <td scope="col">{{documentoCustodiado.contactoDestino}}</td>
+          <td scope="col">{{documentoCustodiado.direccion}}</td>
+          <td scope="col">{{documentoCustodiado.envio.autorizado ? "Sí" : "No"}}</td>
+          <td scope="col">{{documentoService.getFechaCreacion(documentoCustodiado)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No tienes documentos custodiados
+      </div>
+    </div>
+  </div>
+</ng-template>

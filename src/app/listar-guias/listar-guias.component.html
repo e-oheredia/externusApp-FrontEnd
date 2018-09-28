@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Guias Activas</h2>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div class="col">
+    <button type="button" class="btn btn-primary mb-2" (click)="crearGuia()">Nuevo</button>
+  </div>
+</div>
+<div class="row" *ngIf="guiasCreadas.length !== 0; else mensaje">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Guía</th>
+          <th scope="col">Plazo de Distribución</th>
+          <th scope="col">Tipo de Servicio</th>
+          <th scope="col">Tipo de Seguridad</th>
+          <th scope="col">Total de Documentos</th>
+          <th scope="col">Validados</th>
+          <th scope="col">Enviar</th>
+          <th scope="col">Modificar</th>
+          <th scope="col">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let guiaCreada of guiasCreadas">
+          <td scope="col">
+            <span class="pointable text-info" (click)="abrirGuia(guiaCreada)">
+              <strong>{{guiaCreada.numeroGuia}}</strong>
+            </span>
+          </td>
+          <td scope="col">{{guiaCreada.plazoDistribucion.nombre}}</td>
+          <td scope="col">{{guiaCreada.tipoServicio.nombre}}</td>
+          <td scope="col">{{guiaCreada.tipoSeguridad.nombre}}</td>
+          <td scope="col">{{guiaCreada.documentosGuia.length}}</td>
+          <td scope="col">{{guiaService.listarDocumentosGuiaValidados(guiaCreada).length}}</td>
+          <td scope="col" class="text-center">
+            <span class="oi oi-location text-success pointable" (click)="enviar(guiaCreada.id)"></span>
+          </td>
+          <td scope="col" class="text-center">
+            <span class="oi oi-pencil text-warning pointable" (click)="modificar(guiaCreada)"></span>
+          </td>
+          <td scope="col" class="text-center">
+            <span class="oi oi-x text-danger pointable" (click)="eliminar(guiaCreada.id)"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No tienes guías creadas
+      </div>
+    </div>
+  </div>
+</ng-template>
