@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { RequesterService } from '../shared/requester.service';
 import { EmpleadoService } from '../shared/empleado.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LocalStorageModule } from "angular-2-local-storage";
 import { BuzonService } from '../shared/buzon.service';
 import { PlazoDistribucionService } from '../shared/plazodistribucion.service';
@@ -24,6 +24,7 @@ import { EnvioService } from '../shared/envio.service';
 import { EnvioMasivoService } from '../shared/enviomasivo.service';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { ProveedorService } from '../shared/proveedor.service';
+import { AuthInterceptor } from '../shared/auth-interceptor';
 
 @NgModule({
   imports: [  
@@ -63,7 +64,8 @@ import { ProveedorService } from '../shared/proveedor.service';
     ProveedorService,
     GuiaService, 
     DocumentoGuiaService, 
-    BrowserStorageService
+    BrowserStorageService,
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
   ], 
   entryComponents: [ 
     ConfirmModalComponent
