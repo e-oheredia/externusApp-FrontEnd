@@ -1,6 +1,6 @@
-import { BrowserStorageService } from './../shared/browserstorage.service';
-import { DocumentoGuiaService } from './../shared/documentoguia.service';
-import { GuiaService } from './../shared/guia.service';
+import { BrowserStorageService } from '../shared/browserstorage.service';
+import { DocumentoGuiaService } from '../shared/documentoguia.service';
+import { GuiaService } from '../shared/guia.service';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ReadExcelService } from '../shared/read-excel.service';

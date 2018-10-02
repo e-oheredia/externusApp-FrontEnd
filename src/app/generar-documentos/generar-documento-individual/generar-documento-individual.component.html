@@ -154,11 +154,8 @@
             </div>
             <div class="col">
               <div class="form-group">
-                <label for="referencia">Referencia *</label>
+                <label for="referencia">Referencia</label>
                 <input class="form-control" type="text" name="referencia" id="referencia" formControlName="referencia">
-                <span *ngIf="!documentoForm.get('referencia').valid && documentoForm.get('referencia').touched" class="text-danger small">
-                  Es necesario ingresar alguna referencia
-                </span>
               </div>
             </div>
           </div>

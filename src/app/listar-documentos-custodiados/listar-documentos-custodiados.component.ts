@@ -1,7 +1,7 @@
-import { Documento } from './../../model/documento.model';
-import { DocumentoService } from './../shared/documento.service';
+import { Documento } from '../../model/documento.model';
+import { DocumentoService } from '../shared/documento.service';
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from '../../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-listar-documentos-custodiados',

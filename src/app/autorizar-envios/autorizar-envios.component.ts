@@ -9,10 +9,7 @@ import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.com
 @Component({
   selector: 'app-autorizar-envios',
   templateUrl: './autorizar-envios.component.html',
-  styleUrls: ['./autorizar-envios.component.css'],
-  entryComponents: [
-    ConfirmModalComponent
-    ]
+  styleUrls: ['./autorizar-envios.component.css']
 })
 export class AutorizarEnviosComponent implements OnInit {
 

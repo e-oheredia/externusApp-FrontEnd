@@ -11,12 +11,12 @@ import { Subscription } from 'rxjs';
 export class DatosBuzonComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
-  buzon: Buzon;
+  buzon: Buzon = new Buzon(0,"",null,true);
 
   constructor(private buzonService:BuzonService) { }
   
   ngOnInit() {
-    this.buzon = new Buzon(0,"",null,true);
+    this.buzon = this.buzonService.getBuzonActual();
     this.subscription = this.buzonService.buzonActualChanged.subscribe(
       (buzon: Buzon) => {
         this.buzon = buzon;

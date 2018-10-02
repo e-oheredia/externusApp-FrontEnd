@@ -5,16 +5,16 @@
     </div>
   </div>
 </div>
-<div class="row justify-content-center">
+<div class="row justify-content-center mb-4">
   <div class="col-4">
     <form (submit)="abrir(masivoAutogenerado)">
       <div class="form-row align-items-center">
         <div class="col-7 col-md-8">
-          <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Autogenerado" [(ngModel)]="masivoAutogenerado"
-            name="autogenerado" required>
+          <input type="text" class="form-control" id="inlineFormInput" placeholder="Autogenerado" [(ngModel)]="masivoAutogenerado"
+            name="autogenerado"  (input) = "masivoAutogenerado = masivoAutogenerado.toUpperCase()" required>
         </div>
         <div class="col btn-group">
-          <button [disabled]="masivoAutogenerado === ''" type="submit" class="btn btn-primary mb-2">Abrir</button>
+          <button [disabled]="masivoAutogenerado === ''" type="submit" class="btn btn-primary">Abrir</button>
         </div>
       </div>
     </form>

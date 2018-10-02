@@ -20,7 +20,13 @@ export class TipoServicioService {
     }
 
     private tiposServicio: TipoServicio[];
+    
+    getTiposServicio(): TipoServicio[] {
+        return this.tiposServicio;
+    }
+
     public tiposServicioChanged = new Subject<TipoServicio[]>();
+
 
 
     listarTiposServicio(): Observable<TipoServicio[]>{

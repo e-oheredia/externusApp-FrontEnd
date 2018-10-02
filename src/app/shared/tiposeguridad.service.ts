@@ -19,6 +19,11 @@ export class TipoSeguridadService {
     }
 
     private tiposSeguridad: TipoSeguridad[];
+
+    getTiposSeguridad() : TipoSeguridad[] {
+        return this.tiposSeguridad;
+    }
+
     public tiposSeguridadChanged = new Subject<TipoSeguridad[]>();
 
 

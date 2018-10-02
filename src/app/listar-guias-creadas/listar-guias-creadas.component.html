@@ -7,7 +7,7 @@
 </div>
 <div class="row justify-content-center">
   <div class="col">
-    <button type="button" class="btn btn-primary mb-2" (click)="crearGuia()">Nuevo</button>
+    <button type="button" class="btn btn-primary mb-4" (click)="crearGuia()">Nuevo</button>
   </div>
 </div>
 <div class="row" *ngIf="guiasCreadas.length !== 0; else mensaje">
@@ -39,7 +39,7 @@
           <td scope="col">{{guiaCreada.documentosGuia.length}}</td>
           <td scope="col">{{guiaService.listarDocumentosGuiaValidados(guiaCreada).length}}</td>
           <td scope="col" class="text-center">
-            <span class="oi oi-location text-success pointable" (click)="enviar(guiaCreada.id)"></span>
+            <span class="oi oi-location text-success pointable" (click)="enviar(guiaCreada)"></span>
           </td>
           <td scope="col" class="text-center">
             <span class="oi oi-pencil text-warning pointable" (click)="modificar(guiaCreada)"></span>

@@ -1,4 +1,4 @@
-import { EstadoDocumento } from './../../model/estadodocumento.model';
+import { EstadoDocumento } from '../../model/estadodocumento.model';
 import { RequesterService } from './requester.service';
 import { UtilsService } from './utils.service';
 import { Distrito } from '../../model/distrito.model';
@@ -108,15 +108,7 @@ export class DocumentoService {
                 }
 
                 documentoCargado.direccion = data[i][7];
-                
-                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][8])) {
-                    callback({
-                        mensaje : "Ingrese la referencia en la fila " + (i + 1)
-                    });
-                    return;
-                }
-
-                documentoCargado.referencia = data[i][8];
+                documentoCargado.referencia = data[i][8] || "";
                 documentosCargados.push(documentoCargado);
                 i++;
             }

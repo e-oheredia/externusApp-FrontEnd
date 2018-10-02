@@ -1,5 +1,5 @@
-import { BuzonService } from './buzon.service';
 import { PlazoDistribucion } from '../../model/plazodistribucion.model';
+import { BuzonService } from './buzon.service';
 import { Injectable, OnInit, OnDestroy } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
@@ -49,6 +49,10 @@ export class PlazoDistribucionService {
     private buzonPlazoDistribucionPermitido: PlazoDistribucion;
     private areaPlazoDistribucionPermitido: PlazoDistribucion;
     private plazoDistribucionPermitido: PlazoDistribucion;
+
+    getPlazoDistribucionPermitido(): PlazoDistribucion {
+        return this.plazoDistribucionPermitido;
+    }
 
     public plazoDistribucionPermitidoChanged = new Subject<PlazoDistribucion>(); 
     public plazosDistribucionChanged = new Subject<PlazoDistribucion[]>();

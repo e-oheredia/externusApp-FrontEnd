@@ -1,18 +1,18 @@
-import { GuiaService } from './../../shared/guia.service';
-import { Guia } from './../../../model/guia.model';
-import { ProveedorService } from './../../shared/proveedor.service';
-import { TipoServicioService } from './../../shared/tiposervicio.service';
-import { TipoSeguridadService } from './../../shared/tiposeguridad.service';
-import { PlazoDistribucionService } from './../../shared/plazodistribucion.service';
+import { GuiaService } from '../../shared/guia.service';
+import { Guia } from '../../../model/guia.model';
+import { ProveedorService } from '../../shared/proveedor.service';
+import { TipoServicioService } from '../../shared/tiposervicio.service';
+import { TipoSeguridadService } from '../../shared/tiposeguridad.service';
+import { PlazoDistribucionService } from '../../shared/plazodistribucion.service';
 import { Subscription } from 'rxjs';
-import { Proveedor } from './../../../model/proveedor.model';
-import { TipoSeguridad } from './../../../model/tiposeguridad.model';
-import { PlazoDistribucion } from './../../../model/plazodistribucion.model';
+import { Proveedor } from '../../../model/proveedor.model';
+import { TipoSeguridad } from '../../../model/tiposeguridad.model';
+import { PlazoDistribucion } from '../../../model/plazodistribucion.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { TipoServicio } from '../../../model/tiposervicio.model';
-import { NotifierService } from '../../../../node_modules/angular-notifier';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-crear-guia-modal',
@@ -59,6 +59,10 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
   }
 
   cargarDatosVista() {
+    this.tiposServicio = this.tipoServicioService.getTiposServicio();
+    this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
+    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+    this.proveedores = this.proveedorService.getProveedores();
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;

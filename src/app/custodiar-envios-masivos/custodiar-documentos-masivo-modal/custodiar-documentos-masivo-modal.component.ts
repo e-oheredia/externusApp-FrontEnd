@@ -1,9 +1,9 @@
-import { DocumentoService } from './../../shared/documento.service';
+import { DocumentoService } from '../../shared/documento.service';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Envio } from '../../../model/envio.model';
 import { UtilsService } from '../../shared/utils.service';
-import { NotifierService } from '../../../../node_modules/angular-notifier';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-custodiar-documentos-masivo-modal',
@@ -20,6 +20,8 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
   ) { }
 
   envio: Envio;
+  documentoAutogenerado = "";
+  @Output() todosDocumentosCustodiadosEvent = new EventEmitter();
 
   ngOnInit() {
 
@@ -27,6 +29,23 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
       documento => 
         this.documentoService.getUltimoEstado(documento).id === 1
     );
+  }
+
+  seleccionar(documentoAutogenerado: string){
+    let encuentra = false;
+    this.envio.documentos.forEach(      
+      documento => {
+        if (documento.documentoAutogenerado === documentoAutogenerado ) {
+          documento.checked = true;
+          encuentra = true;
+          this.documentoAutogenerado = "";
+          return;
+        }
+      }
+    )
+    if (!encuentra) {
+      this.notifier.notify('warning','No se encuentra el código');
+    }
   }
 
   custodiar() {
@@ -54,6 +73,11 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
             resto.push(documento);
           }
         });
+        if (resto.length === 0) {
+          this.todosDocumentosCustodiadosEvent.emit();
+          this.bsModalRef.hide();
+          return;
+        }
         this.envio.documentos = resto;
       },
       error => {

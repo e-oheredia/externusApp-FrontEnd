@@ -80,7 +80,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.cargarDatosVista();
     this.documentoForm = new FormGroup({
       'nroDocumento': new FormControl(""),
-      'plazoDistribucion': new FormControl("", Validators.required),
+      'plazoDistribucion': new FormControl(null, Validators.required),
       'tipoDocumento': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
@@ -91,17 +91,26 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       'distrito': new FormControl(null, Validators.required),
       'telefono': new FormControl(""),
       'direccion': new FormControl("", Validators.required),
-      'referencia': new FormControl("", Validators.required),
+      'referencia': new FormControl(""),
       'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)])
     });
   }
 
   cargarDatosVista() {
+
+    this.tiposDocumento = this.tipoDocumentoService.getTiposDocumento();
+    this.tiposServicio = this.tipoServicioService.getTiposServicio();
+    this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
+    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+    this.departamentos = this.departamentoService.getDepartamentosPeru();
+    this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
+    this.buzon = this.buzonService.getBuzonActual();
+
     this.tiposDocumentoSubscription = this.tipoDocumentoService.tiposDocumentoChanged.subscribe(
       tiposDocumento => {
         this.tiposDocumento = tiposDocumento;
       }
-    )
+    )    
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;
@@ -168,7 +177,8 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.envio.tipoDocumento = this.documentoForm.get("tipoDocumento").value;
     this.envio.tipoSeguridad = this.documentoForm.get("tipoSeguridad").value;
     this.envio.tipoServicio = this.documentoForm.get("tipoServicio").value;
-    this.envio.addDocumento(this.documento);    
+    this.envio.addDocumento(this.documento);   
+     
     this.envioService.registrarEnvio(this.envio, this.autorizationFile).subscribe(
       envio => {
 

@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Guias Enviadas</h2>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="guiasEnviadas.length !== 0; else mensaje">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Guía</th>
+          <th scope="col">Plazo de Distribución</th>
+          <th scope="col">Tipo de Servicio</th>
+          <th scope="col">Tipo de Seguridad</th>
+          <th scope="col">Total de Documentos</th>
+          <th scope="col">Descargar Excel</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let guiaEnviada of guiasEnviadas">
+          <td scope="col">{{guiaEnviada.numeroGuia}}</td>
+          <td scope="col">{{guiaEnviada.plazoDistribucion.nombre}}</td>
+          <td scope="col">{{guiaEnviada.tipoServicio.nombre}}</td>
+          <td scope="col">{{guiaEnviada.tipoSeguridad.nombre}}</td>
+          <td scope="col">{{guiaEnviada.documentosGuia.length}}</td>
+          <td scope="col" class="text-center">
+            <span class="oi oi-location text-success pointable" (click)="descargar(guiaEnviada)"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No tienes guías por procesar
+      </div>
+    </div>
+  </div>
+</ng-template>

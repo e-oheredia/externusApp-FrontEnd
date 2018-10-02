@@ -1,5 +1,5 @@
-import { DocumentoGuia } from './../../model/documentoguia.model';
-import { Guia } from './../../model/guia.model';
+import { DocumentoGuia } from '../../model/documentoguia.model';
+import { Guia } from '../../model/guia.model';
 import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
@@ -27,7 +27,23 @@ export class GuiaService {
     }
 
     retirarNoValidados(guia: Guia) {
-        return this.requester.put<Guia>(this.REQUEST_URL + guia.id + "/retiro", null, {});
+        return this.requester.put<any>(this.REQUEST_URL + guia.id + "/retiro", null, {});
+    }
+
+    enviarGuia(guiaId: number){
+        return this.requester.put<Guia>(this.REQUEST_URL + guiaId.toString() + "/envio", null, {});
+    }
+
+    modificarGuia(guia: Guia){
+        return this.requester.put<Guia>(this.REQUEST_URL + guia.id.toString(), guia, {});
+    }
+
+    eliminarGuia(guiaId: number){
+        return this.requester.delete<Guia>(this.REQUEST_URL + guiaId.toString(), {});
+    }
+
+    listarGuiasEnviadas(): Observable<Guia[]> {
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "enviados", {});
     }
 
 }

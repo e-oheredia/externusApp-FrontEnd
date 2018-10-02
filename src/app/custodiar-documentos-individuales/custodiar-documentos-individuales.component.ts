@@ -1,7 +1,7 @@
 import { NotifierService } from 'angular-notifier';
-import { Documento } from './../../model/documento.model';
-import { UtilsService } from './../shared/utils.service';
-import { DocumentoService } from './../shared/documento.service';
+import { Documento } from '../../model/documento.model';
+import { UtilsService } from '../shared/utils.service';
+import { DocumentoService } from '../shared/documento.service';
 import { Component, OnInit } from '@angular/core';
 import { EnvioService } from '../shared/envio.service';
 import { Envio } from '../../model/envio.model';

@@ -97,7 +97,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.tableSettings.columns = this.columnsDocumentosCargados; 
     this.cargarDatosVista();
     this.masivoForm = new FormGroup({
-      'plazoDistribucion': new FormControl("", Validators.required), 
+      'plazoDistribucion': new FormControl(null, Validators.required), 
       'tipoDocumento': new FormControl(null, Validators.required), 
       'tipoSeguridad': new FormControl(null, Validators.required), 
       'tipoServicio': new FormControl(null, Validators.required), 
@@ -107,11 +107,20 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   cargarDatosVista() {
+
+    this.tiposDocumento = this.tipoDocumentoService.getTiposDocumento();
+    this.tiposServicio = this.tipoServicioService.getTiposServicio();
+    this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
+    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+    this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
+    this.buzon = this.buzonService.getBuzonActual();
+
     this.tiposDocumentoSubscription = this.tipoDocumentoService.tiposDocumentoChanged.subscribe(
       tiposDocumento => {
         this.tiposDocumento = tiposDocumento;
       }
     )
+    
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;

@@ -18,7 +18,11 @@ export class ProveedorService {
         )
     }
 
-    proveedores: Proveedor[];
+    private proveedores: Proveedor[];
+
+    getProveedores(): Proveedor[] {
+        return this.proveedores;
+    }
 
     proveedoresChanged = new Subject<Proveedor[]>();
 

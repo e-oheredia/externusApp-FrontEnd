@@ -11,7 +11,9 @@ export class RequesterService {
     browserStorageSubscription: Subscription;
 
     constructor(private httpClient: HttpClient, private browserStorageService: BrowserStorageService) {
-
+        this.headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.browserStorageService.get("token")
+        });
         this.browserStorageSubscription = this.browserStorageService.tokenActualChanged.subscribe(
             () => {
                 this.headers = new HttpHeaders({
@@ -41,5 +43,10 @@ export class RequesterService {
     put<T>(url: string, body: any, options: {}): Observable<T> {
         options["headers"] = this.headers;
         return this.httpClient.put<T>(url, body, options);
+    }
+
+    delete<T>(url: string, options: {}): Observable<T> {
+        options["headers"] = this.headers;
+        return this.httpClient.delete<T>(url, options);
     }
 }
