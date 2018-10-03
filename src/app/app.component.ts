@@ -27,8 +27,11 @@ export class AppComponent implements OnInit {
             this.route.queryParams.subscribe(
               params => {
                 if (params.token !== undefined) {
+                  console.log(params.token);
+                  console.log(params.rt);
                   this.browserStorageService.set("token", params.token);
-                  this.empleadoService.listarEmpleadoAutenticado();
+                  this.browserStorageService.set("refreshtoken", params.rt);
+                  // this.empleadoService.listarEmpleadoAutenticado();
                 }
               }
             );
