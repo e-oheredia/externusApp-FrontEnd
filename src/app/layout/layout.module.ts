@@ -66,7 +66,9 @@ import { AuthInterceptor } from '../shared/auth-interceptor';
     GuiaService, 
     DocumentoGuiaService, 
     BrowserStorageService,
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+    {provide: HTTP_INTERCEPTORS, 
+      useClass: AuthInterceptor, 
+      multi: true}
   ], 
   entryComponents: [ 
     ConfirmModalComponent
