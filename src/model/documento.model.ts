@@ -16,8 +16,6 @@ export class Documento {
     public nroDocumento: string;
     public seguimientosDocumento: SeguimientoDocumento[];    
     public envio: Envio;
-    public checked: boolean;
-
-    
+    public checked: boolean;   
 
 }

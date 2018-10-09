@@ -1,3 +1,4 @@
+import { GuiaService } from './../shared/guia.service';
 import { DocumentoService } from './../shared/documento.service';
 import { AppSettings } from './../shared/app.settings';
 import { Component, OnInit } from '@angular/core';
@@ -10,13 +11,14 @@ import { Component, OnInit } from '@angular/core';
 export class SubirResultadosEnviosComponent implements OnInit {
 
   constructor(
-    private documentoService: DocumentoService
+    public documentoService: DocumentoService, 
+    public guiaService: GuiaService
   ) { }
 
   rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;
 
   ngOnInit() {
-
+    
   }
 
   

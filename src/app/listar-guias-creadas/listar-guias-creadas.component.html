@@ -16,6 +16,7 @@
       <thead>
         <tr>
           <th scope="col">Guía</th>
+          <th scope="col">Proveedor</th>
           <th scope="col">Plazo de Distribución</th>
           <th scope="col">Tipo de Servicio</th>
           <th scope="col">Tipo de Seguridad</th>
@@ -33,6 +34,7 @@
               <strong>{{guiaCreada.numeroGuia}}</strong>
             </span>
           </td>
+          <td scope="col">{{guiaCreada.proveedor.nombre}}</td>
           <td scope="col">{{guiaCreada.plazoDistribucion.nombre}}</td>
           <td scope="col">{{guiaCreada.tipoServicio.nombre}}</td>
           <td scope="col">{{guiaCreada.tipoSeguridad.nombre}}</td>

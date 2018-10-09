@@ -1,3 +1,4 @@
+import { SeguimientoGuia } from './../../model/seguimientoguia.model';
 import { WriteExcelService } from './write-excel.service';
 import { DocumentoGuia } from '../../model/documentoguia.model';
 import { Guia } from '../../model/guia.model';
@@ -51,6 +52,12 @@ export class GuiaService {
         return guia.seguimientosGuia.find(seguimientoDocumento => 
             seguimientoDocumento.estadoGuia.id === 1
         ).fecha;
+    }
+
+    getSeguimientoGuiaByEstadoGuiaId(guia: Guia, estadoGuiaId: number): SeguimientoGuia{
+        return guia.seguimientosGuia.find(seguimientoDocumento => 
+            seguimientoDocumento.estadoGuia.id === estadoGuiaId
+        );
     }
 
     exportarDocumentosGuia(guia: Guia) {
