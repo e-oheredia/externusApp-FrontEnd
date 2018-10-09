@@ -1,3 +1,4 @@
+import { UtilsService } from './../../shared/utils.service';
 import { GuiaService } from '../../shared/guia.service';
 import { Guia } from '../../../model/guia.model';
 import { ProveedorService } from '../../shared/proveedor.service';
@@ -20,7 +21,8 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
     public bsModalRef: BsModalRef,
     private proveedorService: ProveedorService,
     private guiaService: GuiaService,
-    private notifier: NotifierService
+    private notifier: NotifierService, 
+    private utilsService: UtilsService  
   ) { }
 
   guia: Guia;
@@ -29,22 +31,31 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
   @Output() guiaModificadaEvent = new EventEmitter();
   proveedores: Proveedor[];
 
-  proveedoresSubscription: Subscription;
+  proveedoresSubscription: Subscription = new Subscription();
   modificarGuiaSubscription: Subscription = new Subscription();
 
   ngOnInit() {
-    this.cargarDatosVista();
+     
     this.guiaForm = new FormGroup({
-      'proveedor': new FormControl(this.guia.proveedor, Validators.required),
+      'proveedor': new FormControl('', Validators.required),
       'numeroGuia': new FormControl(this.guia.numeroGuia, [Validators.required, Validators.minLength(5)])
     });
+    this.cargarDatosVista();   
   }
+
+  
 
   cargarDatosVista() {    
     this.proveedores = this.proveedorService.getProveedores();
+
+    if (!this.utilsService.isUndefinedOrNull(this.proveedores)) {
+      this.guiaForm.controls['proveedor'].setValue(this.proveedores.find( proveedor => proveedor.id === this.guia.proveedor.id));
+    }
+          
     this.proveedoresSubscription = this.proveedorService.proveedoresChanged.subscribe(
       proveedores => {
         this.proveedores = proveedores;
+        this.guiaForm.controls['proveedor'].setValue(this.proveedores.find( proveedor => proveedor.id === this.guia.proveedor.id));
       }
     );
   }
@@ -63,10 +74,8 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
     )
   }
 
-
-
   ngOnDestroy() {
-    //this.proveedoresSubscription.unsubscribe();
+    this.proveedoresSubscription.unsubscribe();
     this.modificarGuiaSubscription.unsubscribe();
   }
 

@@ -11,7 +11,7 @@
         <form [formGroup]="guiaForm" (ngSubmit)="onSubmit(guiaForm.value)">          
           <div class="form-group">
             <label for="proveedor">Proveedor</label>
-            <select class="form-control" id="proveedor" formControlName="proveedor">
+            <select class="form-control" id="proveedor" formControlName="proveedor" >
               <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">{{proveedor.nombre}}</option>
             </select>
             <span *ngIf="!guiaForm.get('proveedor').valid && guiaForm.get('proveedor').touched" class="text-danger small">
