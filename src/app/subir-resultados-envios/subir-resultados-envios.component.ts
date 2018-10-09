@@ -1,3 +1,4 @@
+import { EstadoDocumentoEnum } from './../enum/estadodocumento.enum';
 import { GuiaService } from './../shared/guia.service';
 import { DocumentoService } from './../shared/documento.service';
 import { AppSettings } from './../shared/app.settings';
@@ -15,7 +16,8 @@ export class SubirResultadosEnviosComponent implements OnInit {
     public guiaService: GuiaService
   ) { }
 
-  rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;
+  rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;  
+  estadoDocumentoEnum = EstadoDocumentoEnum;
 
   ngOnInit() {
     

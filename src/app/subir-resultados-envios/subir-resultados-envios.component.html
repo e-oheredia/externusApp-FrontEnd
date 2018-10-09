@@ -1,4 +1,4 @@
-<!-- <div class="row">
+<div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-4">
       <h2>Documentos Custodiados</h2>
@@ -51,13 +51,10 @@
           <td scope="col">{{guiaEnviada.plazoDistribucion.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoServicio.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoSeguridad.nombre}}</td>
-          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id ===  ) }}</td>
-          <td scope="col">{{ }}</td>
-          <td scope="col">{{ }}</td>
-          <td scope="col">{{ }}</td>
-          <td scope="col" class="text-center">
-            <span class="oi oi-location text-success pointable" (click)="exportar(guiaEnviada)"></span>
-          </td>
+          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.ENTREGADO).length }}</td>
+          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.REZAGADO).length }}</td>
+          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.DEVUELTO).length }}</td>
+          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.EXTRAVIADO).length }}</td>
         </tr>
       </tbody>
     </table>
@@ -71,4 +68,4 @@
       </div>
     </div>
   </div>
-</ng-template> -->
+</ng-template>
