@@ -1,3 +1,4 @@
+import { WriteExcelService } from './../shared/write-excel.service';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { BrowserStorageService } from '../shared/browserstorage.service';
 import { DocumentoGuiaService } from '../shared/documentoguia.service';
@@ -68,7 +69,8 @@ import { AuthInterceptor } from '../shared/auth-interceptor';
     BrowserStorageService,
     {provide: HTTP_INTERCEPTORS, 
       useClass: AuthInterceptor, 
-      multi: true}
+      multi: true}, 
+    WriteExcelService
   ], 
   entryComponents: [ 
     ConfirmModalComponent
