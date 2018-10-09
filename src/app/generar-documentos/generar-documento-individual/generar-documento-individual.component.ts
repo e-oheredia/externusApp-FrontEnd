@@ -186,6 +186,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         this.departamento = {};
         this.provincia = {};
         this.documentoForm.reset();
+        this.envio = new Envio();
       },
       error => {
         console.log(error);

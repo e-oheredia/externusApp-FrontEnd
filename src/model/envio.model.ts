@@ -21,6 +21,7 @@ export class Envio {
     public tipoDocumento: TipoDocumento;  
     public documentos: Documento[];
     public checked: boolean;
+    public autorizado: boolean;
 
     public addDocumento(documento: Documento){
         this.documentos.push(documento);

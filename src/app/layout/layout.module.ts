@@ -1,3 +1,4 @@
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { BrowserStorageService } from '../shared/browserstorage.service';
 import { DocumentoGuiaService } from '../shared/documentoguia.service';
 import { GuiaService } from '../shared/guia.service';

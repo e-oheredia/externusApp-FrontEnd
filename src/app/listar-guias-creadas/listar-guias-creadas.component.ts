@@ -20,7 +20,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalService: BsModalService,
-    public guiaService: GuiaService, 
+    public guiaService: GuiaService,
     private notifier: NotifierService
   ) { }
 
@@ -48,7 +48,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
         guia: guia
       }
     });
-    
+
 
     bsModalRef.content.guiaModificadaEvent.subscribe(
       () => {
@@ -70,7 +70,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
           () => {
             this.notifier.notify('success', 'Se ha eliminado correctamente la guía');
             this.listarGuiasCreadas();
-          }, 
+          },
           error => {
             console.log(error);
           }
@@ -90,9 +90,9 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
     let bsModalRef: BsModalRef = this.modalService.show(ValidarDocumentosGuiaModalComponent, {
       initialState: {
         guia: guia
-      }, 
+      },
       class: 'modal-lg'
-    });    
+    });
 
     this.modalService.onHidden.subscribe(
       () => {
@@ -106,15 +106,30 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
       this.notifier.notify('error', 'Valide todos los documentos de la guía antes de enviar');
       return;
     }
-    this.guiaService.enviarGuia(guia.id).subscribe(
-      guia => {
-        this.notifier.notify('success', 'Se ha enviado correctamente la guía');
-        this.listarGuiasCreadas();
-      }, 
-      error => {
-        console.log(error);
-      }     
+
+    let bsModalRef: BsModalRef = this.modalService.show(
+      ConfirmModalComponent, {
+        initialState: {
+          mensaje: "Se enviará la guía ¿Desea continuar?"
+        }
+      });
+
+    bsModalRef.content.confirmarEvent.subscribe(
+      () => {
+        this.guiaService.enviarGuia(guia.id).subscribe(
+          guia => {
+            this.notifier.notify('success', 'Se ha enviado correctamente la guía');
+            this.listarGuiasCreadas();
+          },
+          error => {
+            console.log(error);
+          }
+        )
+      }
     )
+
+
+    
   }
 
   ngOnDestroy() {
