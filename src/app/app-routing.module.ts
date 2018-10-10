@@ -40,6 +40,10 @@ const appRoutes: Routes = [
     {
         path: 'subir-resultados',
         component: SubirResultadosEnviosComponent
+    },
+    {
+        path: 'mantenimiento', 
+        loadChildren: './mantenimiento/mantenimiento.module#MantenimientoModule'
     }
 ]
 

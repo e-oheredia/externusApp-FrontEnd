@@ -1,3 +1,4 @@
+import { AreaService } from './../shared/area.service';
 import { WriteExcelService } from './../shared/write-excel.service';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { BrowserStorageService } from '../shared/browserstorage.service';
@@ -27,6 +28,7 @@ import { EnvioMasivoService } from '../shared/enviomasivo.service';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { ProveedorService } from '../shared/proveedor.service';
 import { AuthInterceptor } from '../shared/auth-interceptor';
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   imports: [  
@@ -35,7 +37,8 @@ import { AuthInterceptor } from '../shared/auth-interceptor';
       prefix: '',
       storageType: 'localStorage'
     }),
-    ModalModule.forRoot()
+    ModalModule.forRoot(), 
+    NgSelectModule
     
   ],
   declarations: [
@@ -70,7 +73,8 @@ import { AuthInterceptor } from '../shared/auth-interceptor';
     {provide: HTTP_INTERCEPTORS, 
       useClass: AuthInterceptor, 
       multi: true}, 
-    WriteExcelService
+    WriteExcelService, 
+    AreaService
   ], 
   entryComponents: [ 
     ConfirmModalComponent

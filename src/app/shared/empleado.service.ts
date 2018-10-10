@@ -4,7 +4,6 @@ import { AppSettings } from "./app.settings";
 import { Observable } from "rxjs";
 import { Empleado } from "../../model/empleado.model";
 import { BuzonService } from "./buzon.service";
-import { BuzonEmpleado } from "../../model/buzonempleado.model";
 import { Buzon } from "../../model/buzon.model";
 
 
@@ -15,12 +14,14 @@ export class EmpleadoService {
 
     private empleadoAutenticado: Empleado;
 
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.EMPLEADO_URL;
+
     public getEmpleadoAutenticado(){
         return this.empleadoAutenticado;
     }   
 
     listarEmpleadoAutenticado(){
-        this.requester.get<Empleado>(AppSettings.API_ENDPOINT + AppSettings.EMPLEADO_URL + "autenticado", {})
+        this.requester.get<Empleado>(this.REQUEST_URL + "autenticado", {})
         .subscribe(
             empleado => {
                 this.empleadoAutenticado = empleado;
@@ -35,5 +36,9 @@ export class EmpleadoService {
                 console.log(error);
             }            
         );
+    }
+
+    listarEmpleadosAll(): Observable<Empleado[]>{
+        return this.requester.get(this.REQUEST_URL, {});
     }
 }

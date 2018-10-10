@@ -51,10 +51,10 @@
           <td scope="col">{{guiaEnviada.plazoDistribucion.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoServicio.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoSeguridad.nombre}}</td>
-          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.ENTREGADO).length }}</td>
-          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.REZAGADO).length }}</td>
-          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.DEVUELTO).length }}</td>
-          <td scope="col">{{ guiaEnviada.documentosGuia.filter(documentoGuia => documentoService.getUltimoEstado(documentoGuia.documento).id === estadoDocumentoEnum.EXTRAVIADO).length }}</td>
+          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
+          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
+          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
+          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
         </tr>
       </tbody>
     </table>
