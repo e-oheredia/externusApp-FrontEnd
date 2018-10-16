@@ -12,14 +12,14 @@
         <h5>Plazo de Distribución por Usuario</h5>
       </div>
       <div class="card-body">
-        <form [formGroup]="empleadoForm" (ngSubmit)="onEmpleadoFormSubmit(empleadoForm.value)">
+        <form [formGroup]="buzonForm" (ngSubmit)="onBuzonFormSubmit(buzonForm.value)">
           <div class="form-row align-items-center">
-            <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="empleadosObservable | async" bindLabel="matricula" formControlName="empleado">
+            <!-- <div class="col">
+              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="matricula" formControlName="buzon" [(ngModel)]="buzon" (change)="onBuzonChange()">
               </ng-select>
-            </div>
+            </div> -->
             <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="empleadosObservable | async" bindLabel="nombres" formControlName="empleado">
+              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombres" formControlName="buzon" [(ngModel)]="buzon"  (change)="onBuzonChange()">
               </ng-select>
             </div>
             <div class="col">

@@ -14,19 +14,20 @@
 </div>
 <div class="row justify-content-center mb-4">
   <div class="col-8">
-    <form (ngSubmit)="seleccionar(documentoAutogenerado)">
+    <form (ngSubmit)="onSubmit(excelFile)">
       <div class="form-row align-items-center">
         <div class="col-sm-8">
-          <input type="file" class="form-control-file" (change)="onChangeFile($event.srcElement.files[0])" accept=".xlsx">
+            <input type="file" class="form-control-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+            (change)="onChangeExcelFile($event.srcElement.files[0])">
         </div>
         <div class="col btn-group">
-          <button class="btn btn-primary" (click)="subir()">Subir</button>
+          <button type="submit" class="btn btn-primary" [disabled] = "!excelFile">Subir</button>
         </div>
       </div>
     </form>
   </div>
 </div>
-<div class="row" *ngIf="guiasEnviadas.length !== 0; else mensaje">
+<div class="row" *ngIf="guiasSinCerrar.length !== 0; else mensaje">
   <div class="col">
     <table class="table">
       <thead>
@@ -45,16 +46,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let guiaEnviada of guiasEnviadas">
-          <td scope="col">{{guiaService.getSeguimientoGuiaByEstadoGuiaId(guiaEnviada,2)}}</td>
-          <td scope="col">{{guiaEnviada.numeroGuia}}</td>
-          <td scope="col">{{guiaEnviada.plazoDistribucion.nombre}}</td>
-          <td scope="col">{{guiaEnviada.tipoServicio.nombre}}</td>
-          <td scope="col">{{guiaEnviada.tipoSeguridad.nombre}}</td>
-          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
-          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
-          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
-          <td scope="col">{{ guiaEnviada.numeroGuia }}</td>
+        <tr *ngFor="let guiaSinCerrar of guiasSinCerrar">
+          <td scope="col">{{guiaService.getSeguimientoGuiaByEstadoGuiaId(guiaSinCerrar,2).fecha}}</td>
+          <td scope="col">{{guiaSinCerrar.numeroGuia}}</td>
+          <td scope="col">{{guiaSinCerrar.plazoDistribucion.nombre}}</td>
+          <td scope="col">{{guiaSinCerrar.tipoServicio.nombre}}</td>
+          <td scope="col">{{guiaSinCerrar.tipoSeguridad.nombre}}</td>
+          <td scope="col">Fecha 1</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.ENTREGADO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.REZAGADO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.DEVUELTO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.EXTRAVIADO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.ENVIADO).length }}</td>
         </tr>
       </tbody>
     </table>

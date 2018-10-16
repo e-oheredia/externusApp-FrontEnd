@@ -1,6 +1,6 @@
+import { EstadoDocumentoService } from './../shared/estadodocumento.service';
 import { AreaService } from './../shared/area.service';
 import { WriteExcelService } from './../shared/write-excel.service';
-import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { BrowserStorageService } from '../shared/browserstorage.service';
 import { DocumentoGuiaService } from '../shared/documentoguia.service';
 import { GuiaService } from '../shared/guia.service';
@@ -74,7 +74,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
       useClass: AuthInterceptor, 
       multi: true}, 
     WriteExcelService, 
-    AreaService
+    AreaService, 
+    EstadoDocumentoService
   ], 
   entryComponents: [ 
     ConfirmModalComponent

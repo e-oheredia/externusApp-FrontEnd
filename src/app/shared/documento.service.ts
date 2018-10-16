@@ -1,3 +1,5 @@
+import { SeguimientoDocumento } from './../../model/seguimientodocumento.model';
+import { EstadoDocumentoService } from './estadodocumento.service';
 import { EstadoDocumento } from '../../model/estadodocumento.model';
 import { RequesterService } from './requester.service';
 import { UtilsService } from './utils.service';
@@ -10,9 +12,10 @@ import { Documento } from '../../model/documento.model';
 import { ReadExcelService } from './read-excel.service';
 import { Injectable } from "@angular/core";
 import { AppSettings } from "./app.settings";
-import {  Subscription, Observable } from "rxjs";
+import { Subscription, Observable } from "rxjs";
 import { Provincia } from '../../model/provincia.model';
 import * as moment from 'moment';
+import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 
 @Injectable()
 export class DocumentoService {
@@ -21,11 +24,12 @@ export class DocumentoService {
 
     constructor(
         private readExcelService: ReadExcelService,
-        private departamentoService: DepartamentoService, 
+        private departamentoService: DepartamentoService,
         private provinciaService: ProvinciaService,
-        private distritoService: DistritoService, 
-        private utilsService: UtilsService, 
-        private requesterService: RequesterService
+        private distritoService: DistritoService,
+        private utilsService: UtilsService,
+        private requesterService: RequesterService,
+        private estadoDocumentoService: EstadoDocumentoService
     ) {
         this.departamentosPeruSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
             departamentosPeru => {
@@ -57,16 +61,16 @@ export class DocumentoService {
             let documentosCargados: Documento[] = [];
             let i = 1
             while (true) {
-                
+
                 if (data[i].length === 0) {
                     break;
                 }
                 let documentoCargado: Documento = new Documento();
                 documentoCargado.nroDocumento = data[i][0] || "";
-                
+
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
                     callback({
-                        mensaje : "Ingrese la razón social o el contacto en la fila " + (i + 1)
+                        mensaje: "Ingrese la razón social o el contacto en la fila " + (i + 1)
                     });
                     return;
                 }
@@ -76,23 +80,23 @@ export class DocumentoService {
 
                 if (this.departamentoService.listarDepartamentoByNombre(data[i][3]) === null) {
                     callback({
-                        mensaje : "Ingrese Departamento válido en la fila " + (i + 1)
+                        mensaje: "Ingrese Departamento válido en la fila " + (i + 1)
                     });
                     return;
                 }
 
                 if (this.provinciaService.listarProvinciaByNombreProvinciaAndNombreDepartamento(data[i][4], data[i][3]) === null) {
                     callback({
-                        mensaje : "Ingrese Provincia válida en la fila " + (i + 1)
+                        mensaje: "Ingrese Provincia válida en la fila " + (i + 1)
                     });
                     return;
                 }
 
                 let distrito = this.distritoService.listarDistritoByNombreDistritoAndNombreProvincia(data[i][5], data[i][4])
 
-                if (distrito === null){
+                if (distrito === null) {
                     callback({
-                        mensaje : "Ingrese Distrito válido en la fila " + (i + 1)
+                        mensaje: "Ingrese Distrito válido en la fila " + (i + 1)
                     });
                     return;
                 }
@@ -102,7 +106,7 @@ export class DocumentoService {
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][7])) {
                     callback({
-                        mensaje : "Ingrese la dirección en la fila " + (i + 1)
+                        mensaje: "Ingrese la dirección en la fila " + (i + 1)
                     });
                     return;
                 }
@@ -118,28 +122,103 @@ export class DocumentoService {
         });
     }
 
-    getFechaCreacion(documento: Documento): Date{
-        return documento.seguimientosDocumento.find(seguimientoDocumento => 
+    getFechaCreacion(documento: Documento): Date {
+        return documento.seguimientosDocumento.find(seguimientoDocumento =>
             seguimientoDocumento.estadoDocumento.id === 1
         ).fecha;
     }
 
-    getUltimoEstado(documento: Documento): EstadoDocumento{
-        let estadoDocumento =  documento.seguimientosDocumento.reduce(
-            (max,seguimentoDocumento) => 
-            moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
+    getUltimoEstado(documento: Documento): EstadoDocumento {
+        let estadoDocumento = documento.seguimientosDocumento.reduce(
+            (max, seguimentoDocumento) =>
+                moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
         ).estadoDocumento;
 
         return estadoDocumento;
     }
 
-    custodiarDocumentos(documentos: Documento[]): Observable<Documento[]>{
-        return this.requesterService.put<Documento[]>(this.REQUEST_URL + "custodia",documentos,{});
+    custodiarDocumentos(documentos: Documento[]): Observable<Documento[]> {
+        return this.requesterService.put<Documento[]>(this.REQUEST_URL + "custodia", documentos, {});
     }
 
-    listarDocumentosCustodiados(): Observable<Documento[]>{
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "custodiados",{});
+    listarDocumentosCustodiados(): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "custodiados", {});
     }
-    
+
+    mostrarResultadosDocumentosProveedor(file: File, sheet: number, callback: Function) {
+        this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
+            let documentosCargados: Documento[] = [];
+            let i = 1
+            while (true) {
+                if (data[i].length === 0) {
+                    break;
+                }
+                let documentoCargado = new Documento();
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
+                    callback({
+                        mensaje: "Ingrese el autogenerado en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                documentoCargado.documentoAutogenerado = data[i][1];
+
+                let seguimientoDocumento: SeguimientoDocumento = new SeguimientoDocumento();
+
+                let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
+                    estadoDocumento => estadoDocumento.nombre === data[i][16]
+                )
+
+                if (estadoDocumento === null) {
+                    callback({
+                        mensaje: "Ingrese Estado permitido en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                seguimientoDocumento.estadoDocumento = estadoDocumento;
+
+                if (estadoDocumento.id === EstadoDocumentoEnum.REZAGADO && this.utilsService.isUndefinedOrNullOrEmpty(data[i][17])) {
+                    callback({
+                        mensaje: "Ingrese Observación del Rezagado en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                seguimientoDocumento.observacion = data[i][17] || "";
+
+                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO )  && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
+                    callback({
+                        mensaje: "Ingrese Link del Entregado o Rezagado en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                seguimientoDocumento.linkImagen = data[i][18] || "";
+
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) && this.utilsService.isValidDate(data[i][19])) {                   
+
+                    callback({
+                        mensaje: "Ingrese la fecha en el formato correcto en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                seguimientoDocumento.fecha = new Date(data[i][19]);
+
+                documentoCargado.seguimientosDocumento.push(seguimientoDocumento);
+                documentosCargados.push(documentoCargado);
+                i++;
+            }
+
+            callback(documentosCargados);
+
+        });
+    }
+
+    actualizarResultadosProveedor(documentos: Documento[]): Observable<any> {
+        return this.requesterService.put<any>(this.REQUEST_URL + "actualizacionresultados", documentos, {});
+    }
+
 
 }

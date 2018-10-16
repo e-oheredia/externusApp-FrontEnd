@@ -4,7 +4,9 @@ import { Envio } from "./envio.model";
 
 export class Documento {
 
-    constructor(){}
+    constructor(
+        
+    ){}
     public id: number;
     public documentoAutogenerado: string; 
     public distrito: Distrito; 
@@ -14,7 +16,7 @@ export class Documento {
     public referencia: string; 
     public telefono: string; 
     public nroDocumento: string;
-    public seguimientosDocumento: SeguimientoDocumento[];    
+    public seguimientosDocumento: SeguimientoDocumento[] = [];    
     public envio: Envio;
     public checked: boolean;   
 

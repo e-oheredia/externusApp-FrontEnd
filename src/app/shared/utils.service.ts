@@ -21,4 +21,8 @@ export class UtilsService {
         return this.isUndefinedOrNull(data) || this.isEmpty(data);
     }
 
+    public isValidDate(d) {
+        return d instanceof Date && !isNaN(d.getTime());
+      }
+
 }

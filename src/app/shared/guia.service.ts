@@ -1,3 +1,4 @@
+import { DocumentoService } from './documento.service';
 import { SeguimientoGuia } from './../../model/seguimientoguia.model';
 import { WriteExcelService } from './write-excel.service';
 import { DocumentoGuia } from '../../model/documentoguia.model';
@@ -12,7 +13,11 @@ export class GuiaService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
 
-    constructor(private requester: RequesterService, private writeExcelService: WriteExcelService) {
+    constructor(
+        private requester: RequesterService, 
+        private writeExcelService: WriteExcelService,
+        private documentoService: DocumentoService
+    ) {
 
     }
 
@@ -45,7 +50,17 @@ export class GuiaService {
     }
 
     listarGuiasEnviadas(): Observable<Guia[]> {
-        return this.requester.get<Guia[]>(this.REQUEST_URL + "enviados", {});
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "paraproveedor", {});
+    }
+
+    listarGuiasSinCerrar() : Observable<Guia[]> {
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "sincerrar", {});
+    }
+
+    listarDocumentosGuiaByUltimoEstadoAndGuia(guia: Guia, estadoId: number): DocumentoGuia[] {
+        return guia.documentosGuia.filter(
+            documentoGuia => this.documentoService.getUltimoEstado(documentoGuia.documento).id === estadoId
+        );
     }
 
     getFechaCreacion(guia: Guia): Date{

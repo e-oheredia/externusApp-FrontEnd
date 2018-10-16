@@ -1,3 +1,4 @@
+import { PlazoDistribucion } from './../../model/plazodistribucion.model';
 import { Area } from './../../model/area.model';
 import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
@@ -16,6 +17,10 @@ export class AreaService {
 
     listarAreasAll(): Observable<Area[]>{
         return this.requesterService.get(this.REQUEST_URL, {});
+    }
+
+    public actualizarPlazoDistribucionPermitido(areaId: number, plazoDistribucionPermitido: PlazoDistribucion): Observable<PlazoDistribucion> {
+        return this.requesterService.put<PlazoDistribucion>(this.REQUEST_URL + areaId.toString() + "/plazosdistribucion", plazoDistribucionPermitido, {});
     }
 
 }
