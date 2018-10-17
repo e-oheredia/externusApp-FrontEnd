@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-4">
-      <h2>Documentos Custodiados</h2>
+      <h2>Subir Resultados del Envío</h2>
     </div>
   </div>
   <div class="col-2 text-right">
@@ -14,15 +14,61 @@
 </div>
 <div class="row justify-content-center mb-4">
   <div class="col-8">
-    <form (ngSubmit)="seleccionar(documentoAutogenerado)">
+    <form [formGroup]="excelForm" (ngSubmit)="onSubmit(excelFile)">
       <div class="form-row align-items-center">
         <div class="col-sm-8">
-          <input type="file" class="form-control-file" (change)="onChangeFile($event.srcElement.files[0])" accept=".xlsx">
+            <input type="file" class="form-control-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+            (change)="onChangeExcelFile($event.srcElement.files[0])" formControlName="excelFile">
         </div>
         <div class="col btn-group">
-          <button class="btn btn-primary" (click)="subir()">Subir</button>
+          <button type="submit" class="btn btn-primary" [disabled] = "!excelFile">Subir</button>
         </div>
       </div>
     </form>
   </div>
 </div>
+<div class="row" *ngIf="guiasSinCerrar.length !== 0; else mensaje">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Fecha de Envío</th>
+          <th scope="col">Guía</th>
+          <th scope="col">Plazo de Distribución</th>
+          <th scope="col">Tipo de Servicio</th>
+          <th scope="col">Tipo de Seguridad</th>
+          <th scope="col">Fecha Límite</th>
+          <th scope="col">Entregados</th>
+          <th scope="col">Rezagados</th>
+          <th scope="col">Devueltos</th>
+          <th scope="col">Extraviados</th>
+          <th scope="col">Pendientes de Resultado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let guiaSinCerrar of guiasSinCerrar">
+          <td scope="col">{{guiaService.getSeguimientoGuiaByEstadoGuiaId(guiaSinCerrar,2).fecha}}</td>
+          <td scope="col">{{guiaSinCerrar.numeroGuia}}</td>
+          <td scope="col">{{guiaSinCerrar.plazoDistribucion.nombre}}</td>
+          <td scope="col">{{guiaSinCerrar.tipoServicio.nombre}}</td>
+          <td scope="col">{{guiaSinCerrar.tipoSeguridad.nombre}}</td>
+          <td scope="col">Fecha 1</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.ENTREGADO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.REZAGADO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.DEVUELTO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.EXTRAVIADO).length }}</td>
+          <td scope="col">{{ guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guiaSinCerrar, estadoDocumentoEnum.ENVIADO).length }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No tienes guías por procesar
+      </div>
+    </div>
+  </div>
+</ng-template>

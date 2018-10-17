@@ -20,6 +20,8 @@ export class AppSettings {
     public static PROVEEDOR_URL = "proveedores/";
     public static GUIA_URL = "guias/";
     public static DOCUMENTO_GUIA_URL = "documentosguia/";
+    public static ESTADO_DOCUMENTO_URL = "estadosdocumento/";
+    public static TIPO_ESTADO_DOCUMENTO_URL = "tiposestadodocumento/";
 
     /** ARCHIVOS */
 

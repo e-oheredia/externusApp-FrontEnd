@@ -4,6 +4,7 @@ import { Envio } from "./envio.model";
 
 export class Documento {
 
+
     constructor(){}
     
     public id: number;
@@ -15,10 +16,8 @@ export class Documento {
     public referencia: string; 
     public telefono: string; 
     public nroDocumento: string;
-    public seguimientosDocumento: SeguimientoDocumento[];    
+    public seguimientosDocumento: SeguimientoDocumento[] = [];    
     public envio: Envio;
-    public checked: boolean;
-
-    
+    public checked: boolean;   
 
 }

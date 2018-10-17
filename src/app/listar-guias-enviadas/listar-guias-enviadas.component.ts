@@ -1,3 +1,4 @@
+import { EstadoDocumentoEnum } from './../enum/estadodocumento.enum';
 import { Guia } from './../../model/guia.model';
 import { GuiaService } from './../shared/guia.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,7 +12,7 @@ import { NotifierService } from '../../../node_modules/angular-notifier';
 export class ListarGuiasEnviadasComponent implements OnInit {
 
   constructor(
-    private guiaService: GuiaService,
+    public guiaService: GuiaService,
     private notifier: NotifierService
   ) { }
 
@@ -34,8 +35,8 @@ export class ListarGuiasEnviadasComponent implements OnInit {
     )
   }
 
-  descargar(guia: Guia) {
-    
+  exportar(guia: Guia) {
+    this.guiaService.exportarDocumentosGuia(guia);
   }
 
 }

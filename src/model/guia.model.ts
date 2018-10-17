@@ -1,3 +1,4 @@
+import { SeguimientoGuia } from './seguimientoguia.model';
 import { DocumentoGuia } from './documentoguia.model';
 import { TipoSeguridad } from './tiposeguridad.model';
 import { TipoServicio } from './tiposervicio.model';
@@ -11,6 +12,7 @@ export class Guia {
         public tipoServicio: TipoServicio, 
         public tipoSeguridad: TipoSeguridad, 
         public proveedor: Proveedor, 
-        public documentosGuia: DocumentoGuia[]
+        public documentosGuia: DocumentoGuia[], 
+        public seguimientosGuia: SeguimientoGuia[]
     ){}
 }

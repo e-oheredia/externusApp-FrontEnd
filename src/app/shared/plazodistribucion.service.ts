@@ -74,7 +74,7 @@ export class PlazoDistribucionService {
     }
 
     listarPlazoDistribucionPermititoByAreaId(areaId: number): Observable<PlazoDistribucion | any> {
-        return this.requester.get<PlazoDistribucion | any>(this.BUZON_REQUEST_URL + areaId.toString() + "/plazodistribucionpermitido", {});
+        return this.requester.get<PlazoDistribucion | any>(this.AREA_REQUEST_URL + areaId.toString() + "/plazodistribucionpermitido", {});
     }
 
 }

@@ -46,6 +46,10 @@ const appRoutes: Routes = [
         component: SubirResultadosEnviosComponent
     },
     {
+        path: 'mantenimiento', 
+        loadChildren: './mantenimiento/mantenimiento.module#MantenimientoModule'
+    },
+    {
         path: 'consultar-documentos-usuario-bcp',
         component: ConsultarDocumentosUBCPComponent
     },

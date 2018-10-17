@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Permisos de Plazo de Distribución</h2>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card mb-2">
+      <div class="card-header">
+        <h5>Plazo de Distribución por Buzón</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="buzonForm" (ngSubmit)="onBuzonFormSubmit(buzonForm.value)">
+          <div class="form-row align-items-center">
+            <!-- <div class="col">
+              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="matricula" formControlName="buzon" [(ngModel)]="buzon" (change)="onBuzonChange()">
+              </ng-select>
+            </div> -->
+            <div class="col">
+              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombre" formControlName="buzon" [(ngModel)]="buzon"  (change)="onBuzonChange()">
+              </ng-select>
+            </div>
+            <div class="col">
+              <ng-select class="mb-2 mr-sm-2" [items]="plazosDistribucion" bindLabel="nombre" formControlName="plazoDistribucion">
+              </ng-select>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-primary mb-2">Asignar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card mb-2">
+      <div class="card-header">
+        <h5>Plazo de Distribución por Área</h5>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="areaForm" (ngSubmit)="onAreaFormSubmit(areaForm.value)">
+          <div class="form-row align-items-center">
+            <div class="col">
+              <ng-select class="mb-2 mr-sm-2" [items]="areasObservable | async" bindLabel="nombre" formControlName="area">
+              </ng-select>
+            </div>
+            <div class="col">
+              <ng-select class="mb-2 mr-sm-2" [items]="plazosDistribucion" bindLabel="nombre" formControlName="plazoDistribucion">
+              </ng-select>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-primary mb-2">Asignar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
