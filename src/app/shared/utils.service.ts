@@ -7,7 +7,7 @@ export class UtilsService {
     constructor() { }
 
     public isEmpty(data): boolean {
-        if ((data instanceof Array && data.length == 0) || (data instanceof String && data.trim().length === 0)) {
+        if ((data instanceof Array && data.length == 0) || (data instanceof String && data.trim().length === 0) || (data === '')) {
             return true;
         }
         return false;

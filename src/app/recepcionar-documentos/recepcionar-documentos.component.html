@@ -1,0 +1,73 @@
+<div class="row">
+    <div class="col-10">
+        <div class="pb-2 mt-4 mb-2">
+            <h2>Recepción de Documentos Devueltos</h2>
+        </div>
+    </div>
+</div>
+
+
+<div class="row justify-content-center">
+    <div class="card-body">
+        <form [formGroup]="documentoForm" (ngSubmit)="recepcionarDocumento(documentoForm.get('codigo').value)">
+
+            <div class="form-row">
+
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="codigo"> Código : </label>
+                        <input class="form-control" type="text" formControlName="codigo">
+                    </div>
+                </div>
+
+                <div class="col-4 mt-4">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary form-control mt-2">
+                            RECEPCIONAR
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" *ngIf="documentos.length !== 0; else mensaje">
+                <div class="col">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Autogenerado Ext</th>
+                                <th scope="col">Remitente</th>
+                                <th scope="col">Area Remitente</th>
+                                <th scope="col">Fecha de Entrega</th>
+                                <th scope="col">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let documento of documentos">
+                                <td scope="col">{{documento.documentoAutogenerado}}</td>
+                                <td scope="col">{{documento.envio.buzon.nombre}}</td>
+                                <td scope="col">{{documento.envio.buzon.area.nombre}}</td>
+                                <td scope="col">{{documentoService.getSeguimientoDocumentoByEstadoId(documento,5) ? documentoService.getSeguimientoDocumentoByEstadoId(documento,5).fecha : documentoService.getSeguimientoDocumentoByEstadoId(documento,6) ? documentoService.getSeguimientoDocumentoByEstadoId(documento,6).fecha : "sin fecha" }}</td>
+                                <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+    <ng-template #mensaje>
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-info" role="alert">
+                    No existen documentos pendientes por recibir
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+
+</div>
