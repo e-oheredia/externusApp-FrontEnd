@@ -16,6 +16,8 @@ import { Subscription, Observable } from "rxjs";
 import { Provincia } from '../../model/provincia.model';
 import * as moment from 'moment-timezone';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
+import { HttpParams } from '@angular/common/http';
+import { BuzonService } from './buzon.service';
 
 @Injectable()
 export class DocumentoService {
@@ -29,7 +31,8 @@ export class DocumentoService {
         private distritoService: DistritoService,
         private utilsService: UtilsService,
         private requesterService: RequesterService,
-        private estadoDocumentoService: EstadoDocumentoService
+        private estadoDocumentoService: EstadoDocumentoService,
+        private buzonService: BuzonService
     ) {
         this.departamentosPeruSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
             departamentosPeru => {
@@ -220,5 +223,44 @@ export class DocumentoService {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
 
+    listarDocumentosEntregados(): Observable<Documento[]>{
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "entregados" ,{});
+    }
+
+    listarDocumentosPorDevolver(): Observable<Documento[]>{
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "pordevolver" ,{});
+    }
+    
+    listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
+    }
+
+    listarDocumentosUtdBCPCodigo(codigo: string){
+        return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('autogenerado', codigo.toString())});
+    }
+
+    listarDocumentosUtdBCPFechas(fechaini: Date, fechafin: Date){
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
+    getSeguimientoDocumentoByEstadoId(documento: Documento, estadoId: number){
+        return documento.seguimientosDocumento.find(
+            seguimientoDocumento => seguimientoDocumento.estadoDocumento.id === estadoId);
+    }
+
+    getUltimoSeguimientoDocumento(documento: Documento){
+        return documento.seguimientosDocumento.reduce(
+            (max,seguimentoDocumento) => 
+            moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
+        )
+    }
+
+    recepcionarCargo(codigo: number): Observable<Documento>{
+        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo +  "/recepcioncargo", {}, {});
+    }
+
+    recepcionarDocumento(codigo: number): Observable<Documento>{
+        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/" + "recepciondevueltos", {}, {});
+    }
 
 }

@@ -7,6 +7,10 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from '@angular/router';
 import { ListarDocumentosCustodiadosComponent } from './listar-documentos-custodiados/listar-documentos-custodiados.component';
 import { SubirResultadosEnviosComponent } from './subir-resultados-envios/subir-resultados-envios.component';
+import { ConsultarDocumentosUBCPComponent } from './consultar-documentos-u-bcp/consultar-documentos-u-bcp.component';
+import { RecepcionarCargosComponent } from './recepcionar-cargos/recepcionar-cargos.component';
+import { RecepcionarDocumentosComponent } from './recepcionar-documentos/recepcionar-documentos.component';
+import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.component';
 
 const appRoutes: Routes = [
     {
@@ -44,6 +48,22 @@ const appRoutes: Routes = [
     {
         path: 'mantenimiento', 
         loadChildren: './mantenimiento/mantenimiento.module#MantenimientoModule'
+    },
+    {
+        path: 'consultar-documentos-usuario-bcp',
+        component: ConsultarDocumentosUBCPComponent
+    },
+    {
+        path: 'consultar-documentos-utd-bcp',
+        component: ConsultarDocumentosUtdBcpComponent
+    },
+    {
+        path: 'recepcionar-cargos',
+        component: RecepcionarCargosComponent
+    },
+    {
+        path: 'recepcionar-documentos',
+        component: RecepcionarDocumentosComponent
     }
 ]
 

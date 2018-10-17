@@ -11,6 +11,10 @@ import { NotifierModule } from "angular-notifier";
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
+import { ConsultarDocumentosUBCPModule } from './consultar-documentos-u-bcp/consultar-documentos-u-bcp.module';
+import { RecepcionarCargosModule } from './recepcionar-cargos/recepcionar-cargos.module';
+import { RecepcionarDocumentosModule } from './recepcionar-documentos/recepcionar-documentos.module';
+import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { LayoutModule } from './layout/layout.module';
     ListarGuiasCreadasModule, 
     ListarDocumentosCustodiadosModule,
     ListarGuiasEnviadasModule, 
-    SubirResultadosEnviosModule
+    SubirResultadosEnviosModule,
+    ConsultarDocumentosUBCPModule,
+    RecepcionarCargosModule,
+    RecepcionarDocumentosModule, 
+    ConsultarDocumentosUtdBcpModule
   ],
   providers: [],
   bootstrap: [AppComponent]

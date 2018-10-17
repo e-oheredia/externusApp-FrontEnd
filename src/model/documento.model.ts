@@ -4,9 +4,9 @@ import { Envio } from "./envio.model";
 
 export class Documento {
 
-    constructor(
-        
-    ){}
+
+    constructor(){}
+    
     public id: number;
     public documentoAutogenerado: string; 
     public distrito: Distrito; 
