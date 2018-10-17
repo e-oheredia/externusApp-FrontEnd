@@ -9,7 +9,7 @@
   <div class="col">
     <div class="card mb-2">
       <div class="card-header">
-        <h5>Plazo de Distribución por Usuario</h5>
+        <h5>Plazo de Distribución por Buzón</h5>
       </div>
       <div class="card-body">
         <form [formGroup]="buzonForm" (ngSubmit)="onBuzonFormSubmit(buzonForm.value)">
@@ -19,7 +19,7 @@
               </ng-select>
             </div> -->
             <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombres" formControlName="buzon" [(ngModel)]="buzon"  (change)="onBuzonChange()">
+              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombre" formControlName="buzon" [(ngModel)]="buzon"  (change)="onBuzonChange()">
               </ng-select>
             </div>
             <div class="col">
@@ -42,7 +42,7 @@
         <h5>Plazo de Distribución por Área</h5>
       </div>
       <div class="card-body">
-        <form [formGroup]="areaForm" (ngSubmit)="onAreaFormSubmit(empleadoForm.value)">
+        <form [formGroup]="areaForm" (ngSubmit)="onAreaFormSubmit(areaForm.value)">
           <div class="form-row align-items-center">
             <div class="col">
               <ng-select class="mb-2 mr-sm-2" [items]="areasObservable | async" bindLabel="nombre" formControlName="area">

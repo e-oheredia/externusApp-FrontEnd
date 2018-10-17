@@ -1,3 +1,4 @@
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { EstadoDocumentoService } from './../shared/estadodocumento.service';
 import { EstadoDocumentoEnum } from './../enum/estadodocumento.enum';
@@ -27,12 +28,17 @@ export class SubirResultadosEnviosComponent implements OnInit {
   estadoDocumentoEnum = EstadoDocumentoEnum;
   guiasSinCerrar = [];
   excelFile: File;
+  excelForm: FormGroup;
+
 
   ngOnInit() {
     this.listarGuiasSinCerrar();
   }
 
   listarGuiasSinCerrar(){
+    this.excelForm = new FormGroup({
+      'excelFile': new FormControl('', Validators.required)
+    });
     this.guiaService.listarGuiasSinCerrar().subscribe(
       guiasSinCerrar => this.guiasSinCerrar = guiasSinCerrar      
     )
@@ -52,12 +58,17 @@ export class SubirResultadosEnviosComponent implements OnInit {
 
   subirResutados(file: File){
     this.documentoService.mostrarResultadosDocumentosProveedor(file, 0, (data) => {
-      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {        
-        console.log(data);
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {   
         this.documentoService.actualizarResultadosProveedor(data).subscribe(
-          respuesta => this.notifier.notify('success', "Se han actualizado correctamente los resultados")
+          respuesta => {
+            this.notifier.notify('success', respuesta.mensaje);
+            this.excelForm.reset();
+            this.listarGuiasSinCerrar();
+          }, 
+          error => {
+            this.notifier.notify('success', error.mensaje);
+          }
         )
-        this.listarGuiasSinCerrar();
         return;
       }     
       this.notifier.notify('error', data.mensaje);

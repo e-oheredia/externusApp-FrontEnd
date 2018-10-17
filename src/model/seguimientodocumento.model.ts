@@ -6,6 +6,6 @@ export class SeguimientoDocumento {
     public id: number; 
     public observacion:string; 
     public linkImagen: string; 
-    public fecha: Date; 
+    public fecha: Date | string; 
     public estadoDocumento: EstadoDocumento;
 }

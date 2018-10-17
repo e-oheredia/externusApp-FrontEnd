@@ -85,6 +85,7 @@ export class GuiaService {
                 "Sede Remitente": "LA MOLINA",
                 "Plazo de Distribución": documentoGuia.documento.envio.plazoDistribucion.nombre,
                 "Tipo de Seguridad": documentoGuia.documento.envio.tipoSeguridad.nombre,
+                "Tipo de Servicio": documentoGuia.documento.envio.tipoServicio.nombre,
                 "Tipo de Documento": documentoGuia.documento.envio.tipoDocumento.nombre,
                 "Razón Social": documentoGuia.documento.razonSocialDestino,
                 "Contacto": documentoGuia.documento.contactoDestino,
@@ -92,6 +93,7 @@ export class GuiaService {
                 "Provincia": documentoGuia.documento.distrito.provincia.nombre,
                 "Distrito": documentoGuia.documento.distrito.nombre,
                 "Direccion": documentoGuia.documento.direccion,
+                "Referencia": documentoGuia.documento.referencia,
                 "Teléfono": documentoGuia.documento.telefono
             })
         });

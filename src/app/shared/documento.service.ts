@@ -14,7 +14,7 @@ import { Injectable } from "@angular/core";
 import { AppSettings } from "./app.settings";
 import { Subscription, Observable } from "rxjs";
 import { Provincia } from '../../model/provincia.model';
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 
 @Injectable()
@@ -122,7 +122,7 @@ export class DocumentoService {
         });
     }
 
-    getFechaCreacion(documento: Documento): Date {
+    getFechaCreacion(documento: Documento): Date | string {
         return documento.seguimientosDocumento.find(seguimientoDocumento =>
             seguimientoDocumento.estadoDocumento.id === 1
         ).fecha;
@@ -150,7 +150,7 @@ export class DocumentoService {
             let documentosCargados: Documento[] = [];
             let i = 1
             while (true) {
-                if (data[i].length === 0) {
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i])) {
                     break;
                 }
                 let documentoCargado = new Documento();
@@ -163,7 +163,7 @@ export class DocumentoService {
 
                 documentoCargado.documentoAutogenerado = data[i][1];
 
-                let seguimientoDocumento: SeguimientoDocumento = new SeguimientoDocumento();
+                let seguimientoDocumento = new SeguimientoDocumento;
 
                 let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
                     estadoDocumento => estadoDocumento.nombre === data[i][16]
@@ -204,7 +204,7 @@ export class DocumentoService {
                     return;
                 }
 
-                seguimientoDocumento.fecha = new Date(data[i][19]);
+                seguimientoDocumento.fecha = moment(this.utilsService.getJsDateFromExcel(data[i][19])).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
 
                 documentoCargado.seguimientosDocumento.push(seguimientoDocumento);
                 documentosCargados.push(documentoCargado);
@@ -217,7 +217,7 @@ export class DocumentoService {
     }
 
     actualizarResultadosProveedor(documentos: Documento[]): Observable<any> {
-        return this.requesterService.put<any>(this.REQUEST_URL + "actualizacionresultados", documentos, {});
+        return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
 
 
