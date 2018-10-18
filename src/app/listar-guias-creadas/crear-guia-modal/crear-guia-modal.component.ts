@@ -54,7 +54,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
       'proveedor': new FormControl(null, Validators.required),
-      'numeroGuia': new FormControl(null, [Validators.required, Validators.minLength(5)])
+      'numeroGuia': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(20)])
     });
   }
 

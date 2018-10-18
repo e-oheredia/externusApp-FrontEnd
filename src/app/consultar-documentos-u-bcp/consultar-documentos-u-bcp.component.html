@@ -80,7 +80,7 @@
                     
                     <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).fecha}}</td>
 
-                    <td scope="col"> <a [href]="documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? documentoService.getUltimoSeguimientoDocumento(documento).linkImagen : '#' ">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? 'Link' : '' }}</a></td>
+                    <td scope="col"> <a target="_blank" [href]="documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? documentoService.getUltimoSeguimientoDocumento(documento).linkImagen : '#' ">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? 'Link' : '' }}</a></td>
                   </tr>
                 </tbody>
               </table>
@@ -94,7 +94,7 @@
         <div class="row">
           <div class="col">
             <div class="alert alert-info" role="alert">
-              No existen documentos
+              No hay resultados
             </div>
           </div>
         </div>

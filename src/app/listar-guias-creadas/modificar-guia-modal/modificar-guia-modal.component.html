@@ -20,9 +20,9 @@
           </div>
           <div class="form-group">
               <label for="numeroGuia">Número de Guía</label>
-              <input class="form-control" type="text" name="numeroGuia" id="numeroGuia" formControlName="numeroGuia">
+              <input class="form-control" (input) = "guiaForm.controls['numeroGuia'].setValue(guiaForm.get('numeroGuia').value.toUpperCase())" pattern = "([a-zA-Z0-9])+" type="text" name="numeroGuia" id="numeroGuia" formControlName="numeroGuia">
               <span *ngIf="!guiaForm.get('numeroGuia').valid && guiaForm.get('numeroGuia').touched" class="text-danger small">
-              Es necesario ingresar el número de guía
+                Ingrese el número de guía correctamente (5-20)
               </span>
           </div>          
           <div class="row">

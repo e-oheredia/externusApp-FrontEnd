@@ -8,6 +8,8 @@ import { RecepcionarDocumentosComponent } from './recepcionar-documentos.compone
       CommonModule, 
       FormsModule,
       ReactiveFormsModule
+      
+      
     ],
     declarations: [
         RecepcionarDocumentosComponent

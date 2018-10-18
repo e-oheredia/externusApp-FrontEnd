@@ -50,7 +50,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             );
         }
         else{
-            this.notifier.notify('error', 'COMPLETE AMBAS FECHAS');
+            this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
         }
     }
 

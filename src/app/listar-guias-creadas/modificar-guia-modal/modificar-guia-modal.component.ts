@@ -38,7 +38,7 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
      
     this.guiaForm = new FormGroup({
       'proveedor': new FormControl('', Validators.required),
-      'numeroGuia': new FormControl(this.guia.numeroGuia, [Validators.required, Validators.minLength(5)])
+      'numeroGuia': new FormControl(this.guia.numeroGuia, [Validators.required, Validators.minLength(5), Validators.maxLength(20)])
     });
     this.cargarDatosVista();   
   }

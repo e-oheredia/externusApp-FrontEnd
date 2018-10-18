@@ -9,14 +9,14 @@
 
 <div class="row justify-content-center">
     <div class="card-body">
-        <form [formGroup]="documentoForm" (ngSubmit)="recepcionarDocumento(documentoForm.get('codigo').value)">
+        <form [formGroup]="documentoForm"  (ngSubmit)="recepcionarDocumento(documentoForm.get('codigo').value)">
 
             <div class="form-row">
 
                 <div class="col-4">
                     <div class="form-group">
                         <label for="codigo"> Código : </label>
-                        <input class="form-control" type="text" formControlName="codigo">
+                        <input class="form-control" (input) = "documentoForm.controls['codigo'].setValue(documentoForm.get('codigo').value.toUpperCase())" type="text" formControlName="codigo">
                     </div>
                 </div>
 
@@ -38,6 +38,7 @@
                                 <th scope="col">Autogenerado Ext</th>
                                 <th scope="col">Remitente</th>
                                 <th scope="col">Area Remitente</th>
+                                <th scope="col">Sede de Emisión</th>
                                 <th scope="col">Fecha de Entrega</th>
                                 <th scope="col">Estado</th>
                             </tr>
@@ -47,6 +48,7 @@
                                 <td scope="col">{{documento.documentoAutogenerado}}</td>
                                 <td scope="col">{{documento.envio.buzon.nombre}}</td>
                                 <td scope="col">{{documento.envio.buzon.area.nombre}}</td>
+                                <td scope="col">LA MOLINA</td>
                                 <td scope="col">{{documentoService.getSeguimientoDocumentoByEstadoId(documento,5) ? documentoService.getSeguimientoDocumentoByEstadoId(documento,5).fecha : documentoService.getSeguimientoDocumentoByEstadoId(documento,6) ? documentoService.getSeguimientoDocumentoByEstadoId(documento,6).fecha : "sin fecha" }}</td>
                                 <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre}}</td>
                             </tr>

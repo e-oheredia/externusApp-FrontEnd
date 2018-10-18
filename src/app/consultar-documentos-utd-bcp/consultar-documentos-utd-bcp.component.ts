@@ -4,6 +4,7 @@ import { DocumentoService } from '../shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UtilsService } from '../shared/utils.service';
 import { NotifierService } from 'angular-notifier';
+import * as moment from "moment-timezone";
 
 @Component({
   selector: 'app-consultar-documentos-utd-bcp',
@@ -27,13 +28,12 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
 
   ngOnInit() {
     this.documentoForm = new FormGroup({
-      "fechaIni": new FormControl('', Validators.required),
-      "fechaFin": new FormControl('', Validators.required),
+      "fechaIni": new FormControl(moment().format('YYYY-MM-DD') , Validators.required),
+      "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
       "codigo": new FormControl('', Validators.required)
     })
 
-
-    console.log(this.documentoForm.controls['fechaIni'].value);
+    this.listarDocumentos();
 
   }
 
@@ -57,7 +57,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
         error =>{
           if(error.status === 400){
             this.documentos = [];
-            this.notifier.notify('error', 'NO EXISTE DOCUMENTO CON ESE AUTOGENERADO');
+            this.notifier.notify('error', 'NO HAY RESULTADOS');
           }
         }
       ); 
@@ -74,14 +74,14 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
         error =>{
           if(error.status === 400){
             this.documentos = [];
-            this.notifier.notify('error', 'RANGO DE FECHA NO VALIDA');
+            this.notifier.notify('error', 'RANGO DE FECHA NO VÁLIDA');
           }
         }
       );
     }
 
     else{
-      this.notifier.notify('error', 'COMPLETE AMBAS FECHAS');
+      this.notifier.notify('error', 'INGRESE ALGÚN DATO DE CONSULTA');
     }
   }
 
@@ -101,6 +101,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
 
 
   desactivarCodigo(fechaIni, fechaFin) {
+    console.log(fechaIni);
     if (this.utilsService.isUndefinedOrNullOrEmpty(fechaIni) && this.utilsService.isUndefinedOrNullOrEmpty(fechaFin)){
       this.documentoForm.controls['codigo'].enable();
     }else{

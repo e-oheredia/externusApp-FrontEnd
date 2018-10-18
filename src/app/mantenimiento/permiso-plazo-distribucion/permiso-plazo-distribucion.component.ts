@@ -6,7 +6,7 @@ import { PlazoDistribucionService } from './../../shared/plazodistribucion.servi
 import { PlazoDistribucion } from './../../../model/plazodistribucion.model';
 import { Area } from './../../../model/area.model';
 import { Observable, Subscription } from 'rxjs';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
@@ -39,12 +39,12 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cargarDatosVista();
     this.buzonForm = new FormGroup({
-      'buzon': new FormControl(null),
-      'plazoDistribucion': new FormControl(null)
+      'buzon': new FormControl(null, Validators.required),
+      'plazoDistribucion': new FormControl(null, Validators.required)
     });
     this.areaForm = new FormGroup({
-      'area': new FormControl(null),
-      'plazoDistribucion': new FormControl(null)
+      'area': new FormControl(null, Validators.required),
+      'plazoDistribucion': new FormControl(null, Validators.required)
     })
     
   }
@@ -94,7 +94,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     }
     this.areaPlazoDistribucionSubscripcion = this.plazoDistribucionService.listarPlazoDistribucionPermititoByAreaId(this.areaForm.get('area').value.id).subscribe(
       buzonPlazoDistribucion =>
-      this.buzonForm.controls['plazoDistribucion'].setValue(this.plazosDistribucion.find(plazoDistribucion => plazoDistribucion.id === buzonPlazoDistribucion.plazoDistribucion.id))
+      this.areaForm.controls['plazoDistribucion'].setValue(this.plazosDistribucion.find(plazoDistribucion => plazoDistribucion.id === buzonPlazoDistribucion.plazoDistribucion.id))
     )
   }
 

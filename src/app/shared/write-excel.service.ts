@@ -19,7 +19,7 @@ export class WriteExcelService {
         var ws = XLSX.utils.aoa_to_sheet(celdas);
         var wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, wbName);
-        XLSX.writeFile(wb,wbName + ".xlsx");
+        XLSX.writeFile(wb, wbName + ".xlsx");
     }
 
 }

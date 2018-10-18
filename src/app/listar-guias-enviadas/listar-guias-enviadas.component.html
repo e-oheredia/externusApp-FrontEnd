@@ -10,8 +10,10 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Fecha de Envío</th>
+          
           <th scope="col">Guía</th>
+          <th scope="col">Fecha de Envío</th>
+          <th scope="col">Sede de Emisión</th>
           <th scope="col">Plazo de Distribución</th>
           <th scope="col">Tipo de Servicio</th>
           <th scope="col">Tipo de Seguridad</th>
@@ -20,15 +22,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let guiaEnviada of guiasEnviadas">
-            <td scope="col">{{guiaService.getFechaCreacion(guiaEnviada)}}</td>
+        <tr *ngFor="let guiaEnviada of guiasEnviadas | orderBy: id: true">
           <td scope="col">{{guiaEnviada.numeroGuia}}</td>
+          <td scope="col">{{guiaService.getFechaCreacion(guiaEnviada)}}</td>
+          <td scope="col">LA MOLINA</td>
           <td scope="col">{{guiaEnviada.plazoDistribucion.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoServicio.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoSeguridad.nombre}}</td>
           <td scope="col">{{guiaEnviada.documentosGuia.length}}</td>
           <td scope="col" class="text-center">
-            <span class="oi oi-location text-success pointable" (click)="exportar(guiaEnviada)"></span>
+            <span class="oi oi-data-transfer-download text-success pointable" (click)="exportar(guiaEnviada)"></span>
           </td>
         </tr>
       </tbody>

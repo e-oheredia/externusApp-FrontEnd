@@ -29,6 +29,7 @@ import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 import { ProveedorService } from '../shared/proveedor.service';
 import { AuthInterceptor } from '../shared/auth-interceptor';
 import { NgSelectModule } from "@ng-select/ng-select";
+import { OrderModule } from 'ngx-order-pipe';
 
 @NgModule({
   imports: [  
@@ -38,7 +39,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
       storageType: 'localStorage'
     }),
     ModalModule.forRoot(), 
-    NgSelectModule
+    NgSelectModule, 
+    OrderModule
     
   ],
   declarations: [
