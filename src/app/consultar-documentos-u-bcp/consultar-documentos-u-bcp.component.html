@@ -109,23 +109,37 @@
 </div>
 
 
+
+
+
 <!-- /*      PRACTICANDO CON REPORTES    */ -->
+
+<!-- LINE -->
 <div class="row">
   <div class="col">
-    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'"
-      [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true" [enableAnimations]="true" [padding]="padding"
-      [titlePadding]="titlePadding" [source]="dataSource" [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups"
-      [colorScheme]="'scheme03'">
+    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+      [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupsLine" [colorScheme]="'scheme03'">
     </jqxChart>
   </div>
+
+  <!-- PIE -->
   <div class="col">
-      <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'U.S. Stock Market Index Performance'"
-        [description]="'NASDAQ Composite compared to S&P 500'" [showLegend]="true" [enableAnimations]="true" [padding]="padding"
-        [titlePadding]="titlePadding" [source]="dataSource" [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupss"
-        [colorScheme]="'scheme04'">
-      </jqxChart>
-    </div>
+    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+      [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupsPie" [colorScheme]="'scheme02'"
+      [legendLayout]="legendLayout">
+    </jqxChart>
+  </div>
+
+  <!-- COLUMN -->
+  <div class="col">
+    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+      [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupsColumn" [colorScheme]="'scheme04'">
+    </jqxChart>
+  </div>
+
+
+
 </div>
-
-
-

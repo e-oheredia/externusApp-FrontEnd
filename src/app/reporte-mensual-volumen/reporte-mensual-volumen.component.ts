@@ -4,104 +4,216 @@ import { DocumentoService } from '../shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from '../shared/utils.service';
+import { Proveedor } from 'src/model/proveedor.model';
+import { ProveedorService } from '../shared/proveedor.service';
+import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 
 @Component({
-  selector: 'app-reporte-mensual-volumen',
-  templateUrl: './reporte-mensual-volumen.component.html',
-  styleUrls: ['./reporte-mensual-volumen.component.css']
+    selector: 'app-reporte-mensual-volumen',
+    templateUrl: './reporte-mensual-volumen.component.html',
+    styleUrls: ['./reporte-mensual-volumen.component.css']
 })
 export class ReporteMensualVolumenComponent implements OnInit {
 
-  constructor(
-    public documentoService: DocumentoService, 
-    public notifier: NotifierService, 
-    public utilsService: UtilsService) { 
+    constructor(
+        public documentoService: DocumentoService,
+        public notifier: NotifierService,
+        public utilsService: UtilsService,
+        public proveedorService: ProveedorService) {
 
     }
 
-  
-  documentos = [];
-  documentosSubscription: Subscription;
-  documentoForm: FormGroup;
 
-  ngOnInit() {
-    this.documentoForm = new FormGroup({
-      "fechaIni" : new FormControl(null, Validators.required),
-      "fechaFin" : new FormControl(null, Validators.required)
-    })
-  }
+    proveedores: Proveedor[];
+    documentos = [];
+    reporte = [];
+    documentosSubscription: Subscription;
+    documentoForm: FormGroup;
+    dataSource = [];
 
 
-  MostrarReportes(fechaIni: Date, fechaFin: Date){
+    ngOnInit() {
+        this.documentoForm = new FormGroup({
+            "fechaIni": new FormControl(null, Validators.required),
+            "fechaFin": new FormControl(null, Validators.required)
+        })
 
-    if(!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.contains['fechaFin'].value)){
-
-      this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin).subscribe(
-        documentos => {
-          this.documentos = documentos;
-          this.llenarDataSource();
-        },
-        error => {
-            if (error.status === 400) {
-                this.documentos = [];
-                this.notifier.notify('error', 'RANGO DE FECHA NO VALIDA');
+        this.proveedores = this.proveedorService.getProveedores();
+        this.proveedorService.proveedoresChanged.subscribe(
+            proveedores => {
+                this.proveedores = proveedores;
             }
+        )
+    }
+
+    MostrarReportes(fechaIni: Date, fechaFin: Date) {
+        this.dataSource = [];
+        if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
+            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
+                documentos => {
+
+                    this.documentos = documentos;
+                    console.log(this.documentos)
+                    this.proveedores.forEach(
+                        proveedor => {
+                            let reporteProveedor = {
+                                proveedor: "",
+                                cantidad: 0
+                            };
+                            reporteProveedor.proveedor = proveedor.nombre;
+                            reporteProveedor.cantidad = documentos.filter(documento => 
+                                documento.documentosGuia[0].guia.proveedor.id === proveedor.id
+                            ).length;
+                            this.dataSource.push(reporteProveedor);
+                        }
+                    )
+                },
+                error => {
+                    if (error.status === 400) {
+                        this.documentos = [];
+                        this.notifier.notify('error', 'RANGOs DE FECHA NO VALIDA');
+                    }
+                }
+            );
         }
-      );
+        else {
+            this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
+        }
     }
 
-    else {
-      this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
-    }
-  }
 
-
-  ngOnDestroy(){
-    this.documentosSubscription.unsubscribe();
-  }
-
-
-
-
-/*      PRACTICANDO CON REPORTES    */
-
-
-dataSource = [];
-
-llenarDataSource() {
-    this.dataSource = [];
-
-    let documentoCreado = {
-        Courier: "Creado",
-        cantidad: this.documentos.filter(
-            documento => this.documentoService.getUltimoEstado(documento).id === 1).length
+    ngOnDestroy() {
+        this.documentosSubscription.unsubscribe();
     }
 
-    let documentoCustodiado = {
-        Courier: "Custodiado",
-        cantidad: this.documentos.filter(
-            documento => this.documentoService.getUltimoEstado(documento).id === 2).length
+
+
+
+
+
+
+
+    /*      PRACTICANDO CON REPORTES    */
+
+
+
+
+    llenarDataSource() {
+
+        // let sede = {
+        //     Sede: "La Molida",
+        //     cantidad: this.
+        // }
+
+        // this.dataSource.push(sede);
+
     }
 
-    this.dataSource.push(documentoCreado);
-    this.dataSource.push(documentoCustodiado);
-}
 
 
-padding: any = { left: 10, top: 5, right: 10, bottom: 5 };
-titlePadding: any = { left: 50, top: 0, right: 0, bottom: 10 };
+
+    padding: any = { left: 10, top: 20, right: 10, bottom: 20 };
+    titlePadding: any = { left: 50, top: 0, right: 0, bottom: 10 };
+    legendLayout: any = { left: 700, top: 160, width: 300, height: 200, flow: 'vertical' };
 
 
-getWidth(): any {
-    if (document.body.offsetWidth < 8550) {
-        return '95%';
+    getWidth(): any {
+        if (document.body.offsetWidth < 8550) {
+            return '100%';
+        }
+
+        return 850;
     }
 
-    return 850;
-}
 
-xAxis: any =
-    {
+    // VOLUMEN DE DISTRIBUCIÓN - PIE - POR COURIER --------------------------------------------------------------------------------------
+
+    xAxisCourier: any = {
+        dataField: 'proveedor',
+        unitInterval: 1,
+        tickMarks: {
+            visible: true,
+            interval: 1,
+            color: '#CACACA'
+        },
+        gridLines: {
+            visible: true, //mostrar linea vertical 
+            interval: 1, //cada "N" espacios
+            color: '#BCBCBC'
+        }
+    };
+
+    valueAxisCourier: any = {
+        visible: true,
+        title: { text: 'Cantidad por Estado' },
+        tickMarks: { color: '#BCBCBC' }
+    };
+
+    seriesGroupsCourier: any =
+        [
+            {
+                type: 'column',
+                columnsGapPercent: 70,
+                showLabels: true,
+                valueAxis:
+                {
+                    visible: true,
+                    unitInterval: 2,
+                    title: { text: 'Cantidadd' },
+                    minValue: 0
+                },
+                series:
+                    [
+                        {
+                            dataField: 'cantidad',
+                            displayText: 'Cantidad'
+                        }
+                    ]
+            }
+        ]
+
+
+
+    // VOLUMEN DE DISTRIBUCIÓN - PIE - POR UTD ------------------------------------------------------------------------------------------
+
+    source: any = {
+        datatype: 'csv',
+        datafields: [
+            { name: 'Creado' },
+            { name: 'Custodiado' }
+        ]
+    }
+
+    seriesGroupsUtd: any =
+        [
+            {
+                type: 'pie',
+                showLabels: true,
+                series:
+                    [
+                        {
+                            dataField: 'cantidad',
+                            displayText: 'Courier',
+                            labelRadius: 170, //acercar o alejar el numero del centro del pie
+                            initialAngle: 90,
+                            radius: 150, //tamaño del radio
+                            centerOffset: 10, //separacion entre secciones del pie
+                            // formatSettings: { sufix: '%', decimalPlaces: 1 } //formato de porcentaje
+                            formatFunction: (value: any) => {
+                                if (isNaN(value))
+                                    return value;
+                                return parseFloat(value);
+                                // return parseFloat(value) + '%';
+                            }
+
+                        }
+                    ]
+            }
+        ]
+
+    // VOLUMEN DE DISTRIBUCIÓN - BAR - POR TIPO DE SERVICIO -----------------------------------------------------------------------------
+
+    xAxisServicio: any = {
         dataField: 'Estado',
         unitInterval: 1,
         tickMarks: {
@@ -110,68 +222,35 @@ xAxis: any =
             color: '#CACACA'
         },
         gridLines: {
-            visible: false,
-            interval: 1,
-            color: '#CACACA'
+            visible: true, //mostrar linea vertical 
+            interval: 1, //cada "N" espacios
+            color: '#BCBCBC'
         }
     };
 
-
-valueAxis: any =
-    {
+    valueAxisServicio: any = {
         visible: true,
         title: { text: 'Cantidad por Estado' },
         tickMarks: { color: '#BCBCBC' }
     };
 
-seriesGroups: any =
-    [
-        {
-            type: 'line',
-            valueAxis:
+    seriesGroupsServicio: any =
+        [
             {
-                visible: true,
-                unitInterval: 2,
-                title: { text: 'Cantidadd' },
-                minValue: 0
-            },
-            series: [
-                { dataField: 'cantidad', displayText: 'Cantidad' }
-            ]
-        }
-    ]
-
-    seriesGroupss: any =
-    [
-        {
-            type: 'column',
-            valueAxis:
-            {
-                visible: true,
-                unitInterval: 2,
-                title: { text: 'Cantidadd' },
-                minValue: 0
-            },
-            series: [
-                { dataField: 'cantidad', displayText: 'Cantidad' }
-            ]
-        }
-    ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                type: 'line',
+                valueAxis:
+                {
+                    visible: true,
+                    unitInterval: 2,
+                    title: { text: 'Cantidad de Documentos' },
+                    minValue: 0
+                },
+                series: [
+                    {
+                        dataField: 'cantidad',
+                        displayText: 'Línea de comparación'
+                    }
+                ]
+            }
+        ]
 }

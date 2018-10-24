@@ -243,9 +243,15 @@ export class DocumentoService {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    listarDocumentosReportesVolumen(fechaini: Date, fechafin: Date): Observable<Documento[]> {
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosvolumen", {params: new HttpParams().append('fechaini', fechaini.toString()). append('fechafin', fechafin.toString()) });
+    listarDocumentosReportesVolumen(fechaini: Date, fechafin: Date, idestado: number): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosvolumen", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('estado', idestado.toString()) });
     }
+
+
+
+
+
+    
 
     getSeguimientoDocumentoByEstadoId(documento: Documento, estadoId: number){
         return documento.seguimientosDocumento.find(
@@ -266,5 +272,6 @@ export class DocumentoService {
     recepcionarDocumento(codigo: number): Observable<Documento>{
         return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/" + "recepciondevueltos", {}, {});
     }
+
 
 }
