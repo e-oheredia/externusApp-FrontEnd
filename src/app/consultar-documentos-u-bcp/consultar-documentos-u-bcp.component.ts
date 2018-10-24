@@ -91,41 +91,45 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
 
     padding: any = { left: 10, top: 5, right: 10, bottom: 5 };
     titlePadding: any = { left: 50, top: 0, right: 0, bottom: 10 };
+    legendLayout: any = { left: 700, top: 160, width: 300, height: 200, flow: 'vertical' };
 
 
     getWidth(): any {
         if (document.body.offsetWidth < 8550) {
-            return '95%';
+            return '98%';
         }
 
         return 850;
     }
 
-    xAxis: any =
-        {
-            dataField: 'Estado',
-            unitInterval: 1,
-            tickMarks: {
-                visible: true,
-                interval: 1,
-                color: '#CACACA'
-            },
-            gridLines: {
-                visible: false,
-                interval: 1,
-                color: '#CACACA'
-            }
-        };
-
-
-    valueAxis: any =
-        {
+    xAxis: any = {
+        dataField: 'Estado',
+        unitInterval: 1,
+        tickMarks: {
             visible: true,
-            title: { text: 'Cantidad por Estado' },
-            tickMarks: { color: '#BCBCBC' }
-        };
+            interval: 1,
+            color: '#CACACA'
+        },
+        gridLines: {
+            visible: true, //mostrar linea vertical 
+            interval: 1, //cada "N" espacios
+            color: '#BCBCBC'
+        }
+    };
 
-    seriesGroups: any =
+    valueAxis: any = {
+        visible: true,
+        title: { text: 'Cantidad por Estado' },
+        tickMarks: { color: '#BCBCBC' }
+    };
+
+
+
+
+
+
+
+    seriesGroupsLine: any =
         [
             {
                 type: 'line',
@@ -133,19 +137,27 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                 {
                     visible: true,
                     unitInterval: 2,
-                    title: { text: 'Cantidadd' },
+                    title: { text: 'Cantidad de Documentos' },
                     minValue: 0
                 },
                 series: [
-                    { dataField: 'cantidad', displayText: 'Cantidad' }
+                    {
+                        dataField: 'cantidad',
+                        displayText: 'Línea de comparación'
+                    }
                 ]
             }
         ]
 
-        seriesGroupss: any =
+
+
+
+    seriesGroupsColumn: any =
         [
             {
                 type: 'column',
+                columnsGapPercent: 70,
+                showLabels: true,
                 valueAxis:
                 {
                     visible: true,
@@ -154,10 +166,44 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                     minValue: 0
                 },
                 series: [
-                    { dataField: 'cantidad', displayText: 'Cantidad' }
+                    {
+                        dataField: 'cantidad',
+                        displayText: 'Cantidad'
+                    }
                 ]
             }
         ]
+
+
+
+    seriesGroupsPie: any = 
+    [
+        {
+            type: 'pie',
+            showLabels: true,
+            series: 
+            [
+                {
+                dataField: 'cantidad',
+                displayText: 'Proveedor',
+                labelRadius: 170, //acercar o alejar el numero del centro del pie
+                initialAngle: 90,
+                radius: 150, //tamaño del radio
+                centerOffset: 10, //separacion entre secciones del pie
+                formatSettings: { sufix: '%', decimalPlaces: 1 } //formato de porcentaje
+
+                // formatFunction: function (value, itemIndex) {
+
+                //     return DataSource;
+                // },
+                // toolTipFormatFunction: function (value, itemIndex) {
+                //     var label = DataSource + ': ' + DataSource + '%';
+                //     return label;
+                // }
+                }
+            ]
+        }
+    ]
 
 
 
