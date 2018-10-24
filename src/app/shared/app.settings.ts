@@ -22,12 +22,17 @@ export class AppSettings {
     public static DOCUMENTO_GUIA_URL = "documentosguia/";
     public static ESTADO_DOCUMENTO_URL = "estadosdocumento/";
     public static TIPO_ESTADO_DOCUMENTO_URL = "tiposestadodocumento/";
+    public static MENU_URL = "menus/";
 
     /** ARCHIVOS */
 
     public static PANTILLA_MASIVO = "http://localhost:8080/externa-static/archivos/plantilla-excel-masivo.xlsx";
     public static PANTILLA_RESULTADOS = "http://localhost:8080/externa-static/archivos/plantilla-excel-resultados.xlsx";
     public static MANUAL_REGISTRO = "http://localhost:8080/externa-static/archivos/registro.pdf";
+
+    /** IMAGENES */
+
+    public static logoImagePath = '/assets/images/logo-externus.png'
 
     /** TABLES */
 

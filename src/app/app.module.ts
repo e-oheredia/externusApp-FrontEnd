@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { SubirResultadosEnviosModule } from './subir-resultados-envios/subir-resultados-envios.module';
 import { ListarGuiasEnviadasModule } from './listar-guias-enviadas/listar-guias-enviadas.module';
 import { ListarDocumentosCustodiadosModule } from './listar-documentos-custodiados/listar-documentos-custodiados.module';

@@ -1,3 +1,4 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { EstadoDocumentoService } from './../shared/estadodocumento.service';
 import { AreaService } from './../shared/area.service';
 import { WriteExcelService } from './../shared/write-excel.service';
@@ -26,26 +27,31 @@ import { UtilsService } from '../shared/utils.service';
 import { EnvioService } from '../shared/envio.service';
 import { EnvioMasivoService } from '../shared/enviomasivo.service';
 import { BsModalService, ModalModule } from 'ngx-bootstrap/modal';
+import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { ProveedorService } from '../shared/proveedor.service';
 import { AuthInterceptor } from '../shared/auth-interceptor';
 import { NgSelectModule } from "@ng-select/ng-select";
 import { OrderModule } from 'ngx-order-pipe';
+import { MenuService } from '../shared/menu.service';
+import { TreeViewComponent } from './header/tree-view/tree-view.component';
 
 @NgModule({
   imports: [  
     HttpClientModule,
+    BrowserModule,
     LocalStorageModule.withConfig({
       prefix: '',
       storageType: 'localStorage'
     }),
     ModalModule.forRoot(), 
     NgSelectModule, 
-    OrderModule
+    OrderModule, 
+    BsDropdownModule.forRoot()
     
   ],
   declarations: [
     HeaderComponent, 
-    ConfirmModalComponent
+    ConfirmModalComponent, TreeViewComponent
   ],
   exports: [
     HeaderComponent
@@ -77,7 +83,8 @@ import { OrderModule } from 'ngx-order-pipe';
       multi: true}, 
     WriteExcelService, 
     AreaService, 
-    EstadoDocumentoService
+    EstadoDocumentoService, 
+    MenuService
   ], 
   entryComponents: [ 
     ConfirmModalComponent
