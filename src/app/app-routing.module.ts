@@ -11,6 +11,8 @@ import { ConsultarDocumentosUBCPComponent } from './consultar-documentos-u-bcp/c
 import { RecepcionarCargosComponent } from './recepcionar-cargos/recepcionar-cargos.component';
 import { RecepcionarDocumentosComponent } from './recepcionar-documentos/recepcionar-documentos.component';
 import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.component';
+import { ReporteDevolucionCargoComponent } from './reporte-devolucion-cargo/reporte-devolucion-cargo.component';
+import { ReporteIndicadorVolumenComponent } from './reporte-indicador-volumen/reporte-indicador-volumen.component';
 
 const appRoutes: Routes = [
     {
@@ -64,6 +66,14 @@ const appRoutes: Routes = [
     {
         path: 'recepcionar-documentos',
         component: RecepcionarDocumentosComponent
+    },
+    {
+        path: 'reporte-devolucion-cargo',
+        component: ReporteDevolucionCargoComponent
+    },
+    {
+        path: 'reporte-indicador-volumen',
+        component: ReporteIndicadorVolumenComponent
     }
 ]
 

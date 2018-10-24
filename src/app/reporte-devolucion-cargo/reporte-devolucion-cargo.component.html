@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Reporte - Devolución de Cargos</h2>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-2">
+
+      <div class="card-header">
+        <h5>Datos de Consulta</h5>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="documentoForm" (ngSubmit)="listarProveedores()">
+          <div class="form-row">
+
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaIni">Fecha Inicial</label>
+                <input class="form-control" type="month" formControlName="fechaIni" (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaFin">Fecha Final</label>
+                <input class="form-control" type="month" formControlName="fechaFin" (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+              </div>
+            </div>
+
+            <div class="col-4 mt-4">
+              <div class="col">
+                <button type="submit" class="btn btn-primary form-control mt-2">
+                  Generar reporte
+                </button>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-row">
+            <div class="col-6">
+                <jqxChart 
+                    [width]="getWidth()" [height]="500"
+                    [title]="'Devolución de Cargos'"
+                    [description]="''"
+                    [showLegend]="true" [enableAnimations]="true" [padding]="padding"
+                    [titlePadding]="titlePadding" [source]="cargosDevueltos" [xAxis]="xAxis"
+                    [seriesGroups]="seriesGroups" [colorScheme]="'scheme06'">
+                </jqxChart>
+            </div>
+            
+          </div>
+
+          <div class="form-row">
+            <jqxChart 
+                [width]="getWidth()" [height]="500"
+                [title]="'Devolución de Documentos'"
+                [description]="''"
+                [showLegend]="true" [enableAnimations]="true" [padding]="padding"
+                [titlePadding]="titlePadding" [source]="documentosDevueltos" [xAxis]="xAxis"
+                [seriesGroups]="seriesGroups" [colorScheme]="'scheme06'">
+            </jqxChart>
+          </div>
+
+          <div class="form-row">
+            <jqxChart #myChart
+                [width]="getWidth3()" [height]="500"
+                [title]="'Detalle de Pendientes por Área'" [description]="''"
+                [enableAnimations]="true" [showLegend]="true" [padding]="padding3" 
+                [titlePadding]="titlePadding3" [source]="pendientesPorArea" [xAxis]="xAxis3"
+                [valueAxis]="valueAxis3" [seriesGroups]="seriesGroups3" [colorScheme]="'scheme06'">
+            </jqxChart>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
