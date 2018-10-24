@@ -26,6 +26,7 @@
               "node_modules/angular-notifier/styles.css",
               "node_modules/open-iconic/font/css/open-iconic-bootstrap.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
+              "node_modules/jqwidgets-scripts/jqwidgets/styles/jqx.base.css",
               "src/styles.css"
             ],
             "scripts": [

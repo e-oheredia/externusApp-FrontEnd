@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>Consultar Documentos</h2>
+      <h1>Resumen de los Indicadores de Distribución del Mes</h1>
     </div>
   </div>
 </div>
@@ -11,7 +11,7 @@
     <div class="card mb-2">
 
       <div class="card-header">
-        <h5>Datos de Consulta</h5>
+        <h4>Datos de Consulta</h4>
       </div>
 
       <div class="card-body">
@@ -93,6 +93,7 @@
         </form>
       </div>
 
+
       <ng-template #mensaje>
         <div class="row">
           <div class="col">
@@ -105,27 +106,16 @@
 
 
     </div>
-  </div>
-</div>
 
 
-<!-- /*      PRACTICANDO CON REPORTES    */ -->
-<div class="row">
-  <div class="col">
-    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'"
-      [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true" [enableAnimations]="true" [padding]="padding"
-      [titlePadding]="titlePadding" [source]="dataSource" [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups"
-      [colorScheme]="'scheme03'">
-    </jqxChart>
-  </div>
-  <div class="col">
-      <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'U.S. Stock Market Index Performance'"
-        [description]="'NASDAQ Composite compared to S&P 500'" [showLegend]="true" [enableAnimations]="true" [padding]="padding"
-        [titlePadding]="titlePadding" [source]="dataSource" [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupss"
-        [colorScheme]="'scheme04'">
-      </jqxChart>
+    <div class="card-header" >
+      <div class="titulo">
+          <h4>Volumen de Distribución</h4>
+      </div>
     </div>
+
+  </div>
+
+
 </div>
-
-
 
