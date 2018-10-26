@@ -48,7 +48,7 @@
 
     </div>
 
-
+    <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -58,19 +58,32 @@
       <div class="card-body">
         <div class="row">
           <div class="col">
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
-              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
-              [xAxis]="xAxisCourier" [valueAxis]="valueAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme04'">
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT SAC'" [description]="'Gráfico Maldito'"
+              [showLegend]="true" [enableAnimations]="true" [padding]="paddingC" [titlePadding]="titlePaddingC"
+              [source]="dataSource" [showBorderLine]="true" [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme09'">
             </jqxChart>
+          </div>
+          <div class="col">
+
+            <table class="table">
+              <thead>
+                <tr *ngFor="let proveedor of proveedores">
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let documento of documentos">
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
     </div>
-
-
-    <br>
-    <br>
-
+    <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -80,18 +93,15 @@
       <div class="card-body">
         <div class="row">
           <div class="col">
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
-              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
-              [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme09'">
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT SAC'" [description]="'Gráfico Maldito'"
+              [showLegend]="true" [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU"
+              [source]="dataSource2" [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme12'">
             </jqxChart>
           </div>
         </div>
       </div>
     </div>
-
-    <br>
-    <br>
-
+    <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -102,9 +112,9 @@
         <div class="row">
           <div class="col">
             <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
-              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
-              [xAxis]="xAxisServicio" [valueAxis]="valueAxisServicio" [seriesGroups]="seriesGroupsServicio"
-              [colorScheme]="'scheme04'">
+              [showLegend]="true" [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS"
+              [source]="dataSource" [xAxis]="xAxisServicio" [valueAxis]="valueAxisServicio" [seriesGroups]="seriesGroupsSer"
+              [colorScheme]="'scheme06'">
             </jqxChart>
           </div>
         </div>

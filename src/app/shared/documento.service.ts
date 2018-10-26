@@ -18,6 +18,7 @@ import * as moment from 'moment-timezone';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { HttpParams } from '@angular/common/http';
 import { BuzonService } from './buzon.service';
+import { Proveedor } from '../../model/proveedor.model';
 
 @Injectable()
 export class DocumentoService {
@@ -51,6 +52,7 @@ export class DocumentoService {
         )
     }
 
+    documentos = [];
     departamentosPeru: Departamento[];
     provincias: Provincia[];
     distritos: Distrito[];
@@ -140,6 +142,7 @@ export class DocumentoService {
         return estadoDocumento;
     }
 
+    
     custodiarDocumentos(documentos: Documento[]): Observable<Documento[]> {
         return this.requesterService.put<Documento[]>(this.REQUEST_URL + "custodia", documentos, {});
     }
