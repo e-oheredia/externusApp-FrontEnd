@@ -1,3 +1,4 @@
+import { ReporteDistribucionMesEficienciaComponent } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.component';
 import { ListarGuiasEnviadasComponent } from './listar-guias-enviadas/listar-guias-enviadas.component';
 import { ListarGuiasCreadasComponent } from './listar-guias-creadas/listar-guias-creadas.component';
 import { CustodiarEnviosMasivosComponent } from './custodiar-envios-masivos/custodiar-envios-masivos.component';
@@ -70,6 +71,10 @@ const appRoutes: Routes = [
     {
         path: 'reportes-volumen',
         component: ReporteMensualVolumenComponent
+    },
+    {
+        path: 'reportes-distribucion-mes-eficiencia',
+        component: ReporteDistribucionMesEficienciaComponent
     }
 ]
 

@@ -11,6 +11,7 @@ export class PlazoDistribucionService {
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PLAZO_DISTRIBUCION_URL;
     BUZON_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.BUZON_URL;
     AREA_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.AREA_URL;
+    PROVEEDOR_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PROVEEDOR_URL;
 
     constructor(private requester: RequesterService, private buzonService: BuzonService) {
 
@@ -75,6 +76,10 @@ export class PlazoDistribucionService {
 
     listarPlazoDistribucionPermititoByAreaId(areaId: number): Observable<PlazoDistribucion | any> {
         return this.requester.get<PlazoDistribucion | any>(this.AREA_REQUEST_URL + areaId.toString() + "/plazodistribucionpermitido", {});
+    }
+
+    listarPlazosDistribucionByProveedorId(proveedorId: number): Observable<PlazoDistribucion | any> {
+        return this.requester.get<PlazoDistribucion | any>(this.PROVEEDOR_REQUEST_URL + proveedorId.toString() + "/plazosdistribucion", {});
     }
 
 }

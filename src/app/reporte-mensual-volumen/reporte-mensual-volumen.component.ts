@@ -66,7 +66,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
                             ).length;
                             this.dataSource.push(reporteProveedor);
                         }
-                    )
+                    );
+                    
                 },
                 error => {
                     if (error.status === 400) {

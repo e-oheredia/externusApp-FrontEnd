@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h1>Resumen de Indicadores de Distribución del Mes - Eficiencia</h1>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-5">
+      <div class="card-header">
+        <h4>Datos de Consulta</h4>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="busquedaForm" (ngSubmit)="MostrarReportes(busquedaForm.get('fechaIni').value, busquedaForm.get('fechaFin').value)">
+          <div class="form-row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaIni">Fecha Inicial</label>
+                <input class="form-control" type="date" formControlName="fechaIni">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaFin">Fecha Final</label>
+                <input class="form-control" type="date" formControlName="fechaFin">
+              </div>
+            </div>
+
+            <div class="col-4 mt-4">
+              <div class="col">
+                <button type="submit" class="btn btn-primary form-control mt-2">
+                  CONSULTAR
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Eficiencia - Por Courier</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <jqxChart #myChart [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true"
+              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="eficienciaPorProveedor"
+              [xAxis]="getAxis('proveedor')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
+                  dentroPlazo: 'Dentro del Plazo'}, 
+                  {fueraPlazo: 'Fuera del Plazo'
+                }])" [colorScheme]="'scheme04'">
+            </jqxChart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Eficiencia - Por Plazo de Distribución - Por Courier</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12" *ngFor="let proveedor of proveedores">
+            <h4>{{proveedor.nombre}}</h4>
+            <jqxChart #myChart [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true"
+              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]"
+              [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
+                    dentroPlazo: 'Dentro del Plazo'}, 
+                    {fueraPlazo: 'Fuera del Plazo'}
+                  ])" [colorScheme]="'scheme04'">
+            </jqxChart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Detalle de Eficiencia de Distribución por Servicio</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <select class="form-control" [(ngModel)]="proveedorElegidoDetalle">
+              <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">{{proveedor.nombre}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div *ngIf="proveedorElegidoDetalle" class="col">
+            <div class="row">
+                <div class="col-6" *ngFor="let plazoDistribucion of proveedorElegidoDetalle.plazosDistribucion; let i = index">
+                    <jqxChart [height]="500" [title]="plazoDistribucion.nombre" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+                      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="reportesDetalleEficiencia[proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
+                      [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
+                                  dentroPlazo: 'Dentro del Plazo', 
+                                  indiceReporte: i
+                                }], 'horizontal')" [colorScheme]="'scheme04'">
+                    </jqxChart>
+                  </div>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
