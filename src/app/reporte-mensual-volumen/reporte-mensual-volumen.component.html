@@ -1,14 +1,13 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Indicadores Documentos Varios</h1>
+      <h1>Resumen de los Indicadores de Distribución del Mes</h1>
     </div>
   </div>
 </div>
 
 <div class="row justify-content-center">
   <div class="col">
-
     <div class="card mb-5">
 
       <div class="card-header">
@@ -50,19 +49,18 @@
     </div>
 
 
-
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
-          <h4>Indicador de Volumen</h4>
+          <h4>Volumen de Distribución - Por Courier</h4>
         </div>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col">
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="''" [description]="''" [showLegend]="true"
-              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGrafico"
-              [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme05'">
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+              [xAxis]="xAxisCourier" [valueAxis]="valueAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme04'">
             </jqxChart>
           </div>
         </div>
@@ -70,77 +68,48 @@
     </div>
 
 
-
+    <br>
+    <br>
 
     <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Volumen de Distribución - Por UTD</h4>
+        </div>
+      </div>
       <div class="card-body">
         <div class="row">
           <div class="col">
-
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col" rowspan=2>Mes</th>
-                  <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td scope=col>Total</td>
-                  <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
-                </tr>
-              </tbody>
-            </table>
-
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+              [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme09'">
+            </jqxChart>
           </div>
         </div>
       </div>
-
-
-
-
-
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-
-            <table class="table table-bordered">
-              <thead> 
-                <tr>
-                  <th scope="col">Mes</th>
-                  <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let _r of _registros" >
-                  <td scope=col>{{ _r[0]}}</td>
-                  <td *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-      </div>
-
-
     </div>
 
+    <br>
+    <br>
 
-    <ng-template #mensaje>
-      <div class="row">
-        <div class="col">
-          <div class="alert alert-info" role="alert">
-            No hay resultados
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Volumen de Distribución - Por Tipo de Servicio</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+              [xAxis]="xAxisServicio" [valueAxis]="valueAxisServicio" [seriesGroups]="seriesGroupsServicio"
+              [colorScheme]="'scheme04'">
+            </jqxChart>
           </div>
         </div>
       </div>
-    </ng-template>
-
-
-
-    <div class="row" *ngIf="dataGrafico.length !== 0; else mensaje"></div>
+    </div>
 
   </div>
-
 </div>

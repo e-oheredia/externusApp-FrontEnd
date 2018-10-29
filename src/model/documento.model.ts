@@ -1,6 +1,7 @@
 import { Distrito } from "./distrito.model";
 import { SeguimientoDocumento } from "./seguimientodocumento.model";
 import { Envio } from "./envio.model";
+import { DocumentoGuia } from "./documentoguia.model";
 
 export class Documento {
 
@@ -19,5 +20,7 @@ export class Documento {
     public seguimientosDocumento: SeguimientoDocumento[] = [];    
     public envio: Envio;
     public checked: boolean;   
+    public recepcionado: boolean;
+    public documentosGuia: DocumentoGuia[] = [];  
 
 }

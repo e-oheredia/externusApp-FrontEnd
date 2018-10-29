@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { SubirResultadosEnviosModule } from './subir-resultados-envios/subir-resultados-envios.module';
 import { ListarGuiasEnviadasModule } from './listar-guias-enviadas/listar-guias-enviadas.module';
 import { ListarDocumentosCustodiadosModule } from './listar-documentos-custodiados/listar-documentos-custodiados.module';
@@ -17,6 +18,7 @@ import { RecepcionarDocumentosModule } from './recepcionar-documentos/recepciona
 import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
 import { ReporteDevolucionCargoModule } from './reporte-devolucion-cargo/reporte-devolucion-cargo.module';
 import { ReporteIndicadorVolumenModule } from './reporte-indicador-volumen/reporte-indicador-volumen.module';
+import { ReporteMensualVolumenModule } from './reporte-mensual-volumen/reporte-mensual.module';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { ReporteIndicadorVolumenModule } from './reporte-indicador-volumen/repor
     RecepcionarDocumentosModule, 
     ConsultarDocumentosUtdBcpModule,
     ReporteDevolucionCargoModule,
-    ReporteIndicadorVolumenModule
+    ReporteIndicadorVolumenModule,
+    ReporteMensualVolumenModule
   ],
   providers: [],
   bootstrap: [AppComponent]

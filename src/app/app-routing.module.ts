@@ -13,6 +13,8 @@ import { RecepcionarDocumentosComponent } from './recepcionar-documentos/recepci
 import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.component';
 import { ReporteDevolucionCargoComponent } from './reporte-devolucion-cargo/reporte-devolucion-cargo.component';
 import { ReporteIndicadorVolumenComponent } from './reporte-indicador-volumen/reporte-indicador-volumen.component';
+import { ReporteMensualVolumenComponent } from './reporte-mensual-volumen/reporte-mensual-volumen.component';
+
 
 const appRoutes: Routes = [
     {
@@ -74,6 +76,10 @@ const appRoutes: Routes = [
     {
         path: 'reporte-indicador-volumen',
         component: ReporteIndicadorVolumenComponent
+    },
+    {
+        path: 'reportes-volumen',
+        component: ReporteMensualVolumenComponent
     }
 ]
 

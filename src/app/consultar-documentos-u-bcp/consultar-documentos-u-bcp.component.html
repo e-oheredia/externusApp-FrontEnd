@@ -76,11 +76,14 @@
                     <td scope="col">{{documento.envio.autorizado ? "SÍ":"NO"}}</td>
                     <td scope="col">{{documentoService.getFechaCreacion(documento)}}</td>
 
-                    <td scope="col">{{documentoService.getSeguimientoDocumentoByEstadoId(documento,3) ? documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha : " " }}</td>
-                    
+                    <td scope="col">{{documentoService.getSeguimientoDocumentoByEstadoId(documento,3) ?
+                      documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha : " " }}</td>
+
                     <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).fecha}}</td>
 
-                    <td scope="col"> <a target="_blank" [href]="documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? documentoService.getUltimoSeguimientoDocumento(documento).linkImagen : '#' ">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? 'Link' : '' }}</a></td>
+                    <td scope="col"> <a target="_blank" [href]="documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? documentoService.getUltimoSeguimientoDocumento(documento).linkImagen : '#' ">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id
+                        === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ?
+                        'Link' : '' }}</a></td>
                   </tr>
                 </tbody>
               </table>
@@ -103,4 +106,40 @@
 
     </div>
   </div>
+</div>
+
+
+
+
+
+<!-- /*      PRACTICANDO CON REPORTES    */ -->
+
+<!-- LINE -->
+<div class="row">
+  <div class="col">
+    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+      [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupsLine" [colorScheme]="'scheme03'">
+    </jqxChart>
+  </div>
+
+  <!-- PIE -->
+  <div class="col">
+    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+      [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupsPie" [colorScheme]="'scheme02'"
+      [legendLayout]="legendLayout">
+    </jqxChart>
+  </div>
+
+  <!-- COLUMN -->
+  <div class="col">
+    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+      [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupsColumn" [colorScheme]="'scheme04'">
+    </jqxChart>
+  </div>
+
+
+
 </div>

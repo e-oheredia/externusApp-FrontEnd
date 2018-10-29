@@ -4,7 +4,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UtilsService } from '../shared/utils.service';
 import { NotifierService } from 'angular-notifier';
 import * as moment from "moment-timezone";
+import { Proveedor } from 'src/model/proveedor.model';
 import { ProveedorService } from '../shared/proveedor.service';
+import { DocumentoService } from '../shared/documento.service';
+import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 
 @Component({
   selector: 'app-reporte-devolucion-cargo',
@@ -13,55 +16,197 @@ import { ProveedorService } from '../shared/proveedor.service';
 })
 export class ReporteDevolucionCargoComponent implements OnInit {
 
+
+    documentoForm: FormGroup;
+    documentosSubscription: Subscription;
+    proveedores: Proveedor[];
+    dataGraficoDevolucionCargos = [];
+    dataGraficoDevolucionDocumentos = [];
+    dataGraficoDetallePendienteArea = [];
     
-  constructor(public proveedorService: ProveedorService, 
-    private utilsService: UtilsService, 
-    private notifier: NotifierService) { 
+  constructor(
+
+    public notifier: NotifierService,
+    public utilsService: UtilsService,
+    public documentoService: DocumentoService,
+    public proveedorService: ProveedorService
+    
+    ) { 
 
     }
 
-  proveedores = [];
   
-  proveedoresSubscription: Subscription;
-  documentoForm: FormGroup;
 
   ngOnInit() {
     this.documentoForm = new FormGroup({
-        "fechaIni": new FormControl(moment().format('YYYY-MM-DD') , Validators.required),
-        "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required)
+        "fechaIni": new FormControl(null, Validators.required),
+        "fechaFin": new FormControl(null, Validators.required)
       })
   
-      this.listarProveedores();
-  }
 
-  
-  
-listarProveedores(){
-
-    this.proveedoresSubscription = this.proveedorService.listarAll()
-    .subscribe(
-        proveedor =>{
-            this.proveedores = []
-            this.proveedores.push(proveedor);
-            this.documentoForm.controls['fechaIni'].reset();
-            this.documentoForm.controls['fechaFin'].reset();
-            this.documentoForm.controls['fechaIni'].enable();
-            this.documentoForm.controls['fechaFin'].enable();
-            this.notifier.notify('success','LISTA DE PROVEEDORES ENCONTRADOS');
-        },
-        error =>{
-            if(error.status ===400){
-                this.proveedores = [];
-                this.notifier.notify('error','NO HAY RESULTADOS');
+      this.proveedores = this.proveedorService.getProveedores();
+        this.proveedorService.proveedoresChanged.subscribe(
+            proveedores => {
+                this.proveedores = proveedores;
             }
-        }
-    )
-}
-
-ngOnDestroy() {
-    this.proveedoresSubscription.unsubscribe();
+        )
+      
   }
 
+  
+  
+
+
+
+  ngOnDestroy() {
+    
+  }
+
+
+  MostrarReportes(fechaIni: Date, fechaFin: Date) {
+
+
+    let fi = new Date(new Date(fechaIni).getTimezoneOffset()*60*1000 + new Date(fechaIni).getTime());
+    let ff = new Date(new Date(fechaFin).getTimezoneOffset()*60*1000 + new Date(fechaFin).getTime()); 
+    let fechaInicial = new Date(moment(new Date(fi.getFullYear(),fi.getMonth(),1),"DD-MM-YYYY HH:mm:ss"));
+    let fechaFinal = new Date(moment(new Date(ff.getFullYear(),ff.getMonth(),1),"DD-MM-YYYY HH:mm:ss"));
+
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
+        
+     
+        this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe( 
+
+
+            documentos => {
+
+
+                this.dataGraficoDevolucionCargos = [];
+                this.dataGraficoDevolucionDocumentos = [];
+                this.dataGraficoDetallePendienteArea = [];
+
+                let registroDevolucionCargosGeneral = {
+                    Courier : "",
+                    Devuelto : 0,
+                    Pendiente : 0
+                }
+
+                registroDevolucionCargosGeneral.Courier = "GENERAL";
+                registroDevolucionCargosGeneral.Devuelto = documentos.filter(documento => {   
+                    return documento.recepcionado === true &&
+                    this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,4)) === false
+                    }
+                ).length;
+                registroDevolucionCargosGeneral.Pendiente = documentos.filter(documento => {   
+                    return documento.recepcionado === false &&
+                    this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,4)) === false
+                    }
+                ).length;
+
+                this.dataGraficoDevolucionCargos.push(registroDevolucionCargosGeneral);
+
+                
+                let registroDevolucionDocumentosGeneral = {
+                    Courier : "",
+                    Devuelto : 0,
+                    Pendiente : 0                    
+                }
+
+                registroDevolucionDocumentosGeneral.Courier = "GENERAL";
+                registroDevolucionDocumentosGeneral.Devuelto = documentos.filter(documento => {   
+                    return documento.recepcionado === true &&
+                    (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,5)) === false ||
+                    this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,6)) === false)
+                    }
+                ).length;
+                registroDevolucionDocumentosGeneral.Pendiente = documentos.filter(documento => {   
+                    return documento.recepcionado === false &&
+                    (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,5)) === false ||
+                    this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,6)) === false)
+                    }
+                ).length;
+
+                this.dataGraficoDevolucionDocumentos.push(registroDevolucionDocumentosGeneral);
+
+                this.proveedores.forEach(
+
+
+                    proveedor => {
+
+                        let registroDevolucionCargosProveedor = {
+                            Courier : "",
+                            Devuelto : 0,
+                            Pendiente : 0
+                        }
+
+                        registroDevolucionCargosProveedor.Courier = proveedor.nombre;
+                        registroDevolucionCargosProveedor.Devuelto = documentos.filter(documento => {   
+                            return documento.documentosGuia[0].guia.proveedor.id === proveedor.id && 
+                            documento.recepcionado === true &&
+                            this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,4)) === false
+                            }
+                        ).length;
+                        registroDevolucionCargosProveedor.Pendiente = documentos.filter(documento => {   
+                            return documento.documentosGuia[0].guia.proveedor.id === proveedor.id && 
+                            documento.recepcionado === false &&
+                            this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,4)) === false
+                            }
+                        ).length;
+
+
+                        this.dataGraficoDevolucionCargos.push(registroDevolucionCargosProveedor);
+
+                        let registroDevolucionDocumentoProveedor = {
+                            Courier : "",
+                            Devuelto : 0,
+                            Pendiente : 0
+                        }
+
+                        registroDevolucionDocumentoProveedor.Courier = proveedor.nombre;
+                        registroDevolucionDocumentoProveedor.Devuelto = documentos.filter(documento => {   
+                            return documento.documentosGuia[0].guia.proveedor.id === proveedor.id && 
+                            documento.recepcionado === true &&
+                            (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,5)) === false ||
+                            this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,6)) === false)
+                            }
+                        ).length;
+                        registroDevolucionDocumentoProveedor.Pendiente = documentos.filter(documento => {   
+                            return documento.documentosGuia[0].guia.proveedor.id === proveedor.id && 
+                            documento.recepcionado === false &&
+                            (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,5)) === false ||
+                            this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,6)) === false)
+                            }
+                        ).length;
+
+                        this.dataGraficoDevolucionDocumentos.push(registroDevolucionDocumentoProveedor);
+
+
+                    }
+
+                )
+
+
+
+
+
+
+
+
+            },
+            error => {
+                if (error.status === 400) {
+                    this.notifier.notify('error', 'RANGOS DE FECHA NO VALIDA');
+                }
+            }
+
+
+            
+            );
+
+    }
+    else {
+        this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
+    }
+  }
 
 
 cargosDevueltos: any[] = [
@@ -85,16 +230,31 @@ pendientesPorArea: any = [
     { Country: 'Brazil', Population: 192376496, Percent: 2.74 }
 ];
 
+
+
+
+
+
+
+
+
+
+
+//**************************************************************************************************************************************** */
 getWidth() : any {
     if (document.body.offsetWidth < 850) {
         return '90%';
     }
     
-    return 850;
+    return '100%';
 }
 
 padding: any = { left: 5, top: 5, right: 5, bottom: 5 };
 titlePadding: any = { left: 90, top: 0, right: 0, bottom: 10 };
+
+
+
+
 xAxis: any =
 {
     dataField: 'Courier',
@@ -104,7 +264,7 @@ seriesGroups: any[] =
 [
     {
         type: 'stackedcolumn',
-        columnsGapPercent: 70,
+        columnsGapPercent: 80,
         seriesGapPercent: 0,
         valueAxis:
         {
@@ -126,22 +286,24 @@ seriesGroups: any[] =
 
 
 //********************************************************************************************************************* */
-padding3: any = { left: 20, top: 5, right: 20, bottom: 5 };
-titlePadding3: any = { left: 90, top: 0, right: 0, bottom: 10 };
+//padding3: any = { left: 20, top: 5, right: 20, bottom: 5 };
+//titlePadding3: any = { left: 90, top: 0, right: 0, bottom: 10 };
+
+
 xAxis3: any =
 {
     dataField: 'Country',
     gridLines: { visible: true },
     flip: false
 };
-getWidth3() : any {
+/*getWidth3() : any {
     if (document.body.offsetWidth < 850) {
         return '90%';
     }
     
-    return 850;
+    return '100%';
 }
-
+*/
 valueAxis3: any =
 {
     flip: true,
