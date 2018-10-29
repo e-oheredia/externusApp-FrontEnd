@@ -1,3 +1,4 @@
+import { ReporteDistribucionMesEficienciaComponent } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.component';
 import { ListarGuiasEnviadasComponent } from './listar-guias-enviadas/listar-guias-enviadas.component';
 import { ListarGuiasCreadasComponent } from './listar-guias-creadas/listar-guias-creadas.component';
 import { CustodiarEnviosMasivosComponent } from './custodiar-envios-masivos/custodiar-envios-masivos.component';
@@ -14,43 +15,46 @@ import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-b
 import { ReporteDevolucionCargoComponent } from './reporte-devolucion-cargo/reporte-devolucion-cargo.component';
 import { ReporteIndicadorVolumenComponent } from './reporte-indicador-volumen/reporte-indicador-volumen.component';
 import { ReporteMensualVolumenComponent } from './reporte-mensual-volumen/reporte-mensual-volumen.component';
+import { ReporteMensualCargosComponent } from './reporte-mensual-cargos/reporte-mensual-cargos.component';
+import { ReporteIndicadorEfectividadComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
+
 
 
 const appRoutes: Routes = [
     {
-        path: 'generar-documentos', 
+        path: 'generar-documentos',
         loadChildren: './generar-documentos/generar-documentos.module#GenerarDocumentosModule'
     },
     {
         path: 'autorizar-envios',
         component: AutorizarEnviosComponent
-    }, 
+    },
     {
         path: 'custodiar-envios-individuales',
         component: CustodiarDocumentosIndividualesComponent
-    }, 
+    },
     {
         path: 'custodiar-envios-masivos',
         component: CustodiarEnviosMasivosComponent
-    }, 
+    },
     {
         path: 'guias-creadas',
         component: ListarGuiasCreadasComponent
-    }, 
+    },
     {
         path: 'documentos-custodiados',
         component: ListarDocumentosCustodiadosComponent
-    }, 
+    },
     {
         path: 'guias-enviadas',
         component: ListarGuiasEnviadasComponent
-    }, 
+    },
     {
         path: 'subir-resultados',
         component: SubirResultadosEnviosComponent
     },
     {
-        path: 'mantenimiento', 
+        path: 'mantenimiento',
         loadChildren: './mantenimiento/mantenimiento.module#MantenimientoModule'
     },
     {
@@ -80,11 +84,23 @@ const appRoutes: Routes = [
     {
         path: 'reportes-volumen',
         component: ReporteMensualVolumenComponent
+    },
+    {
+        path: 'reportes-cargos',
+        component: ReporteMensualCargosComponent
+    },
+    {
+        path: 'reportes-distribucion-mes-eficiencia',
+        component: ReporteDistribucionMesEficienciaComponent
+    },
+    {
+        path: 'reportes-indicador-efectividad',
+        component: ReporteIndicadorEfectividadComponent
     }
 ]
 
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes)], 
+    imports: [RouterModule.forRoot(appRoutes)],
     exports: [RouterModule]
 })
-export class AppRoutingModule{}
+export class AppRoutingModule { }

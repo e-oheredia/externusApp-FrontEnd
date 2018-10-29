@@ -15,6 +15,8 @@ export class EstadoDocumentoService {
 
     estadosDocumentoResultadosProveedor: EstadoDocumento[] = [];
     estadosDocumentoResultadosProveedorChanged: Subject<EstadoDocumento[]> = new Subject<EstadoDocumento[]>();
+    estadosDocumento: EstadoDocumento[] = [];
+    estadosDocumentoChanged: Subject<EstadoDocumento[]> = new Subject<EstadoDocumento[]>();
     constructor(
         private requesterService: RequesterService
     ) {
@@ -24,6 +26,16 @@ export class EstadoDocumentoService {
                 this.estadosDocumentoResultadosProveedorChanged.next(this.getEstadosDocumentoResultadosProveedor());
             }
         )
+        this.listarAll().subscribe(
+            estadosDocumento => {
+                this.estadosDocumento = estadosDocumento
+                this.estadosDocumentoChanged.next(this.getEstadosDocumento());
+            }
+        )
+    }
+
+    getEstadosDocumento() {
+        return this.estadosDocumento;
     }
 
     getEstadosDocumentoResultadosProveedor() {
@@ -32,6 +44,10 @@ export class EstadoDocumentoService {
 
     listarEstadosDocumentoByTipoEstadoDocumentoId(tipoEstadoDocumentoId: number): Observable<EstadoDocumento[]> {
         return this.requesterService.get<EstadoDocumento[]>(this.TIPO_ESTADO_DOCUMENTO_REQUEST_URL + tipoEstadoDocumentoId.toString() + "/" + AppSettings.ESTADO_DOCUMENTO_URL, {});
+    }
+
+    listarAll(): Observable<EstadoDocumento[]> {
+        return this.requesterService.get<EstadoDocumento[]>(this.REQUEST_URL, {});
     }
 
 
