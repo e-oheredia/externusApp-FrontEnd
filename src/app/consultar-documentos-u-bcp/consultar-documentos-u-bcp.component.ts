@@ -13,16 +13,21 @@ import { UtilsService } from '../shared/utils.service';
 
 export class ConsultarDocumentosUBCPComponent implements OnInit {
 
-    constructor(public documentoService: DocumentoService,
+    constructor(
+        public documentoService: DocumentoService,
         private notifier: NotifierService,
-        private utilsService: UtilsService) {
-
-    }
+        private utilsService: UtilsService
+    ) { }
 
 
     documentos = [];
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
+
+    sampleData: any[] = [
+        { Estado: "Creado", cantidad: 10 },
+        { Estado: "Custodiado", cantidad: 40 }
+    ]
 
     ngOnInit() {
         this.documentoForm = new FormGroup({
@@ -86,6 +91,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
 
         this.dataSource.push(documentoCreado);
         this.dataSource.push(documentoCustodiado);
+        console.log(this.dataSource);
+        console.log(this.sampleData);
     }
 
 
@@ -122,6 +129,39 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         title: { text: 'Cantidad por Estado' },
         tickMarks: { color: '#BCBCBC' }
     };
+
+
+
+    seriesGroupsPie: any =
+        [
+            {
+                type: 'pie',
+                showLabels: true,
+                series:
+                    [
+                        {
+                            dataField: 'cantidad',
+                            displayText: 'Estado',
+                            labelRadius: 170, //acercar o alejar el numero del centro del pie
+                            initialAngle: 90,
+                            radius: 150, //tamaño del radio
+                            centerOffset: 10, //separacion entre secciones del pie
+                            //formatSettings: { sufix: '%', decimalPlaces: 1 } //formato de porcentaje
+                            formatFunction: (value: any) => {
+                                if (isNaN(value))
+                                    return value;
+                                return parseFloat(value);
+                            },
+                        }
+                    ]
+            }
+        ]
+
+
+
+
+
+
 
 
 
@@ -176,34 +216,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
 
 
 
-    seriesGroupsPie: any = 
-    [
-        {
-            type: 'pie',
-            showLabels: true,
-            series: 
-            [
-                {
-                dataField: 'cantidad',
-                displayText: 'Proveedor',
-                labelRadius: 170, //acercar o alejar el numero del centro del pie
-                initialAngle: 90,
-                radius: 150, //tamaño del radio
-                centerOffset: 10, //separacion entre secciones del pie
-                formatSettings: { sufix: '%', decimalPlaces: 1 } //formato de porcentaje
 
-                // formatFunction: function (value, itemIndex) {
 
-                //     return DataSource;
-                // },
-                // toolTipFormatFunction: function (value, itemIndex) {
-                //     var label = DataSource + ': ' + DataSource + '%';
-                //     return label;
-                // }
-                }
-            ]
-        }
-    ]
 
 
 

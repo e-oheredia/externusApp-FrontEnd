@@ -6,10 +6,11 @@ import { jqxChartComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxcha
   imports: [
     CommonModule
   ],
+
   declarations: [
     jqxChartComponent
   ],
   exports: [jqxChartComponent]
-  
+
 })
 export class SharedModule { }

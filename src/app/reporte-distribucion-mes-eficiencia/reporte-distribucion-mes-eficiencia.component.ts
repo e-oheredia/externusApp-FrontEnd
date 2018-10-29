@@ -110,7 +110,6 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       }
     )
   }
-
   llenarEficienciaPorPlazoDistribucion(documentos: Documento[]) {
     this.reportesEficienciaPorPlazoDistribucion = {};
     this.proveedores.forEach(
@@ -145,6 +144,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
     ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length) * 100;
   }
+
 
   llenarDetalleEficiencia(documentos: Documento[]) {
     this.reportesDetalleEficiencia = {};
