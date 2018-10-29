@@ -34,6 +34,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
   reportesDetalleEficiencia: any = {};
   documentosSubscription: Subscription;
   proveedorElegidoDetalle: Proveedor;
+  documentos: Documento[] = [];
 
   ngOnInit() {
     this.busquedaForm = new FormGroup({
@@ -49,6 +50,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaFin'].value)) {
       this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
         documentos => {
+          this.documentos = documentos;
           this.llenarEficienciaPorProveedor(documentos);
           this.llenarEficienciaPorPlazoDistribucion(documentos);
           this.llenarDetalleEficiencia(documentos);
@@ -65,15 +67,27 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     }
   }
 
-  // padding: any = { left: 5, top: 5, right: 5, bottom: 5 };
-  //   titlePadding: any = { left: 90, top: 0, right: 0, bottom: 10 };
-  // getWidth() : any {
-  // 	if (document.body.offsetWidth < 850) {
-  // 		return '90%';
-  // 	}
+  getPorcentajeDentroPlazoPorProveedor(proveedor = { id: 0 }) {
+    if (proveedor.id === 0) {
+      return this.documentos.filter(documento => documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
+    } else {
+      return this.documentos.filter(documento =>
+        documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+        documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+      ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length) * 100;
+    }
+  }
 
-  // 	return 850;
-  // }
+  getPorcentajeFueraPlazoPorProveedor(proveedor = { id: 0 }) {
+    if (proveedor.id === 0) {
+      return this.documentos.filter(documento => documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
+    } else {
+      return this.documentos.filter(documento =>
+        documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+        documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+      ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length) * 100;
+    }
+  }
 
   llenarEficienciaPorProveedor(documentos: Documento[]) {
     this.eficienciaPorProveedor = [];
@@ -96,7 +110,6 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       }
     )
   }
-///////////////////////////////////////////////////////////////////////////////////////////
   llenarEficienciaPorPlazoDistribucion(documentos: Documento[]) {
     this.reportesEficienciaPorPlazoDistribucion = {};
     this.proveedores.forEach(
@@ -122,7 +135,17 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       }
     )
   }
-///////////////////////////////////////////////////////////////////////////////////////////
+
+  getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) {
+    return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+    ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length) * 100;
+  }
+  getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) {
+    return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+    ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length) * 100;
+  }
+
+
   llenarDetalleEficiencia(documentos: Documento[]) {
     this.reportesDetalleEficiencia = {};
     let documentosAux: Documento[] = [];
@@ -167,6 +190,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       dataField: dataField,
       unitInterval: 1,
       axisSize: 'auto',
+      flip: false,
       tickMarks: {
         visible: false,
         interval: 1,
@@ -183,8 +207,9 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
   getValueAxis(title: string) {
     return {
       title: { text: title },
+      flip: true,
       tickMarks: { color: '#BCBCBC' },
-      labels: { horizontalAlignment: 'left' },
+      labels: { visible: true },
       minValue: 0,
       unitInterval: 1
     }

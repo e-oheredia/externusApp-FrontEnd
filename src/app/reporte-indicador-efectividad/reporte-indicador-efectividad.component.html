@@ -40,7 +40,7 @@
     </div>
   </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="documentos.length > 0; else mensaje">
   <div class="col">
     <div class="card mb-4">
       <div class="card-header">
@@ -68,7 +68,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.porcentaje}} %</td>
+                  <td scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.porcentaje}}%</td>
                 </tr>
               </tbody>
             </table>
@@ -107,3 +107,12 @@
     </div>
   </div>
 </div>
+<ng-template #mensaje>
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-info" role="alert">
+          No se encontraron documentos
+        </div>
+      </div>
+    </div>
+  </ng-template>
