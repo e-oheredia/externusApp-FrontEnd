@@ -114,8 +114,22 @@
 
 <!-- /*      PRACTICANDO CON REPORTES    */ -->
 
-<!-- LINE -->
+
+<!-- PIE -->
 <div class="row">
+
+
+  <div class="col">
+    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Mobile browsers share'" [description]="'(source: wikipedia.org)'"
+      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="sampleData"
+      [showBorderLine]="true" [seriesGroups]="seriesGroupsPie" [colorScheme]="'scheme09'">
+    </jqxChart>
+  </div>
+
+
+
+  <!-- LINE -->
+
   <div class="col">
     <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
       [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
@@ -123,14 +137,6 @@
     </jqxChart>
   </div>
 
-  <!-- PIE -->
-  <div class="col">
-    <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
-      [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
-      [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroupsPie" [colorScheme]="'scheme02'"
-      [legendLayout]="legendLayout">
-    </jqxChart>
-  </div>
 
   <!-- COLUMN -->
   <div class="col">

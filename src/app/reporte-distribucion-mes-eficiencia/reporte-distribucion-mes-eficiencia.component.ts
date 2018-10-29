@@ -96,7 +96,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       }
     )
   }
-
+///////////////////////////////////////////////////////////////////////////////////////////
   llenarEficienciaPorPlazoDistribucion(documentos: Documento[]) {
     this.reportesEficienciaPorPlazoDistribucion = {};
     this.proveedores.forEach(
@@ -122,7 +122,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       }
     )
   }
-
+///////////////////////////////////////////////////////////////////////////////////////////
   llenarDetalleEficiencia(documentos: Documento[]) {
     this.reportesDetalleEficiencia = {};
     let documentosAux: Documento[] = [];

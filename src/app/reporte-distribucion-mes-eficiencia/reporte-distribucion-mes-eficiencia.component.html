@@ -70,12 +70,15 @@
         <div class="row">
           <div class="col-12" *ngFor="let proveedor of proveedores">
             <h4>{{proveedor.nombre}}</h4>
-            <jqxChart #myChart [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true"
-              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]"
-              [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
-                    dentroPlazo: 'Dentro del Plazo'}, 
-                    {fueraPlazo: 'Fuera del Plazo'}
-                  ])" [colorScheme]="'scheme04'">
+            <jqxChart #myChart [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" 
+            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" 
+            [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]" [xAxis]="getAxis('plazoDistribucion')" 
+            [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+            [
+                        {dentroPlazo: 'Dentro del Plazo'}, 
+                        {fueraPlazo: 'Fuera del Plazo'}
+            ]
+            )" [colorScheme]="'scheme04'">
             </jqxChart>
           </div>
         </div>
