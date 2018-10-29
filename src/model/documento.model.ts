@@ -20,6 +20,7 @@ export class Documento {
     public seguimientosDocumento: SeguimientoDocumento[] = [];    
     public envio: Envio;
     public checked: boolean;   
+    public recepcionado: boolean;
     public documentosGuia: DocumentoGuia[] = [];  
 
 }
