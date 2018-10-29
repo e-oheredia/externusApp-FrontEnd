@@ -85,27 +85,11 @@
           </div>
         </div>
       </div>
-<<<<<<< HEAD
       <div class="card mb-4">
         <div class="card-header">
           <div class="titulo">
             <h4>Eficiencia - Por Plazo de Distribución - Por Courier</h4>
-=======
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12" *ngFor="let proveedor of proveedores">
-            <h4>{{proveedor.nombre}}</h4>
-            <jqxChart #myChart [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" 
-            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" 
-            [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]" [xAxis]="getAxis('plazoDistribucion')" 
-            [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
-            [
-                        {dentroPlazo: 'Dentro del Plazo'}, 
-                        {fueraPlazo: 'Fuera del Plazo'}
-            ]
-            )" [colorScheme]="'scheme04'">
-            </jqxChart>
->>>>>>> 275b0e2b246017be214764bfb55025fef7e689fe
+
           </div>
         </div>
         <div class="card-body">
