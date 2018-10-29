@@ -12,7 +12,6 @@
       <div class="card-header">
         <h4>Datos de Consulta</h4>
       </div>
-
       <div class="card-body">
         <form [formGroup]="busquedaForm" (ngSubmit)="MostrarReportes(busquedaForm.get('fechaIni').value, busquedaForm.get('fechaFin').value)">
           <div class="form-row">

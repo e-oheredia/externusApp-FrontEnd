@@ -14,6 +14,8 @@ import { RecepcionarDocumentosComponent } from './recepcionar-documentos/recepci
 import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.component';
 import { ReporteMensualVolumenComponent } from './reporte-mensual-volumen/reporte-mensual-volumen.component';
 import { ReporteMensualCargosComponent } from './reporte-mensual-cargos/reporte-mensual-cargos.component';
+import { ReporteIndicadorEfectividadComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
+
 
 
 const appRoutes: Routes = [
@@ -80,6 +82,10 @@ const appRoutes: Routes = [
     {
         path: 'reportes-distribucion-mes-eficiencia',
         component: ReporteDistribucionMesEficienciaComponent
+    },
+    {
+        path: 'reportes-indicador-efectividad',
+        component: ReporteIndicadorEfectividadComponent
     }
 ]
 
