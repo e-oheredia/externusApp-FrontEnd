@@ -8,6 +8,8 @@ import { Proveedor } from 'src/model/proveedor.model';
 import { ProveedorService } from '../shared/proveedor.service';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { Documento } from 'src/model/documento.model';
+import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
+import { PlazoDistribucionService } from '../shared/plazodistribucion.service';
 
 @Component({
     selector: 'app-reporte-mensual-volumen',
@@ -22,31 +24,19 @@ export class ReporteMensualVolumenComponent implements OnInit {
         public documentoService: DocumentoService,
         public notifier: NotifierService,
         public utilsService: UtilsService,
-        public proveedorService: ProveedorService
+        public proveedorService: ProveedorService,
+        private plazoDistribucionService: PlazoDistribucionService
     ) { }
 
-
+    plazos: PlazoDistribucion[];
     proveedores: Proveedor[];
-    documentos = [];
+    documentos: Documento[] = [];
+    reportesEficienciaPorPlazoDistribucion: any = {};
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
     dataSource: any[];
     dataSource2: any[];
     dataSource3: any[];
-
-    sampleData: any[] = [
-        { Day: 'Monday', Keith: 30, Erica: 15, George: 25 },
-        { Day: 'Tuesday', Keith: 25, Erica: 25, George: 30 },
-        { Day: 'Wednesday', Keith: 30, Erica: 20, George: 25 },
-        { Day: 'Thursday', Keith: 35, Erica: 25, George: 45 },
-        { Day: 'Friday', Keith: 20, Erica: 20, George: 25 },
-        { Day: 'Saturday', Keith: 30, Erica: 20, George: 30 },
-        { Day: 'Sunday', Keith: 60, Erica: 45, George: 90 }
-    ];
-
-    sedeData = [{
-        sede: "La Molina", cantidad: 1
-    }]
 
 
     ngOnInit() {
@@ -62,9 +52,14 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 this.proveedores = proveedores;
             }
         )
+
+        this.plazos = this.plazoDistribucionService.getPlazosDistribucion();
+        this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
+            plazos => {
+                this.plazos = plazos;
+            }
+        )
     }
-
-
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
@@ -74,6 +69,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
                     this.documentos = documentos;
                     this.llenarDataSource(documentos);
+                    this.llenarDatasource2(documentos);
+
 
                 },
                 error => {
@@ -87,13 +84,16 @@ export class ReporteMensualVolumenComponent implements OnInit {
         else {
             this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
         }
+
+        // console.log(this.proveedores);
+        // this.porcentajeAsignado(this.proveedores);
+        
     }
 
 
     llenarDataSource(documentos: Documento[]) {
         this.dataSource = [];
         this.dataSource2 = [];
-        this.dataSource3 = [];
 
         this.proveedores.forEach(
             proveedor => {
@@ -105,27 +105,48 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 reporteProveedor.cantidad = documentos.filter(
                     documento =>
                         documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
-
                 this.dataSource.push(reporteProveedor);
             }
         )
 
-                let reporteSede = {
-                    sede: 'La Molina',
-                    cantidad: 0
-                };
-                reporteSede.cantidad = documentos.length;
-                this.dataSource2.push(reporteSede);
+        let reporteSede = {
+            sede: 'La Molina',
+            cantidad: 0
+        };
+        reporteSede.cantidad = documentos.length;
+        this.dataSource2.push(reporteSede);
+    }
 
-        // this.proveedores.forEach(
-        //     proveedor => {
-        //         let reporteServicio = {
-        //             proveedor: '',
-        //             cantidad
-        //         }
-        //     }
-        // )    
-            
+
+    llenarDatasource2(documentos: Documento[]) {
+        this.reportesEficienciaPorPlazoDistribucion = {};
+        this.proveedores.forEach(
+            proveedor => {
+                let graficoPorProveedor: any[] = [];
+                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(
+                    plazoDistribucion => {
+                        let graficoPorProveedorObjeto = {
+                            plazo: plazoDistribucion.nombre,
+                            cantidad: documentos.filter(documento =>
+                                documento.documentosGuia[0].guia.proveedor.id===proveedor.id &&
+                                documento.envio.plazoDistribucion.id === plazoDistribucion.id).length
+                        }
+                        graficoPorProveedor.push(graficoPorProveedorObjeto);
+                    });
+                this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = graficoPorProveedor;
+            }
+        )
+
+    }
+
+
+    porcentajeAsignado(proveedor) {
+        var porcentaje = 100;
+        var total = this.documentos.length;
+        var courierDoc = this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
+        var numero = (courierDoc * porcentaje) / total
+        var final = numero.toFixed(1);
+        return final +'%';
     }
 
 
@@ -162,9 +183,9 @@ export class ReporteMensualVolumenComponent implements OnInit {
                             dataField: 'cantidad',
                             displayText: 'proveedor',
                             labelRadius: 170,
-                            initialAngle: 15,
+                            initialAngle: 90,
                             radius: 145,
-                            centerOffset: 0,
+                            centerOffset: 2,
                             formatFunction: (value: any) => {
                                 if (isNaN(value))
                                     return value;
@@ -213,142 +234,68 @@ export class ReporteMensualVolumenComponent implements OnInit {
     paddingS: any = { left: 20, top: 5, right: 20, bottom: 5 };
     titlePaddingS: any = { left: 90, top: 0, right: 0, bottom: 10 };
 
-    xAxisServicio: any = {
-        dataField: 'Estado',
-        unitInterval: 1,
-        tickMarks: {
-            visible: true,
-            interval: 1,
-            color: '#CACACA'
-        },
-        gridLines: {
-            visible: true, //mostrar linea vertical 
-            interval: 1, //cada "N" espacios
-            color: '#BCBCBC'
+    getAxis(dataField: string) {
+        return {
+
+            dataField: dataField,
+            unitInterval: 1,
+            axisSize: 'auto',
+            tickMarks: {
+                visible: true,
+                interval: 1,
+                color: '#CACACA'
+            },
+            gridLines: {
+                visible: true, //mostrar linea vertical 
+                interval: 1, //cada "N" espacios
+                color: '#BCBCBC'
+            }
         }
-    };
+    }
 
-    valueAxisServicio: any = {
-        visible: true,
-        title: { text: 'Cantidad por Estado' },
-        tickMarks: { color: '#BCBCBC' }
-    };
+    getValueAxis(title: string) {
+        return {
+            visible: true,
+            title: { text: title },
+            tickMarks: { color: '#BCBCBC' },
+            labels: { horizontalAlignment: 'left' },
+            minValue: 0,
+            unitInterval: 1
+        }
+    }
 
-    seriesGroupsSer: any =
-        [
-            {
-                type: 'line',
-                valueAxis:
-                {
-                    visible: true,
-                    unitInterval: 2,
-                    title: { text: 'Cantidad de Documentos' },
-                    minValue: 0
-                },
-                series: [
-                    {
-                        dataField: 'cantidad',
-                        displayText: 'Línea de comparación'
+    getSeriesGroups(type: string, datas: any[], orientation = 'vertical') {
+        let series: any[] = [];
+        datas.forEach(data => {
+            let keys: string[] = Object.keys(data);
+            if (keys.length == 1) {
+                series.push({
+                    dataField: keys[0],
+                    displayText: data[keys[0]]
+                })
+            } else {
+                series.push({
+                    dataField: keys[0],
+                    displayText: data[keys[0]],
+                    colorFunction: (value, itemIndex) => {
+                        if (data['indiceReporte'] < itemIndex) {
+                            return '#fff655';
+                        }
+                        return '#55CC55';
                     }
-                ]
+                })
+            }
+        });
+
+
+        return [
+            {
+                type: type,
+                orientation: orientation,
+                series: series
             }
         ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        xAxis: any =
-        {
-            dataField: 'Day',
-            type: 'basic'
-        };
-        seriesGroups: any[] =
-        [
-            {
-                type: 'column',
-                valueAxis:
-                {
-                    minValue: 0,
-                    maxValue: 100,
-                    unitInterval: 10,
-                    title: { text: 'Time in minutes' }
-                },
-                series: [
-                    { dataField: 'Keith', displayText: 'Keith' },
-                    { dataField: 'Erica', displayText: 'Erica' },
-                    { dataField: 'George', displayText: 'George' }
-                ]
-            }
-        ];
-        chartEvent(event: any): any {
-            let eventData;
-            if (event) {
-                if (event.args) {
-                    if (event.type == 'toggle') {
-                        eventData = '<div><b>Last Event: </b>' + event.type + '<b>, Serie DataField: </b>' + event.args.serie.dataField + '<b>, visible: </b>' + event.args.state + '</div>';
-                        return;
-                    }
-                    eventData = '<div><b>Last Event: </b>' + event.type + '<b>, Serie DataField: </b>' + event.args.serie.dataField + '<b>, Value: </b>' + event.args.elementValue + '</div>';
-                } else {
-                    eventData = '<div><b>Last Event: </b>' + event.type + '';
-                }
-                this.eventText.nativeElement.innerHTML = eventData;
-            }
-        }
-
-
-
+    }
 
 
 

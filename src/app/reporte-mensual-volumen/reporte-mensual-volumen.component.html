@@ -57,28 +57,25 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col">
+          <div class="col-12">
             <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT SAC'" [description]="'Gráfico Maldito'"
               [showLegend]="true" [enableAnimations]="true" [padding]="paddingC" [titlePadding]="titlePaddingC"
               [source]="dataSource" [showBorderLine]="true" [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme09'">
             </jqxChart>
           </div>
-          <div class="col">
-
-            <table class="table">
+          <div class="col-1 center-block">
+            <table class="table table-bordered">
               <thead>
-                <tr *ngFor="let proveedor of proveedores">
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                </tr>
+                <th *ngFor="let proveedor of proveedores">
+                  <tr scope="col">{{proveedor.nombre}}</tr>
+                </th>
               </thead>
               <tbody>
-                <tr *ngFor="let documento of documentos">
-                  <td></td>
-                </tr>
+                <td *ngFor="let proveedor of proveedores">
+                  <tr scope="col">{{porcentajeAsignado(proveedor)}}</tr>
+                </td>
               </tbody>
             </table>
-
           </div>
         </div>
       </div>
@@ -110,11 +107,17 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col">
+          <div class="col-12" *ngFor="let proveedor of proveedores">
+            <h4>{{proveedor.nombre}}</h4>
             <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
               [showLegend]="true" [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS"
-              [source]="dataSource" [xAxis]="xAxisServicio" [valueAxis]="valueAxisServicio" [seriesGroups]="seriesGroupsSer"
-              [colorScheme]="'scheme06'">
+              [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]" 
+              [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados')" 
+              [seriesGroups]="getSeriesGroups('stackedcolumn', 
+              [
+                          {cantidad: 'Cantidad'}
+              ]
+              )" [colorScheme]="'scheme06'">
             </jqxChart>
           </div>
         </div>

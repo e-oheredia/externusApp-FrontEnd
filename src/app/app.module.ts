@@ -18,6 +18,8 @@ import { RecepcionarDocumentosModule } from './recepcionar-documentos/recepciona
 import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
 import { ReporteMensualVolumenModule } from './reporte-mensual-volumen/reporte-mensual-volumen.module';
 import { ReporteMensualCargosModule } from './reporte-mensual-cargos/reporte-mensual-cargos.module';
+import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.module';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { ReporteMensualCargosModule } from './reporte-mensual-cargos/reporte-men
     RecepcionarDocumentosModule, 
     ConsultarDocumentosUtdBcpModule,
     ReporteMensualVolumenModule,
-    ReporteMensualCargosModule
+    ReporteMensualCargosModule,
+    ReporteDistribucionMesEficienciaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

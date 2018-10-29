@@ -32,57 +32,188 @@ export class ReporteMensualCargosComponent implements OnInit {
   }
 
 
-  listarDocumentos(fechaIni: Date, fechaFin: Date) {
-
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
-
-
-      this.documentosSubscription = this.documentoService.listarDocumentosUsuarioBCP(fechaIni, fechaFin).subscribe(
-        documentos => {
-          this.documentos = documentos;
-          this.llenarDataSource();
-        },
-        error => {
-          if (error.status === 400) {
-            this.documentos = [];
-            this.notifier.notify('error', 'RANGO DE FECHA NO VALIDA');
-          }
-        }
-      );
-    }
-    else {
-      this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
-    }
-  }
-
-
-  ngOnDestroy() {
-    this.documentosSubscription.unsubscribe();
-  }
 
 
 
-  dataSource = [];
 
-  llenarDataSource() {
-      this.dataSource = [];
 
-      let documentoCreado = {
-          Estado: "Creado",
-          cantidad: this.documentos.filter(
-              documento => this.documentoService.getUltimoEstado(documento).id === 1).length
-      }
 
-      let documentoCustodiado = {
-          Estado: "Custodiado",
-          cantidad: this.documentos.filter(
-              documento => this.documentoService.getUltimoEstado(documento).id === 2).length
-      }
 
-      this.dataSource.push(documentoCreado);
-      this.dataSource.push(documentoCustodiado);
-      console.log(this.dataSource);
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // listarDocumentos(fechaIni: Date, fechaFin: Date) {
+
+  //   if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
+
+
+  //     this.documentosSubscription = this.documentoService.listarDocumentosUsuarioBCP(fechaIni, fechaFin).subscribe(
+  //       documentos => {
+  //         this.documentos = documentos;
+  //         this.llenarDataSource();
+  //       },
+  //       error => {
+  //         if (error.status === 400) {
+  //           this.documentos = [];
+  //           this.notifier.notify('error', 'RANGO DE FECHA NO VALIDA');
+  //         }
+  //       }
+  //     );
+  //   }
+  //   else {
+  //     this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
+  //   }
+  // }
+
+
+  // ngOnDestroy() {
+  //   this.documentosSubscription.unsubscribe();
+  // }
+
+
+
+  // dataSource = [];
+
+  // llenarDataSource() {
+  //     this.dataSource = [];
+
+  //     let documentoCreado = {
+  //         Estado: "Creado",
+  //         cantidad: this.documentos.filter(
+  //             documento => this.documentoService.getUltimoEstado(documento).id === 1).length
+  //     }
+
+  //     let documentoCustodiado = {
+  //         Estado: "Custodiado",
+  //         cantidad: this.documentos.filter(
+  //             documento => this.documentoService.getUltimoEstado(documento).id === 2).length
+  //     }
+
+  //     this.dataSource.push(documentoCreado);
+  //     this.dataSource.push(documentoCustodiado);
+  //     console.log(this.dataSource);
+  // }
 
 
 
