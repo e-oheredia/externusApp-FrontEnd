@@ -167,7 +167,7 @@ export class ReporteEficaciaComponent implements OnInit{
                     axisSize: 'auto',
                     minValue: 0,
                     maxValue:'auto',
-                    tickMarksColor: '#777777'
+                    tickMarksColor: '#134f8e'
                 },
                 series:
                     [

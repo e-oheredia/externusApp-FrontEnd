@@ -16,8 +16,18 @@ import { ConsultarDocumentosUBCPModule } from './consultar-documentos-u-bcp/cons
 import { RecepcionarCargosModule } from './recepcionar-cargos/recepcionar-cargos.module';
 import { RecepcionarDocumentosModule } from './recepcionar-documentos/recepcionar-documentos.module';
 import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
-import { ReporteMensualVolumenModule } from './reporte-mensual-volumen/reporte-mensual.module';
+
 import { ReporteEficaciaModule } from './reporte-eficacia/reporte-eficacia.module';
+
+
+import { ReporteDevolucionCargoModule } from './reporte-devolucion-cargo/reporte-devolucion-cargo.module';
+import { ReporteIndicadorVolumenModule } from './reporte-indicador-volumen/reporte-indicador-volumen.module';
+
+import { ReporteMensualVolumenModule } from './reporte-mensual-volumen/reporte-mensual-volumen.module';
+import { ReporteMensualCargosModule } from './reporte-mensual-cargos/reporte-mensual-cargos.module';
+import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.module';
+import { ReporteIndicadorEfectividadModule } from './reporte-indicador-efectividad/reporte-indicador-efectividad.module';
+
 
 
 @NgModule({
@@ -40,8 +50,16 @@ import { ReporteEficaciaModule } from './reporte-eficacia/reporte-eficacia.modul
     RecepcionarCargosModule,
     RecepcionarDocumentosModule, 
     ConsultarDocumentosUtdBcpModule,
+
+    ReporteEficaciaModule,
+
+    ReporteDevolucionCargoModule,
+    ReporteIndicadorVolumenModule,
     ReporteMensualVolumenModule,
-    ReporteEficaciaModule
+    ReporteMensualCargosModule,
+    ReporteDistribucionMesEficienciaModule,
+    ReporteIndicadorEfectividadModule
+
 
   ],
   providers: [],
