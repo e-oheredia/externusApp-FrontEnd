@@ -1,3 +1,4 @@
+import { CargoPdfService } from './../shared/cargo-pdf.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { EstadoDocumentoService } from './../shared/estadodocumento.service';
 import { AreaService } from './../shared/area.service';
@@ -84,7 +85,8 @@ import { TreeViewComponent } from './header/tree-view/tree-view.component';
     WriteExcelService, 
     AreaService, 
     EstadoDocumentoService, 
-    MenuService
+    MenuService, 
+    CargoPdfService
   ], 
   entryComponents: [ 
     ConfirmModalComponent

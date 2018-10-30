@@ -6,5 +6,5 @@ export class EnvioMasivo extends Envio {
         super();
     }
 
-    public masivoAutogenerado: String;
+    public masivoAutogenerado: string;
 }
