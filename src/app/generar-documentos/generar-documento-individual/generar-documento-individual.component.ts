@@ -1,3 +1,4 @@
+import { CargoPdfService } from './../../shared/cargo-pdf.service';
 import { AppSettings } from '../../shared/app.settings';
 import { EnvioService } from '../../shared/envio.service';
 import { Envio } from '../../../model/envio.model';
@@ -25,6 +26,7 @@ import { DocumentoService } from '../../shared/documento.service';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from '../../shared/utils.service';
 import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
+import * as jsPDF from "jspdf";
 
 @Component({
   selector: 'app-generar-documento-individual',
@@ -41,10 +43,11 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     private provinciaService: ProvinciaService,
     private distritoService: DistritoService,
     private tipoDocumentoService: TipoDocumentoService,
-    private buzonService: BuzonService, 
-    private envioService: EnvioService, 
-    private notifier: NotifierService, 
-    private utilsService: UtilsService
+    private buzonService: BuzonService,
+    private envioService: EnvioService,
+    private notifier: NotifierService,
+    private utilsService: UtilsService, 
+    private cargoPdfService: CargoPdfService
   ) { }
 
   documentoForm: FormGroup;
@@ -53,7 +56,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   autorizationFile: File;
   buzon: Buzon;
   rutaManual: string = AppSettings.MANUAL_REGISTRO;
-  departamento= {};
+  departamento = {};
   provincia = {};
 
 
@@ -64,7 +67,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   provincias: Provincia[];
   distritos: Distrito[];
   tiposDocumento: TipoDocumento[];
-  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0,""), 0);
+  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), 0);
 
   provinciasSubscription: Subscription;
   distritosSubscription: Subscription;
@@ -75,6 +78,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   departamentosSubscription: Subscription;
   plazoDistribucionPermitidoSubscription: Subscription;
   buzonSubscription: Subscription;
+  autogeneradoCreado: string = '';
 
   ngOnInit() {
     this.cargarDatosVista();
@@ -110,7 +114,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       tiposDocumento => {
         this.tiposDocumento = tiposDocumento;
       }
-    )    
+    )
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;
@@ -137,7 +141,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       }
     )
     this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(
-      buzon =>{
+      buzon => {
         this.buzon = buzon;
       }
     )
@@ -177,22 +181,35 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.envio.tipoDocumento = this.documentoForm.get("tipoDocumento").value;
     this.envio.tipoSeguridad = this.documentoForm.get("tipoSeguridad").value;
     this.envio.tipoServicio = this.documentoForm.get("tipoServicio").value;
-    this.envio.addDocumento(this.documento);   
-     
+    this.envio.addDocumento(this.documento);
+
     this.envioService.registrarEnvio(this.envio, this.autorizationFile).subscribe(
       envio => {
 
         this.notifier.notify('success', 'Se ha registrado el envío con autogenerado ' + envio.documentos[0].documentoAutogenerado);
+        this.autogeneradoCreado = envio.documentos[0].documentoAutogenerado;
         this.departamento = {};
         this.provincia = {};
         this.documentoForm.reset();
+        envio.documentos[0].distrito = this.documento.distrito;
+        
+        setTimeout(() =>{
+          this.cargoPdfService.generarPdfIndividual(envio, document.getElementById("codebar").children[0].children[0]);
+        }, 200);
+
+        
+
         this.envio = new Envio();
+        
+
       },
       error => {
         console.log(error);
       }
     );
   }
+
+
 
   onChangeFile(file: File) {
     if (file == undefined || file == null) {
@@ -228,15 +245,15 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   requiredIfNoAutorizado(control: FormControl): { [key: string]: boolean } | null {
 
     if (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm) || this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.get("plazoDistribucion")) || this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.get("plazoDistribucion").value)) {
-      return {'requiredIfNoAutorizado': true}
+      return { 'requiredIfNoAutorizado': true }
     }
 
-    if (this.documentoForm.get("plazoDistribucion").value.id > this.plazoDistribucionPermitido.id 
-    && (this.documentoForm.get("autorizacion") === null || this.documentoForm.get("autorizacion").value === "" || this.documentoForm.get("autorizacion").value === null)) {
-      return {'requiredIfNoAutorizado': true}
+    if (this.documentoForm.get("plazoDistribucion").value.id > this.plazoDistribucionPermitido.id
+      && (this.documentoForm.get("autorizacion") === null || this.documentoForm.get("autorizacion").value === "" || this.documentoForm.get("autorizacion").value === null)) {
+      return { 'requiredIfNoAutorizado': true }
     }
     console.log(this.documentoForm.get("autorizacion"));
-    return null;   
+    return null;
 
   }
 

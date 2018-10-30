@@ -45,4 +45,10 @@ export class UtilsService {
         return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
     }
 
+    public svgToBase64(element: Element) {
+        var s = new XMLSerializer().serializeToString(element);
+        var encodedData = window.btoa(s);   
+        return 'data:image/svg+xml;base64,' + encodedData;
+    }
+
 }
