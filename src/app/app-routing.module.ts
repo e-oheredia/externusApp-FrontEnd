@@ -12,6 +12,7 @@ import { RecepcionarCargosComponent } from './recepcionar-cargos/recepcionar-car
 import { RecepcionarDocumentosComponent } from './recepcionar-documentos/recepcionar-documentos.component';
 import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.component';
 import { ReporteMensualVolumenComponent } from './reporte-mensual-volumen/reporte-mensual-volumen.component';
+import {  ReporteEficaciaComponent } from './reporte-eficacia/reporte-eficacia.component';
 
 
 const appRoutes: Routes = [
@@ -70,7 +71,12 @@ const appRoutes: Routes = [
     {
         path: 'reportes-volumen',
         component: ReporteMensualVolumenComponent
+    },
+    {
+        path: 'reportes-eficacia',
+        component: ReporteEficaciaComponent
     }
+
 ]
 
 @NgModule({

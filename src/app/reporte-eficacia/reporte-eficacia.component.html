@@ -1,0 +1,99 @@
+<div class="row">
+    <div class="col-10">
+      <div class="pb-2 mt-4 mb-2">
+        <h1>Reporte de Eficacia</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+
+    <div class="col">
+        <div class="card mb-5">
+    
+          <div class="card-header">
+            <h4>Datos de Consulta</h4>
+          </div>
+    
+          <div class="card-body">
+            <form [formGroup]="documentoForm" (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+    
+              <div class="form-row">
+    
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="fechaIni">Fecha Inicial</label>
+                    <input class="form-control" type="date" formControlName="fechaIni">
+                  </div>
+                </div>
+    
+                <div class="col-4">
+                  <div class="form-group">
+                    <label for="fechaFin">Fecha Final</label>
+                    <input class="form-control" type="date" formControlName="fechaFin">
+                  </div>
+                </div>
+    
+                <div class="col-4 mt-4">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary form-control mt-2">
+                      CONSULTAR
+                    </button>
+                  </div>
+                </div>
+    
+              </div>
+    
+            </form>
+          </div>
+    
+        </div>
+
+        <div >
+
+        <div class="card mb-4">
+            <div class="card-header">
+              <div class="titulo">
+                <h4>Reporte de Eficacia</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+                  <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
+                    [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+                    [xAxis]="xAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme01'">
+                  </jqxChart>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="card-body" >
+        <div class="row">
+          <div class="col">
+            <table  class="table" align=center>
+              <thead>
+             <tr>
+               <th width=40%>ESTADO</th>
+               <th  scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
+              </tr>
+             </thead>
+            <tbody>
+              <tr scope="col" *ngFor="let estado of estadoDoc">
+                <td> {{estado.nombre}} </td>
+                  <td scope="col" *ngFor="let proveedor of proveedores">
+                      {{llenarTabla(proveedor,estado)}}</td>
+              </tr>
+            </tbody>
+          </table>
+         </div>
+       </div>
+      </div>
+
+    </div>
+
+    </div>
+
+  </div>
+
+  
