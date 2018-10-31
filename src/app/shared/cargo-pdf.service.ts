@@ -15,11 +15,10 @@ export class CargoPdfService {
 
     }
 
-    doc = new jsPDF("p", "mm", "a4");
+    doc = new jsPDF();
     PAGE_WIDTH = this.doc.internal.pageSize.getWidth();
     PAGE_HEIGHT = this.doc.internal.pageSize.getHeight();
     CODIGO_BARRAS_WIDTH = 150
-    ESCALA_IMAGEN = 1.24
 
 
     generarPdfIndividual(envio: Envio, codigoBarrasSvg: any) {
@@ -49,7 +48,7 @@ export class CargoPdfService {
             this.escribirInformacionPdf(this.doc, info, 160);
 
             this.doc.save(envio.documentos[0].documentoAutogenerado + '.pdf');  
-            this.doc = new jsPDF("p", "mm", "a4");      
+            this.doc = new jsPDF();      
             canvas = null;
         }
         image.src = codigoBarrasBase64;
@@ -80,7 +79,7 @@ export class CargoPdfService {
             this.escribirInformacionPdf(this.doc, info, 160);
 
             this.doc.save(envio.masivoAutogenerado + '.pdf');  
-            this.doc = new jsPDF("p", "mm", "a4");      
+            this.doc = new jsPDF();      
             canvas = null;
         }
         image.src = codigoBarrasBase64;
@@ -102,6 +101,84 @@ export class CargoPdfService {
             salto = 10;
         });
     }
+
+    generarPDFsEtiqueta(codigosBarra: any[]) {
+        this.generarPDFsEtiquetaConjsPDF(this.doc, codigosBarra);
+    }
+
+    generarPDFsCargo(codigosBarra: any[], documentosACustodiar: any[]) {
+        this.generarPDFsCargoConjsPDF(this.doc, codigosBarra, documentosACustodiar);
+    }
+
+    generarPDFsEtiquetaConjsPDF(doc, codigosBarra: any[]) {
+        let codigoBarra = codigosBarra.pop();
+        let codigoBarrasBase64 = this.utilsService.svgToBase64(codigoBarra);
+        var svgSize = codigoBarra.viewBox.baseVal;
+        var image = new Image();
+        image.onload = () => {
+            var canvas = document.createElement('canvas');
+            canvas.width = svgSize.width;
+            canvas.height = svgSize.height;
+            var context = canvas.getContext('2d');            
+            context.drawImage(image, 0, 0);
+            var imgData = canvas.toDataURL('image/png');
+            doc.addImage(imgData, 'PNG', 2, -43, 59,  59 * image.height / image.width, undefined, undefined, - 90);
+            canvas = null;
+            if (codigosBarra.length > 0) {
+                doc.addPage();   
+                this.generarPDFsEtiquetaConjsPDF(doc, codigosBarra);
+            }else{
+                doc.save('CUSTODIA-ETIQUETA.PDF')
+                doc = new jsPDF();
+            }
+            
+        }
+        image.src = codigoBarrasBase64;        
+    }
+
+    generarPDFsCargoConjsPDF(doc, codigosBarra, documentosACustodiar) {
+
+        let codigoBarra = codigosBarra.pop();
+        let documentoACustodiar = documentosACustodiar.pop();
+        let codigoBarrasBase64 = this.utilsService.svgToBase64(codigoBarra);
+        var svgSize = codigoBarra.viewBox.baseVal;
+        var image = new Image();
+        image.onload = () => {            
+            var canvas = document.createElement('canvas');
+            canvas.width = svgSize.width;
+            canvas.height = svgSize.height;
+            var context = canvas.getContext('2d');            
+            context.drawImage(image, 0, 0);
+            this.doc.setFontSize(25);
+            var imgData = canvas.toDataURL('image/png');
+            this.doc.text(40, 20, 'EXTERNUS - ENVÍO MASIVO');
+            this.doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
+            this.doc.setFontSize(12);
+            let info = {
+                'DE:': documentoACustodiar.envioInfo.buzon.nombre,
+                'SEDE ORIGEN: ': 'LA MOLINA',
+                'PARA:': documentoACustodiar.envioInfo.documentos[0].razonSocialDestino + ' - ' +  documentoACustodiar.envioInfo.documentos[0].contactoDestino, 
+                'DIRECCION:': documentoACustodiar.envioInfo.documentos[0].direccion + ', ' +  documentoACustodiar.envioInfo.documentos[0].distrito.nombre + ', ' +  documentoACustodiar.envioInfo.documentos[0].distrito.provincia.nombre + ', ' + documentoACustodiar.envioInfo.documentos[0].distrito.provincia.departamento.nombre, 
+                'PLAZO DISTRIBUCIÓN:': documentoACustodiar.envioInfo.plazoDistribucion.nombre, 
+                'TIPO DE SEGURIDAD:': documentoACustodiar.envioInfo.tipoSeguridad.nombre, 
+                'TIPO DE SERVICIO:': documentoACustodiar.envioInfo.tipoServicio.nombre
+            }
+            this.escribirInformacionPdf(this.doc, info, 160);            
+            canvas = null;
+            if (codigosBarra.length > 0) {
+                doc.addPage();   
+                this.generarPDFsCargoConjsPDF(doc, codigosBarra, documentosACustodiar);
+            }else{
+                doc.save('CUSTODIA-CARGO.PDF')
+                doc = new jsPDF();
+            }
+        }
+        image.src = codigoBarrasBase64;
+    }
+
+
+
+
 
 
 

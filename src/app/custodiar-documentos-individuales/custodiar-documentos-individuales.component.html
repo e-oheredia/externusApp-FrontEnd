@@ -13,9 +13,9 @@
           <input type="text" class="form-control" id="inlineFormInput" [ngModelOptions]="{standalone: true}" [(ngModel)]="documentoAutogenerado" (input) = "documentoAutogenerado = documentoAutogenerado.toUpperCase()" placeholder="Autogenerado">
         </div>
         <div class="col btn-group">
-          <button type="button" class="btn btn-primary" (click)="custodiar()">Custodiar</button>
-          <button type="button" class="btn btn-success" (click)="custodiar()">Custodiar con Cargo</button>
-          <button type="button" class="btn btn-warning" (click)="custodiar()">Custodiar con Etiqueta</button>
+          <button type="button" class="btn btn-primary" (click)="onCustodiar()">Custodiar</button>
+          <button type="button" class="btn btn-success" (click)="onCustodiarCargo()">Custodiar con Cargo</button>
+          <button type="button" class="btn btn-warning" (click)="onCustodiarEtiqueta()">Custodiar con Etiqueta</button>
         </div>
       </div>
     </form>
@@ -73,3 +73,6 @@
     </div>
   </div>
 </ng-template>
+<div class="row">
+  <ngx-barcode *ngFor="let envioCreado of enviosCreados" id="{{envioCreado.documentos[0].documentoAutogenerado}}" [bc-value]="envioCreado.documentos[0].documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
+</div>

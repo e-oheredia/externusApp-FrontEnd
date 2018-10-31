@@ -1,3 +1,4 @@
+import { CargoPdfService } from './../shared/cargo-pdf.service';
 import { NotifierService } from 'angular-notifier';
 import { Documento } from '../../model/documento.model';
 import { UtilsService } from '../shared/utils.service';
@@ -17,7 +18,8 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
     private envioService: EnvioService,
     public documentoService: DocumentoService,
     private utilsService: UtilsService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private cargoPdfService: CargoPdfService
   ) { }
 
   enviosCreados: Envio[] = [];
@@ -38,11 +40,11 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
       })
   }
 
-  seleccionar(documentoAutogenerado: string){
+  seleccionar(documentoAutogenerado: string) {
     let encuentra = false;
-    this.enviosCreados.forEach(      
+    this.enviosCreados.forEach(
       envioCreado => {
-        if (envioCreado.documentos[0].documentoAutogenerado === documentoAutogenerado ) {
+        if (envioCreado.documentos[0].documentoAutogenerado === documentoAutogenerado) {
           envioCreado.checked = true;
           encuentra = true;
           this.documentoAutogenerado = "";
@@ -51,21 +53,18 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
       }
     )
     if (!encuentra) {
-      this.notifier.notify('warning','No se encuentra el código');
+      this.notifier.notify('warning', 'No se encuentra el código');
     }
   }
-  
 
-  custodiar() {
-    let documentosACustodiar = [];
-    this.enviosCreados.forEach(envioCreado => {
-      if (!this.utilsService.isUndefinedOrNullOrEmpty(envioCreado.checked)
-        && envioCreado.checked === true) {
-        documentosACustodiar.push({
-          id: envioCreado.documentos[0].id
-        });
-      }
-    });
+  onCustodiar() {
+    this.custodiar();
+  }
+
+
+  custodiar(success: Function = null) {
+
+    let documentosACustodiar = this.getDocumentosACustodiar();
 
     if (documentosACustodiar.length === 0) {
       this.notifier.notify('warning', 'Seleccione los documentos que va a custodiar');
@@ -75,7 +74,10 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
     this.documentoService.custodiarDocumentos(documentosACustodiar).subscribe(
       respuesta => {
         this.notifier.notify('success', 'Se han custodiado correctamente los documentos seleccionados');
-        this.listarDocumentosIndividualesPorCustodiar();  
+        this.listarDocumentosIndividualesPorCustodiar();
+        if (success !== null) {
+          success(documentosACustodiar);
+        }
       },
       error => {
         console.log(error);
@@ -83,4 +85,41 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
 
   }
 
+
+  onCustodiarEtiqueta() {
+    this.custodiar(documentosACustodiar => {
+      let codigosBarra = this.getCodigoBarrasDocumentosACustodiar(documentosACustodiar);
+      this.cargoPdfService.generarPDFsEtiqueta(codigosBarra);
+    });
+  }
+
+  onCustodiarCargo() {
+    this.custodiar(documentosACustodiar => {
+      let codigosBarra = this.getCodigoBarrasDocumentosACustodiar(documentosACustodiar);
+      this.cargoPdfService.generarPDFsCargo(codigosBarra, documentosACustodiar);
+    });
+  }
+
+  getCodigoBarrasDocumentosACustodiar(documentosACustodiar) {
+    let codigos = [];
+    documentosACustodiar.forEach(documentoACustodiar => {
+      codigos.push(document.getElementById(documentoACustodiar.documentoAutogenerado).children[0].children[0]);
+    });
+    return codigos;
+  }
+
+  getDocumentosACustodiar() {
+    let documentosACustodiar = [];
+    this.enviosCreados.forEach(envioCreado => {
+      if (!this.utilsService.isUndefinedOrNullOrEmpty(envioCreado.checked)
+        && envioCreado.checked === true) {
+        documentosACustodiar.push({
+          id: envioCreado.documentos[0].id,
+          documentoAutogenerado: envioCreado.documentos[0].documentoAutogenerado,
+          envioInfo: envioCreado
+        });
+      }
+    });
+    return documentosACustodiar;
+  }
 }
