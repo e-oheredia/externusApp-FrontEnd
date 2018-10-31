@@ -1,4 +1,3 @@
-import { FormsModule } from '@angular/forms';
 import { SubirResultadosEnviosModule } from './subir-resultados-envios/subir-resultados-envios.module';
 import { ListarGuiasEnviadasModule } from './listar-guias-enviadas/listar-guias-enviadas.module';
 import { ListarDocumentosCustodiadosModule } from './listar-documentos-custodiados/listar-documentos-custodiados.module';
@@ -17,6 +16,9 @@ import { RecepcionarCargosModule } from './recepcionar-cargos/recepcionar-cargos
 import { RecepcionarDocumentosModule } from './recepcionar-documentos/recepcionar-documentos.module';
 import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
 
+import { ReporteEficaciaModule } from './reporte-eficacia/reporte-eficacia.module';
+
+
 import { ReporteDevolucionCargoModule } from './reporte-devolucion-cargo/reporte-devolucion-cargo.module';
 import { ReporteIndicadorVolumenModule } from './reporte-indicador-volumen/reporte-indicador-volumen.module';
 
@@ -25,6 +27,7 @@ import { ReporteMensualCargosModule } from './reporte-mensual-cargos/reporte-men
 import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.module';
 import { ReporteIndicadorEfectividadModule } from './reporte-indicador-efectividad/reporte-indicador-efectividad.module';
 import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.module';
+
 
 
 @NgModule({
@@ -47,6 +50,9 @@ import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia
     RecepcionarCargosModule,
     RecepcionarDocumentosModule, 
     ConsultarDocumentosUtdBcpModule,
+
+    ReporteEficaciaModule,
+
     ReporteDevolucionCargoModule,
     ReporteIndicadorVolumenModule,
     ReporteMensualVolumenModule,
@@ -54,6 +60,7 @@ import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia
     ReporteDistribucionMesEficienciaModule,
     ReporteIndicadorEfectividadModule,
     ReporteIndicadorEficienciaModule
+
 
   ],
   providers: [],

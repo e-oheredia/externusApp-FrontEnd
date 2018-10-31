@@ -170,8 +170,11 @@
             <div class="button-group col text-right">
               <button class="btn btn-outline-success" [disabled]="!documentoForm.valid">
                 Registrar
-              </button>
-            </div>
+              </button>              
+            </div>      
+          </div>
+          <div class="row" hidden>
+            <ngx-barcode id="codebar" [bc-value]="autogeneradoCreado" [bc-display-value]="true"></ngx-barcode>
           </div>
         </form>
       </div>

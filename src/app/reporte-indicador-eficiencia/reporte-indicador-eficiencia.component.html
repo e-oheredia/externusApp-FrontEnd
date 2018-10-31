@@ -105,14 +105,14 @@
           <div class="col">
 
             <table class="table table-bordered">
-              <thead> 
+              <thead>
                 <tr>
                   <th scope="col" colspan="2">Mes</th>
                   <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let _r of _registros" >
+                <tr *ngFor="let _r of _registros">
                   <td scope=col [attr.colspan]=_r[16] [attr.class]=_r[17]>{{ _r[0]}}</td>
                   <td scope=col *ngIf="_r[16]!==2" [attr.class]=_r[17]>{{ _r[15]}}</td>
                   <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[17]>{{_r[_mes.id] }}</td>
