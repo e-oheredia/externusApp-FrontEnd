@@ -1,3 +1,4 @@
+import { CargoPdfService } from './../../shared/cargo-pdf.service';
 import { AppSettings } from '../../shared/app.settings';
 import { EnvioMasivo } from '../../../model/enviomasivo.model';
 import { Documento } from '../../../model/documento.model';
@@ -37,7 +38,8 @@ export class GenerarMasivoComponent implements OnInit {
     private tipoServicioService: TipoServicioService, 
     private utilsService: UtilsService, 
     private envioMasivoService: EnvioMasivoService, 
-    private notifier: NotifierService    
+    private notifier: NotifierService, 
+    private cargoPdfService: CargoPdfService   
   ) { }
 
   rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;
@@ -92,6 +94,7 @@ export class GenerarMasivoComponent implements OnInit {
   tiposDocumentoSubscription: Subscription;
   plazoDistribucionPermitidoSubscription: Subscription;
   buzonSubscription: Subscription;
+  autogeneradoCreado: string;
 
   ngOnInit() {
     this.tableSettings.columns = this.columnsDocumentosCargados; 
@@ -213,8 +216,12 @@ export class GenerarMasivoComponent implements OnInit {
       envioMasivo => {        
         this.documentosCargados = [];
         this.dataDocumentosCargados = new LocalDataSource();
+        this.autogeneradoCreado = envioMasivo.masivoAutogenerado;
         this.masivoForm.reset();
         this.notifier.notify('success', 'Se ha registrado el Envío Masivo con Autogenerado: ' + envioMasivo.masivoAutogenerado);            
+        setTimeout(() =>{
+          this.cargoPdfService.generarPdfMasivo(envioMasivo, document.getElementById("codebarMasivo").children[0].children[0]);
+        }, 200);
       },
       error => {
         console.log(error);

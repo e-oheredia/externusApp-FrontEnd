@@ -1,3 +1,4 @@
+import { NgxBarcodeModule } from 'ngx-barcode';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -15,7 +16,8 @@ import { DatosBuzonComponent } from './datos-buzon/datos-buzon.component';
     GenerarDocumentosRoutingModule, 
     ReactiveFormsModule, 
     FormsModule, 
-    Ng2SmartTableModule
+    Ng2SmartTableModule,
+    NgxBarcodeModule
     
   ],
   declarations: [
