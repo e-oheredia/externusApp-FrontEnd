@@ -58,82 +58,85 @@
 
 
 
-<div class="card mb-4">
-  <div class="card-header">
-    <div class="titulo">
-      <h4>Estado de Devolución de Cargos</h4>
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col">
-
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">Courier / Estado de Cargo</th>
-              <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let _r of _registros">
-              <td scope=col>{{ _r[0]}}</td>
-              <td *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
-              <td scope=col>{{ _r[14]}}</td>
-            </tr>
-          </tbody>
-        </table>
-
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Estado de Devolución de Cargos</h4>
       </div>
-
-      
-
     </div>
-  </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Courier / Estado de Cargo</th>
+                <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let _r of _registros">
+                <td scope=col>{{ _r[0]}}</td>
+                <td *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
+                <td scope=col>{{ _r[14]}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
 
 
-</div>
-
-
-<div class="card mb-4">
-  <div class="card-header">
-    <div class="titulo">
-      <h4>Áreas con Cargos Pendientes</h4>
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col">
-
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">AREAS</th>
-              <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let _r of _registros2">
-              <td scope=col>{{ _r[0]}}</td>
-              <td *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
-              <td scope=col>{{ _r[14]}}</td>
-            </tr>
-          </tbody>
-        </table>
 
       </div>
     </div>
+
+
   </div>
 
-</div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Áreas con Cargos Pendientes</h4>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">AREAS</th>
+                <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let _r of _registros2">
+                <td scope=col>{{ _r[0]}}</td>
+                <td *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
+                <td scope=col>{{ _r[14]}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
 
 
 
 
 
 </div>
+
+
+
 <ng-template #mensaje>
   <div class="row">
     <div class="col">
@@ -143,4 +146,3 @@
     </div>
   </div>
 </ng-template>
-

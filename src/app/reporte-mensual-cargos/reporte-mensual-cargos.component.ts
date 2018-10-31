@@ -30,7 +30,7 @@ export class ReporteMensualCargosComponent implements OnInit {
 
   documentoForm: FormGroup;
   documentosSubscription: Subscription;
-  documentos: Documento[];
+  documentos: Documento[] = [];
   areas: Area[];
   proveedores: Proveedor[];
   areasSubscription: Subscription;
@@ -104,7 +104,7 @@ export class ReporteMensualCargosComponent implements OnInit {
 
       this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
         documentos => {
-
+          this.documentos=documentos;
           this.meses = [];
           this._registros = [];
           this._registros2 = [];
