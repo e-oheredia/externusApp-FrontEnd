@@ -22,6 +22,7 @@ export class CargoPdfService {
 
 
     generarPdfIndividual(envio: Envio, codigoBarrasSvg: any) {
+        let doc = new jsPDF();  
         let codigoBarrasBase64 = this.utilsService.svgToBase64(codigoBarrasSvg);
         var svgSize = codigoBarrasSvg.viewBox.baseVal;
         var image = new Image();
@@ -31,11 +32,11 @@ export class CargoPdfService {
             canvas.height = svgSize.height;
             var context = canvas.getContext('2d');            
             context.drawImage(image, 0, 0);
-            this.doc.setFontSize(25);
+            doc.setFontSize(25);
             var imgData = canvas.toDataURL('image/png');
-            this.doc.text(40, 20, 'EXTERNUS - ENVÍO INDIVIDUAL');
-            this.doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
-            this.doc.setFontSize(12);
+            doc.text(40, 20, 'EXTERNUS - ENVÍO INDIVIDUAL');
+            doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
+            doc.setFontSize(12);
             let info = {
                 'DE:': envio.buzon.nombre, 
                 'SEDE ORIGEN: ': 'LA MOLINA',
@@ -45,16 +46,16 @@ export class CargoPdfService {
                 'TIPO DE SEGURIDAD:': envio.tipoSeguridad.nombre, 
                 'TIPO DE SERVICIO:': envio.tipoServicio.nombre
             }
-            this.escribirInformacionPdf(this.doc, info, 160);
+            this.escribirInformacionPdf(doc, info, 160);
 
-            this.doc.save(envio.documentos[0].documentoAutogenerado + '.pdf');  
-            this.doc = new jsPDF();      
+            doc.save(envio.documentos[0].documentoAutogenerado + '.pdf');      
             canvas = null;
         }
         image.src = codigoBarrasBase64;
     }
 
     generarPdfMasivo(envio: EnvioMasivo, codigoBarrasSvg: any) {
+        let doc = new jsPDF(); 
         let codigoBarrasBase64 = this.utilsService.svgToBase64(codigoBarrasSvg);
         var svgSize = codigoBarrasSvg.viewBox.baseVal;
         var image = new Image();
@@ -64,11 +65,11 @@ export class CargoPdfService {
             canvas.height = svgSize.height;
             var context = canvas.getContext('2d');            
             context.drawImage(image, 0, 0);
-            this.doc.setFontSize(25);
+            doc.setFontSize(25);
             var imgData = canvas.toDataURL('image/png');
-            this.doc.text(40, 20, 'EXTERNUS - ENVÍO MASIVO');
-            this.doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
-            this.doc.setFontSize(12);
+            doc.text(40, 20, 'EXTERNUS - ENVÍO MASIVO');
+            doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
+            doc.setFontSize(12);
             let info = {
                 'DE:': envio.buzon.nombre, 
                 'SEDE ORIGEN: ': 'LA MOLINA',
@@ -76,10 +77,9 @@ export class CargoPdfService {
                 'TIPO DE SEGURIDAD:': envio.tipoSeguridad.nombre, 
                 'TIPO DE SERVICIO:': envio.tipoServicio.nombre
             }
-            this.escribirInformacionPdf(this.doc, info, 160);
+            this.escribirInformacionPdf(doc, info, 160);
 
-            this.doc.save(envio.masivoAutogenerado + '.pdf');  
-            this.doc = new jsPDF();      
+            doc.save(envio.masivoAutogenerado + '.pdf');       
             canvas = null;
         }
         image.src = codigoBarrasBase64;
@@ -103,11 +103,13 @@ export class CargoPdfService {
     }
 
     generarPDFsEtiqueta(codigosBarra: any[]) {
-        this.generarPDFsEtiquetaConjsPDF(this.doc, codigosBarra);
+        let doc = new jsPDF();
+        this.generarPDFsEtiquetaConjsPDF(doc, codigosBarra);
     }
 
     generarPDFsCargo(codigosBarra: any[], documentosACustodiar: any[]) {
-        this.generarPDFsCargoConjsPDF(this.doc, codigosBarra, documentosACustodiar);
+        let doc = new jsPDF();
+        this.generarPDFsCargoConjsPDF(doc, codigosBarra, documentosACustodiar);
     }
 
     generarPDFsEtiquetaConjsPDF(doc, codigosBarra: any[]) {
@@ -128,16 +130,13 @@ export class CargoPdfService {
                 doc.addPage();   
                 this.generarPDFsEtiquetaConjsPDF(doc, codigosBarra);
             }else{
-                doc.save('CUSTODIA-ETIQUETA.PDF')
-                doc = new jsPDF();
-            }
-            
+                doc.save('CUSTODIA-ETIQUETA.PDF');
+            }            
         }
         image.src = codigoBarrasBase64;        
     }
 
     generarPDFsCargoConjsPDF(doc, codigosBarra, documentosACustodiar) {
-
         let codigoBarra = codigosBarra.pop();
         let documentoACustodiar = documentosACustodiar.pop();
         let codigoBarrasBase64 = this.utilsService.svgToBase64(codigoBarra);
@@ -149,11 +148,11 @@ export class CargoPdfService {
             canvas.height = svgSize.height;
             var context = canvas.getContext('2d');            
             context.drawImage(image, 0, 0);
-            this.doc.setFontSize(25);
+            doc.setFontSize(25);
             var imgData = canvas.toDataURL('image/png');
-            this.doc.text(40, 20, 'EXTERNUS - ENVÍO MASIVO');
-            this.doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
-            this.doc.setFontSize(12);
+            doc.text(40, 20, 'EXTERNUS - ENVÍO MASIVO');
+            doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
+            doc.setFontSize(12);
             let info = {
                 'DE:': documentoACustodiar.envioInfo.buzon.nombre,
                 'SEDE ORIGEN: ': 'LA MOLINA',
@@ -163,14 +162,13 @@ export class CargoPdfService {
                 'TIPO DE SEGURIDAD:': documentoACustodiar.envioInfo.tipoSeguridad.nombre, 
                 'TIPO DE SERVICIO:': documentoACustodiar.envioInfo.tipoServicio.nombre
             }
-            this.escribirInformacionPdf(this.doc, info, 160);            
+            this.escribirInformacionPdf(doc, info, 160);            
             canvas = null;
             if (codigosBarra.length > 0) {
                 doc.addPage();   
                 this.generarPDFsCargoConjsPDF(doc, codigosBarra, documentosACustodiar);
             }else{
-                doc.save('CUSTODIA-CARGO.PDF')
-                doc = new jsPDF();
+                doc.save('CUSTODIA-CARGO.PDF');
             }
         }
         image.src = codigoBarrasBase64;
