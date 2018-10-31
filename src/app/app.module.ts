@@ -26,6 +26,7 @@ import { ReporteMensualVolumenModule } from './reporte-mensual-volumen/reporte-m
 import { ReporteMensualCargosModule } from './reporte-mensual-cargos/reporte-mensual-cargos.module';
 import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.module';
 import { ReporteIndicadorEfectividadModule } from './reporte-indicador-efectividad/reporte-indicador-efectividad.module';
+import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.module';
 
 
 
@@ -57,7 +58,8 @@ import { ReporteIndicadorEfectividadModule } from './reporte-indicador-efectivid
     ReporteMensualVolumenModule,
     ReporteMensualCargosModule,
     ReporteDistribucionMesEficienciaModule,
-    ReporteIndicadorEfectividadModule
+    ReporteIndicadorEfectividadModule,
+    ReporteIndicadorEficienciaModule
 
 
   ],

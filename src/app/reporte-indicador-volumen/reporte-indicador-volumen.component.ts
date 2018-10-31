@@ -10,8 +10,6 @@ import { PlazoDistribucionService} from '../shared/plazodistribucion.service';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import * as moment from 'moment-timezone';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
-import { forEach } from '@angular/router/src/utils/collection';
-import { registerContentQuery } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-reporte-indicador-volumen',
@@ -132,13 +130,13 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
 
                             let reporteFinal = {
                                 proveedor : "", plazoDistribucion : "", cantidad01 : 0, cantidad02 : 0, cantidad03 : 0, cantidad04 : 0, cantidad05 : 0,
-                                cantidad06 : 0, cantidad07 : 0, cantidad08 : 0, cantidad09 : 0, cantidad10 : 0, cantidad11 : 0, cantidad12 : 0, cantidad13 : 0
+                                cantidad06 : 0, cantidad07 : 0, cantidad08 : 0, cantidad09 : 0, cantidad10 : 0, cantidad11 : 0, cantidad12 : 0, cantidad13 : 0, estilo: ""
                             }                            
 
                             let c = documentos.filter(documento => {   
                                     return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                    new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha,"DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                    new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha,"DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
+                                    new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,EstadoDocumentoEnum.ENVIADO).fecha,"DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
+                                    new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,EstadoDocumentoEnum.ENVIADO).fecha,"DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
                                 }
                             ).length;
 
@@ -147,6 +145,7 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                                 reporteFinal.proveedor = proveedor.nombre;
                                 reporteFinal.plazoDistribucion = proveedor.nombre;
                                 reporteFinal.cantidad01 = c;
+                                reporteFinal.estilo = "proveedor";
 
                                 this._final.push(reporteFinal);
                             }
@@ -173,15 +172,15 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
         
                                     let reporteFinal = {
                                         proveedor : "", plazoDistribucion : "", cantidad01 : 0, cantidad02 : 0, cantidad03 : 0, cantidad04 : 0, cantidad05 : 0,
-                                        cantidad06 : 0, cantidad07 : 0, cantidad08 : 0, cantidad09 : 0, cantidad10 : 0, cantidad11 : 0, cantidad12 : 0, cantidad13 : 0
+                                        cantidad06 : 0, cantidad07 : 0, cantidad08 : 0, cantidad09 : 0, cantidad10 : 0, cantidad11 : 0, cantidad12 : 0, cantidad13 : 0, estilo : ""
                                     }
 
                                     c = 0;
                                     c = documentos.filter(documento => {
                                             return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&                                            
                                             documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha,"DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha,"DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
+                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,EstadoDocumentoEnum.ENVIADO).fecha,"DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
+                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,EstadoDocumentoEnum.ENVIADO).fecha,"DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
                                         }
                                     ).length;
                                     
@@ -225,8 +224,8 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
 
                     registroGrafico.mes = this.NombreMes(fechaInicial);
                     registroGrafico.cantidad = documentos.filter(documento => {                               
-                        return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha,"DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                         new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha,"DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
+                        return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,EstadoDocumentoEnum.ENVIADO).fecha,"DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
+                         new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento,EstadoDocumentoEnum.ENVIADO).fecha,"DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
                      }
                      ).length;
 
@@ -258,7 +257,7 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                 
             
                 this._registros = this._final.map(function (obj) {                    
-                    return [obj.plazoDistribucion,obj.cantidad01,obj.cantidad02,obj.cantidad03,obj.cantidad04,obj.cantidad05,obj.cantidad06,obj.cantidad07,obj.cantidad08,obj.cantidad09,obj.cantidad10,obj.cantidad11,obj.cantidad12,obj.cantidad13,obj.proveedor];
+                    return [obj.plazoDistribucion,obj.cantidad01,obj.cantidad02,obj.cantidad03,obj.cantidad04,obj.cantidad05,obj.cantidad06,obj.cantidad07,obj.cantidad08,obj.cantidad09,obj.cantidad10,obj.cantidad11,obj.cantidad12,obj.cantidad13,obj.proveedor,obj.estilo];
                 });
 
                 let kk :number = 0;
