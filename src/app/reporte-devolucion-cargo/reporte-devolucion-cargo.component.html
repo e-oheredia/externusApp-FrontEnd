@@ -21,14 +21,14 @@
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha Inicial</label>
-                <input class="form-control" type="date" formControlName="fechaIni" >
+                <input class="form-control" type="date" formControlName="fechaIni">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha Final</label>
-                <input class="form-control" type="date" formControlName="fechaFin" >
+                <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
 
@@ -52,64 +52,104 @@
 
 
     </div>
-    
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="titulo">
-            <h4>Devolución de Cargos</h4>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Devolución de Cargos</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <jqxChart [width]="getWidth()" [height]="500" [title]="'Devolución de Cargos'" [description]="''"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionCargos"
+              [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme06'">
+            </jqxChart>
           </div>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <jqxChart [width]="getWidth()" [height]="500" [title]="'Devolución de Cargos'" [description]="''"
-                [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-                [source]="dataGraficoDevolucionCargos" [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme06'">
-              </jqxChart>
-            </div>
+        <div class="row">
+          <div class="col">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th *ngFor="let _r of tablaProveedores" scope="col">{{_r.nombre}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let _r of dataTablaCargoArray">
+                  <td scope=col>{{ _r[0]}}</td>
+                  <td *ngFor="let _p of tablaProveedores" scope="col">{{_r[_p.id] }}</td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
+    </div>
 
 
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="titulo">
-            <h4>Devolución de Documentos</h4>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Devolución de Documentos</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <jqxChart [width]="getWidth()" [height]="500" [title]="'Devolución de Documentos'" [description]="''"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionDocumentos"
+              [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme06'">
+            </jqxChart>
           </div>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <jqxChart [width]="getWidth()" [height]="500" [title]="'Devolución de Documentos'" [description]="''"
-                [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-                [source]="dataGraficoDevolucionDocumentos" [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme06'">
-              </jqxChart>
-            </div>
+        <div class="row">
+          <div class="col">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th *ngFor="let _r of tablaProveedores" scope="col">{{_r.nombre}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let _r of dataTablaDocumentoArray">
+                  <td scope=col>{{ _r[0]}}</td>
+                  <td *ngFor="let _p of tablaProveedores" scope="col">{{_r[_p.id] }}</td>
+                </tr>
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
+    </div>
 
 
 
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="titulo">
-            <h4>Detalle de Pendientes por Área</h4>
-          </div>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Detalle de Pendientes por Área</h4>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Detalle de Pendientes por Área'"
-                [description]="''" [enableAnimations]="true" [showLegend]="true" [padding]="padding" [titlePadding]="titlePadding"
-                [source]="dataGraficoDetallePendienteArea" [xAxis]="xAxis3" [valueAxis]="valueAxis3" [seriesGroups]="seriesGroups3"
-                [colorScheme]="'scheme06'">
-              </jqxChart>
-            </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Detalle de Pendientes por Área'"
+              [description]="''" [enableAnimations]="true" [showLegend]="true" [padding]="padding" [titlePadding]="titlePadding"
+              [source]="dataGraficoDetallePendienteArea" [xAxis]="xAxis3" [valueAxis]="valueAxis3" [seriesGroups]="seriesGroups3"
+              [colorScheme]="'scheme06'">
+            </jqxChart>
           </div>
         </div>
       </div>
-    
+    </div>
+
   </div>
 </div>
