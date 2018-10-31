@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Resumen de Indicadores de Distribución del Mes - Eficiencia</h1>
+      <h1>Reporte - Eficiencia</h1>
     </div>
   </div>
 </div>
@@ -54,7 +54,7 @@
                 [xAxis]="getAxis('proveedor')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                         dentroPlazo: 'Dentro del Plazo'}, 
                         {fueraPlazo: 'Fuera del Plazo'
-                      }])" [colorScheme]="'scheme04'">
+                      }])" [colorScheme]="'scheme01'">
               </jqxChart>
             </div>
           </div>
@@ -101,7 +101,7 @@
                 [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                           dentroPlazo: 'Dentro del Plazo'}, 
                           {fueraPlazo: 'Fuera del Plazo'}
-                        ])" [colorScheme]="'scheme04'">
+                        ])" [colorScheme]="'scheme01'">
               </jqxChart>
             </div>
             <div class="col">
@@ -147,22 +147,22 @@
                 <div class="col-6" *ngFor="let plazoDistribucion of proveedorElegidoDetalle.plazosDistribucion; let i = index">
                   <jqxChart [height]="600" [title]="plazoDistribucion.nombre" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true"
                     [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="reportesDetalleEficiencia[proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
-                    [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
+                    [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                                         dentroPlazo: 'Dentro del Plazo', 
                                         indiceReporte: i
-                                      }], 'horizontal')" [colorScheme]="'scheme04'">
+                                      }], 'horizontal')" [colorScheme]="'scheme01'">
                   </jqxChart>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </div>  
       </div>
     </div>
     <ng-template #mensaje>
       <div class="row">
         <div class="col">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-info" role="alert" align=center>
             No se encontraron documentos
           </div>
         </div>
