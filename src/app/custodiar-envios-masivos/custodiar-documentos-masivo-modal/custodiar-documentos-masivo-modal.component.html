@@ -91,9 +91,9 @@
             placeholder="Autogenerado">
           </div>
           <div class="col-12 col-lg-8 btn-group justify-content-center">
-            <button type="button" class="btn btn-primary mb-2" (click)="custodiar()">Custodiar</button>
-            <button type="button" class="btn btn-success mb-2" (click)="custodiar()">Custodiar con Cargo</button>
-            <button type="button" class="btn btn-warning mb-2" (click)="custodiar()">Custodiar con Etiqueta</button>
+            <button type="button" class="btn btn-primary mb-2" (click)="onCustodiar()">Custodiar</button>
+            <button type="button" class="btn btn-success mb-2" (click)="onCustodiarCargo()">Custodiar con Cargo</button>
+            <button type="button" class="btn btn-warning mb-2" (click)="onCustodiarEtiqueta()">Custodiar con Etiqueta</button>
           </div>
         </div>
       </form>
@@ -127,4 +127,7 @@
       </table>
     </div>
   </div>
+</div>
+<div class="row">
+  <ngx-barcode *ngFor="let documento of envio.documentos" id="{{documento.documentoAutogenerado}}" [bc-value]="documento.documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
 </div>

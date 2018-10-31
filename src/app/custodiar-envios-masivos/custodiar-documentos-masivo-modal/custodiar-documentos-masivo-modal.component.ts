@@ -1,3 +1,4 @@
+import { CargoPdfService } from './../../shared/cargo-pdf.service';
 import { DocumentoService } from '../../shared/documento.service';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
@@ -16,7 +17,8 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
     public bsModalRef: BsModalRef, 
     public documentoService: DocumentoService, 
     private utilsService: UtilsService, 
-    private notifier: NotifierService
+    private notifier: NotifierService, 
+    private cargoPdfService: CargoPdfService
   ) { }
 
   envio: Envio;
@@ -48,16 +50,9 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
     }
   }
 
-  custodiar() {
-    let documentosACustodiar = [];
-    this.envio.documentos.forEach(documento => {
-      if (!this.utilsService.isUndefinedOrNullOrEmpty(documento.checked)
-        && documento.checked === true) {
-        documentosACustodiar.push({
-          id: documento.id
-        });
-      }
-    });
+  custodiar(success: Function = null) {
+    
+    let documentosACustodiar = this.getDocumentosACustodiar();
 
     if (documentosACustodiar.length === 0) {
       this.notifier.notify('warning', 'Seleccione los documentos que va a custodiar');
@@ -79,11 +74,58 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
           return;
         }
         this.envio.documentos = resto;
+        if (success !== null) {
+          success(documentosACustodiar);
+        }
       },
       error => {
         console.log(error);
       })
 
+  }
+
+  onCustodiar() {
+    this.custodiar();
+  }
+
+  onCustodiarCargo() {
+    this.custodiar(documentosACustodiar => {
+      let codigosBarra = this.getCodigoBarrasDocumentosACustodiar(documentosACustodiar);
+      this.cargoPdfService.generarPDFsCargo(codigosBarra, documentosACustodiar);
+    });
+  }
+
+  onCustodiarEtiqueta() {
+    this.custodiar(documentosACustodiar => {
+      let codigosBarra = this.getCodigoBarrasDocumentosACustodiar(documentosACustodiar);
+      this.cargoPdfService.generarPDFsEtiqueta(codigosBarra);
+    });
+  }
+
+  getCodigoBarrasDocumentosACustodiar(documentosACustodiar) {
+    let codigos = [];
+    documentosACustodiar.forEach(documentoACustodiar => {
+      codigos.push(document.getElementById(documentoACustodiar.documentoAutogenerado).children[0].children[0]);
+    });
+    return codigos;
+  }
+
+  getDocumentosACustodiar() {
+    let documentosACustodiar = [];
+    this.envio.documentos.forEach(documento => {
+      let envioInfo = Object.assign({}, this.envio);
+      envioInfo.documentos = [];
+      envioInfo.documentos.push(documento);
+      if (!this.utilsService.isUndefinedOrNullOrEmpty(documento.checked)
+        && documento.checked === true) {
+        documentosACustodiar.push({
+          id: documento.id,
+          documentoAutogenerado: documento.documentoAutogenerado,
+          envioInfo: envioInfo
+        });
+      }
+    });
+    return documentosACustodiar;
   }
 
 }
