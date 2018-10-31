@@ -129,5 +129,5 @@
   </div>
 </div>
 <div class="row">
-  <ngx-barcode *ngFor="let documento of envio.documentos" id="{{documento.documentoAutogenerado}}" [bc-value]="documento.documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
+  <ngx-barcode hidden *ngFor="let documento of envio.documentos" id="{{documento.documentoAutogenerado}}" [bc-value]="documento.documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
 </div>

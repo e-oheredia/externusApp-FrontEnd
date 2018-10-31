@@ -74,5 +74,5 @@
   </div>
 </ng-template>
 <div class="row">
-  <ngx-barcode *ngFor="let envioCreado of enviosCreados" id="{{envioCreado.documentos[0].documentoAutogenerado}}" [bc-value]="envioCreado.documentos[0].documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
+  <ngx-barcode hidden *ngFor="let envioCreado of enviosCreados" id="{{envioCreado.documentos[0].documentoAutogenerado}}" [bc-value]="envioCreado.documentos[0].documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
 </div>
