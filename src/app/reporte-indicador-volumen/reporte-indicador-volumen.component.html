@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row" >
   <div class="col-10">
-    <div class="pb-2 mt-4 mb-2">
-      <h1>Indicadores Documentos Varios</h1>
+    <div class="pb-2 mt-4 mb-2" >
+      <h1>Documentos Varios - Indicador de Volumen</h1>
     </div>
   </div>
 </div>
@@ -23,14 +23,14 @@
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha Inicial</label>
-                <input class="form-control" type="date" formControlName="fechaIni">
+                <input class="form-control" type="month" formControlName="fechaIni">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha Final</label>
-                <input class="form-control" type="date" formControlName="fechaFin">
+                <input class="form-control" type="month" formControlName="fechaFin">
               </div>
             </div>
 
@@ -50,6 +50,12 @@
     </div>
 
 
+    </div>
+
+  </div>
+
+
+  <div *ngIf="dataGrafico.length !== 0; else mensaje">
 
     <div class="card mb-4">
       <div class="card-header">
@@ -71,9 +77,8 @@
 
 
 
-<!-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
     <div class="card mb-4">
-<!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
       <div class="card-body">
         <div class="row">
           <div class="col">
@@ -96,7 +101,7 @@
           </div>
         </div>
       </div>
-<!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
+
 
 
 
@@ -128,20 +133,18 @@
     </div>
 
 
-    <ng-template #mensaje>
-      <div class="row">
-        <div class="col">
-          <div class="alert alert-info" role="alert">
-            No hay resultados
-          </div>
-        </div>
-      </div>
-    </ng-template>
-
-
-
-    <div class="row" *ngIf="dataGrafico.length !== 0; else mensaje"></div>
 
   </div>
 
-</div>
+
+
+
+<ng-template #mensaje>
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-info" role="alert" align=center>
+          No se encontraron documentos
+        </div>
+      </div>
+    </div>
+  </ng-template>

@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row" >
   <div class="col-10">
-    <div class="pb-2 mt-4 mb-2">
-      <h1>Indicador de Efectividad</h1>
+    <div class="pb-2 mt-4 mb-2" >
+      <h1>Documentos Varios - Indicador de Efectividad</h1>
     </div>
   </div>
 </div>
@@ -17,13 +17,13 @@
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha Inicial</label>
-                <input class="form-control" type="date" formControlName="fechaIni">
+                <input class="form-control" type="month" formControlName="fechaIni">
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha Final</label>
-                <input class="form-control" type="date" formControlName="fechaFin">
+                <input class="form-control" type="month" formControlName="fechaFin">
               </div>
             </div>
 
@@ -60,7 +60,7 @@
         </div>
         <div class="row">
           <div class="col">
-            <table class="table">
+            <table class="table" align=center>
               <thead>
                 <tr>
                   <th scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.mes}}</th>
@@ -79,14 +79,14 @@
     <div *ngIf="documentos.length > 0">
       <div class="card mb-4" *ngFor="let proveedor of proveedores">
         <div class="card-header">
-          <div class="titulo">
+          <div class="titulo" align=center>
             <h4>{{proveedor.nombre}}</h4>
           </div>
         </div>
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <table class="table">
+              <table class="table" align=center>
                 <thead>
                   <tr>
                     <th scope="col">ESTADOS</th>
@@ -110,7 +110,7 @@
 <ng-template #mensaje>
     <div class="row">
       <div class="col">
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-info" role="alert" align=center>
           No se encontraron documentos
         </div>
       </div>

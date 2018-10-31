@@ -204,10 +204,10 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     }
   }
 
-  getValueAxis(title: string) {
+  getValueAxis(title: string, flip=false) {
     return {
       title: { text: title },
-      flip: true,
+      flip: flip,
       tickMarks: { color: '#BCBCBC' },
       labels: { visible: true },
       minValue: 0,
@@ -230,9 +230,9 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
           displayText: data[keys[0]],
           colorFunction: (value, itemIndex) => {
             if (data['indiceReporte'] < itemIndex) {
-              return '#fff655';
+              return '#dc3545';
             }
-            return '#55CC55';
+            return '#007bff';
           }
         })
       }

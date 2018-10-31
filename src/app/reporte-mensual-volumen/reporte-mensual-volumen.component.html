@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Resumen de los Indicadores de Distribución del Mes</h1>
+      <h1>Reporte - Volumen de Distribución</h1>
     </div>
   </div>
 </div>
@@ -48,7 +48,16 @@
 
     </div>
 
+
+    </div>
+
+    </div>
+
+
+
     <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
+   <div *ngIf="documentos.length !== 0; else mensaje">
+   
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -125,4 +134,15 @@
     </div>
 
   </div>
-</div>
+
+
+  
+  <ng-template #mensaje>
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-info" role="alert" align=center>
+              No se encontraron documentos
+          </div>
+        </div>
+      </div>
+  </ng-template>

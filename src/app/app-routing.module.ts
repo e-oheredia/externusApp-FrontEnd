@@ -15,6 +15,7 @@ import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-b
 import { ReporteDevolucionCargoComponent } from './reporte-devolucion-cargo/reporte-devolucion-cargo.component';
 import { ReporteIndicadorVolumenComponent } from './reporte-indicador-volumen/reporte-indicador-volumen.component';
 import { ReporteMensualVolumenComponent } from './reporte-mensual-volumen/reporte-mensual-volumen.component';
+import {  ReporteEficaciaComponent } from './reporte-eficacia/reporte-eficacia.component';
 import { ReporteMensualCargosComponent } from './reporte-mensual-cargos/reporte-mensual-cargos.component';
 import { ReporteIndicadorEfectividadComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
 
@@ -86,6 +87,11 @@ const appRoutes: Routes = [
         component: ReporteMensualVolumenComponent
     },
     {
+
+        path: 'reportes-eficacia',
+        component: ReporteEficaciaComponent
+    },
+    {    
         path: 'reportes-cargos',
         component: ReporteMensualCargosComponent
     },
@@ -96,7 +102,9 @@ const appRoutes: Routes = [
     {
         path: 'reportes-indicador-efectividad',
         component: ReporteIndicadorEfectividadComponent
+
     }
+
 ]
 
 @NgModule({
