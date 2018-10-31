@@ -9,18 +9,18 @@ export class Documento {
     constructor(){}
     
     public id: number;
-    public documentoAutogenerado: string; 
-    public distrito: Distrito; 
-    public razonSocialDestino: string;
     public contactoDestino: string; 
     public direccion: string; 
-    public referencia: string; 
-    public telefono: string; 
+    public distrito: Distrito; 
+    public documentoAutogenerado: string; 
     public nroDocumento: string;
-    public seguimientosDocumento: SeguimientoDocumento[] = [];    
-    public envio: Envio;
-    public checked: boolean;   
+    public razonSocialDestino: string;
     public recepcionado: boolean;
+    public referencia: string;
+    public telefono: string; 
+    public envio: Envio;
+    public seguimientosDocumento: SeguimientoDocumento[] = [];    
+    public checked: boolean;   
     public documentosGuia: DocumentoGuia[] = [];  
 
 }
