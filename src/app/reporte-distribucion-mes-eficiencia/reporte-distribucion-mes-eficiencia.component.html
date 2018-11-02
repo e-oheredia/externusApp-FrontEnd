@@ -134,8 +134,9 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="row">
+          <div class="row mb-4">
             <div class="col">
+              <label for="">Seleccione el Proveedor</label>
               <select class="form-control" [(ngModel)]="proveedorElegidoDetalle">
                 <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">{{proveedor.nombre}}</option>
               </select>

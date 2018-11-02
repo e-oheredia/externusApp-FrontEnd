@@ -52,15 +52,14 @@
         <div class="row">
           <div class="col">
             <jqxChart #myChart [height]="500" [title]="'Indicador de Efectividad'" [description]="''" [showLegend]="true"
-              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="graficoEficacia" [xAxis]="getAxis('mes')"
-              [valueAxis]="getValueAxis('Porcentaje de Entregados')" [seriesGroups]="getSeriesGroups('line', [{
-                      porcentaje: 'Porcentaje'}])" [colorScheme]="'scheme04'">
+              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="graficoEficacia" [xAxis]="getAxis"
+              [valueAxis]="getValueAxis" [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme04'">
             </jqxChart>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <table class="table" align=center>
+            <table class="table">
               <thead>
                 <tr>
                   <th scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.mes}}</th>
@@ -68,7 +67,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.porcentaje}}%</td>
+                  <td scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.porcentaje | number: '1.2'}}%</td>
                 </tr>
               </tbody>
             </table>
@@ -79,14 +78,14 @@
     <div *ngIf="documentos.length > 0">
       <div class="card mb-4" *ngFor="let proveedor of proveedores">
         <div class="card-header">
-          <div class="titulo" align=center>
+          <div class="titulo">
             <h4>{{proveedor.nombre}}</h4>
           </div>
         </div>
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <table class="table" align=center>
+              <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">ESTADOS</th>
@@ -94,6 +93,10 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <tr>
+                      <td scope="col">PORCENTAJE</td>
+                      <td scope="col" *ngFor="let mes of mesesConsulta">{{getPorcentajePorProveedorYMes(mes, proveedor.id) | number: '1.2'}}% </td>
+                  </tr>
                   <tr *ngFor="let estadoDocumento of estadosDocumento | orderBy: id: false">
                     <td scope="col">{{estadoDocumento.nombre}}</td>
                     <td scope="col" *ngFor="let mes of mesesConsulta">{{getCantidadPorProveedorMesYEstado(estadoDocumento.id, mes, proveedor.id)}}</td>
@@ -110,7 +113,7 @@
 <ng-template #mensaje>
     <div class="row">
       <div class="col">
-        <div class="alert alert-info" role="alert" align=center>
+        <div class="alert alert-info" role="alert">
           No se encontraron documentos
         </div>
       </div>

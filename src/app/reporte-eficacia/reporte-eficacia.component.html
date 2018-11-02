@@ -64,7 +64,7 @@
         <div class="col">
           <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Eficacia'" [description]="''"
             [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
-            [xAxis]="xAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme09'">
+            [xAxis]="xAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
       </div>
@@ -73,13 +73,11 @@
 
 
   <div class="card mb-4">
-
     <div class="card-header">
       <div class="titulo">
         <h4>Por Proveedor</h4>
       </div>
     </div>
-
     <div class="card-body" *ngIf="documentos.length !== 0; else mensaje">
 
       <div class="row">

@@ -509,7 +509,6 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                 {
                     unitInterval: 10,
                     minValue: 0,
-                    maxValue: 100,
                     displayValueAxis: true,
                     description: 'Cantidad de cargos',
                     axisSize: 'auto',

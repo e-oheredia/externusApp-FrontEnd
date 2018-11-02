@@ -253,9 +253,10 @@ export class ReporteMensualVolumenComponent implements OnInit {
         }
     }
 
-    getValueAxis(title: string) {
+    getValueAxis(title: string, flip = false) {
         return {
             visible: true,
+            flip: flip,
             title: { text: title },
             tickMarks: { color: '#BCBCBC' },
             labels: { horizontalAlignment: 'left' },

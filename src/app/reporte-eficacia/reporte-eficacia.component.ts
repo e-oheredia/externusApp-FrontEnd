@@ -17,20 +17,20 @@ import { EstadoDocumento } from '../../model/estadodocumento.model';
     styleUrls: ['./reporte-eficacia.component.css']
 })
 
-export class ReporteEficaciaComponent implements OnInit{
+export class ReporteEficaciaComponent implements OnInit {
 
     constructor(
         public documentoService: DocumentoService,
         public notifier: NotifierService,
         public utilsService: UtilsService,
         public proveedorService: ProveedorService,
-        public estadoDocumentoService: EstadoDocumentoService){
+        public estadoDocumentoService: EstadoDocumentoService) {
     }
-    
+
     dataSource = [];
     proveedores: Proveedor[] = [];
     documentos = [];
-    
+
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
     estadoDoc: EstadoDocumento[] = [];
@@ -47,50 +47,50 @@ export class ReporteEficaciaComponent implements OnInit{
                 this.proveedores = proveedores;
             }
         )
-        this.estadoDoc=this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor();
+        this.estadoDoc = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor();
         this.estadoDoc.push({
-            id: EstadoDocumentoEnum.ENVIADO, 
+            id: EstadoDocumentoEnum.ENVIADO,
             nombre: "PENDIENTE DE ENTREGA"
         })
         this.estadoDocumentoService.estadosDocumentoResultadosProveedorChanged.subscribe(
-            estados =>{
-                this.estadoDoc=estados;
+            estados => {
+                this.estadoDoc = estados;
                 this.estadoDoc.push({
-                    id: EstadoDocumentoEnum.ENVIADO, 
+                    id: EstadoDocumentoEnum.ENVIADO,
                     nombre: "PENDIENTE DE ENTREGA"
                 })
             }
         )
-        
-        
+
+
     }
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
-        
+
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
             this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
                 documentos => {
                     this.dataSource = [];
                     this.documentos = documentos;
-                    
+
                     this.estadoDoc.forEach(
                         estado => {
                             let reporteEficacia = {
-                                estado: estado.nombre                                
+                                estado: estado.nombre
                             };
 
                             this.proveedores.forEach(
                                 proveedor => {
-                                    
-                                    reporteEficacia[proveedor.nombre] = 
-                                    documentos.filter(documento => 
-                                        documento.documentosGuia[0].guia.proveedor.id === proveedor.id 
-                                        && this.documentoService.getUltimoEstado(documento).id === estado.id
-                                    ).length
+
+                                    reporteEficacia[proveedor.nombre] =
+                                        documentos.filter(documento =>
+                                            documento.documentosGuia[0].guia.proveedor.id === proveedor.id
+                                            && this.documentoService.getUltimoEstado(documento).id === estado.id
+                                        ).length
                                 }
                             )
-                            
-                            console.log(this.dataSource);    
+
+                            console.log(this.dataSource);
                             this.dataSource.push(reporteEficacia);
                         }
                     )
@@ -111,17 +111,17 @@ export class ReporteEficaciaComponent implements OnInit{
     }
 
 
-    llenarTabla(proveedor, estado){
-        
+    llenarTabla(proveedor, estado) {
+
         var porcentaje = 100;
-        var total = this.documentos.length;
-        var cantestadocourier = this.documentos.filter(documento => 
-            documento.documentosGuia[0].guia.proveedor.id === proveedor.id 
+        var total = this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
+        var cantestadocourier = this.documentos.filter(documento =>
+            documento.documentosGuia[0].guia.proveedor.id === proveedor.id
             && this.documentoService.getUltimoEstado(documento).id === estado.id
         ).length;
         var numero = (cantestadocourier * porcentaje) / total
         var final = numero.toFixed(1);
-        return final +'%';
+        return final + '%';
     }
 
 
@@ -143,7 +143,7 @@ export class ReporteEficaciaComponent implements OnInit{
         }
 
         return 850;
-        
+
     }
 
 
@@ -152,7 +152,7 @@ export class ReporteEficaciaComponent implements OnInit{
         showGridLines: true
     };
 
-   seriesGroupsCourier: any[] =
+    seriesGroupsCourier: any[] =
         [
             {
                 type: 'column',
@@ -162,11 +162,11 @@ export class ReporteEficaciaComponent implements OnInit{
                 valueAxis:
                 {
                     visible: true,
-                    unitInterval:1,
+                    unitInterval: 1,
                     displayValueAxis: true,
                     axisSize: 'auto',
                     minValue: 0,
-                    maxValue:'auto',
+                    maxValue: 'auto',
                     tickMarksColor: '#134f8e'
                 },
                 series:

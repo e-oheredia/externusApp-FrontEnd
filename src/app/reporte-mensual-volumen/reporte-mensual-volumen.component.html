@@ -66,7 +66,7 @@
         <div class="col-12">
           <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Volumen por Courier'" [description]="''" [showLegend]="true"
             [enableAnimations]="true" [padding]="paddingC" [titlePadding]="titlePaddingC" [source]="dataSource" [showBorderLine]="true"
-            [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme09'">
+            [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
         <div class="col-1 center-block">
@@ -97,7 +97,7 @@
         <div class="col">
           <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Volumen por UTD'" [description]="''" [showLegend]="true"
             [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU" [source]="dataSource2" [showBorderLine]="true"
-            [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme12'">
+            [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
       </div>
@@ -115,11 +115,11 @@
           <h4>{{proveedor.nombre}}</h4>
           <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Volumen Por Plazo de Distribución'" [description]="''"
             [showLegend]="true" [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS" [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]"
-            [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+            [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', 
               [
                           {cantidad: 'Cantidad'}
               ]
-              )" [colorScheme]="'scheme06'">
+              , 'horizontal')" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
       </div>

@@ -78,9 +78,9 @@
             </thead>
             <tbody>
               <tr *ngFor="let _r of _registros">
-                <td scope=col>{{ _r[0]}}</td>
-                <td *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
-                <td scope=col>{{ _r[14]}}</td>
+                <td [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" scope=col>{{ _r[0]}}</td>
+                <td  [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
+                <td  [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" scope=col>{{ _r[14]}}</td>
               </tr>
             </tbody>
           </table>
@@ -116,9 +116,9 @@
             </thead>
             <tbody>
               <tr *ngFor="let _r of _registros2">
-                <td scope=col>{{ _r[0]}}</td>
-                <td *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
-                <td scope=col>{{ _r[14]}}</td>
+                <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" scope=col>{{ _r[0]}}</td>
+                <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
+                <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" scope=col>{{ _r[14]}}</td>
               </tr>
             </tbody>
           </table>
