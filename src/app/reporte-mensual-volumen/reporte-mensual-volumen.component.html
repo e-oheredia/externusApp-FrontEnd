@@ -49,100 +49,91 @@
     </div>
 
 
-    </div>
+  </div>
 
-    </div>
+</div>
 
+<div *ngIf="documentos.length !== 0; else mensaje">
 
-
-    <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
-   <div *ngIf="documentos.length !== 0; else mensaje">
-   
-    <div class="card mb-4">
-      <div class="card-header">
-        <div class="titulo">
-          <h4>Volumen de Distribución - Por Courier</h4>
-        </div>
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Volumen de Distribución - Por Courier</h4>
       </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12">
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT SAC'" [description]="'Gráfico Maldito'"
-              [showLegend]="true" [enableAnimations]="true" [padding]="paddingC" [titlePadding]="titlePaddingC"
-              [source]="dataSource" [showBorderLine]="true" [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme09'">
-            </jqxChart>
-          </div>
-          <div class="col-1 center-block">
-            <table class="table table-bordered">
-              <thead>
-                <th *ngFor="let proveedor of proveedores">
-                  <tr scope="col">{{proveedor.nombre}}</tr>
-                </th>
-              </thead>
-              <tbody>
-                <td *ngFor="let proveedor of proveedores">
-                  <tr scope="col">{{porcentajeAsignado(proveedor)}}</tr>
-                </td>
-              </tbody>
-            </table>
-          </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Volumen por Courier'" [description]="''" [showLegend]="true"
+            [enableAnimations]="true" [padding]="paddingC" [titlePadding]="titlePaddingC" [source]="dataSource" [showBorderLine]="true"
+            [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme09'">
+          </jqxChart>
+        </div>
+        <div class="col-1 center-block">
+          <table class="table table-bordered">
+            <thead>
+              <th *ngFor="let proveedor of proveedores">
+                <tr scope="col">{{proveedor.nombre}}</tr>
+              </th>
+            </thead>
+            <tbody>
+              <td *ngFor="let proveedor of proveedores">
+                <tr scope="col">{{porcentajeAsignado(proveedor)}}</tr>
+              </td>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-    <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <div class="titulo">
-          <h4>Volumen de Distribución - Por UTD</h4>
-        </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Volumen de Distribución - Por UTD</h4>
       </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT SAC'" [description]="'Gráfico Maldito'"
-              [showLegend]="true" [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU"
-              [source]="dataSource2" [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme12'">
-            </jqxChart>
-          </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Volumen por UTD'" [description]="''" [showLegend]="true"
+            [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU" [source]="dataSource2" [showBorderLine]="true"
+            [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme12'">
+          </jqxChart>
         </div>
       </div>
     </div>
-    <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------- -->
-    <div class="card mb-4">
-      <div class="card-header">
-        <div class="titulo">
-          <h4>Volumen de Distribución - Por Tipo de Servicio</h4>
-        </div>
+  </div>
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Volumen de Distribución - Por Plazo de Distribución</h4>
       </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-12" *ngFor="let proveedor of proveedores">
-            <h4>{{proveedor.nombre}}</h4>
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'"
-              [showLegend]="true" [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS"
-              [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]" 
-              [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados')" 
-              [seriesGroups]="getSeriesGroups('stackedcolumn', 
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12" *ngFor="let proveedor of proveedores">
+          <h4>{{proveedor.nombre}}</h4>
+          <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Volumen Por Plazo de Distribución'" [description]="''"
+            [showLegend]="true" [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS" [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]"
+            [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
               [
                           {cantidad: 'Cantidad'}
               ]
               )" [colorScheme]="'scheme06'">
-            </jqxChart>
-          </div>
+          </jqxChart>
         </div>
       </div>
     </div>
-
   </div>
 
+</div>
 
-  
-  <ng-template #mensaje>
-      <div class="row">
-        <div class="col">
-          <div class="alert alert-info" role="alert" align=center>
-              No se encontraron documentos
-          </div>
-        </div>
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert" align=center>
+        No se encontraron documentos
       </div>
-  </ng-template>
+    </div>
+  </div>
+</ng-template>

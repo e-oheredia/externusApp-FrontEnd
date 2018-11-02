@@ -68,15 +68,16 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
             resto.push(documento);
           }
         });
+        if (success !== null) {
+          success(documentosACustodiar);
+        }
         if (resto.length === 0) {
           this.todosDocumentosCustodiadosEvent.emit();
           this.bsModalRef.hide();
           return;
         }
         this.envio.documentos = resto;
-        if (success !== null) {
-          success(documentosACustodiar);
-        }
+        
       },
       error => {
         console.log(error);

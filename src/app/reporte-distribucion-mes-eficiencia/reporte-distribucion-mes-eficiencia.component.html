@@ -49,7 +49,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <jqxChart #myChart [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true"
+              <jqxChart #myChart [height]="500" [title]="'Eficiencia por courier'" [description]="''" [showLegend]="true"
                 [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="eficienciaPorProveedor"
                 [xAxis]="getAxis('proveedor')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                         dentroPlazo: 'Dentro del Plazo'}, 
@@ -96,7 +96,7 @@
           <div class="row" *ngFor="let proveedor of proveedores">
             <div class="col-12">
               <h4>{{proveedor.nombre}}</h4>
-              <jqxChart #myChart [height]="500" [title]="'EXACT S.A.C'" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true"
+              <jqxChart #myChart [height]="500" [title]="'Eficiencia -' + proveedor.nombre" [description]="''" [showLegend]="true"
                 [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]"
                 [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                           dentroPlazo: 'Dentro del Plazo'}, 
@@ -145,7 +145,7 @@
             <div *ngIf="proveedorElegidoDetalle" class="col">
               <div class="row">
                 <div class="col-6" *ngFor="let plazoDistribucion of proveedorElegidoDetalle.plazosDistribucion; let i = index">
-                  <jqxChart [height]="600" [title]="plazoDistribucion.nombre" [description]="'tu Exact, mi Exact, nuestro Exaaaact'" [showLegend]="true"
+                  <jqxChart [height]="600" [title]="plazoDistribucion.nombre" [description]="''" [showLegend]="true"
                     [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="reportesDetalleEficiencia[proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
                     [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                                         dentroPlazo: 'Dentro del Plazo', 
