@@ -150,7 +150,7 @@ export class CargoPdfService {
             context.drawImage(image, 0, 0);
             doc.setFontSize(25);
             var imgData = canvas.toDataURL('image/png');
-            doc.text(40, 20, 'EXTERNUS - ENVÍO MASIVO');
+            doc.text(40, 20, 'EXTERNUS - ENVÍO INDIVIDUAL');
             doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
             doc.setFontSize(12);
             let info = {

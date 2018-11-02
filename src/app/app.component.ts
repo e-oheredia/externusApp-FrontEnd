@@ -1,3 +1,4 @@
+import { MenuService } from './shared/menu.service';
 import { BrowserStorageService } from './shared/browserstorage.service';
 import { Component, OnInit } from '@angular/core';
 import { EmpleadoService } from './shared/empleado.service';
@@ -14,14 +15,15 @@ export class AppComponent implements OnInit {
     public empleadoService: EmpleadoService,
     private browserStorageService: BrowserStorageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private menuService: MenuService,
   ) { }
 
   ngOnInit() {
     console.log(this.route.snapshot.url);
     this.router.events.subscribe(
       (event) => {
-        if (event instanceof NavigationEnd) {          
+        if (event instanceof NavigationEnd) {
           let url = this.router.parseUrl(event.url).root;
           if (Object.keys(url.children).length === 0) {
             this.route.queryParams.subscribe(
@@ -30,22 +32,20 @@ export class AppComponent implements OnInit {
                   console.log(params.token);
                   console.log(params.rt);
                   this.browserStorageService.set("token", params.token);
-                  this.browserStorageService.set("refreshtoken", params.rt);
-                  // this.empleadoService.listarEmpleadoAutenticado();
+                  this.browserStorageService.set("refreshtoken", params.rt); 
+                  this.menuService.llenarMenuAutenticado();                 
                 }
               }
             );
           } else {
             this.empleadoService.listarEmpleadoAutenticado();
+            this.menuService.llenarMenuAutenticado();
           }
         }
       }
-    );
-
-
-    // this.localStorage.set("token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJvcmxhbmRvIiwiaWF0IjoxNTM2Mzk5MjAwLCJleHAiOjE1MzkzOTkyMDAsImlkVXN1YXJpbyI6IjEiLCJtYXRyaWN1bGEiOiJSR0FSQ8ONQSIsInBlcm1pc29zIjoiW3tcIm5vbWJyZVwiOiBcIlJPTEVfQ1JFQURPUl9ET0NVTUVOVE9cIn1dIn0.wMPFJQ97N3RvS-0OezTbEy-2w8FXF006CDUW2UoUJ9g");
-
-    // this.empleadoService.listarEmpleadoAutenticado();
+    );    
   }
+
+  
 
 }

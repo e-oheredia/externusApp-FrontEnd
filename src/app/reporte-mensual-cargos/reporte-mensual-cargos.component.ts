@@ -9,7 +9,6 @@ import * as moment from 'moment-timezone';
 import { Documento } from 'src/model/documento.model';
 import { Area } from 'src/model/area.model';
 import { AreaService } from '../shared/area.service';
-import { EstadoDocumento } from 'src/model/estadodocumento.model';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { Proveedor } from 'src/model/proveedor.model';
 

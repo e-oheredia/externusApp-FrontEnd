@@ -4,10 +4,11 @@
   </a>
   <div *ngIf="!menu.opcion.id" class="btn-group" dropdown>
     <a [id]="menu.id" dropdownToggle class="dropdown-toggle nav-link pointable" [attr.aria-controls]="'dropdown-' + menu.id">
-        <span [class]="menu.claseIcono"></span> {{menu.nombre}}
+      <span [class]="menu.claseIcono"></span> {{menu.nombre}}
       <span class="caret"></span>
     </a>
-    <ul role="menu" [id]="'dropdown-' + menu.id" app-tree-view [menus]="menu.hijosMenu" *dropdownMenu class="dropdown-menu" role="menu" [attr.aria-labelledby]="menu.id">
+    <ul role="menu" [id]="'dropdown-' + menu.id" app-tree-view [menus]="menu.hijosMenu" *dropdownMenu class="dropdown-menu" role="menu"
+      [attr.aria-labelledby]="menu.id">
     </ul>
   </div>
 </li>
