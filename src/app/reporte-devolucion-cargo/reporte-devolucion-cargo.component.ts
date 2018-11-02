@@ -107,7 +107,14 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
 
-            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
+            let fechaIniDate = new Date(fechaIni);
+            let fechaFinDate = new Date(fechaFin);
+            fechaIniDate = new Date(fechaIniDate.getTimezoneOffset() * 60 * 1000 + fechaIniDate.getTime());
+            fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
+
+
+            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENVIADO).subscribe(
+            //this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaInicial, fechaFinal, EstadoDocumentoEnum.ENVIADO).subscribe(
 
 
                 documentos => {
@@ -440,14 +447,6 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     )
 
 
-                    // console.log(this.dataGraficoDevolucionCargos);
-                    // console.log(this.dataGraficoDevolucionDocumentos);
-                    // console.log(this.dataTablaCargo);
-                    // console.log(this.dataTablaDocumento)
-
-
-
-
                     this.dataTablaCargoArray = this.dataTablaCargo.map(function (obj) {
                         return [obj.estado, obj.general, obj.pro01, obj.pro02, obj.pro03, obj.pro04, obj.pro05];
                     });
@@ -456,9 +455,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                         return [obj.estado, obj.general, obj.pro01, obj.pro02, obj.pro03, obj.pro04, obj.pro05];
                     });
 
-                    // console.log(this.dataTablaCargoArray);
-                    // console.log(this.dataTablaDocumentoArray);
-
+                   
                 },
                 error => {
                     if (error.status === 400) {
@@ -507,9 +504,8 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                 seriesGapPercent: 0,
                 valueAxis:
                 {
-                    unitInterval: 10,
+                    unitInterval: 5,
                     minValue: 0,
-                    maxValue: 100,
                     displayValueAxis: true,
                     description: 'Cantidad de cargos',
                     axisSize: 'auto',
@@ -536,8 +532,8 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
     valueAxis3: any =
         {
-            minValue: 0,
-            maxValue: 20,
+            unitInterval: 5,
+            minValue: 0,            
             flip: true,
             labels: {
                 visible: true,

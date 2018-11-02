@@ -96,26 +96,26 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
-        let fi = new Date(new Date(fechaIni).getTimezoneOffset() * 60 * 1000 + new Date(fechaIni).getTime());
-        let ff = new Date(new Date(fechaFin).getTimezoneOffset() * 60 * 1000 + new Date(fechaFin).getTime());
-        let fechaInicial = new Date(moment(new Date(fi.getFullYear(), fi.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
-        let fechaFinal = new Date(moment(new Date(ff.getFullYear(), ff.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
-
-        let aIni = fechaInicial.getFullYear();
-        let mIni = fechaInicial.getMonth();
-        let aFin = fechaFinal.getFullYear();
-        let mFin = fechaFinal.getMonth();
-
-        //console.log((aFin - aIni) * 12 + (mFin - mIni));
-
-        if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
-            this.notifier.notify('error', 'SELECCIONE COMO MÁXIMO UN PERIODO DE 13 MESES');
-            return;
-        }
 
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
+
+
+            let fechaIniDate = new Date(fechaIni);
+            let fechaFinDate = new Date(fechaFin);
+            fechaIniDate = new Date(fechaIniDate.getTimezoneOffset() * 60 * 1000 + fechaIniDate.getTime());
+            fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
+            let mIni = fechaIniDate.getMonth();
+            let aIni = fechaIniDate.getFullYear();
+
+            if ((fechaFinDate.getFullYear() - fechaIniDate.getFullYear()) * 12 + (fechaFinDate.getMonth() - fechaIniDate.getMonth()) >= 13) {
+                this.notifier.notify('error', 'SELECCIONE COMO MÁXIMO UN PERIODO DE 13 MESES');
+                return;
+            }
+
+
+            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENTREGADO).subscribe(
+
                 documentos => {
 
                     this.dataGrafico = [];
@@ -123,39 +123,35 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                     this._registros = [];
                     this._final = [];
 
-
                     let ii = 1;
 
-                    while (((aFin - aIni) * 12 + (mFin - mIni)) >= 0) {
+                    while ((fechaFinDate.getFullYear() - fechaIniDate.getFullYear()) * 12 + (fechaFinDate.getMonth() - fechaIniDate.getMonth()) >= 0) {
 
                         this.proveedores.forEach(
                             proveedor => {
 
                                 let reporteFinal = {
                                     proveedor: "", plazoDistribucion: "", eficiencia: "", cantidad01: "0", cantidad02: "0", cantidad03: "0", cantidad04: "0", cantidad05: "0",
-                                    cantidad06: "0", cantidad07: "0", cantidad08: "0", cantidad09: "0", cantidad10: "0", cantidad11: "0", cantidad12: "0", cantidad13: "0", tipoFila: 1, estilo : ""
+                                    cantidad06: "0", cantidad07: "0", cantidad08: "0", cantidad09: "0", cantidad10: "0", cantidad11: "0", cantidad12: "0", cantidad13: "0", tipoFila: 1, estilo: ""
                                 }
 
                                 let c = documentos.filter(documento => {
                                     return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth() &&
+                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaIniDate).getFullYear() &&
+                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaIniDate).getMonth() &&
                                         moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"), 'days') <= (documento.envio.plazoDistribucion.tiempoEnvio / 24)
                                 }
                                 ).length;
 
                                 let total_mes = documentos.filter(documento => {
-                                    console.log(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"),'days'));
                                     return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth() &&
-                                        moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"), 'days') <= (documento.envio.plazoDistribucion.tiempoEnvio / 24)
+                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaIniDate).getFullYear() &&
+                                        new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaIniDate).getMonth()
+
                                 }
                                 ).length;
 
-                                
-                                console.log(c);
-                                console.log(total_mes);
+
                                 if (ii == 1) {
 
                                     reporteFinal.proveedor = proveedor.nombre;
@@ -182,99 +178,112 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                     if (ii == 12) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == proveedor.nombre).cantidad12 = this.Porcentaje(c, total_mes);
                                     if (ii == 13) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == proveedor.nombre).cantidad13 = this.Porcentaje(c, total_mes);
 
-                                    
-
                                 }
-
-
 
                                 this.plazosDistribucion.forEach(
                                     plazoDistribucion => {
 
+                                        let reporteDentro = {
+                                            proveedor: "", plazoDistribucion: "", eficiencia: "", cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0,
+                                            cantidad06: 0, cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, tipoFila: 1, estilo: ""
+                                        }
+
+                                        let reporteFuera = {
+                                            proveedor: "", plazoDistribucion: "", eficiencia: "", cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0,
+                                            cantidad06: 0, cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, tipoFila: 1, estilo: ""
+                                        }
+
+                                        let dentro = 0;
+                                        let fuera = 0;
+
+                                        dentro = documentos.filter(documento => {
+                                            return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+                                                documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
+                                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaIniDate).getFullYear() &&
+                                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaIniDate).getMonth() &&
+                                                moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"), 'days') <= (documento.envio.plazoDistribucion.tiempoEnvio / 24)
+                                        }
+                                        ).length;
 
 
+                                        fuera = documentos.filter(documento => {
+                                            return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+                                                documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
+                                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaIniDate).getFullYear() &&
+                                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaIniDate).getMonth() &&
+                                                moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"), 'days') > (documento.envio.plazoDistribucion.tiempoEnvio / 24)
+                                        }
+                                        ).length;
 
 
-                                        this.eficiencia.forEach(
+                                        if (ii == 1) {
 
-                                            eficiencia => {
+                                            reporteDentro.proveedor = proveedor.nombre;
+                                            reporteDentro.plazoDistribucion = plazoDistribucion.nombre;
+                                            reporteDentro.eficiencia = 'DENTRO';
+                                            reporteDentro.cantidad01 = dentro;
+                                            this._final.push(reporteDentro);
 
-                                                let reporteFinal = {
-                                                    proveedor: "", plazoDistribucion: "", eficiencia: "", cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0,
-                                                    cantidad06: 0, cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, tipoFila : 1, estilo : ""
-                                                }
+                                            reporteFuera.proveedor = proveedor.nombre;
+                                            reporteFuera.plazoDistribucion = plazoDistribucion.nombre;
+                                            reporteFuera.eficiencia = 'FUERA DE PLAZO';
+                                            reporteFuera.cantidad01 = fuera;
+                                            this._final.push(reporteFuera);
 
-                                                c = 0;
+                                        }
+                                        else {
 
-                                                if (eficiencia.descripcion == 'DENTRO') {
-
-                                                    c = documentos.filter(documento => {
-                                                        return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                                            documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth() &&
-                                                            moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"), 'days') <= (documento.envio.plazoDistribucion.tiempoEnvio / 24)
-                                                    }
-                                                    ).length;
-                                                }
-                                                else {
-
-                                                    c = documentos.filter(documento => {
-                                                        return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                                            documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                                            new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth() &&
-                                                            moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"), 'days') > (documento.envio.plazoDistribucion.tiempoEnvio / 24)
-                                                    }
-                                                    ).length;
-                                                }
-
-
-
-
-
-                                                if (ii == 1) {
-
-                                                    reporteFinal.proveedor = proveedor.nombre;
-                                                    reporteFinal.plazoDistribucion = plazoDistribucion.nombre;
-                                                    reporteFinal.eficiencia = eficiencia.descripcion;
-                                                    reporteFinal.cantidad01 = c;
-
-                                                    this._final.push(reporteFinal);
-
-                                                }
-                                                else {
-                                                    console.log(this._final);
-                                                    console.log(eficiencia.descripcion);
-                                                    console.log("hola");
-                                                    if (ii == 2) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad02 = c;
-                                                    if (ii == 3) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad03 = c;
-                                                    if (ii == 4) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad04 = c;
-                                                    if (ii == 5) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad05 = c;
-                                                    if (ii == 6) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad06 = c;
-                                                    if (ii == 7) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad07 = c;
-                                                    if (ii == 8) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad08 = c;
-                                                    if (ii == 9) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad09 = c;
-                                                    if (ii == 10) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad10 = c;
-                                                    if (ii == 11) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad11 = c;
-                                                    if (ii == 12) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad12 = c;
-                                                    if (ii == 13) this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == eficiencia.descripcion).cantidad13 = c;
-
-                                                }
-
-
+                                            if (ii == 2) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad02 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad02 = fuera;
                                             }
-
-                                        )
-
-
-
-
-
+                                            if (ii == 3) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad03 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad03 = fuera;
+                                            }
+                                            if (ii == 4) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad04 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad04 = fuera;
+                                            }
+                                            if (ii == 5) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad05 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad05 = fuera;
+                                            }
+                                            if (ii == 6) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad06 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad06 = fuera;
+                                            }
+                                            if (ii == 7) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad07 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad07 = fuera;
+                                            }
+                                            if (ii == 8) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad08 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad08 = fuera;
+                                            }
+                                            if (ii == 9) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad09 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad09 = fuera;
+                                            }
+                                            if (ii == 10) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad10 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad10 = fuera;
+                                            }
+                                            if (ii == 11) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad11 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad11 = fuera;
+                                            }
+                                            if (ii == 12) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad12 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad12 = fuera;
+                                            }
+                                            if (ii == 13) {
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'DENTRO').cantidad13 = dentro;
+                                                this._final.find(x => x.proveedor == proveedor.nombre && x.plazoDistribucion == plazoDistribucion.nombre && x.eficiencia == 'FUERA DE PLAZO').cantidad13 = fuera;
+                                            }
+                                        }
                                     }
-
                                 )
-
                             }
                         )
 
@@ -284,23 +293,22 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                             cantidad: "0"
                         };
 
-                        
-                        registroGrafico.mes = this.NombreMes(fechaInicial);
+                        registroGrafico.mes = this.NombreMes(fechaIniDate);
 
                         let totales_mes = 0;
                         let eficiencia_mes = 0;
 
 
                         eficiencia_mes = documentos.filter(documento => {
-                            return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth() &&
+                            return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaIniDate).getFullYear() &&
+                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaIniDate).getMonth() &&
                                 moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"), 'days') <= (documento.envio.plazoDistribucion.tiempoEnvio / 24)
                         }
                         ).length;
 
                         totales_mes = documentos.filter(documento => {
-                            return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
-                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 3).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
+                            return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaIniDate).getFullYear() &&
+                                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaIniDate).getMonth()
                         }
                         ).length;
 
@@ -315,35 +323,27 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                             nombre: ""
                         }
                         mes.id = ii;
-                        mes.nombre = this.NombreMes(fechaInicial);
+                        mes.nombre = this.NombreMes(fechaIniDate);
                         this.meses.push(mes);
 
 
                         ii++;
                         mIni++;
                         if (mIni >= 13) {
-                            fechaInicial = new Date(moment(new Date(fi.getFullYear() + 1, 0, 1), "DD-MM-YYYY HH:mm:ss"));
+                            fechaIniDate = new Date(moment(new Date(fechaIniDate.getFullYear() + 1, 0, 1), "DD-MM-YYYY HH:mm:ss"));
                         }
                         else {
-                            fechaInicial.setMonth(mIni);
+                            fechaIniDate.setMonth(mIni);
                         }
 
-                        aIni = fechaInicial.getFullYear();
-                        mIni = fechaInicial.getMonth();
-
+                        aIni = fechaIniDate.getFullYear();
+                        mIni = fechaIniDate.getMonth();
                     }
 
-
                     this._registros = this._final.map(function (obj) {
-                        return [obj.plazoDistribucion, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.proveedor, obj.eficiencia,obj.tipoFila,obj.estilo];
+                        return [obj.plazoDistribucion, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.proveedor, obj.eficiencia, obj.tipoFila, obj.estilo];
                     });
 
-                    let kk: number = 0;
-
-                    console.log(this.dataGrafico);
-                    console.log(this.meses);
-                    console.log(this._final);
-                    console.log(this._registros);
 
                 },
                 error => {
@@ -381,9 +381,9 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
         };
     valueAxis: any =
         {
-            unitInterval: 5,
+            unitInterval: 10,
             minValue: 0,
-            maxValue: 50,
+            maxValue: 110,
             title: { text: 'Volumen de documentos<br><br>' },
             labels: { horizontalAlignment: 'right' }
         };
