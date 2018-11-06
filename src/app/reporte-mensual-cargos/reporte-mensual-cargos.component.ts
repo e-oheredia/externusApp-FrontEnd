@@ -161,8 +161,6 @@ export class ReporteMensualCargosComponent implements OnInit {
                   regpro.cantidad01 = cd + cp;
                   regpro.total = cd + cp;
 
-                  this._final.push(regpro);
-
                   devuelto.proveedor = proveedor.nombre;
                   devuelto.estado = 'DEVUELTO';
                   devuelto.cantidad01 = cd;
@@ -173,6 +171,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                   pendiente.cantidad01 = cp;
                   pendiente.total = cp;
 
+                  this._final.push(regpro);
                   this._final.push(devuelto);
                   this._final.push(pendiente);
 
@@ -182,7 +181,6 @@ export class ReporteMensualCargosComponent implements OnInit {
                     this._final.find(x => x.estado === 'DEVUELTO' && x.proveedor === proveedor.nombre).cantidad02 = cd;
                     this._final.find(x => x.estado === 'PENDIENTE' && x.proveedor === proveedor.nombre).cantidad02 = cp;
                     this._final.find(x => x.estado === proveedor.nombre && x.proveedor === proveedor.nombre).cantidad02 = cp + cd;
-
 
                   }
                   if (ii == 3) {
@@ -245,18 +243,89 @@ export class ReporteMensualCargosComponent implements OnInit {
                   let c1 = this._final.find(x => x.estado === 'DEVUELTO' && x.proveedor === proveedor.nombre).total;
                   let c2 = this._final.find(x => x.estado === 'PENDIENTE' && x.proveedor === proveedor.nombre).total;
                   let c3 = this._final.find(x => x.estado === proveedor.nombre && x.proveedor === proveedor.nombre).total;
+
                   this._final.find(x => x.estado === 'DEVUELTO' && x.proveedor === proveedor.nombre).total = c1 + cd;
                   this._final.find(x => x.estado === 'PENDIENTE' && x.proveedor === proveedor.nombre).total = c2 + cp;
                   this._final.find(x => x.estado === proveedor.nombre && x.proveedor === proveedor.nombre).total = c3 + cd + cp;
-
 
                 }
 
               }
             )
 
+            let regtotal = {
+              estado: '',
+              cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0, cantidad06: 0,
+              cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, nombre: '', total: 0
+            }
+
+            //cargos por courier pendientes
+            let cpcp = documentos.filter(documento => {
+              return documento.recepcionado === false && 
+                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
+                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
+            }).length;
+
+            //cargos por courier devueltos
+            let cpcd = documentos.filter(documento => {
+              return documento.recepcionado === true &&
+                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
+                new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
+            }).length;
+
+            if (ii == 1) {
+              regtotal.nombre = "TOTALITO";
+              regtotal.estado = "TOTAL";
+              regtotal.cantidad01 = cpcp + cpcd;
+              regtotal.total = cpcp + cpcd;
+              this._final.push(regtotal);
+            }
+            else {
+              if (ii == 2) {                
+                this._final.find(x => x.estado === "TOTAL").cantidad02 = cpcp + cpcd;
+              }
+              if (ii == 3) {
+                this._final.find(x => x.estado === "TOTAL").cantidad03 = cpcp + cpcd;
+              }
+              if (ii == 4) {
+                this._final.find(x => x.estado === "TOTAL").cantidad04 = cpcp + cpcd;
+              }
+              if (ii == 5) {
+                this._final.find(x => x.estado === "TOTAL").cantidad05 = cpcp + cpcd;
+              }
+              if (ii == 6) {
+                this._final.find(x => x.estado === "TOTAL").cantidad06 = cpcp + cpcd;
+              }
+              if (ii == 7) {
+                this._final.find(x => x.estado === "TOTAL").cantidad07 = cpcp + cpcd;
+              }
+              if (ii == 8) {
+                this._final.find(x => x.estado === "TOTAL").cantidad08 = cpcp + cpcd;
+              }
+              if (ii == 9) {
+                this._final.find(x => x.estado === "TOTAL").cantidad09 = cpcp + cpcd;
+              }
+              if (ii == 10) {
+                this._final.find(x => x.estado === "TOTAL").cantidad10 = cpcp + cpcd;
+              }
+              if (ii == 11) {
+                this._final.find(x => x.estado === "TOTAL").cantidad11 = cpcp + cpcd;
+              }
+              if (ii == 12) {
+                this._final.find(x => x.estado === "TOTAL").cantidad12 = cpcp + cpcd;
+              }
+              if (ii == 13) {
+                this._final.find(x => x.estado === "TOTAL").cantidad13 = cpcp + cpcd;
+              }
+
+              let c1 = this._final.find(x => x.estado === "TOTAL").total;
+              this._final.find(x => x.estado === "TOTAL").total = c1 + cpcp + cpcd;
+
+            }
+
 
             //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
             this.areas.forEach(
               area => {
@@ -341,7 +410,7 @@ export class ReporteMensualCargosComponent implements OnInit {
             )
 
 
-            let regtotal = {
+            let regtotal2 = {
               estado: '',
               cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0, cantidad06: 0,
               cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, nombre: '', total: 0
@@ -360,11 +429,11 @@ export class ReporteMensualCargosComponent implements OnInit {
 
 
             if (ii == 1) {
-              regtotal.nombre = "TOTALITO";
-              regtotal.estado = "TOTAL";
-              regtotal.cantidad01 = cm;
-              regtotal.total = cm;
-              this._final2.push(regtotal);
+              regtotal2.nombre = "TOTALITO";
+              regtotal2.estado = "TOTAL";
+              regtotal2.cantidad01 = cm;
+              regtotal2.total = cm;
+              this._final2.push(regtotal2);
             }
             else {
               if (ii == 2) {                
@@ -439,11 +508,11 @@ export class ReporteMensualCargosComponent implements OnInit {
 
           }
 
-          this._registros2 = this._final2.map(function (obj) {
+          this._registros = this._final.map(function (obj) {
             return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
           });
 
-          this._registros = this._final.map(function (obj) {
+          this._registros2 = this._final2.map(function (obj) {
             return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
           });
 

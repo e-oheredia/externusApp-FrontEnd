@@ -155,7 +155,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
           let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
           proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
             let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-              plazoDistribucion: plazoDistribucion2.nombre,
+              plazoDistribucion: plazoDistribucion2.tiempoEnvio + ' H',
               dentroPlazo: documentos.filter(documento => {
                 if (documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                   documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
@@ -171,7 +171,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
           });
           if (plazoDistribucion.id === 1) {
             eficienciaPorPlazoDistribucionPorProveedor.push({
-              plazoDistribucion: 'Más de ' + plazoDistribucion.nombre,
+              plazoDistribucion: 'Más',
               dentroPlazo: documentos.filter(documento =>
                 documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                 documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
@@ -215,18 +215,20 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     }
   }
 
-  getSeriesGroups(type: string, datas: any[], orientation = 'vertical') {
+  getSeriesGroups(type: string, datas: any[], orientation = 'vertical', columnsGapPercent = 100) {
     let series: any[] = [];
     datas.forEach(data => {
       let keys: string[] = Object.keys(data);
       if (keys.length == 1) {
         series.push({
           dataField: keys[0],
+          showLabels: true,
           displayText: data[keys[0]]
         })
       } else {
         series.push({
           dataField: keys[0],
+          showLabels: true,
           displayText: data[keys[0]],
           colorFunction: (value, itemIndex) => {
             if (data['indiceReporte'] < itemIndex) {
@@ -242,6 +244,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     return [
       {
         type: type,
+        columnsGapPercent: columnsGapPercent,
         orientation: orientation,
         series: series
       }
