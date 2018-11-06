@@ -60,9 +60,9 @@
       </div>
     </div>
     <div class="card-body" *ngIf="documentos.length !== 0; else mensaje">
-      <div class="row">
-        <div class="col">
-          <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Reporte de Eficacia'" [description]="''"
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <jqxChart #myChart [height]="500" [title]="'Reporte de Eficacia'" [description]="''"
             [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
             [xAxis]="xAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme26'">
           </jqxChart>
@@ -80,12 +80,12 @@
     </div>
     <div class="card-body" *ngIf="documentos.length !== 0; else mensaje">
 
-      <div class="row">
-        <div class="col">
-          <table class="table" align=center>
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <table class="table table-bordered" align=center>
             <thead>
               <tr>
-                <th width=40%>ESTADO</th>
+                <th width=33%>ESTADO</th>
                 <th scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
               </tr>
             </thead>
