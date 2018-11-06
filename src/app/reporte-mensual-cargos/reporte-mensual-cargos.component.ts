@@ -63,22 +63,22 @@ export class ReporteMensualCargosComponent implements OnInit {
   }
 
 
-  NombreMes(mes: Date) {
-    var month = new Array();
-    month[0] = "Enero";
-    month[1] = "Febrero";
-    month[2] = "Marzo";
-    month[3] = "Abril";
-    month[4] = "Mayo";
-    month[5] = "Junio";
-    month[6] = "Julio";
-    month[7] = "Agosto";
-    month[8] = "Septiembre";
-    month[9] = "Octubre";
-    month[10] = "Noviembre";
-    month[11] = "Diciembre";
-    return month[mes.getMonth()];
-  }
+  // NombreMes(mes: Date) {
+  //   var month = new Array();
+  //   month[0] = "Enero";
+  //   month[1] = "Febrero";
+  //   month[2] = "Marzo";
+  //   month[3] = "Abril";
+  //   month[4] = "Mayo";
+  //   month[5] = "Junio";
+  //   month[6] = "Julio";
+  //   month[7] = "Agosto";
+  //   month[8] = "Septiembre";
+  //   month[9] = "Octubre";
+  //   month[10] = "Noviembre";
+  //   month[11] = "Diciembre";
+  //   return month[mes.getMonth()];
+  // }
 
 
 
@@ -421,7 +421,7 @@ export class ReporteMensualCargosComponent implements OnInit {
             }
 
             mes.id = ii;
-            mes.nombre = this.NombreMes(fechaInicial);
+            mes.nombre = this.utilsService.getNombreMes(fechaInicial);
             this.meses.push(mes);
 
 
@@ -448,11 +448,11 @@ export class ReporteMensualCargosComponent implements OnInit {
           });
 
 
-          console.log(this.meses);
-          console.log(this._final);
-          console.log(this._final2);
-          console.log(this._registros);
-          console.log(this._registros2);
+          // console.log(this.meses);
+          // console.log(this._final);
+          // console.log(this._final2);
+          // console.log(this._registros);
+          // console.log(this._registros2);
 
         },
         error => {
