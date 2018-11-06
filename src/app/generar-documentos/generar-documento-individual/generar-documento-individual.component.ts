@@ -1,10 +1,13 @@
+import { AutogeneradoCreadoModalComponent } from './../autogenerado-creado-modal/autogenerado-creado-modal.component';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { CargoPdfService } from './../../shared/cargo-pdf.service';
 import { AppSettings } from '../../shared/app.settings';
 import { EnvioService } from '../../shared/envio.service';
 import { Envio } from '../../../model/envio.model';
 import { PlazoDistribucion } from '../../../model/plazodistribucion.model';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators, ValidatorFn, ValidationErrors, RequiredValidator } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PlazoDistribucionService } from '../../shared/plazodistribucion.service';
 import { TipoServicioService } from '../../shared/tiposervicio.service';
 import { DepartamentoService } from '../../shared/departamento.service';
@@ -22,11 +25,9 @@ import { TipoDocumentoService } from '../../shared/tipodocumento.service';
 import { Buzon } from '../../../model/buzon.model';
 import { BuzonService } from '../../shared/buzon.service';
 import { Documento } from '../../../model/documento.model';
-import { DocumentoService } from '../../shared/documento.service';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from '../../shared/utils.service';
 import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
-import * as jsPDF from "jspdf";
 
 @Component({
   selector: 'app-generar-documento-individual',
@@ -47,7 +48,8 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     private envioService: EnvioService,
     private notifier: NotifierService,
     private utilsService: UtilsService, 
-    private cargoPdfService: CargoPdfService
+    private cargoPdfService: CargoPdfService, 
+    private modalService: BsModalService
   ) { }
 
   documentoForm: FormGroup;
@@ -96,6 +98,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       'telefono': new FormControl(""),
       'direccion': new FormControl("", Validators.required),
       'referencia': new FormControl(""),
+      'cargoPropio': new FormControl("", Validators.required),
       'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)])
     });
   }
@@ -186,21 +189,25 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.envioService.registrarEnvio(this.envio, this.autorizationFile).subscribe(
       envio => {
 
-        this.notifier.notify('success', 'Se ha registrado el envío con autogenerado ' + envio.documentos[0].documentoAutogenerado);
         this.autogeneradoCreado = envio.documentos[0].documentoAutogenerado;
         this.departamento = {};
         this.provincia = {};
-        this.documentoForm.reset();
+        
         envio.documentos[0].distrito = this.documento.distrito;
         
-        setTimeout(() =>{
-          this.cargoPdfService.generarPdfIndividual(envio, document.getElementById("codebar").children[0].children[0]);
-        }, 200);
+        if (this.documentoForm.get("cargoPropio").value !== 1) {
+          setTimeout(() => {
+            this.cargoPdfService.generarPdfIndividual(envio, document.getElementById("codebar").children[0].children[0]);
+          }, 200);
+        }       
+        this.envio = new Envio();   
+        this.documentoForm.reset();    
 
-        
-
-        this.envio = new Envio();
-        
+        let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
+          initialState : {
+            autogenerado: envio.documentos[0].documentoAutogenerado
+          }
+        });
 
       },
       error => {

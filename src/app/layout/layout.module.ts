@@ -1,3 +1,4 @@
+import { AutogeneradoCreadoModalComponent } from './../generar-documentos/autogenerado-creado-modal/autogenerado-creado-modal.component';
 import { CargoPdfService } from './../shared/cargo-pdf.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { EstadoDocumentoService } from './../shared/estadodocumento.service';
@@ -52,7 +53,8 @@ import { TreeViewComponent } from './header/tree-view/tree-view.component';
   ],
   declarations: [
     HeaderComponent, 
-    ConfirmModalComponent, TreeViewComponent
+    ConfirmModalComponent, TreeViewComponent, 
+    AutogeneradoCreadoModalComponent
   ],
   exports: [
     HeaderComponent
@@ -89,7 +91,8 @@ import { TreeViewComponent } from './header/tree-view/tree-view.component';
     CargoPdfService
   ], 
   entryComponents: [ 
-    ConfirmModalComponent
+    ConfirmModalComponent, 
+    AutogeneradoCreadoModalComponent
    ],
 })
 export class LayoutModule { }

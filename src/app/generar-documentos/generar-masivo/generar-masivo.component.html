@@ -102,7 +102,7 @@
             <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion" (change)="onChangeAutorizacionFile($event.srcElement.files[0])"  accept=".msg">
           </div>
           <div class="row">
-            <div class="button-group col text-right">
+            <div class="button-group col text-right mb-4 mt-4">
               <button class="btn btn-outline-success" [disabled]="!masivoForm.valid && documentosCargados.length   === 0" type="submit">
                 Registrar
               </button>

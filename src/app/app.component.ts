@@ -33,8 +33,9 @@ export class AppComponent implements OnInit {
                   console.log(params.rt);
                   this.browserStorageService.set("token", params.token);
                   this.browserStorageService.set("refreshtoken", params.rt); 
-                  this.menuService.llenarMenuAutenticado();                 
+                                   
                 }
+                this.menuService.llenarMenuAutenticado();
               }
             );
           } else {
