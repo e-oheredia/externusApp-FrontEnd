@@ -83,20 +83,20 @@
         <div class="row">
           <div class="col">
 
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th scope="col" rowspan=2>Mes</th>
-                  <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td scope=col>Total</td>
-                  <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
-                </tr>
-              </tbody>
-            </table>
+              <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                      <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td scope=col>TOTAL</td>
+                      <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
+                    </tr>
+                  </tbody>
+                </table>
 
           </div>
         </div>
@@ -113,7 +113,7 @@
             <table class="table table-bordered">
               <thead> 
                 <tr>
-                  <th scope="col">Mes</th>
+                  <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                   <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                 </tr>
               </thead>

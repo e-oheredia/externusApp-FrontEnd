@@ -65,22 +65,9 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
 
     }
 
-    NombreMes(mes: Date) {
-        var month = new Array();
-        month[0] = "Enero";
-        month[1] = "Febrero";
-        month[2] = "Marzo";
-        month[3] = "Abril";
-        month[4] = "Mayo";
-        month[5] = "Junio";
-        month[6] = "Julio";
-        month[7] = "Agosto";
-        month[8] = "Septiembre";
-        month[9] = "Octubre";
-        month[10] = "Noviembre";
-        month[11] = "Diciembre";
-        return month[mes.getMonth()];
-    }
+    //NombreMes(mes: Date) {
+        //return this.utilsService.getNombreMes(mes);
+    //}
 
 
 
@@ -221,7 +208,7 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                             cantidad: 0
                         };
 
-                        registroGrafico.mes = this.NombreMes(fechaInicial);
+                        registroGrafico.mes = this.utilsService.getNombreMes(fechaInicial);//this.NombreMes(fechaInicial);
                         registroGrafico.cantidad = documentos.filter(documento => {
                             return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
                                 new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
@@ -236,7 +223,7 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                             nombre: ""
                         }
                         mes.id = ii;
-                        mes.nombre = this.NombreMes(fechaInicial);
+                        mes.nombre = this.utilsService.getNombreMes(fechaInicial);//this.NombreMes(fechaInicial);
                         this.meses.push(mes);
 
 
