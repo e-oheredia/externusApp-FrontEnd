@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left"></h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body text-center">
+  <p class="text-center">Se ha creado el siguiente autogenerado: </p>
+  <h1>{{autogenerado}}</h1>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success" (click)="aceptar()">Aceptar</button>
+</div>

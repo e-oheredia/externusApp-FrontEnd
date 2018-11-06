@@ -1,3 +1,6 @@
+import { AutogeneradoCreadoModalComponent } from './../autogenerado-creado-modal/autogenerado-creado-modal.component';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { CargoPdfService } from './../../shared/cargo-pdf.service';
 import { AppSettings } from '../../shared/app.settings';
 import { EnvioMasivo } from '../../../model/enviomasivo.model';
@@ -39,7 +42,8 @@ export class GenerarMasivoComponent implements OnInit {
     private utilsService: UtilsService, 
     private envioMasivoService: EnvioMasivoService, 
     private notifier: NotifierService, 
-    private cargoPdfService: CargoPdfService   
+    private cargoPdfService: CargoPdfService, 
+    private modalService: BsModalService
   ) { }
 
   rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;
@@ -216,12 +220,16 @@ export class GenerarMasivoComponent implements OnInit {
       envioMasivo => {        
         this.documentosCargados = [];
         this.dataDocumentosCargados = new LocalDataSource();
-        this.autogeneradoCreado = envioMasivo.masivoAutogenerado;
-        this.masivoForm.reset();
-        this.notifier.notify('success', 'Se ha registrado el Envío Masivo con Autogenerado: ' + envioMasivo.masivoAutogenerado);            
+        this.autogeneradoCreado = envioMasivo.masivoAutogenerado;        
         setTimeout(() =>{
           this.cargoPdfService.generarPdfMasivo(envioMasivo, document.getElementById("codebarMasivo").children[0].children[0]);
         }, 200);
+        let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
+          initialState : {
+            autogenerado: envioMasivo.masivoAutogenerado
+          }
+        });
+        this.masivoForm.reset();
       },
       error => {
         console.log(error);
