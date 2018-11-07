@@ -169,16 +169,14 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
             documentosAux = [];
             eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
           });
-          if (plazoDistribucion.id === 1) {
-            eficienciaPorPlazoDistribucionPorProveedor.push({
-              plazoDistribucion: 'Más',
-              dentroPlazo: documentos.filter(documento =>
-                documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                plazoDistribucion.tiempoEnvio < moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
-              ).length
-            });
-          }
+          eficienciaPorPlazoDistribucionPorProveedor.push({
+            plazoDistribucion: 'Más',
+            dentroPlazo: documentos.filter(documento =>
+              documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+              documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
+              plazoDistribucion.tiempoEnvio < moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+            ).length
+          });
           this.reportesDetalleEficiencia[proveedor.nombre + '-' + plazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
         });
       }
@@ -204,7 +202,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     }
   }
 
-  getValueAxis(title: string, flip=false) {
+  getValueAxis(title: string, flip = false) {
     return {
       title: { text: title },
       flip: flip,
