@@ -297,8 +297,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 orientation: orientation,
                 series: series,
                 columnsMinWidth: 20,
-                columnsMaxWidth: 50,
-            }
+                columnsMaxWidth: 30,
+             }
         ]
     }
 

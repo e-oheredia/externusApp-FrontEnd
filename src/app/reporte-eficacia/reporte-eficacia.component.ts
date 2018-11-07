@@ -139,7 +139,7 @@ export class ReporteEficaciaComponent implements OnInit {
 
     getWidth(): any {
         if (document.body.offsetWidth < 8550) {
-            return '100%';
+            return '80%';
         }
 
         return 850;
@@ -162,7 +162,7 @@ export class ReporteEficaciaComponent implements OnInit {
                 valueAxis:
                 {
                     visible: true,
-                    unitInterval: 1,
+                    unitInterval: 10,
                     displayValueAxis: true,
                     axisSize: 'auto',
                     minValue: 0,

@@ -40,7 +40,9 @@
     </div>
   </div>
 </div>
-<div class="row" *ngIf="documentos.length > 0; else mensaje">
+
+
+<div class="row" *ngIf="graficoEfectividad.length > 0; else mensaje">
   <div class="col">
     <div class="card mb-4">
       <div class="card-header">
@@ -52,8 +54,8 @@
         <div class="row">
           <div class="col">
             <jqxChart #myChart [height]="500" [title]="'Indicador de Efectividad'" [description]="''" [showLegend]="true"
-              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="graficoEficacia" [xAxis]="getAxis"
-              [valueAxis]="getValueAxis" [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme26'">
+              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="graficoEfectividad" [xAxis]="getAxis"
+              [valueAxis]="getValueAxis" [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme05'">
             </jqxChart>
           </div>
         </div>
@@ -62,12 +64,14 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.mes}}</th>
+                  <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.porcentaje | number: '1.1'}}%</td>
+                  <td scope=col>Total</td>
+                  <td *ngFor="let _r of graficoEfectividad" scope="col">{{_r.cantidad }}</td>
                 </tr>
               </tbody>
             </table>
@@ -75,31 +79,23 @@
         </div>
       </div>
     </div>
-    <div *ngIf="documentos.length > 0">
-      <div class="card mb-4" *ngFor="let proveedor of proveedores">
-        <div class="card-header">
-          <div class="titulo">
-            <h4>{{proveedor.nombre}}</h4>
-          </div>
-        </div>
+    <div *ngIf="arrayTablaEfectividad.length > 0">
+      <div class="card mb-4">
+        
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <table class="table">
+              <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th scope="col">ESTADOS</th>
-                    <th scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.mes}}</th>
+                    <th scope="col">Mes </th>
+                    <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                      <td scope="col">PORCENTAJE</td>
-                      <td scope="col" *ngFor="let mes of mesesConsulta">{{getPorcentajePorProveedorYMes(mes, proveedor.id) | number: '1.1'}}% </td>
-                  </tr>
-                  <tr *ngFor="let estadoDocumento of estadosDocumento | orderBy: id: false">
-                    <td scope="col">{{estadoDocumento.nombre}}</td>
-                    <td scope="col" *ngFor="let mes of mesesConsulta">{{getCantidadPorProveedorMesYEstado(estadoDocumento.id, mes, proveedor.id)}}</td>
+                <tbody>        
+                  <tr *ngFor="let _r of arrayTablaEfectividad">                    
+                    <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
+                    <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>
                   </tr>
                 </tbody>
               </table>

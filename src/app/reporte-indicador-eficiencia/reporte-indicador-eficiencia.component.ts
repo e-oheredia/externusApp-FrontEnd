@@ -31,6 +31,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
     _final = [];
 
     meses = [];
+
     eficiencia = [{ descripcion: 'DENTRO' }, { descripcion: 'FUERA DE PLAZO' }];
 
 
@@ -65,23 +66,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
         )
     }
 
-
-    NombreMes(mes: Date) {
-        var month = new Array();
-        month[0] = "Enero";
-        month[1] = "Febrero";
-        month[2] = "Marzo";
-        month[3] = "Abril";
-        month[4] = "Mayo";
-        month[5] = "Junio";
-        month[6] = "Julio";
-        month[7] = "Agosto";
-        month[8] = "Septiembre";
-        month[9] = "Octubre";
-        month[10] = "Noviembre";
-        month[11] = "Diciembre";
-        return month[mes.getMonth()];
-    }
+   
 
     Porcentaje(cantidad: number, total: number): string {
         let resultado = (cantidad * 100) / total;
@@ -293,7 +278,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                             cantidad: "0"
                         };
 
-                        registroGrafico.mes = this.NombreMes(fechaIniDate);
+                        registroGrafico.mes = this.utilsService.getNombreMes(fechaIniDate);
 
                         let totales_mes = 0;
                         let eficiencia_mes = 0;
@@ -323,7 +308,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                             nombre: ""
                         }
                         mes.id = ii;
-                        mes.nombre = this.NombreMes(fechaIniDate);
+                        mes.nombre = this.utilsService.getNombreMes(fechaIniDate);
                         this.meses.push(mes);
 
 

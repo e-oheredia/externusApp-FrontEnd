@@ -114,7 +114,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
 
             this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENVIADO).subscribe(
-            //this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaInicial, fechaFinal, EstadoDocumentoEnum.ENVIADO).subscribe(
+                //this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaInicial, fechaFinal, EstadoDocumentoEnum.ENVIADO).subscribe(
 
 
                 documentos => {
@@ -281,29 +281,46 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     )
 
 
-                    
+
                     console.log("OBJETOS ****************************");
                     console.log(this.dataGraficoDetallePendienteArea);
-                    this.dataGraficoDetallePendienteArea.sort().reverse();
-
+                    this.dataGraficoDetallePendienteArea.sort((a,b) => (a.cantidad > b.cantidad) ? 1 : ((b.cantidad > a.cantidad) ? -1 : 0)).reverse();
+                   
+                    console.log(this.dataGraficoDetallePendienteArea);
                     let i = 1;
                     let BreakException = {};
-                    try {
 
-                        this.dataGraficoDetallePendienteArea.forEach(
-                            registro => {
+                    let cantidad_otras_areas: number = 0;
 
-                                if (i <= 5) {
-                                    this.dataGraficoDetallePendienteAreaTop.push(registro);
-                                }
-                                else {
-                                    throw BreakException;
-                                }
-                            }
-                        )
-                    } catch (e) {
-                        if (e !== BreakException) throw e;
+                    let otras_areas = {
+                        nombre: '',
+                        cantidad: '',
+
                     }
+
+                    // try {
+
+                    this.dataGraficoDetallePendienteArea.forEach(
+                        registro => {
+
+                            if (i <= 5) {
+                                this.dataGraficoDetallePendienteAreaTop.push(registro);
+                                i++;
+                            }
+                            else {
+
+                                cantidad_otras_areas += parseInt(registro.cantidad);
+                            }
+                        }
+                    )
+                    // } catch (e) {
+                    //     if (e !== BreakException) throw e;
+                    // }
+
+                    otras_areas.nombre = "OTROS";
+                    otras_areas.cantidad = cantidad_otras_areas.toString();
+
+                    this.dataGraficoDetallePendienteAreaTop.push(otras_areas);
 
                     console.log(this.dataGraficoDetallePendienteAreaTop);
 
@@ -455,7 +472,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                         return [obj.estado, obj.general, obj.pro01, obj.pro02, obj.pro03, obj.pro04, obj.pro05];
                     });
 
-                   
+
                 },
                 error => {
                     if (error.status === 400) {
@@ -482,7 +499,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             return '90%';
         }
 
-        return '100%';
+        return '80%';
     }
 
     padding: any = { left: 5, top: 5, right: 5, bottom: 5 };
@@ -500,11 +517,11 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         [
             {
                 type: 'stackedcolumn',
-                columnsGapPercent: 80,
+                columnsGapPercent: 85,
                 seriesGapPercent: 0,
                 valueAxis:
                 {
-                    unitInterval: 5,
+                    unitInterval: 10,
                     minValue: 0,
                     displayValueAxis: true,
                     description: 'Cantidad de cargos',
@@ -512,8 +529,8 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     tickMarksColor: '#FFFFFF'
                 },
                 series: [
-                    { dataField: 'Devuelto', displayText: 'Devuelto' },
-                    { dataField: 'Pendiente', displayText: 'Pendiente' }
+                    { dataField: 'Devuelto', displayText: 'Devuelto', showLabels : true, },
+                    { dataField: 'Pendiente', displayText: 'Pendiente', showLabels : true, }
                 ]
             }
         ];
@@ -526,14 +543,20 @@ export class ReporteDevolucionCargoComponent implements OnInit {
     xAxis3: any =
         {
             dataField: 'nombre',
-            gridLines: { visible: true },
-            flip: false
+            labels:
+            {
+                angle: 90,
+                horizontalAlignment: 'right',
+                verticalAlignment: 'center',
+                rotationPoint: 'right',
+                offset: { x: 0, y: -5 }
+            }
         };
 
     valueAxis3: any =
         {
             unitInterval: 5,
-            minValue: 0,            
+            minValue: 0,
             flip: true,
             labels: {
                 visible: true,
@@ -547,10 +570,10 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             {
                 type: 'column',
                 orientation: 'horizontal',
-                columnsGapPercent: 70,
+                columnsMaxWidth: 30,                
                 toolTipFormatSettings: { thousandsSeparator: ',' },
                 series: [
-                    { dataField: 'cantidad', displayText: 'cantidad' }
+                    { dataField: 'cantidad', displayText: 'cantidad', showLabels : true, }
                 ]
             }
         ];
