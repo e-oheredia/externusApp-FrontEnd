@@ -555,14 +555,10 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
     valueAxis3: any =
         {
-            unitInterval: 5,
             minValue: 0,
             flip: true,
             labels: {
-                visible: true,
-                formatFunction: (value: string) => {
-                    return parseInt(value);
-                }
+                visible: true
             }
         };
     seriesGroups3: any[] =

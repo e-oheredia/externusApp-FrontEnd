@@ -283,9 +283,8 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
         };
     valueAxis: any =
         {
-            unitInterval: 10,
             minValue: 0,
-            maxValue: 110,
+            maxValue: 'auto',
             title: { text: 'Volumen de documentos<br><br>' },
             labels: { horizontalAlignment: 'right' }
         };

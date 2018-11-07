@@ -195,7 +195,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         
         envio.documentos[0].distrito = this.documento.distrito;
         
-        if (this.documentoForm.get("cargoPropio").value !== 1) {
+        if (this.documentoForm.get("cargoPropio").value !== '1') {
           setTimeout(() => {
             this.cargoPdfService.generarPdfIndividual(envio, document.getElementById("codebar").children[0].children[0]);
           }, 200);

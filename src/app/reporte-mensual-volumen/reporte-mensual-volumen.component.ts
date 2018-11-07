@@ -126,7 +126,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(
                     plazoDistribucion => {
                         let graficoPorProveedorObjeto = {
-                            plazo: plazoDistribucion.nombre,
+                            plazo: plazoDistribucion.tiempoEnvio + ' H',
                             cantidad: documentos.filter(documento =>
                                 documento.documentosGuia[0].guia.proveedor.id===proveedor.id &&
                                 documento.envio.plazoDistribucion.id === plazoDistribucion.id).length

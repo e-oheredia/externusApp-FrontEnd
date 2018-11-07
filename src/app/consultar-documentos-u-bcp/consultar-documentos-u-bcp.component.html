@@ -56,6 +56,7 @@
                     <th scope="col">Dirección</th>
                     <th scope="col">Distrito</th>
                     <th scope="col">Estado</th>
+                    <th scope="col">Físico recibido</th>
                     <th scope="col">Autorizado</th>
                     <th scope="col">Fecha Creación</th>
                     <th scope="col">Fecha Envío</th>
@@ -73,6 +74,7 @@
                     <td scope="col">{{documento.direccion}}</td>
                     <td scope="col">{{documento.distrito.nombre}}</td>
                     <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre}}</td>
+                    <td scope="col">{{documento.recepcionado ? "SÍ":"NO"}}</td>
                     <td scope="col">{{documento.envio.autorizado ? "SÍ":"NO"}}</td>
                     <td scope="col">{{documentoService.getFechaCreacion(documento)}}</td>
 
