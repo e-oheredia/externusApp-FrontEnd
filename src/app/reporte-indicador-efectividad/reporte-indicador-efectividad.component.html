@@ -53,13 +53,13 @@
           <div class="col">
             <jqxChart #myChart [height]="500" [title]="'Indicador de Efectividad'" [description]="''" [showLegend]="true"
               [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="graficoEficacia" [xAxis]="getAxis"
-              [valueAxis]="getValueAxis" [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme04'">
+              [valueAxis]="getValueAxis" [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme26'">
             </jqxChart>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <table class="table">
+            <table class="table table-bordered">
               <thead>
                 <tr>
                   <th scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.mes}}</th>
@@ -67,7 +67,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.porcentaje | number: '1.2'}}%</td>
+                  <td scope="col" *ngFor="let eficaciaMes of graficoEficacia">{{eficaciaMes.porcentaje | number: '1.1'}}%</td>
                 </tr>
               </tbody>
             </table>
@@ -95,7 +95,7 @@
                 <tbody>
                   <tr>
                       <td scope="col">PORCENTAJE</td>
-                      <td scope="col" *ngFor="let mes of mesesConsulta">{{getPorcentajePorProveedorYMes(mes, proveedor.id) | number: '1.2'}}% </td>
+                      <td scope="col" *ngFor="let mes of mesesConsulta">{{getPorcentajePorProveedorYMes(mes, proveedor.id) | number: '1.1'}}% </td>
                   </tr>
                   <tr *ngFor="let estadoDocumento of estadosDocumento | orderBy: id: false">
                     <td scope="col">{{estadoDocumento.nombre}}</td>

@@ -119,9 +119,11 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
         return moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
           moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
       }).length);
+
       let graficoEficaciaObject = {
+        
         mes: moment(('0' + mesConsulta.month).substring(1), 'MM').locale('es').format('MMMM').toUpperCase(),
-        porcentaje: (documentos.filter(documento => {
+        porcentaje: ((documentos.filter(documento => {
 
           return (this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.ENTREGADO ||
             this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.REZAGADO) &&
@@ -133,7 +135,7 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
         }).length === 0 ? 1 : documentos.filter(documento => {
           return moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
             moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
-        }).length)) * 100
+        }).length)) * 100).toFixed(1) 
       };
       this.graficoEficacia.push(graficoEficaciaObject);
     });
@@ -160,10 +162,11 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
   getValueAxis = {
     title: { text: 'Porcentaje de Entregados' },
     tickMarks: { color: '#BCBCBC' },
-    labels: { horizontalAlignment: 'right' },
+    labels: {horizontalAlignment: 'right'
+    },
     minValue: 0,
     maxValue: 100,
-    unitInterval: 20
+   
   }
 
 
@@ -184,8 +187,9 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
             borderColor: '#7FC4EF',
             borderOpacity: 0.7,
             padding: { left: 5, right: 5, top: 0, bottom: 0 }
+            
           }
-      }
+      }   
     ]
 
 
@@ -210,7 +214,7 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
   }
 
   getPorcentajePorProveedorYMes(mes, proveedorId) {
-    return this.documentos.filter(documento => {
+     return  (this.documentos.filter(documento => {
       return (this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.ENTREGADO ||
         this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.REZAGADO) &&
         documento.documentosGuia[0].guia.proveedor.id === proveedorId &&
@@ -223,7 +227,9 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
     }).length === 0 ? 1 : this.documentos.filter(documento => {
       return  documento.documentosGuia[0].guia.proveedor.id === proveedorId && moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mes.month &&
         moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mes.year
-    }).length) * 100
+    }).length) * 100).toFixed(1)
+
+    
   }
 
   getCantidadPorProveedorMesYEstado(estadoDocumentoId, mes, proveedorId) {
