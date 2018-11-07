@@ -100,7 +100,7 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
       fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
 
 
-      //this.mesesConsulta = this.getMesesConsulta(fechaIniDate, fechaFinDate)
+     
 
       this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENVIADO).subscribe(
         documentos => {
@@ -326,7 +326,8 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
     labels: {horizontalAlignment: 'right'
     },
     minValue: 0,
-    maxValue: 100,
+    unitInterval: 10,
+    maxValue: 110,
    
   }
 

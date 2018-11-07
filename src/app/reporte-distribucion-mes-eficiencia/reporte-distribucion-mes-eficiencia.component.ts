@@ -209,7 +209,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       tickMarks: { color: '#BCBCBC' },
       labels: { visible: true },
       minValue: 0,
-      unitInterval: 1
+      maxValue: 'auto',
     }
   }
 

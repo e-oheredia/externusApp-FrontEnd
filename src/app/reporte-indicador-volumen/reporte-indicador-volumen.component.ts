@@ -65,14 +65,6 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
 
     }
 
-    //NombreMes(mes: Date) {
-        //return this.utilsService.getNombreMes(mes);
-    //}
-
-
-
-
-
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
         let fi = new Date(new Date(fechaIni).getTimezoneOffset() * 60 * 1000 + new Date(fechaIni).getTime());
@@ -284,15 +276,16 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
             dataField: 'mes',
             unitInterval: 1,
             tickMarks: { visible: true, interval: 1 },
+            gridLines : {visible : false},
             gridLinesInterval: { visible: true, interval: 1 },
             valuesOnTicks: false,
             padding: { bottom: 10 }
         };
     valueAxis: any =
         {
-            unitInterval: 5,
+            unitInterval: 10,
             minValue: 0,
-            maxValue: 50,
+            maxValue: 110,
             title: { text: 'Volumen de documentos<br><br>' },
             labels: { horizontalAlignment: 'right' }
         };

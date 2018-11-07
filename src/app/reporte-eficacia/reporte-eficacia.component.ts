@@ -149,7 +149,7 @@ export class ReporteEficaciaComponent implements OnInit {
 
     xAxisCourier: any = {
         dataField: 'estado',
-        showGridLines: true
+        showGridLines: false
     };
 
     seriesGroupsCourier: any[] =
@@ -162,7 +162,6 @@ export class ReporteEficaciaComponent implements OnInit {
                 valueAxis:
                 {
                     visible: true,
-                    unitInterval: 10,
                     displayValueAxis: true,
                     axisSize: 'auto',
                     minValue: 0,

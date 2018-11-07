@@ -521,7 +521,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                 seriesGapPercent: 0,
                 valueAxis:
                 {
-                    unitInterval: 10,
+                    maxValue: 'auto',
                     minValue: 0,
                     displayValueAxis: true,
                     description: 'Cantidad de cargos',
