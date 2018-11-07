@@ -303,45 +303,6 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
     }
   }
 
-  // llenarGraficoEficacia(documentos: Documento[], mesesConsulta: any[] = []) {
-  //   this.graficoEficacia = [];
-  //   mesesConsulta.forEach(mesConsulta => {
-  // console.log(documentos.filter(documento => {
-
-  //   return (this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.ENTREGADO ||
-  //     this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.REZAGADO) &&
-  //     moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
-  //     moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
-  // }).length);
-
-  // console.log(documentos.filter(documento => {
-  //   return moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
-  //     moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
-  // }).length === 0 ? 1 : documentos.filter(documento => {
-  //   return moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
-  //     moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
-  // }).length);
-  //     let graficoEficaciaObject = {
-  //       mes: moment(('0' + mesConsulta.month).substring(1), 'MM').locale('es').format('MMMM').toUpperCase(),
-  //       porcentaje: (documentos.filter(documento => {
-
-  //         return (this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.ENTREGADO ||
-  //           this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.REZAGADO) &&
-  //           moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
-  //           moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
-  //       }).length / (documentos.filter(documento => {
-  //         return moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
-  //           moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
-  //       }).length === 0 ? 1 : documentos.filter(documento => {
-  //         return moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mesConsulta.month &&
-  //           moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mesConsulta.year
-  //       }).length)) * 100
-  //     };
-  //     this.graficoEficacia.push(graficoEficaciaObject);
-  //   });
-  //   console.log(this.graficoEficacia);
-  // }
-
   getAxis = {
     dataField: 'mes',
     unitInterval: 1,
@@ -362,10 +323,11 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
   getValueAxis = {
     title: { text: 'Porcentaje de Entregados' },
     tickMarks: { color: '#BCBCBC' },
-    labels: { horizontalAlignment: 'right' },
+    labels: {horizontalAlignment: 'right'
+    },
     minValue: 0,
     maxValue: 100,
-    unitInterval: 20
+   
   }
 
 
@@ -378,59 +340,20 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
         displayText: 'Porcentaje'
       }],
       symbolType: 'square',
-      labels:
-      {
-        visible: true,
-        backgroundColor: '#FEFEFE',
-        backgroundOpacity: 0.2,
-        borderColor: '#7FC4EF',
-        borderOpacity: 0.7,
-        padding: { left: 5, right: 5, top: 0, bottom: 0 }
-      }
+      
+          labels:
+          {
+            visible: true,
+            backgroundColor: '#FEFEFE',
+            backgroundOpacity: 0.2,
+            borderColor: '#7FC4EF',
+            borderOpacity: 0.7,
+            padding: { left: 5, right: 5, top: 0, bottom: 0 }
+            
+          }
+   
+
     }
   ]
-
-
-  // getMesesConsulta(fechaIni: Date, fechaFin: Date) {
-  //   fechaIni = new Date(fechaIni.getTimezoneOffset() * 60 * 1000 + fechaIni.getTime());
-  //   fechaFin = new Date(fechaFin.getTimezoneOffset() * 60 * 1000 + fechaFin.getTime());
-  //   let startMonth = fechaIni.getMonth();
-  //   let finalMonth = fechaFin.getMonth();
-  //   let startYear = fechaIni.getFullYear();
-  //   let finalYear = fechaFin.getFullYear();
-  //   let meses = [];
-  //   for (let i = startYear; i <= finalYear; i++) {
-  //     for (let j = startMonth; j <= (i === finalYear ? finalMonth : 11); j++) {
-  //       meses.push({
-  //         month: j + 1,
-  //         year: i
-  //       });
-  //     }
-  //     startMonth = 0;
-  //   }
-  //   return meses;
-  // }
-
-  // getPorcentajePorProveedorYMes(mes, proveedorId) {
-  //   return this.documentos.filter(documento => {
-  //     return (this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.ENTREGADO ||
-  //       this.documentoService.getUltimoEstado(documento).id === EstadoDocumentoEnum.REZAGADO) &&
-  //       documento.documentosGuia[0].guia.proveedor.id === proveedorId &&
-  //       moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mes.month &&
-  //       moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mes.year
-  //   }).length / (this.documentos.filter(documento => {
-  //     return documento.documentosGuia[0].guia.proveedor.id === proveedorId &&
-  //       moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mes.month &&
-  //       moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mes.year
-  //   }).length === 0 ? 1 : this.documentos.filter(documento => {
-  //     return documento.documentosGuia[0].guia.proveedor.id === proveedorId && moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mes.month &&
-  //       moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mes.year
-  //   }).length) * 100
-  // }
-
-  // getCantidadPorProveedorMesYEstado(estadoDocumentoId, mes, proveedorId) {
-  //   return this.documentos.filter(documento => this.documentoService.getUltimoEstado(documento).id === estadoDocumentoId && moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").month() + 1 === mes.month && moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss").year() === mes.year && documento.documentosGuia[0].guia.proveedor.id === proveedorId).length
-  // }
-
 
 }

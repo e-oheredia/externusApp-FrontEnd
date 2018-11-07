@@ -167,7 +167,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
     getWidth(): any {
         if (document.body.offsetWidth < 8550) {
-            return '100%';
+            return '60%';
         }
         return 850;
     }
@@ -272,7 +272,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
             if (keys.length == 1) {
                 series.push({
                     dataField: keys[0],
-                    displayText: data[keys[0]]
+                    displayText: data[keys[0]],
+                    showLabels:true
                 })
             } else {
                 series.push({
@@ -283,7 +284,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
                             return '#fff655';
                         }
                         return '#55CC55';
-                    }
+                    },
+                    showLabels:true
                 })
             }
         });
@@ -295,8 +297,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 orientation: orientation,
                 series: series,
                 columnsMinWidth: 20,
-                columnsMaxWidth: 150,
-            }
+                columnsMaxWidth: 30,
+             }
         ]
     }
 

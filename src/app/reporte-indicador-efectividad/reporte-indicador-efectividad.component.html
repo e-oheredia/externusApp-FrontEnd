@@ -92,7 +92,7 @@
                     <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody>        
                   <tr *ngFor="let _r of arrayTablaEfectividad">                    
                     <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
                     <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>

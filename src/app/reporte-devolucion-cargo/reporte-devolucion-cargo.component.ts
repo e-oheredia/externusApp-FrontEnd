@@ -570,7 +570,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             {
                 type: 'column',
                 orientation: 'horizontal',
-                columnsGapPercent: 50,                
+                columnsMaxWidth: 30,                
                 toolTipFormatSettings: { thousandsSeparator: ',' },
                 series: [
                     { dataField: 'cantidad', displayText: 'cantidad', showLabels : true, }
