@@ -66,7 +66,7 @@ export class SubirResultadosEnviosComponent implements OnInit {
             this.listarGuiasSinCerrar();
           }, 
           error => {
-            this.notifier.notify('success', error.error.mensaje);
+            this.notifier.notify('error', error.error.mensaje);
           }
         )
         return;

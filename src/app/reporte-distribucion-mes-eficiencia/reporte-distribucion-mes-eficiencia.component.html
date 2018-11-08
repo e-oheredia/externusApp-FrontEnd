@@ -145,7 +145,7 @@
             <div *ngIf="proveedorElegidoDetalle" class="col">
               <div class="row">
                 <div class="col-4 offset-1 mb-4" *ngFor="let plazoDistribucion of proveedorElegidoDetalle.plazosDistribucion; let i = index">
-                  <jqxChart [height]="400" [title]="plazoDistribucion.nombre" [description]="''" [showLegend]="true"
+                  <jqxChart [height]="400" [title]="plazoDistribucion.nombre" [description]="''" [showLegend]="false"
                     [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="reportesDetalleEficiencia[proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
                     [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de Entregados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                                         dentroPlazo: 'Dentro del Plazo', 
