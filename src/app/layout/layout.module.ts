@@ -36,6 +36,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { OrderModule } from 'ngx-order-pipe';
 import { MenuService } from '../shared/menu.service';
 import { TreeViewComponent } from './header/tree-view/tree-view.component';
+import { SedeDespachoService } from '../shared/sededespacho.service';
 
 @NgModule({
   imports: [  
@@ -88,7 +89,8 @@ import { TreeViewComponent } from './header/tree-view/tree-view.component';
     AreaService, 
     EstadoDocumentoService, 
     MenuService, 
-    CargoPdfService
+    CargoPdfService,
+    SedeDespachoService
   ], 
   entryComponents: [ 
     ConfirmModalComponent, 

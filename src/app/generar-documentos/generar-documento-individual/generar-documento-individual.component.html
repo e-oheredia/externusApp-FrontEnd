@@ -24,15 +24,20 @@
       </div>
       <div class="card-body">
         <form [formGroup]="documentoForm" (ngSubmit)="onSubmit(documentoForm.value)">
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
                 <label for="sedeDespacho">Sede Despacho *</label>
-                <select class="form-control" id="sedeDespacho">
-                  <option>LA MOLINA</option>
+                <select class="form-control" id="sedeDespacho" formControlName="sedeDespacho">
+                  <option *ngFor="let sedeDespacho of sedesDespacho" [ngValue]="sedeDespacho">{{sedeDespacho.nombre}}</option>
                 </select>
+                <span *ngIf="!documentoForm.get('sedeDespacho').valid && documentoForm.get('sedeDespacho').touched" class="text-danger small">
+                  Es necesario la elección de una sede de despacho
+                </span>
               </div>
             </div>
+
             <div class="col">
               <div class="form-group">
                 <label for="nroDocumento">Nro. Documento</label>
@@ -40,6 +45,7 @@
               </div>
             </div>
           </div>
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -47,7 +53,8 @@
                 <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion" (change)="onPlazoDistribucionSelected($event)">
                   <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">{{plazoDistribucion.nombre}}</option>
                 </select>
-                <span *ngIf="!documentoForm.get('plazoDistribucion').valid && documentoForm.get('plazoDistribucion').touched" class="text-danger small">
+                <span *ngIf="!documentoForm.get('plazoDistribucion').valid && documentoForm.get('plazoDistribucion').touched"
+                  class="text-danger small">
                   Es necesario ingresar el plazo de distribución
                 </span>
               </div>
@@ -58,12 +65,14 @@
                 <select class="form-control" id="tipoDocumento" formControlName="tipoDocumento">
                   <option *ngFor="let tipoDocumento of tiposDocumento" [ngValue]="tipoDocumento">{{tipoDocumento.nombre}}</option>
                 </select>
-                <span *ngIf="!documentoForm.get('tipoDocumento').valid && documentoForm.get('tipoDocumento').touched" class="text-danger small">
+                <span *ngIf="!documentoForm.get('tipoDocumento').valid && documentoForm.get('tipoDocumento').touched"
+                  class="text-danger small">
                   Es necesario ingresar el tipo de documento
                 </span>
               </div>
             </div>
           </div>
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -71,7 +80,8 @@
                 <select class="form-control" id="tipoSeguridad" formControlName="tipoSeguridad">
                   <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">{{tipoSeguridad.nombre}}</option>
                 </select>
-                <span *ngIf="!documentoForm.get('tipoSeguridad').valid && documentoForm.get('tipoSeguridad').touched" class="text-danger small">
+                <span *ngIf="!documentoForm.get('tipoSeguridad').valid && documentoForm.get('tipoSeguridad').touched"
+                  class="text-danger small">
                   Es necesario ingresar el tipo de seguridad
                 </span>
               </div>
@@ -82,7 +92,8 @@
                 <select class="form-control" id="tipoServicio" formControlName="tipoServicio">
                   <option *ngFor="let tipoServicio of tiposServicio" [ngValue]="tipoServicio">{{tipoServicio.nombre}}</option>
                 </select>
-                <span *ngIf="!documentoForm.get('tipoServicio').valid && documentoForm.get('tipoServicio').touched" class="text-danger small">
+                <span *ngIf="!documentoForm.get('tipoServicio').valid && documentoForm.get('tipoServicio').touched"
+                  class="text-danger small">
                   Es necesario ingresar el tipo de servicio
                 </span>
               </div>
@@ -93,7 +104,8 @@
               <div class="form-group">
                 <label for="razonSocial">Razón Social</label>
                 <input class="form-control" type="text" name="razonSocial" id="razonSocial" formControlName="razonSocial">
-                <span *ngIf="!documentoForm.get('comunicacionDestino').valid && documentoForm.get('comunicacionDestino').touched" class="text-danger small">
+                <span *ngIf="!documentoForm.get('comunicacionDestino').valid && documentoForm.get('comunicacionDestino').touched"
+                  class="text-danger small">
                   Tiene que ingresar la Razón Social o el Contacto
                 </span>
               </div>
@@ -110,7 +122,8 @@
             <div class="col">
               <div class="form-group">
                 <label for="departamento">Departamento *</label>
-                <select class="form-control" id="departamento" [(ngModel)]="departamento" [ngModelOptions]="{standalone: true}" (change)="onDepartamentoSelectedChanged(departamento)">
+                <select class="form-control" id="departamento" [(ngModel)]="departamento" [ngModelOptions]="{standalone: true}"
+                  (change)="onDepartamentoSelectedChanged(departamento)">
                   <option *ngFor="let departamento of departamentos" [ngValue]="departamento">{{departamento.nombre}}</option>
                 </select>
               </div>
@@ -118,7 +131,8 @@
             <div class="col">
               <div class="form-group">
                 <label for="provincia">Provincia *</label>
-                <select class="form-control" id="provincia" [(ngModel)]="provincia" [ngModelOptions]="{standalone: true}" (change)="onProvinciaSelectedChanged(provincia)">
+                <select class="form-control" id="provincia" [(ngModel)]="provincia" [ngModelOptions]="{standalone: true}"
+                  (change)="onProvinciaSelectedChanged(provincia)">
                   <option *ngFor="let provincia of provincias" [ngValue]="provincia">{{provincia.nombre}}</option>
                 </select>
               </div>
@@ -172,16 +186,18 @@
               <div class="form-row align-items-center float-right mb-3 mt-3">
                 <div class="col-auto">
                   <label for="">
-                      ¿El documento cuenta con cargo propio?
-                  </label>                  
+                    ¿El documento cuenta con cargo propio?
+                  </label>
                 </div>
                 <div class="col-auto">
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" formControlName="cargoPropio" name="cargoPropio" id="inlineRadio1" value="1">
+                    <input class="form-check-input" type="radio" formControlName="cargoPropio" name="cargoPropio" id="inlineRadio1"
+                      value="1">
                     <label class="form-check-label" for="inlineRadio1">Sí</label>
                   </div>
                   <div class="form-check form-check-inline mr-5">
-                    <input class="form-check-input" type="radio" name="cargoPropio" formControlName="cargoPropio" id="inlineRadio2" value="0">
+                    <input class="form-check-input" type="radio" name="cargoPropio" formControlName="cargoPropio" id="inlineRadio2"
+                      value="0">
                     <label class="form-check-label" for="inlineRadio2">No</label>
                   </div>
                   <button class="btn btn-outline-success" [disabled]="!documentoForm.valid">

@@ -28,6 +28,8 @@ import { Documento } from '../../../model/documento.model';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from '../../shared/utils.service';
 import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
+import { Sede } from 'src/model/sede.model';
+import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
 
 @Component({
   selector: 'app-generar-documento-individual',
@@ -49,13 +51,14 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     private notifier: NotifierService,
     private utilsService: UtilsService, 
     private cargoPdfService: CargoPdfService, 
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private sedeDespachoService: SedeDespachoService
   ) { }
 
   documentoForm: FormGroup;
   envio: Envio = new Envio();
   documento: Documento = new Documento;
-  autorizationFile: File;
+  autorizationFile: File; //-----------------------------------------------------
   buzon: Buzon;
   rutaManual: string = AppSettings.MANUAL_REGISTRO;
   departamento = {};
@@ -69,6 +72,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   provincias: Provincia[];
   distritos: Distrito[];
   tiposDocumento: TipoDocumento[];
+  sedesDespacho: Sede[];
   plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), 0);
 
   provinciasSubscription: Subscription;
@@ -81,10 +85,12 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   plazoDistribucionPermitidoSubscription: Subscription;
   buzonSubscription: Subscription;
   autogeneradoCreado: string = '';
+  sedesSubscription: Subscription;
 
   ngOnInit() {
     this.cargarDatosVista();
     this.documentoForm = new FormGroup({
+      'sedeDespacho': new FormControl(null, Validators.required),
       'nroDocumento': new FormControl(""),
       'plazoDistribucion': new FormControl(null, Validators.required),
       'tipoDocumento': new FormControl(null, Validators.required),
@@ -112,6 +118,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.departamentos = this.departamentoService.getDepartamentosPeru();
     this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
     this.buzon = this.buzonService.getBuzonActual();
+    this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
 
     this.tiposDocumentoSubscription = this.tipoDocumentoService.tiposDocumentoChanged.subscribe(
       tiposDocumento => {
@@ -148,8 +155,13 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         this.buzon = buzon;
       }
     )
-  }
+    this.sedesSubscription = this.sedeDespachoService.sedesDespachoChanged.subscribe(
+      sedesDespacho => {
+        this.sedesDespacho = sedesDespacho;
+      }
+    )
 
+  }
   onDepartamentoSelectedChanged(departamento) {
     this.provinciasSubscription = this.provinciaService.listarProvinciaByDepartamentoId(departamento.id).subscribe(
       provincias => {
@@ -165,7 +177,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   onPlazoDistribucionSelected() {
     this.autorizationFile = null;
     this.documentoForm.get("autorizacion").reset();
@@ -173,6 +184,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.envio.buzon = this.buzon;
+    this.envio.sede = this.documentoForm.get("sedeDespacho").value
     this.documento.contactoDestino = this.documentoForm.get("comunicacionDestino.contacto").value;
     this.documento.direccion = this.documentoForm.get("direccion").value;
     this.documento.distrito = this.documentoForm.get("distrito").value;

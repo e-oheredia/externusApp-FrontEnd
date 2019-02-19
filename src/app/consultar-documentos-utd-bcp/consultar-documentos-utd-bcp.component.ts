@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UtilsService } from '../shared/utils.service';
 import { NotifierService } from 'angular-notifier';
 import * as moment from "moment-timezone";
+import { EnvioService } from '../shared/envio.service';
 
 @Component({
   selector: 'app-consultar-documentos-utd-bcp',
@@ -15,7 +16,8 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
 
   constructor(public documentoService: DocumentoService, 
               private utilsService: UtilsService, 
-              private notifier: NotifierService) {
+              private notifier: NotifierService,
+              public envioService: EnvioService) {
 
   }
 
