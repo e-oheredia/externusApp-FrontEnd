@@ -28,8 +28,8 @@
             <div class="col">
               <div class="form-group">
                 <label for="sedeDespacho">Sede Despacho *</label>
-                <select class="form-control" id="sedeDespacho">
-                  <option>LA MOLINA</option>
+                <select class="form-control" id="sedeDespacho" formControlName="sedeDespacho">
+                  <option *ngFor="let sedeDespacho of sedesDespacho" [ngValue]="sedeDespacho">{{sedeDespacho.nombre}}</option>
                 </select>
               </div>
             </div>

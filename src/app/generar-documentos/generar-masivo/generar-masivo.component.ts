@@ -24,6 +24,8 @@ import { EnvioMasivoService } from '../../shared/enviomasivo.service';
 import { NotifierService } from 'angular-notifier';
 import { LocalDataSource } from 'ng2-smart-table';
 import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
+import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
+import { Sede } from 'src/model/sede.model';
 
 
 @Component({
@@ -43,7 +45,8 @@ export class GenerarMasivoComponent implements OnInit {
     private envioMasivoService: EnvioMasivoService, 
     private notifier: NotifierService, 
     private cargoPdfService: CargoPdfService, 
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private sedeDespachoService: SedeDespachoService
   ) { }
 
   rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;
@@ -52,6 +55,7 @@ export class GenerarMasivoComponent implements OnInit {
   tiposSeguridad: TipoSeguridad[];
   tiposServicio: TipoServicio[];
   tiposDocumento: TipoDocumento[];
+  sedesDespacho: Sede[];
   plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0,""), 0);
   buzon: Buzon; 
   excelFile: File;
@@ -94,6 +98,7 @@ export class GenerarMasivoComponent implements OnInit {
 
   plazosDistribucionSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
+  sedesSubscription: Subscription;
   tiposServicioSubscription: Subscription;
   tiposDocumentoSubscription: Subscription;
   plazoDistribucionPermitidoSubscription: Subscription;
@@ -104,6 +109,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.tableSettings.columns = this.columnsDocumentosCargados; 
     this.cargarDatosVista();
     this.masivoForm = new FormGroup({
+      'sedeDespacho': new FormControl(null, Validators.required),
       'plazoDistribucion': new FormControl(null, Validators.required), 
       'tipoDocumento': new FormControl(null, Validators.required), 
       'tipoSeguridad': new FormControl(null, Validators.required), 
@@ -115,6 +121,7 @@ export class GenerarMasivoComponent implements OnInit {
 
   cargarDatosVista() {
 
+    this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
     this.tiposDocumento = this.tipoDocumentoService.getTiposDocumento();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
@@ -151,6 +158,11 @@ export class GenerarMasivoComponent implements OnInit {
     this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(
       buzon =>{
         this.buzon = buzon;
+      }
+    )
+    this.sedesSubscription = this.sedeDespachoService.sedesDespachoChanged.subscribe(
+      sedesDespacho => {
+        this.sedesDespacho = sedesDespacho;
       }
     )
   }  
@@ -211,6 +223,7 @@ export class GenerarMasivoComponent implements OnInit {
 
   onSubmit(datosMasivo : FormGroup){
     this.envioMasivo.buzon = this.buzon;
+    this.envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
     this.envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
     this.envioMasivo.tipoDocumento = datosMasivo.get("tipoDocumento").value;
     this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;

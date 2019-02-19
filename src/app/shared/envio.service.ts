@@ -3,6 +3,8 @@ import { Envio } from '../../model/envio.model';
 import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { Observable } from 'rxjs';
+import { Documento } from '../../model/documento.model';
+import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 
 
 @Injectable()
@@ -20,6 +22,19 @@ export class EnvioService {
         }
         return this.requester.post<Envio>(this.REQUEST_URL, form, {});
     }
+
+    getAutorizacion(documento: Documento): string {
+        let autorizacion = " ";
+        if (EstadoDocumentoEnum.DENEGADO){
+            autorizacion = "DENEGADO";
+        } else if(documento.envio.autorizado === false){
+            autorizacion = "PENDIENTE";
+        } else {
+            autorizacion = "APROBADO";
+        }
+        return autorizacion;
+    }
+
 
     listarEnviosIndividualesCreados() {
         return this.requester.get<Envio[]>(this.REQUEST_URL + "creados", {});
