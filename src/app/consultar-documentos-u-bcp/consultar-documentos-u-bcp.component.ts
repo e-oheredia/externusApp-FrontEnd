@@ -4,6 +4,7 @@ import { DocumentoService } from '../shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from '../shared/utils.service';
+import { EnvioService } from '../shared/envio.service';
 
 @Component({
     selector: 'app-consultar-documentos-u-bcp',
@@ -16,7 +17,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
     constructor(
         public documentoService: DocumentoService,
         private notifier: NotifierService,
-        private utilsService: UtilsService
+        private utilsService: UtilsService,
+        private envioService: EnvioService
     ) { }
 
 

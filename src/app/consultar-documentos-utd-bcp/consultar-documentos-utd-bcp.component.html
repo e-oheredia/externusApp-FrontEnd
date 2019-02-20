@@ -87,7 +87,6 @@
                     <td scope="col">{{documento.distrito.nombre}}</td>
                     <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre}}</td>
                     <td scope="col">{{documento.recepcionado ? "SÍ":"NO"}}</td>
-                    <!-- <td scope="col">{{documento.envio.autorizado ? "SÍ":"NO"}}</td> -->
                     <td scope="col">{{envioService.getAutorizacion(documento)}}</td>
                     <td scope="col">{{documentoService.getFechaCreacion(documento)}}</td>
 

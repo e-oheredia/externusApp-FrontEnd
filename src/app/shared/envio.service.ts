@@ -24,11 +24,11 @@ export class EnvioService {
         }
         return this.requester.post<Envio>(this.REQUEST_URL, form, {});
     }
-// ------------------------------------------------------------------------------------------------------------------
+
     getAutorizacion(documento: Documento): string {
         let autorizacion = " ";
 
-        if (this.documentoService.getUltimoEstado(documento).id = EstadoDocumentoEnum.DENEGADO){
+        if (this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === EstadoDocumentoEnum.DENEGADO){
             autorizacion = "DENEGADO";
         } else if(documento.envio.autorizado === false){
             autorizacion = "PENDIENTE";
@@ -37,7 +37,6 @@ export class EnvioService {
         }
         return autorizacion;
     }
-// ------------------------------------------------------------------------------------------------------------------
 
     listarEnviosIndividualesCreados() {
         return this.requester.get<Envio[]>(this.REQUEST_URL + "creados", {});
