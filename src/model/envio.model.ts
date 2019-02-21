@@ -4,7 +4,7 @@ import { PlazoDistribucion } from "./plazodistribucion.model";
 import { TipoServicio } from "./tiposervicio.model";
 import { TipoSeguridad } from "./tiposeguridad.model";
 import { TipoDocumento } from "./tipodocumento.model";
-import { TipoSede } from './tiposede.model';
+import { Sede } from './sede.model';
 
 export class Envio {
 
@@ -20,7 +20,7 @@ export class Envio {
     public tipoServicio: TipoServicio; 
     public tipoSeguridad: TipoSeguridad; 
     public tipoDocumento: TipoDocumento; 
-    public sede: TipoSede; 
+    public sede: Sede;
     public documentos: Documento[];
     public checked: boolean;
     public autorizado: boolean;

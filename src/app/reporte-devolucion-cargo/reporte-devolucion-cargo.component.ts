@@ -159,8 +159,6 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     }
 
 
-
-
                     this.dataGraficoDevolucionCargos = [];
                     this.dataGraficoDevolucionDocumentos = [];
                     this.dataGraficoDetallePendienteArea = [];
