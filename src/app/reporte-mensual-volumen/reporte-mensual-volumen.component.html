@@ -77,8 +77,7 @@
         </div>
       </div>
 
-      
-      
+           
       <div class="row justify-content-center mt-4">
         <div class="col-2 center-block ">  
           <table class="table table-bordered ">
@@ -98,10 +97,7 @@
 
     </div>
 
-
   </div>
-
-  
 
 
   <div class="card mb-4">
@@ -113,14 +109,18 @@
     <div class="card-body">
       <div class="row justify-content-center">
         <div class="col-8" >
-          <jqxChart #myChart [height]="500" [title]="'Reporte de Volumen por UTD'" [description]="''"
-            [showLegend]="true" [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU" [source]="dataSource2"
-            [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme26'">
+          <jqxChart #myChart [height]="500" [title]="'Reporte de Volumen por UTD'" 
+            [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU" 
+            [source]="dataSource2" [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
       </div>
     </div>
   </div>
+
+
+
+
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
@@ -134,12 +134,10 @@
           <h4>{{proveedor.nombre}}</h4>
           <jqxChart #myChart [height]="500" [title]="'Reporte de Volumen Por Plazo de Distribución'"
             [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS"
-            [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]" [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)"
+            [source]="dataSource3[proveedor.nombre]" [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)"
             [seriesGroups]="getSeriesGroups('stackedcolumn', 
-              [
-                          {cantidad: 'Cantidad'}
-              ]
-              , 'horizontal')"
+              [{cantidad: 'Cantidad'}], 
+              'horizontal')"
             [colorScheme]="'scheme26'">
           </jqxChart>
         </div>

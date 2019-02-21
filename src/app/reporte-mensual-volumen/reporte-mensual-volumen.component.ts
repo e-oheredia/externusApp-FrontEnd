@@ -10,6 +10,9 @@ import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { Documento } from 'src/model/documento.model';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { PlazoDistribucionService } from '../shared/plazodistribucion.service';
+import { Sede } from 'src/model/sede.model';
+import { SedeDespachoService } from '../shared/sededespacho.service';
+import { Envio } from 'src/model/envio.model';
 
 @Component({
     selector: 'app-reporte-mensual-volumen',
@@ -25,13 +28,16 @@ export class ReporteMensualVolumenComponent implements OnInit {
         public notifier: NotifierService,
         public utilsService: UtilsService,
         public proveedorService: ProveedorService,
+        public sedeDespachoService: SedeDespachoService,
         private plazoDistribucionService: PlazoDistribucionService
     ) { }
 
     plazos: PlazoDistribucion[];
+    envios: Envio;
+    sedesDespacho: Sede[];
     proveedores: Proveedor[];
     documentos: Documento[] = [];
-    reportesEficienciaPorPlazoDistribucion: any = {};
+    // reportesEficienciaPorPlazoDistribucion: any = {};
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
     dataSource: any[];
@@ -47,9 +53,17 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
         this.proveedores = this.proveedorService.getProveedores();
 
+        this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
+
         this.proveedorService.proveedoresChanged.subscribe(
             proveedores => {
                 this.proveedores = proveedores;
+            }
+        )
+
+        this.sedeDespachoService.sedesDespachoChanged.subscribe(
+            sedesDespacho => {
+                this.sedesDespacho = sedesDespacho;
             }
         )
 
@@ -69,8 +83,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
                     this.documentos = documentos;
                     this.llenarDataSource(documentos);
-                    this.llenarDatasource2(documentos);
-
+                    this.llenarDataSource2(documentos);
+                    this.llenarDatasource3(documentos);
 
                 },
                 error => {
@@ -84,16 +98,14 @@ export class ReporteMensualVolumenComponent implements OnInit {
         else {
             this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
         }
-
-        // console.log(this.proveedores);
-        // this.porcentajeAsignado(this.proveedores);
         
+        console.log(this.proveedores);
+        console.log(this.sedesDespacho);
     }
 
 
     llenarDataSource(documentos: Documento[]) {
         this.dataSource = [];
-        this.dataSource2 = [];
 
         this.proveedores.forEach(
             proveedor => {
@@ -108,18 +120,39 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 this.dataSource.push(reporteProveedor);
             }
         )
+    }
 
-        let reporteSede = {
-            sede: 'La Molina',
-            cantidad: 0
-        };
-        reporteSede.cantidad = documentos.length;
-        this.dataSource2.push(reporteSede);
+    llenarDataSource2(documentos: Documento[]) {
+        this.dataSource2 = [];
+
+        this.sedesDespacho.forEach(
+            sedeDespacho => {
+                let reporteSedeDespacho = {
+                    sedeDespacho: '',
+                    cantidad: 0
+                };
+                reporteSedeDespacho.sedeDespacho = sedeDespacho.nombre;
+                reporteSedeDespacho.cantidad = documentos.filter(documento =>
+                    documento.envio.sede.id === sedeDespacho.id).length;
+
+                this.dataSource2.push(reporteSedeDespacho);
+            }
+        )
+
+
+        // let reporteSede = {
+        //     sede: 'La Molina',
+        //     cantidad: 0
+        // };
+        // reporteSede.cantidad = documentos.length;
+        // this.dataSource2.push(reporteSede);
+
     }
 
 
-    llenarDatasource2(documentos: Documento[]) {
-        this.reportesEficienciaPorPlazoDistribucion = {};
+
+    llenarDatasource3(documentos: Documento[]) {
+        this.dataSource3 = [];
         this.proveedores.forEach(
             proveedor => {
                 let graficoPorProveedor: any[] = [];
@@ -133,7 +166,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         }
                         graficoPorProveedor.push(graficoPorProveedorObjeto);
                     });
-                this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = graficoPorProveedor;
+                this.dataSource3[proveedor.nombre] = graficoPorProveedor;
             }
         )
 
@@ -160,17 +193,17 @@ export class ReporteMensualVolumenComponent implements OnInit {
     padding: any = { left: 5, top: 5, right: 5, bottom: 5 };
     titlePadding: any = { left: 0, top: 0, right: 0, bottom: 10 };
 
-    // VOLUMEN DE DISTRIBUCIÓN - PIE - POR COURIER --------------------------------------------------------------------------------------
-
-    paddingC: any = { left: 5, top: 5, right: 5, bottom: 5 };
-    titlePaddingC: any = { left: 0, top: 0, right: 0, bottom: 10 };
-
     getWidth(): any {
         if (document.body.offsetWidth < 8550) {
             return '60%';
         }
         return 850;
     }
+
+    // VOLUMEN DE DISTRIBUCIÓN - PIE - POR COURIER --------------------------------------------------------------------------------------
+
+    paddingC: any = { left: 5, top: 5, right: 5, bottom: 5 };
+    titlePaddingC: any = { left: 0, top: 0, right: 0, bottom: 10 };
 
     seriesGroupsPro: any[] =
         [
@@ -202,7 +235,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
     paddingU: any = { left: 5, top: 5, right: 5, bottom: 5 };
     titlePaddingU: any = { left: 0, top: 0, right: 0, bottom: 10 };
 
-    seriesGroupsUtd: any =
+    seriesGroupsUtd: any[] =
         [
             {
                 type: 'pie',
@@ -211,11 +244,11 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     [
                         {
                             dataField: 'cantidad',
-                            displayText: 'sede',
+                            displayText: 'sedeDespacho',
                             labelRadius: 170, //acercar o alejar el numero del centro del pie
                             initialAngle: 90,
-                            radius: 150, //tamaño del radio
-                            centerOffset: 10, //separacion entre secciones del pie
+                            radius: 145, //tamaño del radio
+                            centerOffset: 2, //separacion entre secciones del pie
                             // formatSettings: { sufix: '%', decimalPlaces: 1 } //formato de porcentaje
                             formatFunction: (value: any) => {
                                 if (isNaN(value))
