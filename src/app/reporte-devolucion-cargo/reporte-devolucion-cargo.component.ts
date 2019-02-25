@@ -244,19 +244,15 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
                     //--------------------------------------------------------------------------------------------------------------------------------
 
-                    // ----------------------------------------------- Datos Grafico x Area ---------------------------------------------------------
-
-
+                    // ----------------------------------------------- Datos Grafico x Area ----------------------------------------------------------
 
                     this.areas.forEach(
 
                         area => {
 
-
                             let r_area = {
                                 nombre: '',
                                 cantidad: '',
-
                             }
 
                             r_area.nombre = area.nombre;
@@ -272,19 +268,13 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
                             r_area.cantidad = c.toString();
 
-
                             this.dataGraficoDetallePendienteArea.push(r_area);
-
                         }
                     )
 
 
+                    this.dataGraficoDetallePendienteArea.sort((a, b) => (a.cantidad > b.cantidad) ? 1 : ((b.cantidad > a.cantidad) ? -1 : 0)).reverse();
 
-                    console.log("OBJETOS ****************************");
-                    console.log(this.dataGraficoDetallePendienteArea);
-                    this.dataGraficoDetallePendienteArea.sort((a,b) => (a.cantidad > b.cantidad) ? 1 : ((b.cantidad > a.cantidad) ? -1 : 0)).reverse();
-                   
-                    console.log(this.dataGraficoDetallePendienteArea);
                     let i = 1;
                     let BreakException = {};
 
@@ -293,37 +283,27 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     let otras_areas = {
                         nombre: '',
                         cantidad: '',
-
                     }
-
-                    // try {
 
                     this.dataGraficoDetallePendienteArea.forEach(
                         registro => {
-
-                            if (i <= 5) {
+                            if (i <= 6) {
                                 this.dataGraficoDetallePendienteAreaTop.push(registro);
                                 i++;
                             }
                             else {
-
                                 cantidad_otras_areas += parseInt(registro.cantidad);
                             }
                         }
                     )
-                    // } catch (e) {
-                    //     if (e !== BreakException) throw e;
-                    // }
 
                     otras_areas.nombre = "OTROS";
                     otras_areas.cantidad = cantidad_otras_areas.toString();
 
                     this.dataGraficoDetallePendienteAreaTop.push(otras_areas);
 
-                    console.log(this.dataGraficoDetallePendienteAreaTop);
-
-                    //----------------------------------------------------------------------------------------------------------------------------------
-                    //----------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------         
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -527,8 +507,8 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     tickMarksColor: '#FFFFFF'
                 },
                 series: [
-                    { dataField: 'Devuelto', displayText: 'Devuelto', showLabels : true, },
-                    { dataField: 'Pendiente', displayText: 'Pendiente', showLabels : true, }
+                    { dataField: 'Devuelto', displayText: 'Devuelto', showLabels: true, },
+                    { dataField: 'Pendiente', displayText: 'Pendiente', showLabels: true, }
                 ]
             }
         ];
@@ -564,10 +544,10 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             {
                 type: 'column',
                 orientation: 'horizontal',
-                columnsMaxWidth: 30,                
+                columnsMaxWidth: 30,
                 toolTipFormatSettings: { thousandsSeparator: ',' },
                 series: [
-                    { dataField: 'cantidad', displayText: 'cantidad', showLabels : true, }
+                    { dataField: 'cantidad', displayText: 'cantidad', showLabels: true, }
                 ]
             }
         ];

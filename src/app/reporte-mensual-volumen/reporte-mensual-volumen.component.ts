@@ -139,14 +139,12 @@ export class ReporteMensualVolumenComponent implements OnInit {
             }
         )
 
-
         // let reporteSede = {
         //     sede: 'La Molina',
         //     cantidad: 0
         // };
         // reporteSede.cantidad = documentos.length;
         // this.dataSource2.push(reporteSede);
-
     }
 
 
