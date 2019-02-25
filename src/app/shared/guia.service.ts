@@ -7,6 +7,7 @@ import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable } from "rxjs";
+import { Sede } from 'src/model/sede.model';
 
 @Injectable()
 export class GuiaService {

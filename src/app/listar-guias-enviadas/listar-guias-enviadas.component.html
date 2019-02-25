@@ -24,8 +24,8 @@
       <tbody>
         <tr *ngFor="let guiaEnviada of guiasEnviadas | orderBy: id: true">
           <td scope="col">{{guiaEnviada.numeroGuia}}</td>
-          <td scope="col">{{guiaService.getFechaCreacion(guiaEnviada)}}</td>
-          <td scope="col">LA MOLINA</td>
+          <td scope="col">{{guiaService.getSeguimientoGuiaByEstadoGuiaId(guiaEnviada,2).fecha}}</td>
+          <td scope="col">{{guiaEnviada.sede.nombre}}</td>
           <td scope="col">{{guiaEnviada.plazoDistribucion.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoServicio.nombre}}</td>
           <td scope="col">{{guiaEnviada.tipoSeguridad.nombre}}</td>

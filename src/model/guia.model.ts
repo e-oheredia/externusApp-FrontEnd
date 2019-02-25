@@ -4,6 +4,7 @@ import { TipoSeguridad } from './tiposeguridad.model';
 import { TipoServicio } from './tiposervicio.model';
 import { PlazoDistribucion } from './plazodistribucion.model';
 import { Proveedor } from './proveedor.model';
+import { Sede } from './sede.model';
 export class Guia {
     constructor(
         public id: number, 
@@ -13,6 +14,7 @@ export class Guia {
         public tipoSeguridad: TipoSeguridad, 
         public proveedor: Proveedor, 
         public documentosGuia: DocumentoGuia[], 
-        public seguimientosGuia: SeguimientoGuia[]
+        public seguimientosGuia: SeguimientoGuia[],
+        public sede: Sede
     ){}
 }

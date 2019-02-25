@@ -62,26 +62,6 @@ export class ReporteMensualCargosComponent implements OnInit {
 
   }
 
-
-  // NombreMes(mes: Date) {
-  //   var month = new Array();
-  //   month[0] = "Enero";
-  //   month[1] = "Febrero";
-  //   month[2] = "Marzo";
-  //   month[3] = "Abril";
-  //   month[4] = "Mayo";
-  //   month[5] = "Junio";
-  //   month[6] = "Julio";
-  //   month[7] = "Agosto";
-  //   month[8] = "Septiembre";
-  //   month[9] = "Octubre";
-  //   month[10] = "Noviembre";
-  //   month[11] = "Diciembre";
-  //   return month[mes.getMonth()];
-  // }
-
-
-
   mostrarReportes(fechaIni: Date, fechaFin: Date) {
 
     let fi = new Date(new Date(fechaIni).getTimezoneOffset() * 60 * 1000 + new Date(fechaIni).getTime());
@@ -103,7 +83,7 @@ export class ReporteMensualCargosComponent implements OnInit {
 
       this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
         documentos => {
-          this.documentos=documentos;
+          this.documentos = documentos;
           this.meses = [];
           this._registros = [];
           this._registros2 = [];
@@ -261,7 +241,7 @@ export class ReporteMensualCargosComponent implements OnInit {
 
             //cargos por courier pendientes
             let cpcp = documentos.filter(documento => {
-              return documento.recepcionado === false && 
+              return documento.recepcionado === false &&
                 new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
                 new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
             }).length;
@@ -281,7 +261,7 @@ export class ReporteMensualCargosComponent implements OnInit {
               this._final.push(regtotal);
             }
             else {
-              if (ii == 2) {                
+              if (ii == 2) {
                 this._final.find(x => x.estado === "TOTAL").cantidad02 = cpcp + cpcd;
               }
               if (ii == 3) {
@@ -336,16 +316,13 @@ export class ReporteMensualCargosComponent implements OnInit {
                   cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, area: '', total: 0
                 }
 
-
                 //ca = cargos por area
                 let ca = documentos.filter(documento => {
                   return documento.envio.buzon.area.id === area.id && documento.recepcionado === false &&
                     new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
                     new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
                 }).length;
-
-
-
+                
                 if (ii == 1) {
 
                   regproa.area = area.nombre;
@@ -353,10 +330,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                   regproa.cantidad01 = ca;
                   regproa.total = ca;
 
-
-
                   this._final2.push(regproa);
-
 
                 } else {
                   if (ii == 2) {
@@ -400,15 +374,13 @@ export class ReporteMensualCargosComponent implements OnInit {
                   this._final2.find(x => x.area === area.nombre).total = c1 + ca;
 
                 }
-
-
               }
-
-
-
-
             )
 
+
+
+            //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             let regtotal2 = {
               estado: '',
@@ -416,17 +388,12 @@ export class ReporteMensualCargosComponent implements OnInit {
               cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, nombre: '', total: 0
             }
 
-
-
             //cm = cargos por mes
             let cm = documentos.filter(documento => {
               return documento.recepcionado === false &&
                 new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
                 new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
             }).length;
-
-
-
 
             if (ii == 1) {
               regtotal2.nombre = "TOTALITO";
@@ -436,7 +403,7 @@ export class ReporteMensualCargosComponent implements OnInit {
               this._final2.push(regtotal2);
             }
             else {
-              if (ii == 2) {                
+              if (ii == 2) {
                 this._final2.find(x => x.estado === "TOTAL").cantidad02 = cm;
               }
               if (ii == 3) {
@@ -480,8 +447,6 @@ export class ReporteMensualCargosComponent implements OnInit {
 
 
 
-
-
             //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
             let mes = {
@@ -508,6 +473,8 @@ export class ReporteMensualCargosComponent implements OnInit {
 
           }
 
+          
+
           this._registros = this._final.map(function (obj) {
             return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
           });
@@ -516,12 +483,6 @@ export class ReporteMensualCargosComponent implements OnInit {
             return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
           });
 
-
-          // console.log(this.meses);
-          // console.log(this._final);
-          // console.log(this._final2);
-          // console.log(this._registros);
-          // console.log(this._registros2);
 
         },
         error => {
@@ -535,7 +496,6 @@ export class ReporteMensualCargosComponent implements OnInit {
     else {
       this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
     }
-
 
 
   }
