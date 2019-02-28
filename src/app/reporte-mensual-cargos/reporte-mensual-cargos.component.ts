@@ -81,7 +81,12 @@ export class ReporteMensualCargosComponent implements OnInit {
 
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-      this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
+      let fechaIniDate = new Date(fechaIni);
+      let fechaFinDate = new Date(fechaFin);
+      fechaIniDate = new Date(fechaIniDate.getTimezoneOffset() * 60 * 1000 + fechaIniDate.getTime());
+      fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
+
+      this.documentosSubscription = this.documentoService.listarCargos(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
         documentos => {
           this.documentos = documentos;
           this.meses = [];
@@ -118,15 +123,16 @@ export class ReporteMensualCargosComponent implements OnInit {
                 }
 
 
-                let cd = documentos.filter(documento => {
+                let cd = 0;
+                cd = documentos.filter(documento => {
                   return documento.recepcionado === true &&
                     documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                     new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
                     new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
                 }
                 ).length;
-
-                let cp = documentos.filter(documento => {
+                let cp = 0;
+                cp = documentos.filter(documento => {
                   return documento.recepcionado === false &&
                     documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                     new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
