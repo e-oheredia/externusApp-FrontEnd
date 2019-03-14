@@ -94,6 +94,23 @@ export class CambiarEstadoComponent implements OnInit {
   }
 
 
+  desvalidar(id){
+    this.documentoService.desvalidar(id).subscribe(
+      () => {
+        this.estadoForm.reset();
+
+        let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
+          initialState: {
+            mensaje: "SE HA DESVALIDADO EL DOCUMENTO"
+          }
+        });
+        this.bsModalRef.hide();
+        
+      }
+    )
+  }
+
+
   cambiarEstado(form: any) {
     let seguimientoDocumento = new SeguimientoDocumento();
     seguimientoDocumento.estadoDocumento = form.get('estadoDocumento').value;
