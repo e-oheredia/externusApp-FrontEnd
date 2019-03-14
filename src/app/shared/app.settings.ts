@@ -19,6 +19,7 @@ export class AppSettings {
     public static ENVIO_URL = "envios/";
     public static ENVIO_MASIVO_URL = "enviosmasivos/";
     public static PROVEEDOR_URL = "proveedores/";
+    public static TIPOPLAZODISTRIBUCION_URL = "tiposplazo/";
     public static GUIA_URL = "guias/";
     public static DOCUMENTO_GUIA_URL = "documentosguia/";
     public static ESTADO_DOCUMENTO_URL = "estadosdocumento/";

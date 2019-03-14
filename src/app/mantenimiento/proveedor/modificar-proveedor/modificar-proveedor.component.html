@@ -1,0 +1,35 @@
+<div class="card">
+
+    <div class="modal-header">
+      <h6>Modificar proveedor</h6>
+    </div>
+  
+    <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
+  
+      <div class="card-body">
+        <div class="form-row">
+          <div class="col-9">
+            <div class="form-group">
+              <label for="nombreProveedor">Nombre del proveedor</label>
+              <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor" formControlName="nombreProveedor">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-9x">
+            <div class="form-group">
+              <label for="plazosProveedor">Plazo de distribución (horas)</label>
+              <input class="form-control" type="text" name="plazosProveedor" id="plazosProveedor" formControlName="plazosProveedor">
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Modificar</button>
+        <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+      </div>
+  
+    </form>
+  
+  </div>

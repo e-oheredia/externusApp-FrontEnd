@@ -1,0 +1,50 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h4>Agregar proveedor</h4>
+  </div>
+
+  <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nombreProveedor">Nombre del proveedor</label>
+            <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor"
+              formControlName="nombreProveedor">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="plazosProveedor">Plazo de distribución (horas)</label>
+            <input class="form-control" type="number" name="plazosProveedor" id="plazosProveedor"
+              formControlName="plazosProveedor">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <div *ngFor="let plazo of plazos">
+              <input type="checkbox"> {{plazo.nombre}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Agregar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

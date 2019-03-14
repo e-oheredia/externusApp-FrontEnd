@@ -1,0 +1,4 @@
+<div class="text-center pointable">
+  <a *ngIf="ruta.length > 0" [href]="ruta" (click)="onClick()" target="_blank"><i [class]="claseIcono"></i>{{nombreBoton}}</a>
+  <a *ngIf="ruta.length === 0" (click)="onClick()"><i [class]="claseIcono"></i>{{nombreBoton}}</a>
+</div>

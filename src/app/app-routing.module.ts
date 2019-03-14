@@ -19,6 +19,7 @@ import {  ReporteEficaciaComponent } from './reporte-eficacia/reporte-eficacia.c
 import { ReporteMensualCargosComponent } from './reporte-mensual-cargos/reporte-mensual-cargos.component';
 import { ReporteIndicadorEfectividadComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
 import { ReporteIndicadorEficienciaComponent } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.component';
+import { CambiarEstadoComponent } from './cambiar-estado/cambiar-estado.component';
 
 
 
@@ -107,6 +108,11 @@ const appRoutes: Routes = [
     {
         path: 'reporte-indicador-eficiencia',
         component: ReporteIndicadorEficienciaComponent
+
+    },
+    {
+        path: 'cambiar-estado',
+        component: CambiarEstadoComponent
 
     }
 

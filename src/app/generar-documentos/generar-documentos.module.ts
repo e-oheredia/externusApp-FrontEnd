@@ -9,7 +9,6 @@ import { GenerarMasivoComponent } from './generar-masivo/generar-masivo.componen
 import { GenerarDocumentosRoutingModule } from './generar-documentos-routing.module';
 import { GenerarDocumentosComponent } from './generar-documentos.component';
 import { DatosBuzonComponent } from './datos-buzon/datos-buzon.component';
-import { AutogeneradoCreadoModalComponent } from './autogenerado-creado-modal/autogenerado-creado-modal.component';
 
 @NgModule({
   imports: [

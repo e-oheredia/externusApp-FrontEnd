@@ -1,0 +1,139 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Cambio de Estado</h2>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-2">
+
+      <div class="card-header">
+        <h5>Buscar código autogenerado del documento</h5>
+      </div>
+
+      <div class="card-boddy">
+        <form [formGroup]="documentoForm" (ngSubmit)="buscarCodigoDocumento(documentoForm.get('codigo').value)">
+          <div class="form-row">
+            <div class="col-4 ml-3 mt-2">
+              <div class="form-group">
+                <label for="codigo">Código: </label>
+                <input class="form-control" type="text" formControlName="codigo"
+                  (input)="documentoForm.controls['codigo'].setValue(documentoForm.get('codigo').value.toUpperCase())">
+              </div>
+            </div>
+            <div class="col-3 mt-4 pt-2">
+              <div class="col">
+                <button class="btn btn-primary form-control mt-2">
+                  CONSULTAR
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="card-header">
+        <h5>Datos del documento</h5>
+      </div>
+
+      <div class="card-boddy">
+        <form [formGroup]="estadoForm" (ngSubmit)="cambiarEstado(estadoForm)">
+
+          <div class="row">
+            <div class="col-12">
+              <div class="pb-2 mt-4 mb-2">
+                <div class="card">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3">
+                          Remitente
+                        </div>
+                        <div class="col-7">
+                          {{documento === null || documento === undefined ? '' : documento.envio.buzon.nombre}}
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3">
+                          Plaza distribución
+                        </div>
+                        <div class="col-7">
+                          {{documento === null || documento === undefined ? '' : documento.envio.plazoDistribucion.nombre}}
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3">
+                          Estado actual
+                        </div>
+                        <div class="col-7">
+                          {{documento === null || documento === undefined ? '' : documentoService.getUltimoEstado(documento).nombre}}
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3">
+                          Validado en guía
+                        </div>
+                        <div class="col-1 mr-4">
+                          {{ documento === null || documento === undefined ? '' : documento.documentosGuia[0] === null || documento.documentosGuia[0] === undefined ? 'NO' : documento.documentosGuia[0].validado ? 'SI' : 'NO'}}
+                        </div>
+                        <div class="col-3">
+                          <button class="btn btn-primary form-control mt-2">
+                            DESVALIDAR
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="row">
+                        <div class="col-4 ml-3 mt-2">
+                          <div class="form-group">
+                            <label for="nuevoEstado">Cambiar al estado</label>
+                            <select class="form-control" id="nuevoEstado" formControlName="nuevoEstado">
+                              <option *ngFor="let nuevoEstado of nuevosEstados" [ngValue]="nuevoEstado">{{nuevoEstado.nombre}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-3 mt-4 pt-2">
+                          <div class="col">
+                            <button class="btn btn-primary form-control mt-2" [disabled]="!estadoForm.valid">
+                              MODIFICAR
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-3">
+                          <div class="col">
+                            <label for="observacion">Observación adicional</label>
+                            <br>
+                            <textarea formControlName="observacion" rows="10" cols="81" (input)="estadoForm.controls['observacion'].setValue(estadoForm.get('observacion').value.toUpperCase())"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+
+
+    </div>
+  </div>
+</div>

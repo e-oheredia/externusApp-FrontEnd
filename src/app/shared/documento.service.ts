@@ -133,6 +133,12 @@ export class DocumentoService {
         ).fecha;
     }
 
+    getFechaEnvio(documento: Documento): Date | string {
+        return documento.seguimientosDocumento.find(seguimientoDocumento =>
+            seguimientoDocumento.estadoDocumento.id === 3
+        ).fecha;
+    }
+
     getUltimoEstado(documento: Documento): EstadoDocumento {
         let estadoDocumento = documento.seguimientosDocumento.reduce(
             (max, seguimentoDocumento) =>
@@ -222,6 +228,16 @@ export class DocumentoService {
         });
     }
 
+    codigoAutogenerado(id: number, prefijo: String) {
+
+        let autogenerado: String;
+        let longitud: number = 7;
+        var length = id.toString().length;
+        var cero = "0";
+        autogenerado = prefijo + cero.repeat(longitud - length) + id.toString();
+        return autogenerado;
+    }
+
     actualizarResultadosProveedor(documentos: Documento[]): Observable<any> {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
@@ -246,6 +262,20 @@ export class DocumentoService {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
+    listarDocumentoPorCodigo(codigo: string){
+        return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString())});
+    }
+
+
+
+    cambiarEstado(codigo: number, seguimiento: SeguimientoDocumento){
+        return this.requesterService.post<Documento>(this.REQUEST_URL + codigo.toString() + "/cambioestado" , seguimiento, {});
+    }
+
+
+
+
+
     listarDocumentosReportesVolumen(fechaini: Date, fechafin: Date, idestado: number): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosvolumen", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('estado', idestado.toString()) });
     }
@@ -261,6 +291,17 @@ export class DocumentoService {
             moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
         )
     }
+
+    getUltimaFechaEstado(documento: Documento): Date | string {
+        return documento.seguimientosDocumento.reduce(
+            (max, seguimentoDocumento) =>
+            moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
+        ).fecha
+    }
+
+    // extraerIdAutogenerado(autogenerado: String) {
+    //     return parseInt(autogenerado.substring(1, 10));
+    // }
 
     recepcionarCargo(codigo: number): Observable<Documento>{
         return this.requesterService.put<Documento>(this.REQUEST_URL + codigo +  "/recepcioncargo", {}, {});

@@ -1,0 +1,61 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h6>Modificar plazo de distribución</h6>
+  </div>
+
+  <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nombre">Nombre de plazo</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="tiempoEnvio">Plazo de distribución (horas)</label>
+            <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio" formControlName="tiempoEnvio">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="tipoPlazoDistribucion">Tipo de plazo</label>
+            <input class="form-control" type="text" name="tipoPlazoDistribucion" id="tipoPlazoDistribucion"
+              formControlName="tipoPlazoDistribucion">
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="tipoPlazoDistribucion">Estado</label>
+            <select class="form-control" id="activo" formControlName="activo">
+              <option [ngValue]="activo">
+                {{activo}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Modificar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

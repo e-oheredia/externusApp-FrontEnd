@@ -10,7 +10,7 @@ export class ProveedorService {
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PROVEEDOR_URL;
 
     constructor(private requester: RequesterService){
-        this.listarAll().subscribe(
+        this.listarProveedores().subscribe(
             proveedores => {
                 this.proveedores = proveedores;
                 this.proveedoresChanged.next(this.proveedores);
@@ -26,7 +26,20 @@ export class ProveedorService {
 
     proveedoresChanged = new Subject<Proveedor[]>();
 
-    listarAll(): Observable<Proveedor[]>{
+    listarProveedores(): Observable<Proveedor[]>{
         return this.requester.get<Proveedor[]>(this.REQUEST_URL, {});
     }
+
+    extraerId(id: String){
+        return parseInt(id.substring(1,2));
+    }
+
+    agregarProveedor(proveedor: Proveedor): Observable<Proveedor> {
+        return this.requester.post<Proveedor>(this.REQUEST_URL, proveedor, {});
+    }
+
+    modificarProveedor(proveedor: Proveedor): Observable<Proveedor> {
+        return this.requester.post<Proveedor>(this.REQUEST_URL, proveedor, {});
+    }
+    
 }

@@ -37,8 +37,32 @@ import { OrderModule } from 'ngx-order-pipe';
 import { MenuService } from '../shared/menu.service';
 import { TreeViewComponent } from './header/tree-view/tree-view.component';
 import { SedeDespachoService } from '../shared/sededespacho.service';
+import { TrackingDocumentoComponent } from '../modals/tracking-documento/tracking-documento.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { TituloComponent } from './titulo/titulo.component';
+import { TituloService } from '../shared/titulo.service';
+import { MensajeExitoComponent } from '../modals/mensaje-exito/mensaje-exito.component';
+import { AgregarPlazoComponent } from '../mantenimiento/plazo-distribucion/agregar-plazo/agregar-plazo.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AgregarProveedorComponent } from '../mantenimiento/proveedor/agregar-proveedor/agregar-proveedor.component';
+import { ModificarPlazoComponent } from '../mantenimiento/plazo-distribucion/modificar-plazo/modificar-plazo.component';
+import { ModificarProveedorComponent } from '../mantenimiento/proveedor/modificar-proveedor/modificar-proveedor.component';
+import { TipoPlazoDistribucionService } from '../shared/tipoplazodistribucion.service';
 
 @NgModule({
+  declarations: [
+    HeaderComponent, 
+    ConfirmModalComponent, 
+    TreeViewComponent, 
+    AutogeneradoCreadoModalComponent,
+    TrackingDocumentoComponent,
+    TituloComponent,
+    MensajeExitoComponent,
+    AgregarPlazoComponent,
+    AgregarProveedorComponent,
+    ModificarPlazoComponent,
+    ModificarProveedorComponent
+  ],
   imports: [  
     HttpClientModule,
     BrowserModule,
@@ -48,14 +72,11 @@ import { SedeDespachoService } from '../shared/sededespacho.service';
     }),
     ModalModule.forRoot(), 
     NgSelectModule, 
+    Ng2SmartTableModule,
     OrderModule, 
-    BsDropdownModule.forRoot()
-    
-  ],
-  declarations: [
-    HeaderComponent, 
-    ConfirmModalComponent, TreeViewComponent, 
-    AutogeneradoCreadoModalComponent
+    BsDropdownModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     HeaderComponent
@@ -79,6 +100,7 @@ import { SedeDespachoService } from '../shared/sededespacho.service';
     BsModalRef, 
     BsModalService, 
     ProveedorService,
+    TipoPlazoDistribucionService,
     GuiaService, 
     DocumentoGuiaService, 
     BrowserStorageService,
@@ -90,11 +112,18 @@ import { SedeDespachoService } from '../shared/sededespacho.service';
     EstadoDocumentoService, 
     MenuService, 
     CargoPdfService,
-    SedeDespachoService
+    SedeDespachoService,
+    TituloService
   ], 
   entryComponents: [ 
     ConfirmModalComponent, 
-    AutogeneradoCreadoModalComponent
+    AutogeneradoCreadoModalComponent,
+    AgregarPlazoComponent,
+    AgregarProveedorComponent,
+    TrackingDocumentoComponent,
+    MensajeExitoComponent,
+    ModificarPlazoComponent,
+    ModificarProveedorComponent
    ],
 })
 export class LayoutModule { }
