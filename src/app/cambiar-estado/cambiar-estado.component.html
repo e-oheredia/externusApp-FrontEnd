@@ -85,8 +85,8 @@
                         <div class="col-1 mr-4">
                           {{ documento === null || documento === undefined ? '' : documento.documentosGuia[0] === null || documento.documentosGuia[0] === undefined ? 'NO' : documento.documentosGuia[0].validado ? 'SI' : 'NO'}}
                         </div>
-                        <div class="col-3">
-                          <button class="btn btn-primary form-control mt-2">
+                        <div class="col-5">
+                          <button type="button" class="btn btn-success" (click)="desvalidar(documento.id)">
                             DESVALIDAR
                           </button>
                         </div>
