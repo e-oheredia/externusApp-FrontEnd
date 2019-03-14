@@ -27,12 +27,13 @@ import { ReporteMensualCargosModule } from './reporte-mensual-cargos/reporte-men
 import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.module';
 import { ReporteIndicadorEfectividadModule } from './reporte-indicador-efectividad/reporte-indicador-efectividad.module';
 import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.module';
+import { CambiarEstadoModule } from './cambiar-estado/cambiar-estado.module';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule, 
@@ -50,18 +51,15 @@ import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia
     RecepcionarCargosModule,
     RecepcionarDocumentosModule, 
     ConsultarDocumentosUtdBcpModule,
-
     ReporteEficaciaModule,
-
     ReporteDevolucionCargoModule,
     ReporteIndicadorVolumenModule,
     ReporteMensualVolumenModule,
     ReporteMensualCargosModule,
     ReporteDistribucionMesEficienciaModule,
     ReporteIndicadorEfectividadModule,
-    ReporteIndicadorEficienciaModule
-
-
+    ReporteIndicadorEficienciaModule,
+    CambiarEstadoModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

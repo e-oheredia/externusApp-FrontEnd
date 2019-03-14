@@ -5,6 +5,13 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { UtilsService } from '../shared/utils.service';
 import { EnvioService } from '../shared/envio.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { TituloService } from '../shared/titulo.service';
+import { LocalDataSource } from 'ng2-smart-table';
+import { AppSettings } from '../shared/app.settings';
+import { Documento } from 'src/model/documento.model';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
+import { TrackingDocumentoComponent } from '../modals/tracking-documento/tracking-documento.component';
 
 @Component({
     selector: 'app-consultar-documentos-u-bcp',
@@ -16,38 +23,123 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
 
     constructor(
         public documentoService: DocumentoService,
+        private modalService: BsModalService,
+        private tituloService: TituloService,
         private notifier: NotifierService,
         private utilsService: UtilsService,
         private envioService: EnvioService
     ) { }
 
+    dataTodosMisDocumentos: LocalDataSource = new LocalDataSource();
+    settings = AppSettings.tableSettings;
+    documentos: Documento[] = [];
+    documento: Documento;
 
-    documentos = [];
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
-
-    sampleData: any[] = [
-        { Estado: "Creado", cantidad: 10 },
-        { Estado: "Custodiado", cantidad: 40 }
-    ]
 
     ngOnInit() {
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
         })
+        this.generarColumnas();
     }
 
+    generarColumnas() {
+        this.settings.columns = {
+            linkTracking: {
+                title: 'Tracking',
+                type: 'custom',
+                renderComponent: ButtonViewComponent,
+                onComponentInitFunction: (instance: any) => {
+                    instance.claseIcono = "fas fa-clipboard-list";
+                    instance.pressed.subscribe(row => {
+                        this.visualizarSeguimiento(row);
+                    })
+                }
+            },
+            autogenerado: {
+                title: 'Autogenerado'
+            },
+            nroDocumento: {
+                title: 'Nro de documento'
+            },
+            plazo: {
+                title: 'Plazo de distribución'
+            },
+            razonSocial: {
+                title: 'Razón social'
+            },
+            contactoDestino: {
+                title: 'Contacto Destino'
+            },
+            direccion: {
+                title: 'Dirección'
+            },
+            distrito: {
+                title: 'Distrito'
+            },
+            estado: {
+                title: 'Estado'
+            },
+            fisicoRecibido: {
+                title: 'Físico recibido'
+            },
+            autorizado: {
+                title: 'Autorizado'
+            },
+            fechaCreacion: {
+                title: 'Fecha creación'
+            },
+            fechaEnvio: {
+                title: 'Fecha envío'
+            },
+            fechaUltimoResultado: {
+                title: 'Fecha último resultado'
+            },
+            // link: {
+            //     title: 'link'
+            // },
+        }
+    }
 
     listarDocumentos(fechaIni: Date, fechaFin: Date) {
 
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-
             this.documentosSubscription = this.documentoService.listarDocumentosUsuarioBCP(fechaIni, fechaFin).subscribe(
                 documentos => {
                     this.documentos = documentos;
-                    this.llenarDataSource();
+
+                    this.dataTodosMisDocumentos.reset();
+                    this.documentoService.listarDocumentosUsuarioBCP(this.documentoForm.controls['fechaIni'].value, this.documentoForm.controls['fechaFin'].value).subscribe(
+                        documentos => {
+                            this.documentos = documentos;
+                            let dataTodosMisDocumentos = [];
+                            documentos.forEach(
+                                documento => {
+                                    dataTodosMisDocumentos.push({
+                                        autogenerado: documento.documentoAutogenerado,
+                                        nroDocumento: documento.nroDocumento,
+                                        plazo: documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
+                                        razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
+                                        contactoDestino: documento.contactoDestino,
+                                        direccion: documento.direccion,
+                                        distrito: documento.distrito,
+                                        estado: this.documentoService.getUltimoEstado(documento).nombre,
+                                        fisicoRecibido: documento.recepcionado ? "SI" : "NO",
+                                        autorizado: documento.envio.autorizado ? "SI" : "NO",
+                                        fechaCreacion: this.documentoService.getFechaCreacion(documento),
+                                        fechaEnvio: this.documentoService.getFechaCreacion(documento),
+                                        fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
+                                        //IMAGEN
+                                    })
+                                }
+                            )
+                            this.dataTodosMisDocumentos.load(dataTodosMisDocumentos);
+                        }
+                    )
                 },
                 error => {
                     if (error.status === 400) {
@@ -63,166 +155,20 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
     }
 
 
+    visualizarSeguimiento(row) {
+        let bsModalRef: BsModalRef = this.modalService.show(TrackingDocumentoComponent, {
+            initialState: {
+                documento: this.documentos.find(documento => documento.documentoAutogenerado == row.autogenerado)
+            },
+            class: 'modal-lg',
+            keyboard: false,
+            backdrop: "static"
+        });
+    }
+
     ngOnDestroy() {
         this.documentosSubscription.unsubscribe();
     }
-
-
-
-
-
-    /*      PRACTICANDO CON REPORTES    */
-
-
-    dataSource = [];
-
-    llenarDataSource() {
-        this.dataSource = [];
-
-        let documentoCreado = {
-            Estado: "Creado",
-            cantidad: this.documentos.filter(
-                documento => this.documentoService.getUltimoEstado(documento).id === 1).length
-        }
-
-        let documentoCustodiado = {
-            Estado: "Custodiado",
-            cantidad: this.documentos.filter(
-                documento => this.documentoService.getUltimoEstado(documento).id === 2).length
-        }
-
-        this.dataSource.push(documentoCreado);
-        this.dataSource.push(documentoCustodiado);
-        console.log(this.dataSource);
-        console.log(this.sampleData);
-    }
-
-
-    padding: any = { left: 10, top: 5, right: 10, bottom: 5 };
-    titlePadding: any = { left: 50, top: 0, right: 0, bottom: 10 };
-    legendLayout: any = { left: 700, top: 160, width: 300, height: 200, flow: 'vertical' };
-
-
-    getWidth(): any {
-        if (document.body.offsetWidth < 8550) {
-            return '98%';
-        }
-
-        return 850;
-    }
-
-    xAxis: any = {
-        dataField: 'Estado',
-        unitInterval: 1,
-        tickMarks: {
-            visible: true,
-            interval: 1,
-            color: '#CACACA'
-        },
-        gridLines: {
-            visible: true, //mostrar linea vertical 
-            interval: 1, //cada "N" espacios
-            color: '#BCBCBC'
-        }
-    };
-
-    valueAxis: any = {
-        visible: true,
-        title: { text: 'Cantidad por Estado' },
-        tickMarks: { color: '#BCBCBC' }
-    };
-
-
-
-    seriesGroupsPie: any =
-        [
-            {
-                type: 'pie',
-                showLabels: true,
-                series:
-                    [
-                        {
-                            dataField: 'cantidad',
-                            displayText: 'Estado',
-                            labelRadius: 170, //acercar o alejar el numero del centro del pie
-                            initialAngle: 90,
-                            radius: 150, //tamaño del radio
-                            centerOffset: 10, //separacion entre secciones del pie
-                            //formatSettings: { sufix: '%', decimalPlaces: 1 } //formato de porcentaje
-                            formatFunction: (value: any) => {
-                                if (isNaN(value))
-                                    return value;
-                                return parseFloat(value);
-                            },
-                        }
-                    ]
-            }
-        ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-    seriesGroupsLine: any =
-        [
-            {
-                type: 'line',
-                valueAxis:
-                {
-                    visible: true,
-                    unitInterval: 2,
-                    title: { text: 'Cantidad de Documentos' },
-                    minValue: 0
-                },
-                series: [
-                    {
-                        dataField: 'cantidad',
-                        displayText: 'Línea de comparación'
-                    }
-                ]
-            }
-        ]
-
-
-
-
-    seriesGroupsColumn: any =
-        [
-            {
-                type: 'column',
-                columnsGapPercent: 70,
-                showLabels: true,
-                valueAxis:
-                {
-                    visible: true,
-                    unitInterval: 2,
-                    title: { text: 'Cantidadd' },
-                    minValue: 0
-                },
-                series: [
-                    {
-                        dataField: 'cantidad',
-                        displayText: 'Cantidad'
-                    }
-                ]
-            }
-        ]
-
-
-
-
-
-
-
-
 
 
 }

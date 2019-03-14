@@ -10,6 +10,8 @@ import { CustodiarDocumentosIndividualesComponent } from './custodiar-documentos
     FormsModule,
     NgxBarcodeModule
   ],
-  declarations: [CustodiarDocumentosIndividualesComponent]
+  declarations: [
+    CustodiarDocumentosIndividualesComponent,
+  ]
 })
 export class CustodiarDocumentosIndividualesModule { }

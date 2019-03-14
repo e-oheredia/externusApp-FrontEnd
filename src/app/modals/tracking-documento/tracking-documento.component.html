@@ -1,0 +1,67 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Tracking de la Campaña</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-12">
+      <div class="pb-2 mt-4 mb-2">
+        <div class="card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-5">
+                  Autogenerado
+                </div>
+                <div class="col-7">
+                  {{documento.documentoAutogenerado}}
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-5">
+                  Plazo distribución
+                </div>
+                <div class="col-7">
+                  {{documento.envio.plazoDistribucion.nombre}}
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-5">
+                  Estado actual
+                </div>
+                <div class="col-7">
+                  {{documentoService.getUltimoEstado(documento).nombre}}
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-5">
+                  Sede despacho
+                </div>
+                <div class="col-7">
+                  <!-- Backend debe enviar sede dentro del documento a la hora de consultar -->
+                  {{documento.envio.sede.nombre}}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="pb-2 mt-4 mb-2">
+        <ng2-smart-table [settings]="settings" [source]="dataSeguimientosDocumento"></ng2-smart-table>
+      </div>
+    </div>
+  </div>
+</div>

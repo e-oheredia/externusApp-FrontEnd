@@ -73,7 +73,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   distritos: Distrito[];
   tiposDocumento: TipoDocumento[];
   sedesDespacho: Sede[];
-  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), 0);
+  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), 0, true);
 
   provinciasSubscription: Subscription;
   distritosSubscription: Subscription;

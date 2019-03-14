@@ -53,56 +53,19 @@
 
           </div>
 
-          <div class="row" *ngIf="documentos.length !== 0; else mensaje">
-            <div class="col">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Autogenerado</th>
-                    <th scope="col">Remitente</th>
-                    <th scope="col">Nro. Documento</th>
-                    <th scope="col">Plazo Distribución</th>
-                    <th scope="col">Razón Social</th>
-                    <th scope="col">Contacto Destino</th>
-                    <th scope="col">Dirección</th>
-                    <th scope="col">Distrito</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Físico recibido</th>
-                    <th scope="col">Autorizado</th>
-                    <th scope="col">Fecha Creación</th>
-                    <th scope="col">Fecha Envío</th>
-                    <th scope="col">Fecha último Resultado</th>
-                    <th scope="col">Imágen</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let documento of documentos">
-                    <td scope="col">{{documento.documentoAutogenerado}}</td>
-                    <td scope="col">{{documento.envio.buzon.nombre}}</td>
-                    <td scope="col">{{documento.nroDocumento}}</td>
-                    <td scope="col">{{documento.envio.plazoDistribucion.nombre}}</td>
-                    <td scope="col">{{documento.razonSocialDestino}}</td>
-                    <td scope="col">{{documento.contactoDestino}}</td>
-                    <td scope="col">{{documento.direccion}}</td>
-                    <td scope="col">{{documento.distrito.nombre}}</td>
-                    <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre}}</td>
-                    <td scope="col">{{documento.recepcionado ? "SÍ":"NO"}}</td>
-                    <td scope="col">{{envioService.getAutorizacion(documento)}}</td>
-                    <td scope="col">{{documentoService.getFechaCreacion(documento)}}</td>
-
-                    <td scope="col">{{documentoService.getSeguimientoDocumentoByEstadoId(documento,3) ?
-                      documentoService.getSeguimientoDocumentoByEstadoId(documento,3).fecha : " " }}</td>
-
-                    <td scope="col">{{documentoService.getUltimoSeguimientoDocumento(documento).fecha}}</td>
-
-                    <td scope="col"> <a target="_blank" [href]="documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ? documentoService.getUltimoSeguimientoDocumento(documento).linkImagen : '#' ">{{documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id
-                        === 4 || documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === 5 ?
-                        'Link' : '' }}</a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div *ngIf="documentos.length !== 0; else mensaje">
+            <ng2-smart-table [settings]="settings" [source]="dataTodosLosDocumentos"></ng2-smart-table>
           </div>
+          
+          <ng-template #mensaje>
+            <div class="row">
+              <div class="col">
+                <div class="alert alert-info" role="alert">
+                  No existen documentos por consultar.
+                </div>
+              </div>
+            </div>
+          </ng-template>
 
         </form>
       </div>

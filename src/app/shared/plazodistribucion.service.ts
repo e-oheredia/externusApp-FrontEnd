@@ -14,7 +14,6 @@ export class PlazoDistribucionService {
     PROVEEDOR_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PROVEEDOR_URL;
 
     constructor(private requester: RequesterService, private buzonService: BuzonService) {
-
         this.listarPlazosDistribucion().subscribe(
             plazosDistribucion => {
                 this.plazosDistribucion = plazosDistribucion;
@@ -68,6 +67,18 @@ export class PlazoDistribucionService {
 
     listarPlazosDistribucion(): Observable<PlazoDistribucion[]> {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL, {});
+    }
+
+    extraerId(id: String){
+        return parseInt(id.substring(1,2));
+    }
+
+    agregarPlazoDistribucion(plazo: PlazoDistribucion): Observable<PlazoDistribucion>{
+        return this.requester.post<PlazoDistribucion>(this.REQUEST_URL, plazo, {});
+    }
+
+    modificarPlazoDistribucion(plazo: PlazoDistribucion): Observable<PlazoDistribucion> {
+        return this.requester.put<PlazoDistribucion>(this.REQUEST_URL, plazo, {});
     }
 
     listarPlazoDistribucionPermititoByBuzonId(buzonId: number): Observable<PlazoDistribucion | any> {
