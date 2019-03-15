@@ -90,6 +90,15 @@
                             DESVALIDAR
                           </button>
                         </div>
+
+                        <!-- <div class="form-group" *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
+                          <label for="autorizacion">
+                            Autorización
+                          </label>
+                          <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion" (change)="onChangeFile($event.srcElement.files[0])"
+                            accept=".msg">
+                        </div> -->
+
                       </div>
                     </li>
                     <li>
