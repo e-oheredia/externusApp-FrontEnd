@@ -126,7 +126,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
                                         contactoDestino: documento.contactoDestino,
                                         direccion: documento.direccion,
-                                        distrito: documento.distrito,
+                                        distrito: documento.distrito.nombre,
                                         estado: this.documentoService.getUltimoEstado(documento).nombre,
                                         fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                                         autorizado: documento.envio.autorizado ? "SI" : "NO",

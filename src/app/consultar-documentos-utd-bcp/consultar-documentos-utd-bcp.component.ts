@@ -31,6 +31,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
 
 
   dataTodosLosDocumentos: LocalDataSource = new LocalDataSource();
+  dataUnDocumento: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
   documentos: Documento[] = [];
   documento: Documento;
@@ -115,16 +116,14 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
 
       this.documentosSubscription = this.documentoService.listarDocumentosUtdBCPCodigo(this.documentoForm.controls['codigo'].value)
         .subscribe(
-          documento => {
-            this.documentos = []
-            this.documentos.push(documento);
+          documentos => {
             this.documentoForm.controls['codigo'].reset();
             this.documentoForm.controls['fechaIni'].reset();
             this.documentoForm.controls['fechaFin'].reset();
             this.documentoForm.controls['fechaIni'].enable();
             this.documentoForm.controls['fechaFin'].enable();
+            this.documentos.push();
             this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
-
           },
           error => {
             if (error.status === 400) {
