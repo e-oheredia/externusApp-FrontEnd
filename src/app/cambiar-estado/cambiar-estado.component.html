@@ -15,13 +15,13 @@
       </div>
 
       <div class="card-boddy">
-        <form [formGroup]="documentoForm" (ngSubmit)="buscarCodigoDocumento(documentoForm.get('codigo').value)">
+        <form [formGroup]="documentoForm" (ngSubmit)="buscarCodigoDocumento(documentoForm.get('id').value)">
           <div class="form-row">
             <div class="col-4 ml-3 mt-2">
               <div class="form-group">
-                <label for="codigo">Código: </label>
-                <input class="form-control" type="text" formControlName="codigo"
-                  (input)="documentoForm.controls['codigo'].setValue(documentoForm.get('codigo').value.toUpperCase())">
+                <label for="id">Código: </label>
+                <input class="form-control" type="text" formControlName="id"
+                  (input)="documentoForm.controls['id'].setValue(documentoForm.get('id').value.toUpperCase())">
               </div>
             </div>
             <div class="col-3 mt-4 pt-2">
@@ -85,20 +85,29 @@
                         <div class="col-1 mr-4">
                           {{ documento === null || documento === undefined ? '' : documento.documentosGuia[0] === null || documento.documentosGuia[0] === undefined ? 'NO' : documento.documentosGuia[0].validado ? 'SI' : 'NO'}}
                         </div>
-                        <div class="col-3">
-                          <button class="btn btn-primary form-control mt-2">
+                        <div class="col-5">
+                          <button type="button" class="btn btn-success" (click)="desvalidar(documento.id)">
                             DESVALIDAR
                           </button>
                         </div>
+
+                        <!-- <div class="form-group" *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
+                          <label for="autorizacion">
+                            Autorización
+                          </label>
+                          <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion" (change)="onChangeFile($event.srcElement.files[0])"
+                            accept=".msg">
+                        </div> -->
+
                       </div>
                     </li>
                     <li>
                       <div class="row">
                         <div class="col-4 ml-3 mt-2">
                           <div class="form-group">
-                            <label for="nuevoEstado">Cambiar al estado</label>
-                            <select class="form-control" id="nuevoEstado" formControlName="nuevoEstado">
-                              <option *ngFor="let nuevoEstado of nuevosEstados" [ngValue]="nuevoEstado">{{nuevoEstado.nombre}}
+                            <label for="estadoDocumento">Cambiar al estado</label>
+                            <select class="form-control" id="estadoDocumento" formControlName="estadoDocumento">
+                              <option *ngFor="let estadoDocumento of nuevosEstados" [ngValue]="estadoDocumento">{{estadoDocumento.nombre}}
                               </option>
                             </select>
                           </div>

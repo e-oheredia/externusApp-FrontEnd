@@ -102,6 +102,10 @@ export class PlazoDistribucionComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
+
+    bsModalRef.content.plazoCreadoEvent.subscribe(() => 
+    this.listarPlazosDistribucion()
+    )
   }
 
   
@@ -110,6 +114,7 @@ export class PlazoDistribucionComponent implements OnInit {
   
     let bsModalRef: BsModalRef = this.modalService.show(ModificarPlazoComponent, {
       initialState: {
+        id: this.plazo.id,
         plazo: this.plazo,
         titulo: 'Modificar el plazo de la distribución'
       },

@@ -19,11 +19,13 @@ import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { HttpParams } from '@angular/common/http';
 import { BuzonService } from './buzon.service';
 import { Proveedor } from '../../model/proveedor.model';
+import { DocumentoGuia } from 'src/model/documentoguia.model';
 
 @Injectable()
 export class DocumentoService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DOCUMENTO_URL;
+    GUIA_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
 
     constructor(
         private readExcelService: ReadExcelService,
@@ -272,8 +274,9 @@ export class DocumentoService {
         return this.requesterService.post<Documento>(this.REQUEST_URL + codigo.toString() + "/cambioestado" , seguimiento, {});
     }
 
-
-
+    desvalidar(id: number){
+        return this.requesterService.put<DocumentoGuia>(this.GUIA_URL + id + "/desvalidar", null ,{});
+    }
 
 
     listarDocumentosReportesVolumen(fechaini: Date, fechafin: Date, idestado: number): Observable<Documento[]> {

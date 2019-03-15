@@ -25,13 +25,16 @@ export class ModificarProveedorComponent implements OnInit {
   ngOnInit() {
     this.modificarForm = new FormGroup({
       'nombreProveedor' : new FormControl(this.proveedor.nombre, Validators.required),
-      'plazosProveedor' : new FormControl(this.proveedor.plazosDistribucion, Validators.required)
+      // 'plazosProveedor' : new FormControl(this.proveedor.plazosDistribucion, Validators.required),
+      'activo' : new FormControl("0", Validators.required)
     })
   }
 
-  onSubmit(form: any){
+  onSubmit(proveedorFormValue: any){
+
     if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombreProveedor'].value)){
-      this.proveedor.nombre = this.modificarForm.get("nombreProveedor").value;
+      this.proveedor.nombre = proveedorFormValue.nombreProveedor;
+      this.proveedor.activo = proveedorFormValue.activo === "1";
       // plazos de distribucion
       // this.proveedor.estado = this.modificarForm.get("estadoProveedor").value;
     }

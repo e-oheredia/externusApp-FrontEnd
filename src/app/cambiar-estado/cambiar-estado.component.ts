@@ -43,22 +43,22 @@ export class CambiarEstadoComponent implements OnInit {
   ngOnInit() {
     this.cargarVista();
     this.documentoForm = new FormGroup({
-      "codigo": new FormControl('', Validators.required)
+      "id": new FormControl('', Validators.required)
     })
     this.estadoForm = new FormGroup({
-      "nuevoEstado": new FormControl(null, Validators.required),
+      "estadoDocumento": new FormControl(null, Validators.required),
       "observacion": new FormControl('', Validators.required)
     })
   }
 
 
   buscarCodigoDocumento() {
-    if (this.documentoForm.controls['codigo'].value.length !== 0) {
-      this.documentoSubscription = this.documentoService.listarDocumentoPorCodigo(this.documentoForm.controls['codigo'].value)
+    if (this.documentoForm.controls['id'].value.length !== 0) {
+      this.documentoSubscription = this.documentoService.listarDocumentoPorCodigo(this.documentoForm.controls['id'].value)
         .subscribe(
           documento => {
             this.documento = documento;
-            this.documentoForm.controls['codigo'].reset();
+            this.documentoForm.controls['id'].reset();
             this.estadoForm.controls['observacion'].reset();
             this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
             this.cargarCombo(this.documentoService.getUltimoEstado(documento).id);
@@ -94,9 +94,26 @@ export class CambiarEstadoComponent implements OnInit {
   }
 
 
+  desvalidar(id){
+    this.documentoService.desvalidar(id).subscribe(
+      () => {
+        this.estadoForm.reset();
+
+        let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
+          initialState: {
+            mensaje: "SE HA DESVALIDADO EL DOCUMENTO"
+          }
+        });
+        this.bsModalRef.hide();
+        
+      }
+    )
+  }
+
+
   cambiarEstado(form: any) {
     let seguimientoDocumento = new SeguimientoDocumento();
-    seguimientoDocumento.estadoDocumento = form.get('nuevoEstado').value;
+    seguimientoDocumento.estadoDocumento = form.get('estadoDocumento').value;
     seguimientoDocumento.observacion = form.get('observacion').value;
     this.seguimientoDocumento = seguimientoDocumento;
 
@@ -107,7 +124,7 @@ export class CambiarEstadoComponent implements OnInit {
 
         let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
           initialState: {
-            mensaje: "SE HA CAMBIADO EL ESTADO DEL DOCUMENTO"
+            mensaje: "SE MODIFICÓ EL ESTADO DEL DOCUMENTO EXITOSAMENTE"
           }
         });
         this.bsModalRef.hide();

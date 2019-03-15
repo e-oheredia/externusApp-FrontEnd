@@ -79,7 +79,7 @@ export class ProveedorComponent implements OnInit {
             dataProveedores.push({
               id: proveedor.id,
               nombre: proveedor.nombre,
-              plazos: proveedor.plazosDistribucion
+              plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", ")
             })
           }
         )
@@ -101,6 +101,10 @@ export class ProveedorComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
+
+    bsModalRef.content.proveedorCreadoEvent.subscribe(() =>
+      this.listarProveedores()
+    )
   }
 
   modificarProveedor(row){

@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">Tracking de la Campaña</h4>
+  <h4 class="modal-title pull-left">Tracking del Documento</h4>
   <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -34,10 +34,10 @@
             <li class="list-group-item">
               <div class="row">
                 <div class="col-5">
-                  Estado actual
+                  Razón social
                 </div>
                 <div class="col-7">
-                  {{documentoService.getUltimoEstado(documento).nombre}}
+                  {{documento.razonSocialDestino}}
                 </div>
               </div>
             </li>
@@ -52,6 +52,27 @@
                 </div>
               </div>
             </li>
+            <!-- <li class="list-group-item">
+                <div class="row">
+                  <div class="col-5">
+                    Proveedor
+                  </div>
+                  <div class="col-7">
+                    {{documento.documentosGuia.guia.proveedor.nombre}}
+                  </div>
+                </div>
+              </li> -->
+            <!-- <li class="list-group-item">
+              <div class="row">
+                <div class="col-5">
+                  Estado actual
+                </div>
+                <div class="col-7">
+                  {{documentoService.getUltimoEstado(documento).nombre}}
+                </div>
+              </div>
+            </li> -->
+
           </ul>
         </div>
       </div>
