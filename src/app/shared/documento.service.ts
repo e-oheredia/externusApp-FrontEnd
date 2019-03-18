@@ -275,7 +275,7 @@ export class DocumentoService {
     }
 
     desvalidar(id: number){
-        return this.requesterService.put<DocumentoGuia>(this.GUIA_URL , id + "/desvalidar", {});
+        return this.requesterService.put<DocumentoGuia>(this.GUIA_URL + id + "/desvalidar", null ,{});
     }
 
 

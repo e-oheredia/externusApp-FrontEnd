@@ -118,6 +118,23 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
           documento => {
             this.documentos = []
             this.documentos.push(documento);
+            let dataTodosLosDocumentos = [];
+            dataTodosLosDocumentos.push({
+                  autogenerado: documento.documentoAutogenerado,
+                  remitente: documento.envio.buzon.nombre,
+                  plazo: documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
+                  razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
+                  contacto: documento.contactoDestino,
+                  direccion: documento.direccion,
+                  distrito: documento.distrito.nombre,
+                  estado: this.documentoService.getUltimoEstado(documento).nombre,
+                  fisicoRecibido: documento.recepcionado ? "SI" : "NO",
+                  autorizado: documento.envio.autorizado ? "SI" : "NO",
+                  fechaCreacion: this.documentoService.getFechaCreacion(documento),
+                  fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
+                  fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
+                })
+            this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);
             this.documentoForm.controls['codigo'].reset();
             this.documentoForm.controls['fechaIni'].reset();
             this.documentoForm.controls['fechaFin'].reset();

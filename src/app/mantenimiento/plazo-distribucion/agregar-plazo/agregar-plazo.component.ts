@@ -36,14 +36,14 @@ export class AgregarPlazoComponent implements OnInit {
   ngOnInit() {
     this.cargarDatosVista();
 
-    this.agregarForm = new FormGroup ({
-      'nombre' : new FormControl('', Validators.required),
-      'tiempoEnvio' : new FormControl('', Validators.required),
-      'tipoPlazoDistribucion' : new FormControl(null, Validators.required)
+    this.agregarForm = new FormGroup({
+      'nombre': new FormControl('', Validators.required),
+      'tiempoEnvio': new FormControl('', Validators.required),
+      'tipoPlazoDistribucion': new FormControl(null, Validators.required)
     })
   }
 
-  cargarDatosVista(){
+  cargarDatosVista() {
     this.tiposPlazos = this.tipoPlazosService.getTiposPlazosDistribucion();
     this.tiposPlazosSubscription = this.tipoPlazosService.tiposPlazosDistribucionChanged.subscribe(
       tiposPlazos => {
@@ -52,23 +52,25 @@ export class AgregarPlazoComponent implements OnInit {
     )
   }
 
-  onSubmit(plazo){
-    this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo).subscribe(
-      plazo => {
-        this.notifier.notify('succes', 'Se ha registrado el plazo');
-        this.bsModalRef.hide();
-        this.plazoCreadoEvent.emit(plazo);        
-      },
-      error => {
-        this.notifier.notify('error', error.error.mensaje);
-      }
-    )
-    // if (!this.utilsService.isUndefinedOrNullOrEmpty(this.agregarForm.controls['nombrePlazo'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.agregarForm.controls['horasPlazo'].value)){
-    //   this.plazo.nombre = this.agregarForm.get("nombrePlazo").value;
-    //   this.plazo.tiempoEnvio = this.agregarForm.get("horasPlazo").value;
-
-    //   this.plazoDistribucionService.agregarPlazoDistribucion(this.plazo)
-    // }
+  onSubmit(plazo) {
+    if (this.agregarForm.controls['nombre'].value.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0) {
+      this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo).subscribe(
+        plazo => {
+          this.notifier.notify('success', 'SE AGREGÓ EL PLAZO DE DISTRIBUCIÓN CON ÉXITO');
+          this.bsModalRef.hide();
+          this.plazoCreadoEvent.emit(plazo);
+        },
+        error => {
+          this.notifier.notify('error', error.error.mensaje);
+        }
+      );
+    }
+    else {
+      this.notifier.notify('error', 'DEBE INGRESAR TODOS LOS DATOS');
+    }
   }
+
+
+  
 
 }

@@ -38,11 +38,11 @@ export class ModificarPlazoComponent implements OnInit {
   }
 
   onSubmit(form: any){
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombrePlazo'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['horasPlazo'].value)){
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tiempoEnvio'].value)){
       this.plazo.nombre = this.modificarForm.get("nombre").value;
       this.plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       this.plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
-      this.plazo.activo = this.modificarForm.get('activo').value;
+      // this.plazo.activo = this.modificarForm.get('activo').value;
     }
     this.bsModalRef.hide();
     this.confirmarEvent.emit();

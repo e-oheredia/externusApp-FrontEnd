@@ -124,7 +124,7 @@ export class CambiarEstadoComponent implements OnInit {
 
         let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
           initialState: {
-            mensaje: "SE HA CAMBIADO EL ESTADO DEL DOCUMENTO"
+            mensaje: "SE MODIFICÓ EL ESTADO DEL DOCUMENTO EXITOSAMENTE"
           }
         });
         this.bsModalRef.hide();

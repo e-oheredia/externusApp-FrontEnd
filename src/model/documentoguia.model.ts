@@ -3,5 +3,8 @@ import { Guia } from './guia.model';
 
 
 export class DocumentoGuia {
-    constructor(public documento: Documento, public validado: boolean, public fechaAsociacion: Date, public guia: Guia){}
+    constructor(public documento: Documento, 
+        public validado: boolean, 
+        public fechaAsociacion: Date, 
+        public guia: Guia){}
 }

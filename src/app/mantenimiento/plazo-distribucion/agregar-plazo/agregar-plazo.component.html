@@ -13,6 +13,9 @@
           <div class="form-group">
             <label for="nombre">Nombre del Plazo</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+            <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched" class="text-danger small">
+                Es necesario ingresar el nombre del plazo.
+              </span>
           </div>
         </div>
       </div>
@@ -22,6 +25,9 @@
           <div class="form-group">
             <label for="tiempoEnvio">Plazo de Distribución (horas)</label>
             <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio" formControlName="tiempoEnvio">
+            <span *ngIf="!agregarForm.get('tiempoEnvio').valid && agregarForm.get('tiempoEnvio').touched" class="text-danger small">
+                Es necesario ingresar las horas del plazo.
+              </span>
           </div>
         </div>
       </div>
