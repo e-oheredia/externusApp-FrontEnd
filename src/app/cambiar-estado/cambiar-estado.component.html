@@ -50,6 +50,16 @@
                     <li class="list-group-item">
                       <div class="row">
                         <div class="col-3">
+                          Autogenerado
+                        </div>
+                        <div class="col-7">
+                          {{documento === null || documento === undefined ? '' : documento.documentoAutogenerado}}
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-group-item">
+                      <div class="row">
+                        <div class="col-3">
                           Remitente
                         </div>
                         <div class="col-7">
@@ -107,7 +117,8 @@
                           <div class="form-group">
                             <label for="estadoDocumento">Cambiar al estado</label>
                             <select class="form-control" id="estadoDocumento" formControlName="estadoDocumento">
-                              <option *ngFor="let estadoDocumento of nuevosEstados" [ngValue]="estadoDocumento">{{estadoDocumento.nombre}}
+                              <option *ngFor="let estadoDocumento of nuevosEstados" [ngValue]="estadoDocumento">
+                                {{estadoDocumento.nombre}}
                               </option>
                             </select>
                           </div>
@@ -126,7 +137,8 @@
                           <div class="col">
                             <label for="observacion">Observación adicional</label>
                             <br>
-                            <textarea formControlName="observacion" rows="10" cols="81" (input)="estadoForm.controls['observacion'].setValue(estadoForm.get('observacion').value.toUpperCase())"></textarea>
+                            <textarea formControlName="observacion" rows="10" cols="81"
+                              (input)="estadoForm.controls['observacion'].setValue(estadoForm.get('observacion').value.toUpperCase())"></textarea>
                           </div>
                         </div>
                       </div>
