@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { PlazoDistribucionComponent } from './plazo-distribucion/plazo-distribucion.component';
 import { ProveedorComponent } from './proveedor/proveedor.component';
+import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.component';
 
 const mantenimientoRoutes: Routes = [
     {
@@ -16,6 +17,9 @@ const mantenimientoRoutes: Routes = [
             },
             {
                 path: 'proveedor', component: ProveedorComponent
+            },
+            {
+                path: 'tipo-seguridad', component: TipoSeguridadComponent
             }
         ]
     }

@@ -48,6 +48,8 @@ import { AgregarProveedorComponent } from '../mantenimiento/proveedor/agregar-pr
 import { ModificarPlazoComponent } from '../mantenimiento/plazo-distribucion/modificar-plazo/modificar-plazo.component';
 import { ModificarProveedorComponent } from '../mantenimiento/proveedor/modificar-proveedor/modificar-proveedor.component';
 import { TipoPlazoDistribucionService } from '../shared/tipoplazodistribucion.service';
+import { AgregarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad/agregar-tipo-seguridad/agregar-tipo-seguridad.component';
+import { ModificarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad/modificar-tipo-seguridad/modificar-tipo-seguridad.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { TipoPlazoDistribucionService } from '../shared/tipoplazodistribucion.se
     AgregarPlazoComponent,
     AgregarProveedorComponent,
     ModificarPlazoComponent,
-    ModificarProveedorComponent
+    ModificarProveedorComponent,
+    AgregarTipoSeguridadComponent,
+    ModificarTipoSeguridadComponent
   ],
   imports: [  
     HttpClientModule,
@@ -123,7 +127,9 @@ import { TipoPlazoDistribucionService } from '../shared/tipoplazodistribucion.se
     TrackingDocumentoComponent,
     MensajeExitoComponent,
     ModificarPlazoComponent,
-    ModificarProveedorComponent
+    ModificarProveedorComponent,
+    AgregarTipoSeguridadComponent,
+    ModificarTipoSeguridadComponent
    ],
 })
 export class LayoutModule { }

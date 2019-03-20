@@ -10,7 +10,8 @@ import { PermisoPlazoDistribucionComponent } from './permiso-plazo-distribucion/
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ModificarPlazoComponent } from './plazo-distribucion/modificar-plazo/modificar-plazo.component';
+import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.component';
+
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { ModificarPlazoComponent } from './plazo-distribucion/modificar-plazo/mo
     MantenimientoComponent,
     PlazoDistribucionComponent,
     ProveedorComponent,
-    PermisoPlazoDistribucionComponent, 
+    PermisoPlazoDistribucionComponent,
+    TipoSeguridadComponent 
     // ModificarPlazoComponent
   ],
   entryComponents: [
