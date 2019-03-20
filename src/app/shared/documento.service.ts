@@ -318,5 +318,7 @@ export class DocumentoService {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentoscargos", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString())});
     }
 
-
+    asignarCodigoDevolucionCargo(id: number, codigo: string): Observable<Documento>{
+        return this.requesterService.post<Documento>(this.REQUEST_URL + id + "/codigodevolucion", codigo, {});
+    }
 }

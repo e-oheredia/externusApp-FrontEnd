@@ -12,7 +12,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
 import { ConsultarDocumentosUBCPModule } from './consultar-documentos-u-bcp/consultar-documentos-u-bcp.module';
-import { RecepcionarCargosModule } from './recepcionar-cargos/recepcionar-cargos.module';
 import { RecepcionarDocumentosModule } from './recepcionar-documentos/recepcionar-documentos.module';
 import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
 
@@ -28,6 +27,7 @@ import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-m
 import { ReporteIndicadorEfectividadModule } from './reporte-indicador-efectividad/reporte-indicador-efectividad.module';
 import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.module';
 import { CambiarEstadoModule } from './cambiar-estado/cambiar-estado.module';
+import { RecepcionarCargosModule } from './recepcionar-cargos/recepcionar-cargos.module';
 
 
 
@@ -48,8 +48,6 @@ import { CambiarEstadoModule } from './cambiar-estado/cambiar-estado.module';
     ListarGuiasEnviadasModule, 
     SubirResultadosEnviosModule,
     ConsultarDocumentosUBCPModule,
-    RecepcionarCargosModule,
-    RecepcionarDocumentosModule, 
     ConsultarDocumentosUtdBcpModule,
     ReporteEficaciaModule,
     ReporteDevolucionCargoModule,
@@ -60,6 +58,8 @@ import { CambiarEstadoModule } from './cambiar-estado/cambiar-estado.module';
     ReporteIndicadorEfectividadModule,
     ReporteIndicadorEficienciaModule,
     CambiarEstadoModule,
+    RecepcionarCargosModule,
+    RecepcionarDocumentosModule
   ],
   providers: [],
   bootstrap: [AppComponent]

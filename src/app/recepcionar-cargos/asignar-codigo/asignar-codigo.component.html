@@ -1,0 +1,30 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h4>Asignar código de devolución</h4>
+  </div>
+
+  <form [formGroup]="AsignarForm" (ngSubmit)=onSubmit(AsignarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="codigoDevCargo">Código de devolución</label>
+            <input class="form-control" type="text" name="codigoDevCargo" id="codigoDevCargo"
+              formControlName="codigoDevCargo">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Asignar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

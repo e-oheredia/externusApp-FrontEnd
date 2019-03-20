@@ -22,5 +22,5 @@ export class Documento {
     public seguimientosDocumento: SeguimientoDocumento[] = [];    
     public checked: boolean;   
     public documentosGuia: DocumentoGuia[] = [];  
-
+    public codigoDevolucion: string;
 }
