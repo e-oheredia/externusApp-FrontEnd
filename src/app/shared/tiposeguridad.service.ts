@@ -32,4 +32,10 @@ export class TipoSeguridadService {
         return this.requester.get<TipoSeguridad[]>(this.REQUEST_URL, {});
     }
 
+    agregarTipoSeguridad(tipoSeguridad : TipoSeguridad) :Observable<TipoSeguridad>{
+       return this.requester.post<TipoSeguridad>(this.REQUEST_URL,tipoSeguridad,{}); 
+    }
+    modificarTipoSeguridad(id: number, tipoSeguridad : TipoSeguridad) : Observable<TipoSeguridad>{
+        return this.requester.put<TipoSeguridad>(this.REQUEST_URL + id, tipoSeguridad, {});
+    }
 }
