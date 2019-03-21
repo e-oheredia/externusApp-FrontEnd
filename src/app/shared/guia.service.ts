@@ -3,11 +3,14 @@ import { SeguimientoGuia } from './../../model/seguimientoguia.model';
 import { WriteExcelService } from './write-excel.service';
 import { DocumentoGuia } from '../../model/documentoguia.model';
 import { Guia } from '../../model/guia.model';
+import * as moment from 'moment-timezone';
 import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable } from "rxjs";
 import { Sede } from 'src/model/sede.model';
+import { HttpParams } from '@angular/common/http';
+import { EstadoGuia } from 'src/model/estadoguia.model';
 
 @Injectable()
 export class GuiaService {
@@ -26,6 +29,14 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creados", {});
     }
 
+    listarGuiaPorCodigo(codigo: string): Observable<Guia>{
+        return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString())});
+    }
+
+    listarGuiasPorFechas(fechaini: Date, fechafin: Date){
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
     registrarGuia(guia: Guia): Observable<Guia> {
         return this.requester.post<Guia>(this.REQUEST_URL, guia, {});
     }
@@ -36,6 +47,10 @@ export class GuiaService {
 
     retirarNoValidados(guia: Guia) {
         return this.requester.put<any>(this.REQUEST_URL + guia.id + "/retiro", null, {});
+    }
+    
+    getCantidadDocumentosPorGuia(guia: Guia){
+        return this.requester.get<any>(this.REQUEST_URL + guia.id + "/documentos" + null, {});
     }
 
     enviarGuia(guiaId: number){
@@ -68,6 +83,33 @@ export class GuiaService {
         return guia.seguimientosGuia.find(seguimientoDocumento => 
             seguimientoDocumento.estadoGuia.id === 1
         ).fecha;
+    }
+
+    getFechaEnvio(guia: Guia): Date{
+        let seguimientoDocumento =  guia.seguimientosGuia.find(seguimientoDocumento => 
+            seguimientoDocumento.estadoGuia.id === 2
+        );
+
+        if (seguimientoDocumento == null) {
+            return null;
+        }
+        return seguimientoDocumento.fecha;
+    }
+
+    getEstadoGuia(guia: Guia): EstadoGuia{
+        let estadoGuia = guia.seguimientosGuia.reduce(
+            (max, seguimientosGuia) =>
+                moment(seguimientosGuia.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimientosGuia : max, guia.seguimientosGuia[0]
+        ).estadoGuia;
+
+        return estadoGuia;
+    }
+
+    getFechaUltimoEstadoGuia(guia: Guia): Date | string {
+        return guia.seguimientosGuia.reduce(
+            (max, seguimientosGuia) =>
+            moment(seguimientosGuia.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimientosGuia : max, guia.seguimientosGuia[0]
+        ).fecha
     }
 
     getSeguimientoGuiaByEstadoGuiaId(guia: Guia, estadoGuiaId: number): SeguimientoGuia{
