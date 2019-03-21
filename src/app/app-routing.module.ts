@@ -20,6 +20,7 @@ import { ReporteMensualCargosComponent } from './reporte-mensual-cargos/reporte-
 import { ReporteIndicadorEfectividadComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
 import { ReporteIndicadorEficienciaComponent } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.component';
 import { CambiarEstadoComponent } from './cambiar-estado/cambiar-estado.component';
+import { ReporteGuiasComponent } from './reporte-guias/reporte-guias.component';
 
 
 
@@ -89,7 +90,6 @@ const appRoutes: Routes = [
         component: ReporteMensualVolumenComponent
     },
     {
-
         path: 'reportes-eficacia',
         component: ReporteEficaciaComponent
     },
@@ -114,6 +114,10 @@ const appRoutes: Routes = [
         path: 'cambiar-estado',
         component: CambiarEstadoComponent
 
+    },
+    {
+        path: 'reporte-guias',
+        component: ReporteGuiasComponent
     }
 
 ]
