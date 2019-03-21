@@ -8,6 +8,7 @@ import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable } from "rxjs";
 import { Sede } from 'src/model/sede.model';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable()
 export class GuiaService {
@@ -24,6 +25,14 @@ export class GuiaService {
 
     listarGuiasCreadas(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creados", {});
+    }
+
+    listarGuiaPorCodigo(codigo: string): Observable<Guia>{
+        return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString())});
+    }
+
+    listarGuiasPorFechas(fechaini: Date, fechafin: Date){
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
     registrarGuia(guia: Guia): Observable<Guia> {
