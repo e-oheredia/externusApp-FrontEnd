@@ -50,6 +50,7 @@ export class ReporteGuiasComponent implements OnInit {
       "codigo": new FormControl('', Validators.required)
     })
     this.tituloService.setTitulo("HISTORIAL DE GUIAS");
+    this.settings.hideSubHeader = false;
     this.generarColumnas();
     this.listarGuias();
   }
@@ -106,9 +107,9 @@ export class ReporteGuiasComponent implements OnInit {
               tipoSeguridad: guia.tipoSeguridad.nombre,
               sede: guia.sede.nombre,
               totalDocumentos: "AUN FALTA CODIGO",
-              fechaEnvio: "AUN FALTA CODIGO",
-              fechaUltimoEstado: "AUN FALTA CODIGO",
-              estado: "AUN FALTA CODIGO"
+              fechaEnvio: this.guiaService.getFechaEnvio(guia),
+              fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
+              estado: this.guiaService.getEstadoGuia(guia).nombre
             })
             this.guias.push(guia);
             this.dataGuias.load(dataGuias);
@@ -150,10 +151,10 @@ export class ReporteGuiasComponent implements OnInit {
                       tipoServicio: guia.tipoServicio.nombre,
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
-                      totalDocumentos: "AUN FALTA CODIGO",
-                      fechaEnvio: "AUN FALTA CODIGO",
-                      fechaUltimoEstado: "AUN FALTA CODIGO",
-                      estado: "AUN FALTA CODIGO"
+                      totalDocumentos: guia.cantidadDocumentos,
+                      fechaEnvio: this.guiaService.getFechaEnvio(guia),
+                      fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
+                      estado: this.guiaService.getEstadoGuia(guia).nombre
                     })
                   }                  
                 )
@@ -164,14 +165,14 @@ export class ReporteGuiasComponent implements OnInit {
           error => {
             if (error.status === 400) {
               this.guias = [];
-              this.notifier.notify('error', 'RANGO DE FECHA NO VÁLIDA');
+              this.notifier.notify('error', 'EL RANGO DE FECHAS ES INCORRECTO');
             }
           }
         );
     }
 
     else {
-      this.notifier.notify('error', 'INGRESE ALGÚN DATO DE CONSULTA');
+      this.notifier.notify('error', 'DEBE INGRESAR EL CÓDIGO O UN RANGO DE FECHAS');
     }
   }
 
