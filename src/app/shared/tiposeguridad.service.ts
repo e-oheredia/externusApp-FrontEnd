@@ -26,10 +26,8 @@ export class TipoSeguridadService {
 
     public tiposSeguridadChanged = new Subject<TipoSeguridad[]>();
 
-
-
     listarTiposSeguridad(): Observable<TipoSeguridad[]> {
-        return this.requester.get<TipoSeguridad[]>(this.REQUEST_URL, {});
+        return this.requester.get<TipoSeguridad[]>(this.REQUEST_URL + "activos", {});
     }
 
     agregarTipoSeguridad(tipoSeguridad : TipoSeguridad) :Observable<TipoSeguridad>{
@@ -37,5 +35,8 @@ export class TipoSeguridadService {
     }
     modificarTipoSeguridad(id: number, tipoSeguridad : TipoSeguridad) : Observable<TipoSeguridad>{
         return this.requester.put<TipoSeguridad>(this.REQUEST_URL + id, tipoSeguridad, {});
+    }
+    listarTiposSeguridadAll(): Observable<TipoSeguridad[]> {
+        return this.requester.get<TipoSeguridad[]>(this.REQUEST_URL , {});
     }
 }

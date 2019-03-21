@@ -73,7 +73,7 @@ export class ProveedorComponent implements OnInit {
 
   listarProveedores(){
     this.dataProveedores.reset();
-    this.proveedorService.listarProveedores().subscribe(
+    this.proveedorService.listarProveedoresAll().subscribe(
       proveedores => {
         this.proveedores = proveedores;
         let dataProveedores = [];
