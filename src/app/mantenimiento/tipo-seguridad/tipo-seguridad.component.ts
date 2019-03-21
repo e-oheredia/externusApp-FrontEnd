@@ -67,7 +67,7 @@ export class TipoSeguridadComponent implements OnInit {
 
     listarTiposSeguridad(){
     this.dataTipoSeguridad.reset();
-    this.tipoSeguridadService.listarTiposSeguridad().subscribe(
+    this.tipoSeguridadService.listarTiposSeguridadAll().subscribe(
       tiposSeguridad => {
         this.tiposSeguridad = tiposSeguridad;
         let dataTipoSeguridad = [];

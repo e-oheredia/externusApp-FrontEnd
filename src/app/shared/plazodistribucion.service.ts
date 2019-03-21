@@ -56,6 +56,7 @@ export class PlazoDistribucionService {
 
     public plazoDistribucionPermitidoChanged = new Subject<PlazoDistribucion>(); 
     public plazosDistribucionChanged = new Subject<PlazoDistribucion[]>();
+    
 
     buzonPlazoDistribucionPermitidoSubscription: Subscription;
     areaPlazoDistribucionPermitidoSubscription: Subscription;
@@ -66,7 +67,7 @@ export class PlazoDistribucionService {
     }
 
     listarPlazosDistribucion(): Observable<PlazoDistribucion[]> {
-        return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL, {});
+        return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL + "activos", {});
     }
 
     extraerId(id: String){
@@ -77,8 +78,8 @@ export class PlazoDistribucionService {
         return this.requester.post<PlazoDistribucion>(this.REQUEST_URL, plazo, {});
     }
 
-    modificarPlazoDistribucion(plazo: PlazoDistribucion): Observable<PlazoDistribucion> {
-        return this.requester.put<PlazoDistribucion>(this.REQUEST_URL, plazo, {});
+    modificarPlazoDistribucion(id:number, plazo: PlazoDistribucion): Observable<PlazoDistribucion> {
+        return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + id, plazo, {});
     }
 
     listarPlazoDistribucionPermititoByBuzonId(buzonId: number): Observable<PlazoDistribucion | any> {
@@ -93,4 +94,8 @@ export class PlazoDistribucionService {
         return this.requester.get<PlazoDistribucion | any>(this.PROVEEDOR_REQUEST_URL + proveedorId.toString() + "/plazosdistribucion", {});
     }
 
+    listarPlazosDistribucionAll(): Observable<PlazoDistribucion[]> {
+        return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL, {});
+    }
+    
 }

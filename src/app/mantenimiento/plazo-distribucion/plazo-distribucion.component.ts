@@ -53,6 +53,9 @@ export class PlazoDistribucionComponent implements OnInit {
       plazos : {
         title : 'Plazo de distribución (hrs)'
       },
+      estado : {
+        title : 'Estado'
+      },
       buttonModificar: {
         title : 'Modificar',
         type : 'custom',
@@ -70,7 +73,7 @@ export class PlazoDistribucionComponent implements OnInit {
 
     listarPlazosDistribucion(){
     this.dataPlazosDistribucion.reset();
-    this.plazoDistribucionService.listarPlazosDistribucion().subscribe(
+    this.plazoDistribucionService.listarPlazosDistribucionAll().subscribe(
       plazos => {
         this.plazos = plazos;
         let dataPlazosDistribucion = [];
@@ -80,7 +83,8 @@ export class PlazoDistribucionComponent implements OnInit {
               id: plazo.id,
               nombre: plazo.nombre,
               tipoPlazo: plazo.tipoPlazoDistribucion.nombre,
-              plazos: plazo.tiempoEnvio
+              plazos: plazo.tiempoEnvio,
+              estado: plazo.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
         )
@@ -124,7 +128,7 @@ export class PlazoDistribucionComponent implements OnInit {
     });
 
     bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.plazoDistribucionService.modificarPlazoDistribucion(this.plazo).subscribe(
+      this.plazoDistribucionService.modificarPlazoDistribucion(this.plazo.id,this.plazo).subscribe(
         () => {
           let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
             initialState: {

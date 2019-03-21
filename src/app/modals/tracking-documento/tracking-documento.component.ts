@@ -4,6 +4,9 @@ import { AppSettings } from 'src/app/shared/app.settings';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Documento } from 'src/model/documento.model';
 import { DocumentoService } from 'src/app/shared/documento.service';
+import { SeguimientoDocumento } from 'src/model/seguimientodocumento.model';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-tracking-documento',
@@ -12,9 +15,12 @@ import { DocumentoService } from 'src/app/shared/documento.service';
 })
 export class TrackingDocumentoComponent implements OnInit, OnDestroy {
 
+  
+
   constructor(
     public bsModalRef: BsModalRef,
-    private documentoService: DocumentoService
+    private documentoService: DocumentoService,
+    private router : Router
   ) { }
 
   documento: Documento;
@@ -22,6 +28,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
   dataSeguimientosDocumento: LocalDataSource = new LocalDataSource();
 
   ngOnInit() {
+   
     this.settings.columns = {
       estado: {
         title: 'Estado'
@@ -31,6 +38,9 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
       },
       fecha: {
         title: 'Fecha'
+      },
+      link: {
+        title: 'Link'
       }
     };
     this.cargarSeguimientosDocumento();
@@ -46,7 +56,9 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
         dataSeguimientosDocumento.push({
           estado: segumientoDocumento.estadoDocumento.nombre,
           observacion: segumientoDocumento.observacion,
-          fecha: segumientoDocumento.fecha
+          fecha: segumientoDocumento.fecha,
+          link: segumientoDocumento.linkImagen,
+          
         });
       }
     )

@@ -27,7 +27,7 @@ export class ProveedorService {
     proveedoresChanged = new Subject<Proveedor[]>();
 
     listarProveedores(): Observable<Proveedor[]>{
-        return this.requester.get<Proveedor[]>(this.REQUEST_URL, {});
+        return this.requester.get<Proveedor[]>(this.REQUEST_URL +"activos", {});
     }
 
     extraerId(id: String){
@@ -38,8 +38,12 @@ export class ProveedorService {
         return this.requester.post<Proveedor>(this.REQUEST_URL, proveedor, {});
     }
 
-    modificarProveedor(proveedor: Proveedor): Observable<Proveedor> {
-        return this.requester.post<Proveedor>(this.REQUEST_URL, proveedor, {});
+    modificarProveedor(id:number, proveedor: Proveedor): Observable<Proveedor> {
+        return this.requester.put<Proveedor>(this.REQUEST_URL +id, proveedor, {});
+    }
+
+    listarProveedoresAll(): Observable<Proveedor[]>{
+        return this.requester.get<Proveedor[]>(this.REQUEST_URL, {});
     }
     
 }

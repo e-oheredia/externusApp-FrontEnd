@@ -7,5 +7,5 @@ export enum EstadoDocumentoEnum {
     DEVUELTO = 6,
     EXTRAVIADO = 7,
     DENEGADO = 8,
-    RETIRADO = 9
+    ELIMINADO = 9
 }
