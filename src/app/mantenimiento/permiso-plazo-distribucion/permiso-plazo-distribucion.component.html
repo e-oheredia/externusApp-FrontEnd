@@ -14,21 +14,27 @@
       <div class="card-body">
         <form [formGroup]="buzonForm" (ngSubmit)="onBuzonFormSubmit(buzonForm.value)">
           <div class="form-row align-items-center">
-            <!-- <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="matricula" formControlName="buzon" [(ngModel)]="buzon" (change)="onBuzonChange()">
-              </ng-select>
-            </div> -->
+
             <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombre" formControlName="buzon" [(ngModel)]="buzon"  (change)="onBuzonChange()">
+              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombre"
+                formControlName="buzon" [(ngModel)]="buzon" (change)="onBuzonChange()">
               </ng-select>
             </div>
+
             <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="plazosDistribucion" bindLabel="nombre" formControlName="plazoDistribucion">
+              <ng-select class="mb-2 mr-sm-2" [items]="plazosDistribucion" bindLabel="nombre"
+                formControlName="plazoDistribucion">
               </ng-select>
             </div>
+
             <div class="col">
               <button type="submit" [disabled]="!buzonForm.valid" class="btn btn-primary mb-2">Asignar</button>
             </div>
+
+            <div class="col-1">
+              <button type="submit" [disabled]="!buzonForm.valid" class="btn btn-success mb-2">Exportar</button>
+            </div>
+
           </div>
         </form>
       </div>
@@ -44,17 +50,27 @@
       <div class="card-body">
         <form [formGroup]="areaForm" (ngSubmit)="onAreaFormSubmit(areaForm.value)">
           <div class="form-row align-items-center">
+
             <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="areasObservable | async" bindLabel="nombre" formControlName="area" (change)="onAreaChange()">
+              <ng-select class="mb-2 mr-sm-2" [items]="areasObservable | async" bindLabel="nombre"
+                formControlName="area" (change)="onAreaChange()">
               </ng-select>
             </div>
+
             <div class="col">
-              <ng-select class="mb-2 mr-sm-2" [items]="plazosDistribucion" bindLabel="nombre" formControlName="plazoDistribucion">
+              <ng-select class="mb-2 mr-sm-2" [items]="plazosDistribucion" bindLabel="nombre"
+                formControlName="plazoDistribucion">
               </ng-select>
             </div>
+
             <div class="col">
               <button type="submit" [disabled]="!areaForm.valid" class="btn btn-primary mb-2">Asignar</button>
             </div>
+
+            <div class="col-1">
+              <button type="submit" [disabled]="!buzonForm.valid" class="btn btn-success mb-2">Exportar</button>
+            </div>
+
           </div>
         </form>
       </div>

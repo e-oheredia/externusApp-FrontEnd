@@ -86,9 +86,14 @@ export class GuiaService {
     }
 
     getFechaEnvio(guia: Guia): Date{
-        return guia.seguimientosGuia.find(seguimientoDocumento => 
+        let seguimientoDocumento =  guia.seguimientosGuia.find(seguimientoDocumento => 
             seguimientoDocumento.estadoGuia.id === 2
-        ).fecha;
+        );
+
+        if (seguimientoDocumento == null) {
+            return null;
+        }
+        return seguimientoDocumento.fecha;
     }
 
     getEstadoGuia(guia: Guia): EstadoGuia{

@@ -106,8 +106,8 @@ export class ReporteGuiasComponent implements OnInit {
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
               sede: guia.sede.nombre,
-              totalDocumentos: "AUN FALTA CODIGO",
-              fechaEnvio: this.guiaService.getFechaEnvio(guia),
+              totalDocumentos: guia.documentosGuia.length,
+              fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : 'SIN FECHA',
               fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
               estado: this.guiaService.getEstadoGuia(guia).nombre
             })
@@ -151,8 +151,8 @@ export class ReporteGuiasComponent implements OnInit {
                       tipoServicio: guia.tipoServicio.nombre,
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
-                      totalDocumentos: guia.cantidadDocumentos,
-                      fechaEnvio: this.guiaService.getFechaEnvio(guia),
+                      totalDocumentos: guia.documentosGuia.length,
+                      fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : 'SIN FECHA',
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre
                     })
