@@ -38,8 +38,8 @@ export class ProveedorService {
         return this.requester.post<Proveedor>(this.REQUEST_URL, proveedor, {});
     }
 
-    modificarProveedor(proveedor: Proveedor): Observable<Proveedor> {
-        return this.requester.post<Proveedor>(this.REQUEST_URL, proveedor, {});
+    modificarProveedor(id:number, proveedor: Proveedor): Observable<Proveedor> {
+        return this.requester.put<Proveedor>(this.REQUEST_URL +id, proveedor, {});
     }
     
 }

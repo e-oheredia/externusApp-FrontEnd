@@ -54,6 +54,9 @@ export class ProveedorComponent implements OnInit {
       plazos: {
         title : 'Plazos de distribución'
       },
+      activo: {
+        title : 'Estado'
+      },
       buttonModificar: {
         title : 'Modificar',
         type : 'custom',
@@ -79,7 +82,8 @@ export class ProveedorComponent implements OnInit {
             dataProveedores.push({
               id: proveedor.id,
               nombre: proveedor.nombre,
-              plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", ")
+              plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
+              activo: proveedor.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
         )
@@ -121,7 +125,7 @@ export class ProveedorComponent implements OnInit {
     });
 
     bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.proveedorService.modificarProveedor(this.proveedor).subscribe(
+      this.proveedorService.modificarProveedor(this.proveedor.id, this.proveedor).subscribe(
         () => {
           let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
             initialState: {

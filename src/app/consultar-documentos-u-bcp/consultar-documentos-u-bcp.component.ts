@@ -12,6 +12,7 @@ import { AppSettings } from '../shared/app.settings';
 import { Documento } from 'src/model/documento.model';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 import { TrackingDocumentoComponent } from '../modals/tracking-documento/tracking-documento.component';
+import * as moment from "moment-timezone";
 
 @Component({
     selector: 'app-consultar-documentos-u-bcp',
@@ -40,9 +41,11 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
 
     ngOnInit() {
         this.documentoForm = new FormGroup({
-            "fechaIni": new FormControl(null, Validators.required),
-            "fechaFin": new FormControl(null, Validators.required)
+            "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
+            "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required)
         })
+        
+        this.listarDocumentos(this.documentoForm.controls['fechaIni'].value,this.documentoForm.controls['fechaFin'].value);
         this.generarColumnas();
     }
 

@@ -29,25 +29,28 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="tipoPlazoDistribucion">Tipo de plazo</label>
-            <input class="form-control" type="text" name="tipoPlazoDistribucion" id="tipoPlazoDistribucion"
-              formControlName="tipoPlazoDistribucion">
-          </div>
-        </div>
-      </div>
-
-      <!-- <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="tipoPlazoDistribucion">Estado</label>
-            <select class="form-control" id="activo" formControlName="activo">
-              <option [ngValue]="activo">
-                {{activo}}
+            <label for="tipoPlazoDistribucion">Tipo de Plazo</label>
+            <select class="form-control" id="tipoPlazoDistribucion" formControlName="tipoPlazoDistribucion">
+              <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">{{tipoPlazoDistribucion.nombre}}
               </option>
             </select>
           </div>
         </div>
-      </div> -->
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="activo">Estado</label>
+            <select class="form-control" id="activo" formControlName="activo">
+              <option value="true">ACTIVO
+              </option>
+              <option value="false">INACTIVO
+                </option>
+            </select>
+          </div>
+        </div>
+      </div>
 
     </div>
 
