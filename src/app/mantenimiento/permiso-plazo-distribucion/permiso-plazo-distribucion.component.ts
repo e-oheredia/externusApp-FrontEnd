@@ -8,6 +8,7 @@ import { Area } from './../../../model/area.model';
 import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { WriteExcelService } from 'src/app/shared/write-excel.service';
 
 @Component({
   selector: 'app-permiso-plazo-distribucion',
@@ -20,7 +21,8 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     private buzonService: BuzonService, 
     private areaService: AreaService,
     private plazoDistribucionService: PlazoDistribucionService, 
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private writeExcelService: WriteExcelService
   ) { }
 
   buzonForm: FormGroup;
@@ -30,6 +32,9 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
 
   buzonesObservable: Observable<Buzon[]>;
   areasObservable: Observable<Area[]>;
+
+  buzones: Buzon[];
+  areas: Area[];
   plazosDistribucion: PlazoDistribucion[];
 
   plazosDistribucionSubscription: Subscription = new Subscription(); 
@@ -51,8 +56,17 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
 
   cargarDatosVista(){
     this.areasObservable = this.areaService.listarAreasAll();
+    this.areaService.listarAreasAll().subscribe(areas => {
+      this.areas = areas
+    })
+
     this.buzonesObservable = this.buzonService.listarBuzonesAll();
+    this.buzonService.listarBuzonesAll().subscribe(buzones => {
+      this.buzones = buzones
+    })
+
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+
     this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(plazosDistribucion => {
       this.plazosDistribucion = plazosDistribucion
     })
@@ -98,6 +112,16 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     )
   }
 
+
+  exportarPorUsuario(buzones: Buzon[]) {
+    this.buzonService.exportarPermisosDePlazosPorBuzon(buzones)
+  }
+
+  exportarPorArea(areas: Area[]) {
+    this.areaService.exportarPermisosDePlazosPorArea(areas)
+  }
+  
+
   ngOnDestroy() {
     this.plazosDistribucionSubscription.unsubscribe();
     this.areaPlazoDistribucionSubscripcion.unsubscribe();
@@ -105,6 +129,4 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
   }
 
   
-
-
 }
