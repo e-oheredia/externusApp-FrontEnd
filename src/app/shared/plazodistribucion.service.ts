@@ -56,6 +56,7 @@ export class PlazoDistribucionService {
 
     public plazoDistribucionPermitidoChanged = new Subject<PlazoDistribucion>(); 
     public plazosDistribucionChanged = new Subject<PlazoDistribucion[]>();
+
     
 
     buzonPlazoDistribucionPermitidoSubscription: Subscription;
