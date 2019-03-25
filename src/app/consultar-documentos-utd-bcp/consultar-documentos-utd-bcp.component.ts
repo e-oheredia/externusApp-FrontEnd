@@ -102,10 +102,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       },
       fechaUltimoResultado: {
         title: 'Fecha último resultado'
-      },
-      // imagen: {
-      //   title: 'Imagen'
-      // },
+      }
     }
   }
 

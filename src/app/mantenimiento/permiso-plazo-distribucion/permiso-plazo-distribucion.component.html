@@ -15,9 +15,15 @@
         <form [formGroup]="buzonForm" (ngSubmit)="onBuzonFormSubmit(buzonForm.value)">
           <div class="form-row align-items-center">
 
-            <div class="col">
+            <!-- <div class="col">
               <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombre"
                 formControlName="buzon" [(ngModel)]="buzon" (change)="onBuzonChange()">
+              </ng-select>
+            </div> -->
+
+            <div class="col">
+              <ng-select class="mb-2 mr-sm-2" [items]="buzonesObservable | async" bindLabel="nombre"
+                formControlName="buzon"(change)="onBuzonChange()">
               </ng-select>
             </div>
 
@@ -31,8 +37,12 @@
               <button type="submit" [disabled]="!buzonForm.valid" class="btn btn-primary mb-2">Asignar</button>
             </div>
 
-            <div class="col-1">
+            <!-- <div class="col-1">
               <button type="submit" [disabled]="!buzonForm.valid" class="btn btn-success mb-2">Exportarr</button>
+            </div> -->
+
+            <div class="col-1">
+              <button type="button" class="btn btn-success" (click)="exportarPorUsuario(buzones)">EXPORTAR</button>
             </div>
 
           </div>
@@ -67,8 +77,12 @@
               <button type="submit" [disabled]="!areaForm.valid" class="btn btn-primary mb-2">Asignar</button>
             </div>
 
-            <div class="col-1">
+            <!-- <div class="col-1">
               <button type="submit" [disabled]="!buzonForm.valid" class="btn btn-success mb-2">Exportar</button>
+            </div> -->
+
+            <div class="col-1">
+              <button type="button" class="btn btn-success" (click)="exportarPorArea()">EXPORTAR</button>
             </div>
 
           </div>
