@@ -15,13 +15,12 @@ export class BuzonService {
 
     constructor(
         private requester: RequesterService,
-        private writeExcelService: WriteExcelService) { }
-
-
+        private writeExcelService: WriteExcelService
+        ) { }
 
     public buzonActualChanged = new Subject<Buzon>();
-
     private buzonesEmpleadoAutenticado: Buzon[];
+    private buzonActual: Buzon;
 
     public getBuzonesEmpleadoAutenticado(): Buzon[] {
         return this.buzonesEmpleadoAutenticado;
@@ -30,8 +29,6 @@ export class BuzonService {
     public setBuzonesEmpleadoAutenticado(buzones: Buzon[]) {
         this.buzonesEmpleadoAutenticado = buzones;
     }
-
-    private buzonActual: Buzon;
 
     public getBuzonActual(): Buzon {
         return this.buzonActual;
@@ -61,7 +58,9 @@ export class BuzonService {
                 "Usuario": buzon.nombre,
                 "Área": buzon.area.nombre,
                 "Sede": buzon.area.sede.nombre,
+                "Plazos" : buzon.plazoDistribucionPermitido ? buzon.plazoDistribucionPermitido.nombre : "-"
                 // "Plazos": this.listarPermisosPorBuzon(buzon).map(permisos => permisos.nombre).join(", ")
+                // "Plazos" : this.listarBuzonesAll()
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Buzón: ");

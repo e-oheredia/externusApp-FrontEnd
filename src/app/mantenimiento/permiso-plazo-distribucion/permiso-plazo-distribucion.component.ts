@@ -27,14 +27,16 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
 
   buzonForm: FormGroup;
   areaForm: FormGroup;
-  plazoDistribucion: PlazoDistribucion;
-  buzon: Buzon;
 
+  buzon: Buzon;
+  buzones: Buzon[];
   buzonesObservable: Observable<Buzon[]>;
+
+  area: Area;
+  areas: Area[];
   areasObservable: Observable<Area[]>;
 
-  buzones: Buzon[];
-  areas: Area[];
+  plazoDistribucion: PlazoDistribucion;
   plazosDistribucion: PlazoDistribucion[];
 
   plazosDistribucionSubscription: Subscription = new Subscription(); 
@@ -51,12 +53,12 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
       'area': new FormControl(null, Validators.required),
       'plazoDistribucion': new FormControl(null, Validators.required)
     })
-    
   }
 
   cargarDatosVista(){
-    this.areasObservable = this.areaService.listarAreasAll();
-    this.areaService.listarAreasAll().subscribe(areas => {
+
+    this.areasObservable = this.areaService.listarAreasAll(); //jala de bd en la 1ra
+    this.areaService.listarAreasAll().subscribe(areas => { //cuando cambia
       this.areas = areas
     })
 
@@ -65,8 +67,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
       this.buzones = buzones
     })
 
-    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
-
+    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();//jala del frontend
     this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(plazosDistribucion => {
       this.plazosDistribucion = plazosDistribucion
     })
@@ -77,6 +78,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
       plazoDistribucion => {
         this.notifier.notify('success', 'Se ha asignado correctamente el plazo de distribución');
         this.buzonForm.reset();
+        this.cargarDatosVista();
       }
     )
   }
@@ -86,6 +88,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
       plazoDistribucion => {
         this.notifier.notify('success', 'Se ha asignado correctamente el plazo de distribución');
         this.areaForm.reset();
+        this.cargarDatosVista();
       }
     )
   }
@@ -117,8 +120,9 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     this.buzonService.exportarPermisosDePlazosPorBuzon(buzones)
   }
 
-  exportarPorArea(areas: Area[]) {
-    this.areaService.exportarPermisosDePlazosPorArea(areas)
+  exportarPorArea() {
+    this.areaService.exportarPermisosDePlazosPorArea(this.areas)
+    console.log(this.areas)
   }
   
 

@@ -21,6 +21,7 @@ import { ReporteIndicadorEfectividadComponent } from './reporte-indicador-efecti
 import { ReporteIndicadorEficienciaComponent } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.component';
 import { CambiarEstadoComponent } from './cambiar-estado/cambiar-estado.component';
 import { ReporteGuiasComponent } from './reporte-guias/reporte-guias.component';
+import { ProcesarGuiasComponent } from './procesar-guias/procesar-guias.component';
 
 
 
@@ -118,6 +119,10 @@ const appRoutes: Routes = [
     {
         path: 'reporte-guias',
         component: ReporteGuiasComponent
+    },
+    {
+        path: 'procesar-guias',
+        component: ProcesarGuiasComponent
     }
 
 ]

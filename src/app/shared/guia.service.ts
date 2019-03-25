@@ -65,6 +65,11 @@ export class GuiaService {
         return this.requester.delete<Guia>(this.REQUEST_URL + guiaId.toString(), {});
     }
 
+    listarGuiasPorProcesar(): Observable<Guia[]> {
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "paraproveedor", {});
+    }
+    //procesarguias : nombre por el cual debe ser reemplazado 'paraproveedor'
+
     listarGuiasEnviadas(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "paraproveedor", {});
     }
