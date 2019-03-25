@@ -6,6 +6,7 @@ import { Documento } from 'src/model/documento.model';
 import { DocumentoService } from 'src/app/shared/documento.service';
 import { SeguimientoDocumento } from 'src/model/seguimientodocumento.model';
 import { Router } from '@angular/router';
+import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
 
 
 @Component({
@@ -30,6 +31,9 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
   ngOnInit() {
    
     this.settings.columns = {
+      id: {
+        hidden:true
+      },
       estado: {
         title: 'Estado'
       },
@@ -40,7 +44,17 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
         title: 'Fecha'
       },
       link: {
-        title: 'Link'
+         title: 'Tracking',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.mostrarData.subscribe(row => {
+            instance.claseIcono = "fa fa-eye";
+            let seguimientodocumento = this.documento.seguimientosDocumento.find(x => x.id === row.id);
+            instance.ruta = seguimientodocumento.linkImagen ? seguimientodocumento.linkImagen : "";
+
+          })
+        }    
       }
     };
     this.cargarSeguimientosDocumento();
@@ -54,6 +68,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
     this.documento.seguimientosDocumento.sort((a,b) => a.id - b.id).forEach(
       segumientoDocumento => {
         dataSeguimientosDocumento.push({
+          id: segumientoDocumento.id,
           estado: segumientoDocumento.estadoDocumento.nombre,
           observacion: segumientoDocumento.observacion,
           fecha: segumientoDocumento.fecha,

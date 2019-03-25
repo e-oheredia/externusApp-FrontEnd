@@ -13,6 +13,8 @@ import { Documento } from 'src/model/documento.model';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 import { TrackingDocumentoComponent } from '../modals/tracking-documento/tracking-documento.component';
 import * as moment from "moment-timezone";
+import { BuzonService } from '../shared/buzon.service';
+import { Buzon } from 'src/model/buzon.model';
 
 @Component({
     selector: 'app-consultar-documentos-u-bcp',
@@ -28,15 +30,18 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         private tituloService: TituloService,
         private notifier: NotifierService,
         private utilsService: UtilsService,
-        private envioService: EnvioService
+        private envioService: EnvioService,
+        private buzonService: BuzonService
     ) { }
 
     dataTodosMisDocumentos: LocalDataSource = new LocalDataSource();
     settings = AppSettings.tableSettings;
     documentos: Documento[] = [];
     documento: Documento;
+    buzon: Buzon;
 
     documentosSubscription: Subscription;
+    buzonSubscription:Subscription;
     documentoForm: FormGroup;
 
     ngOnInit() {
@@ -44,9 +49,16 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
             "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required)
         })
-        
-        this.listarDocumentos(this.documentoForm.controls['fechaIni'].value,this.documentoForm.controls['fechaFin'].value);
         this.generarColumnas();
+        
+        if (!this.buzonService.getBuzonActual()) {
+            this.buzonSubscription= this.buzonService.buzonActualChanged.subscribe(() => {
+              this.listarDocumentos();
+            });
+        } else {
+            this.listarDocumentos();
+        }
+        
     }
 
     generarColumnas() {
@@ -107,11 +119,11 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         }
     }
 
-    listarDocumentos(fechaIni: Date, fechaFin: Date) {
+    listarDocumentos() {
 
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-            this.documentosSubscription = this.documentoService.listarDocumentosUsuarioBCP(fechaIni, fechaFin).subscribe(
+            this.documentosSubscription = this.documentoService.listarDocumentosUsuarioBCP(this.documentoForm.controls['fechaIni'].value,this.documentoForm.controls['fechaFin'].value).subscribe(
                 documentos => {
                     this.documentos = documentos;
 
@@ -120,8 +132,15 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                         documentos => {
                             this.documentos = documentos;
                             let dataTodosMisDocumentos = [];
+                            let fecha_envio: any;
                             documentos.forEach(
+                                
                                 documento => {
+                                    /* if(!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getFechaEnvio(documento))){
+                                            fecha_envio="";
+                                    }else{
+                                        fecha_envio=this.documentoService.getFechaEnvio(documento);
+                                    } */
                                     dataTodosMisDocumentos.push({
                                         autogenerado: documento.documentoAutogenerado,
                                         nroDocumento: documento.nroDocumento,
@@ -129,12 +148,12 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
                                         contactoDestino: documento.contactoDestino,
                                         direccion: documento.direccion,
-                                        distrito: documento.distrito,
+                                        distrito: documento.distrito.nombre,
                                         estado: this.documentoService.getUltimoEstado(documento).nombre,
                                         fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                                         autorizado: documento.envio.autorizado ? "SI" : "NO",
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),
-                                        fechaEnvio: this.documentoService.getFechaCreacion(documento),
+                                        fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
                                         fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
                                         //IMAGEN
                                     })

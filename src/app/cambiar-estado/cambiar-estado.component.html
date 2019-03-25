@@ -88,7 +88,7 @@
                       </div>
                     </li>
                     
-                    <div *ngIf="documentoService.getUltimoEstado(documento).id==2">
+                    <div *ngIf="estadoActualDocumento===2">
                        
                         <li class="list-group-item">
                             <div class="row">
@@ -98,12 +98,15 @@
                               <div class="col-1 mr-4">
                                 {{ documento === null || documento === undefined ? '' : documento.documentosGuia[0] === null || documento.documentosGuia[0] === undefined ? 'NO' : documento.documentosGuia[0].validado ? 'SI' : 'NO'}}
                               </div>
+
+                            
+
                               <div class="col-5">
-                                <button type="button" class="btn btn-success" (click)="desvalidar(documento.id)">
+                                <button *ngIf="validado" type="button" class="btn btn-success" (click)="desvalidar(documento.id)">
                                   DESVALIDAR
                                 </button>
                               </div>
-      
+                            
                               <!-- <div class="form-group" *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
                                 <label for="autorizacion">
                                   Autorización
