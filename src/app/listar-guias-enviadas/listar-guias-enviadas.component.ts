@@ -1,4 +1,3 @@
-import { EstadoDocumentoEnum } from './../enum/estadodocumento.enum';
 import { Guia } from './../../model/guia.model';
 import { GuiaService } from './../shared/guia.service';
 import { Component, OnInit } from '@angular/core';

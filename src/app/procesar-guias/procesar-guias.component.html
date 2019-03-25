@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>PROCESO DE GUIAS</h2>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-2">
+
+      <div class="card-header">
+        <h5>Guias Guias Guias Guias</h5>
+      </div>
+
+      <div class="card-body">
+
+          <div *ngIf="guias.length !== 0; else mensaje">
+            <ng2-smart-table [settings]="settings" [source]="dataGuiasPorProcesar"></ng2-smart-table>
+          </div>
+          
+          <ng-template #mensaje>
+            <div class="row">
+              <div class="col">
+                <div class="alert alert-info" role="alert">
+                  No existen guias por consultar.
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+      </div>
+
+      <ng-template #mensaje>
+        <div class="row">
+          <div class="col">
+            <div class="alert alert-info" role="alert">
+              No hay resultados
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+
+    </div>
+  </div>
+</div>

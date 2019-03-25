@@ -19,7 +19,7 @@ import { Pais } from '../../../model/pais.model';
 export class DatosBuzonComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
-  buzon: Buzon = new Buzon(0,"",new Area(0, "", "", new Sede(0,"","", new TipoSede(0,""), new Distrito(0,"", new Provincia(0,"",new Departamento(0,"", new Pais(0,""),""),""),""))),true,null);
+  buzon: Buzon = new Buzon(0,"",new Area(0, "", "", new Sede(0,"","", new TipoSede(0,""), new Distrito(0,"", new Provincia(0,"",new Departamento(0,"", new Pais(0,""),""),""),"")), null),true,null);
 
   constructor(private buzonService:BuzonService) { }
   

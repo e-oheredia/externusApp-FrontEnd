@@ -14,10 +14,10 @@ export class AreaService {
 
     constructor(
         private requester: RequesterService,
-        private writeExcelService : WriteExcelService) { }
+        private writeExcelService: WriteExcelService
+        ) { }
 
-
-    listarAreasAll(): Observable<Area[]>{
+    listarAreasAll(): Observable<Area[]> {
         return this.requester.get<Area[]>(this.REQUEST_URL, {});
     }
 
@@ -31,11 +31,10 @@ export class AreaService {
             objects.push({
                 "Área": area.nombre,
                 "Sede": area.sede.nombre,
-                // "Plazos": buzon.
-                // "Plazos": buzon.
+                "Plazos": area.plazoDistribucionPermitido ? area.plazoDistribucionPermitido.nombre : "-"
             })
         });
-        this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Buzón: ");
+        this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");
     }
 
 }
