@@ -22,10 +22,10 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
     documentosSubscription: Subscription;
     proveedores: Proveedor[];
     plazosDistribucion: PlazoDistribucion[];
+
     dataGrafico = [];
     _registros = [];
     _final = [];
-
     meses = [];
 
     constructor(
@@ -36,14 +36,11 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
         public plazoDistribucionService: PlazoDistribucionService
     ) { }
 
-
     ngOnInit() {
-
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
         })
-
         this.proveedores = this.proveedorService.getProveedores();
         this.proveedorService.proveedoresChanged.subscribe(
             proveedores => {
@@ -60,9 +57,6 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
     }
 
     ngOnDestroy() {
-
-
-
     }
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {

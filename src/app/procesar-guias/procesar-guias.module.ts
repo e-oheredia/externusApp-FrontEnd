@@ -4,6 +4,7 @@ import { ProcesarGuiasComponent } from './procesar-guias.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableManagementModule } from '../table-management/table-management.module';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { TableManagementModule } from '../table-management/table-management.modu
     ReactiveFormsModule,
     TableManagementModule
   ],
-  declarations: [ProcesarGuiasComponent]
+  declarations: [ProcesarGuiasComponent],
+  entryComponents: [ButtonViewComponent]
 })
 export class ProcesarGuiasModule { }
