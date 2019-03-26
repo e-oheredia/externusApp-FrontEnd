@@ -134,13 +134,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                             let dataTodosMisDocumentos = [];
                             let fecha_envio: any;
                             documentos.forEach(
-                                
                                 documento => {
-                                    /* if(!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getFechaEnvio(documento))){
-                                            fecha_envio="";
-                                    }else{
-                                        fecha_envio=this.documentoService.getFechaEnvio(documento);
-                                    } */
                                     dataTodosMisDocumentos.push({
                                         autogenerado: documento.documentoAutogenerado,
                                         nroDocumento: documento.nroDocumento,

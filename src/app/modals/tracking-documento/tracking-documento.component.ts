@@ -31,9 +31,6 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
   ngOnInit() {
    
     this.settings.columns = {
-      id: {
-        hidden:true
-      },
       estado: {
         title: 'Estado'
       },
@@ -51,11 +48,17 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
           instance.mostrarData.subscribe(row => {
             instance.claseIcono = "fa fa-eye";
             let seguimientodocumento = this.documento.seguimientosDocumento.find(x => x.id === row.id);
-            instance.ruta = seguimientodocumento.linkImagen ? seguimientodocumento.linkImagen : "";
-
+            let ruta_imagen: any;
+            if(seguimientodocumento.linkImagen===null){
+              ruta_imagen="-";
+              instance.claseIcono = " - "
+            }else{
+              ruta_imagen= seguimientodocumento.linkImagen;
+            }
+            instance.ruta = ruta_imagen;
           })
         }    
-      }
+      },
     };
     this.cargarSeguimientosDocumento();
   }
