@@ -47,6 +47,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         
         this.listarDocumentos(this.documentoForm.controls['fechaIni'].value,this.documentoForm.controls['fechaFin'].value);
         this.generarColumnas();
+        this.settings.hideSubHeader = false;
     }
 
     generarColumnas() {

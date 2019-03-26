@@ -50,6 +50,7 @@ import { ModificarProveedorComponent } from '../mantenimiento/proveedor/modifica
 import { TipoPlazoDistribucionService } from '../shared/tipoplazodistribucion.service';
 import { AgregarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad/agregar-tipo-seguridad/agregar-tipo-seguridad.component';
 import { ModificarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad/modificar-tipo-seguridad/modificar-tipo-seguridad.component';
+import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { ModificarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad
     ModificarPlazoComponent,
     ModificarProveedorComponent,
     AgregarTipoSeguridadComponent,
-    ModificarTipoSeguridadComponent
+    ModificarTipoSeguridadComponent,
+    AdjuntarArchivoComponent
   ],
   imports: [  
     HttpClientModule,
@@ -129,7 +131,10 @@ import { ModificarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad
     ModificarPlazoComponent,
     ModificarProveedorComponent,
     AgregarTipoSeguridadComponent,
-    ModificarTipoSeguridadComponent
+    ModificarTipoSeguridadComponent,
+    ModificarTipoSeguridadComponent,
+    AdjuntarArchivoComponent
+
    ],
 })
 export class LayoutModule { }
