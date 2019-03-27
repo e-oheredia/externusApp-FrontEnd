@@ -65,7 +65,11 @@ export class CambiarEstadoComponent implements OnInit {
             this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
             this.cargarCombo(this.documentoService.getUltimoEstado(documento).id);
             this.estadoActualDocumento=this.documentoService.getUltimoEstado(documento).id;
-            this.validado=documento.documentosGuia[0].validado;
+            if(documento.documentosGuia[0].validado===false || documento.documentosGuia.length===0){
+              this.validado=false;
+            }else{
+              this.validado=true;
+            }
             console.log("ESTADOS DISPONIBLES : " + this.estados)
             console.log("NUEVOS ESTADOS : " + this.nuevosEstados)
           },

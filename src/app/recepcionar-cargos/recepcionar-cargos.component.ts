@@ -117,20 +117,25 @@ export class RecepcionarCargosComponent implements OnInit {
       if (documento === undefined) {
         this.notifier.notify('error', 'NO SE HA ENCONTRADO EL CODIGO INGRESADO');
       } else if (this.documentoForm.controls['codigo'].value.length !== 0) {
-        this.documentoService.recepcionarCargo(documento.id).subscribe(
-          documentos => {
-            this.documentos = this.documentos
-            this.notifier.notify('success', 'CARGO RECEPCIONADO');
-            this.documentoForm.controls['codigo'].setValue('');
-            this.listarCargosPendientes();
-          },
-          error => {
-            if (error.status === 404) {
-              this.documentos = [];
-              this.notifier.notify('error', 'ERROR EN BACK NO MAPEADO');
+            if(documento.recepcionado!=true){
+              this.documentoService.recepcionarCargo(documento.id).subscribe(
+                documentos => {
+                  this.documentos = this.documentos
+                  this.notifier.notify('success', 'CARGO RECEPCIONADO');
+                  this.documentoForm.controls['codigo'].setValue('');
+                  this.listarCargosPendientes();
+                },
+                error => {
+                  if (error.status === 404) {
+                    this.documentos = [];
+                    this.notifier.notify('error', 'ERROR EN BACK NO MAPEADO');
+                  }
+                }
+              );
             }
-          }
-        );
+            else{
+              this.notifier.notify('error', 'CARGO YA SE ENCUENTRA RECEPCIONADO');
+            }
       }
     }
     else {
