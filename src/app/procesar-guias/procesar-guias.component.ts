@@ -7,14 +7,12 @@ import { EstadoDocumentoService } from '../shared/estadodocumento.service';
 import { UtilsService } from '../shared/utils.service';
 import { AppSettings } from '../shared/app.settings';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Subscription } from 'rxjs';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
 import { Documento } from 'src/model/documento.model';
-import { MensajeExitoComponent } from '../modals/mensaje-exito/mensaje-exito.component';
 
 @Component({
   selector: 'app-procesar-guias',
@@ -35,15 +33,13 @@ export class ProcesarGuiasComponent implements OnInit {
   dataGuiasPorProcesar: LocalDataSource = new LocalDataSource();
   rutaPlantillaResultados: string = AppSettings.PANTILLA_RESULTADOS;
   settings = AppSettings.tableSettings;
+
   guias: Guia[] = [];
   guia: Guia;
   documento: Documento;
 
   guiasSubscription: Subscription;
-
   estadoDocumentoForm = EstadoDocumentoEnum;
-  // excelFile: File;
-  // excelForm: FormGroup;
 
   ngOnInit() {
     this.generarColumnas();
@@ -132,7 +128,7 @@ export class ProcesarGuiasComponent implements OnInit {
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
               fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha,
-              fechalimite: "FALTA CÓDIGO",
+              // fechalimite: this.guiaService.fechaLimiteReparto(guia),
               total: guia.documentosGuia.length,
               entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
               rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,

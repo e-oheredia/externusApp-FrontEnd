@@ -84,6 +84,10 @@ export class GuiaService {
         );
     }
 
+    // fechaLimiteReparto(guia: Guia): Date{
+    //     return guia.seguimientosGuia.fin
+    // }
+
     getFechaCreacion(guia: Guia): Date{
         return guia.seguimientosGuia.find(seguimientoDocumento => 
             seguimientoDocumento.estadoGuia.id === 1
