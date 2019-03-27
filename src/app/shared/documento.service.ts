@@ -138,7 +138,9 @@ export class DocumentoService {
     getFechaEnvio(documento: Documento): Date | string {
         return documento.seguimientosDocumento.find(seguimientoDocumento =>
             seguimientoDocumento.estadoDocumento.id === 3
-        ).fecha;
+        ) ? documento.seguimientosDocumento.find(seguimientoDocumento =>
+            seguimientoDocumento.estadoDocumento.id === 3
+        ).fecha : null;
     }
 
     getUltimoEstado(documento: Documento): EstadoDocumento {
@@ -271,7 +273,7 @@ export class DocumentoService {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('autogenerado', codigo.toString())});
     }
 
-    listarDocumentosUtdBCPFechas(fechaini: Date, fechafin: Date){
+    listarDocumentosUtdBCPFechas(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 

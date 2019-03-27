@@ -31,7 +31,8 @@
           <div class="form-group">
             <label for="tipoPlazoDistribucion">Tipo de Plazo</label>
             <select class="form-control" id="tipoPlazoDistribucion" formControlName="tipoPlazoDistribucion">
-              <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">{{tipoPlazoDistribucion.nombre}}
+              <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">
+                {{tipoPlazoDistribucion.nombre}}
               </option>
             </select>
           </div>

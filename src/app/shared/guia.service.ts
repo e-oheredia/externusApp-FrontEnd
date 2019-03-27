@@ -84,9 +84,12 @@ export class GuiaService {
         );
     }
 
-    // fechaLimiteReparto(guia: Guia): Date{
-    //     return guia.seguimientosGuia.fin
-    // }
+    fechaLimiteReparto(guia: Guia): Date{
+        let a = guia.plazoDistribucion.tiempoEnvio
+        let fechaInicial = this.getSeguimientoGuiaByEstadoGuiaId(guia,2).fecha                
+        return fechaInicial
+        //FALTA DEFINIR COMO SE MANEJARÁ LA FECHA LÍMITE
+    }
 
     getFechaCreacion(guia: Guia): Date{
         return guia.seguimientosGuia.find(seguimientoDocumento => 
@@ -124,7 +127,7 @@ export class GuiaService {
     getSeguimientoGuiaByEstadoGuiaId(guia: Guia, estadoGuiaId: number): SeguimientoGuia{
         return guia.seguimientosGuia.find(seguimientoDocumento => 
             seguimientoDocumento.estadoGuia.id === estadoGuiaId
-        );
+        ) 
     }
 
     exportarDocumentosGuia(guia: Guia) {
