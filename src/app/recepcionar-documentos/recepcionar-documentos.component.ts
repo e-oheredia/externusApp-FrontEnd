@@ -113,19 +113,23 @@ export class RecepcionarDocumentosComponent implements OnInit {
       if (documento === undefined) {
         this.notifier.notify('error', 'NO SE HA ENCONTRADO EL CODIGO INGRESADO');
       } else if (codigo !== 0) {
-        this.documentoService.recepcionarDocumento(documento.id).subscribe(
-          documento => {
-            this.notifier.notify('success', 'DOCUMENTO RECEPCIONADO');
-            this.documentoForm.controls['codigo'].setValue('');
-            this.listarDocumentosPendientes();
-          },
-          error => {
-            if (error.status === 404) {
-              this.documentos = [];
-              this.notifier.notify('error', 'ERROR EN BACK NO MAPEADO');
+        if(documento.recepcionado!=true){
+          this.documentoService.recepcionarDocumento(documento.id).subscribe(
+            documento => {
+              this.notifier.notify('success', 'DOCUMENTO RECEPCIONADO');
+              this.documentoForm.controls['codigo'].setValue('');
+              this.listarDocumentosPendientes();
+            },
+            error => {
+              if (error.status === 404) {
+                this.documentos = [];
+                this.notifier.notify('error', 'ERROR EN BACK NO MAPEADO');
+              }
             }
-          }
-        );
+          );
+        }else{
+          this.notifier.notify('error', 'DOCUMENTO YA SE ENCUENTRA RECEPCIONADO');
+        }
       }
 
     }
