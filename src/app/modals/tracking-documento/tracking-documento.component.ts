@@ -61,6 +61,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
       },
     };
     this.cargarSeguimientosDocumento();
+    this.settings.hideSubHeader = true;
   }
 
 

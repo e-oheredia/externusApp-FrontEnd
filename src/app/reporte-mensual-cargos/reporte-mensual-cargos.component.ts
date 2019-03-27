@@ -383,7 +383,12 @@ export class ReporteMensualCargosComponent implements OnInit {
               }
             )
 
+            
+/*
+              this._final2 = _final3;
+                
 
+*/
 
             //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -453,7 +458,10 @@ export class ReporteMensualCargosComponent implements OnInit {
 
 
 
-            //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
             let mes = {
               id: 0,
@@ -479,7 +487,92 @@ export class ReporteMensualCargosComponent implements OnInit {
 
           }
 
-          
+          ////////////////////////////////////////////////////////////////////////////////////
+
+
+
+          let _final3 = [];
+          let _final4 = [];
+
+
+            let jjj = 1;
+
+            let regA = {
+              estado: '',
+              cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0, cantidad06: 0,
+              cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, area: '', total: 0
+            }
+
+            let regT = {
+              estado: '',
+              cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0, cantidad06: 0,
+              cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, area: '', total: 0
+            }
+
+            _final4 = this._final2.filter(x=> x.estado != 'TOTAL');
+            
+
+            _final4.sort((a, b) => (a.total > b.total) ? 1 : ((b.total > a.total) ? -1 : 0)).reverse();
+
+            _final4.forEach(
+
+                reg =>{
+                  
+                  
+
+                  if (jjj <= 9) {
+                    _final3.push(reg);
+                  }
+                  else{                        
+                      regA.area = 'OTROS';
+                      regA.estado = 'OTROS';
+                      regA.cantidad01 += reg.cantidad01;
+                      regA.cantidad02 += reg.cantidad02;
+                      regA.cantidad03 += reg.cantidad03;
+                      regA.cantidad04 += reg.cantidad04;
+                      regA.cantidad05 += reg.cantidad05;
+                      regA.cantidad06 += reg.cantidad06;
+                      regA.cantidad07 += reg.cantidad07;
+                      regA.cantidad08 += reg.cantidad08;
+                      regA.cantidad09 += reg.cantidad09;
+                      regA.cantidad10 += reg.cantidad10;
+                      regA.cantidad11 += reg.cantidad11;
+                      regA.cantidad12 += reg.cantidad12;
+                      regA.cantidad13 += reg.cantidad13; 
+                   
+                  }
+
+                  jjj++;
+                }
+                
+              )
+
+              _final3.push(regA);
+              _final3.push(this._final2[this._final2.length - 1]);
+              console.log(this._final2);
+              this._final2 = _final3;
+              
+              console.log(_final3);
+
+              /*if (jjj == this._final2.length){
+                regT.area = 'TOTAL';
+                regT.estado = 'TOTAL';
+                regT.cantidad01 = reg.cantidad01;
+                regT.cantidad02 = reg.cantidad02;
+                regT.cantidad03 = reg.cantidad03;
+                regT.cantidad04 = reg.cantidad04;
+                regT.cantidad05 = reg.cantidad05;
+                regT.cantidad06 = reg.cantidad06;
+                regT.cantidad07 = reg.cantidad07;
+                regT.cantidad08 = reg.cantidad08;
+                regT.cantidad09 = reg.cantidad09;
+                regT.cantidad10 = reg.cantidad10;
+                regT.cantidad11 = reg.cantidad11;
+                regT.cantidad12 = reg.cantidad12;
+                regT.cantidad13 = reg.cantidad13;
+              }*/
+
+          /////////////////////////////////////////////////////////////////////////////////////
 
           this._registros = this._final.map(function (obj) {
             return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
