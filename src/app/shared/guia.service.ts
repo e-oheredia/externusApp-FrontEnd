@@ -120,7 +120,7 @@ export class GuiaService {
     getSeguimientoGuiaByEstadoGuiaId(guia: Guia, estadoGuiaId: number): SeguimientoGuia{
         return guia.seguimientosGuia.find(seguimientoDocumento => 
             seguimientoDocumento.estadoGuia.id === estadoGuiaId
-        );
+        ) 
     }
 
     exportarDocumentosGuia(guia: Guia) {

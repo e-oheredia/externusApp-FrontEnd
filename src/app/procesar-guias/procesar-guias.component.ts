@@ -131,7 +131,7 @@ export class ProcesarGuiasComponent implements OnInit {
               plazo: guia.plazoDistribucion.nombre,
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
-              fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha,
+              fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
               fechalimite: "FALTA CÓDIGO",
               total: guia.documentosGuia.length,
               entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,

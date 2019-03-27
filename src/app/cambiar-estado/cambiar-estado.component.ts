@@ -30,7 +30,8 @@ export class CambiarEstadoComponent implements OnInit {
 
   documentoForm: FormGroup;
   estadoForm: FormGroup;
-
+  validado: boolean;
+  estadoActualDocumento: number;  
   documentoSubscription: Subscription;
   documento: Documento;
   estadoDocumentoEnum: EstadoDocumentoEnum;
@@ -49,6 +50,7 @@ export class CambiarEstadoComponent implements OnInit {
       "estadoDocumento": new FormControl(null, Validators.required),
       "observacion": new FormControl('', Validators.required)
     })
+    
   }
 
 
@@ -62,6 +64,8 @@ export class CambiarEstadoComponent implements OnInit {
             this.estadoForm.controls['observacion'].reset();
             this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
             this.cargarCombo(this.documentoService.getUltimoEstado(documento).id);
+            this.estadoActualDocumento=this.documentoService.getUltimoEstado(documento).id;
+            this.validado=documento.documentosGuia[0].validado;
             console.log("ESTADOS DISPONIBLES : " + this.estados)
             console.log("NUEVOS ESTADOS : " + this.nuevosEstados)
           },
@@ -75,6 +79,7 @@ export class CambiarEstadoComponent implements OnInit {
     else {
       this.notifier.notify('error', 'DEBE INGRESAR EL CÓDIGO DEL DOCUMENTO');
     }
+    
   }
 
   cargarVista(){
@@ -108,6 +113,8 @@ export class CambiarEstadoComponent implements OnInit {
         
       }
     )
+  
+
   }
 
 

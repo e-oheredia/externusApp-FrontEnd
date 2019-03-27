@@ -127,7 +127,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               fisicoRecibido: documento.recepcionado ? "SI" : "NO",
               autorizado: documento.envio.autorizado ? "SI" : "NO",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
-              fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
+              fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
               fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
             })
             this.documentos.push(documento);//no se si va
