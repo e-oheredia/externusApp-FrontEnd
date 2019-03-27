@@ -40,25 +40,18 @@ export class ReporteDevolucionCargoComponent implements OnInit {
     pendientesDocu = [];
 
     constructor(
-
         public notifier: NotifierService,
         public utilsService: UtilsService,
         public documentoService: DocumentoService,
         public proveedorService: ProveedorService,
         public areaService: AreaService
-
-    ) {
-
-    }
-
-
+    ) { }
 
     ngOnInit() {
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
         })
-
 
         this.proveedores = this.proveedorService.getProveedores();
         this.proveedorService.proveedoresChanged.subscribe(
@@ -76,12 +69,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
     }
 
 
-
-
-
-
     ngOnDestroy() {
-
     }
 
     Porcentaje(cantidad: number, total: number): string {
@@ -92,7 +80,6 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
         var final = resultado.toFixed(1) + '%';
         return final;
-
     }
 
 
@@ -104,6 +91,17 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         let fechaInicial = new Date(moment(new Date(fi.getFullYear(), fi.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
         let fechaFinal = new Date(moment(new Date(ff.getFullYear(), ff.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
 
+        let aIni = fechaInicial.getFullYear();
+        let mIni = fechaInicial.getMonth();
+        let aFin = fechaFinal.getFullYear();
+        let mFin = fechaFinal.getMonth();
+
+        
+        if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
+            this.notifier.notify('error', 'SELECCIONE COMO MÁXIMO UN PERIODO DE 13 MESES');
+            return;
+        }
+
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
 
@@ -114,9 +112,6 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
 
             this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENVIADO).subscribe(
-                //this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaInicial, fechaFinal, EstadoDocumentoEnum.ENVIADO).subscribe(
-
-
                 documentos => {
 
                     let rTablaPendienteCar = {

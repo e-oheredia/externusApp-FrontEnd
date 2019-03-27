@@ -185,9 +185,16 @@ export class DocumentoService {
                     estadoDocumento => estadoDocumento.nombre === data[i][16]
                 )
 
-                if (estadoDocumento === null) {
+                if (estadoDocumento === null ) {
                     callback({
                         mensaje: "Ingrese Estado permitido en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                if (estadoDocumento === undefined ) {
+                    callback({
+                        mensaje: "Ingrese el formato correcto"
                     });
                     return;
                 }
@@ -243,6 +250,10 @@ export class DocumentoService {
     }
 
     actualizarResultadosProveedor(documentos: Documento[]): Observable<any> {
+        return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
+    }
+
+    subirReporte(documentos: Documento[]): Observable<any> {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
 

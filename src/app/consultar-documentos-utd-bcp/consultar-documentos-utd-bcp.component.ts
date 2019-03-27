@@ -48,7 +48,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
     this.tituloService.setTitulo("UTD - Consultar Documentos2");
     this.generarColumnas();
     this.listarDocumentos();
-
+    this.settings.hideSubHeader = false;
   }
 
   generarColumnas() {

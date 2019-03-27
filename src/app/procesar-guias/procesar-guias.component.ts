@@ -10,6 +10,11 @@ import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Subscription } from 'rxjs';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
+import { Documento } from 'src/model/documento.model';
+import { MensajeExitoComponent } from '../modals/mensaje-exito/mensaje-exito.component';
 
 @Component({
   selector: 'app-procesar-guias',
@@ -23,7 +28,8 @@ export class ProcesarGuiasComponent implements OnInit {
     public documentoService: DocumentoService,
     private estadoDocumentoService: EstadoDocumentoService,
     private utilsService: UtilsService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private modalService: BsModalService
   ) { }
 
   dataGuiasPorProcesar: LocalDataSource = new LocalDataSource();
@@ -31,6 +37,7 @@ export class ProcesarGuiasComponent implements OnInit {
   settings = AppSettings.tableSettings;
   guias: Guia[] = [];
   guia: Guia;
+  documento: Documento;
 
   guiasSubscription: Subscription;
 
@@ -39,17 +46,13 @@ export class ProcesarGuiasComponent implements OnInit {
   // excelForm: FormGroup;
 
   ngOnInit() {
-    // this.listarGuiasEnviadas();
-    // this.listarGuiasSinCerrar();
     this.generarColumnas();
     this.listarGuiasPorProcesar();
+    this.settings.hideSubHeader = false;
   }
 
   generarColumnas() {
     this.settings.columns = {
-      fechaEnvio: {
-        title: 'Fecha de envío'
-      },
       nroGuia: {
         title: 'Número de guía'
       },
@@ -63,13 +66,27 @@ export class ProcesarGuiasComponent implements OnInit {
         title: 'Tipo de servicio'
       },
       tipoSeguridad: {
+        title: 'Tipo de seguridad'
+      },
+      fechaEnvio: {
         title: 'Fecha de envío'
       },
       fechalimite: {
         title: 'Fecha limite de resultado'
       },
       descargarBase: {
-        title: '-'
+        title: 'Descargar Base',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-download";
+          instance.pressed.subscribe(row => {
+            this.descargarGuia(row);
+          });
+        }
+      },
+      total: {
+        title: 'Total documentos'
       },
       entregados: {
         title: 'Entregados'
@@ -86,11 +103,16 @@ export class ProcesarGuiasComponent implements OnInit {
       pendientesResultado: {
         title: 'Pendientes de resultado'
       },
-      total: {
-        title: 'Total'
-      },
       subirBase: {
-        title: '-'
+        title: 'Subir Resultado',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-upload";
+          instance.pressed.subscribe(row => {
+            this.subirGuia(row);
+          });
+        }
       },
     }
   }
@@ -104,23 +126,22 @@ export class ProcesarGuiasComponent implements OnInit {
 
           guias.forEach(guia => {
             dataGuiasPorProcesar.push({
-              // fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia,2).fecha,
-              // fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(this.guia,2).fecha,
-              // nroGuia: guia.numeroGuia,
+              nroGuia: guia.numeroGuia,
               sede: guia.sede.nombre,
               plazo: guia.plazoDistribucion.nombre,
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
+              fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
               fechalimite: "FALTA CÓDIGO",
+              total: guia.documentosGuia.length,
               entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
               rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
               devueltos: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.DEVUELTO).length,
               extraviados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.EXTRAVIADO).length,
-              pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length,
-              total: "FALTA CÓDIGO"
+              pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length
             })
           })
-          
+
           this.guias.push(this.guia);
           this.dataGuiasPorProcesar.load(dataGuiasPorProcesar);
         },
@@ -134,141 +155,34 @@ export class ProcesarGuiasComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // listarGuiasEnviadas() {
-  //   this.guiaService.listarGuiasEnviadas().subscribe(
-  //     guiasEnviadas => {
-  //       this.guiasEnviadas = guiasEnviadas;
-  //     },
-  //     error => {
-  //       console.log(error);
-  //     }
-  //   )
-  // }
-
-  exportar(guia: Guia) {
-    this.guiaService.exportarDocumentosGuia(guia);
+  descargarGuia(row) {
+    let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
+    this.guiaService.exportarDocumentosGuia(guia)
   }
 
-  // listarGuiasSinCerrar() {
-  //   this.excelForm = new FormGroup({
-  //     'excelFile': new FormControl('', Validators.required)
-  //   });
-  //   this.guiaService.listarGuiasSinCerrar().subscribe(
-  //     guiasSinCerrar => this.guiasSinCerrar = guiasSinCerrar
-  //   )
-  // }
 
-  // onChangeExcelFile(file: File) {
-  //   this.excelFile = file;
-  // }
+  subirGuia(row) {
+    let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
+    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
+      initialState: {
+        documento: this.documento,
+        guia: guia,
+        titulo: 'Subir reporte de Guía.',
+        mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
+      },
+      class: 'modal-lg',
+      keyboard: false,
+      backdrop: "static"
+    });
 
-  // onSubmit(excelFile: File) {
-  //   if (this.utilsService.isUndefinedOrNull(excelFile)) {
-  //     this.notifier.notify("success", "Seleccione el archivo excel a subir");
-  //     return;
-  //   }
-  //   this.subirResutados(excelFile);
-  // }
+    this.modalService.onHide.subscribe(
+      () => {
+        this.listarGuiasPorProcesar();
+      }
+    )
+  }
 
-  // subirResutados(file: File) {
-  //   this.documentoService.mostrarResultadosDocumentosProveedor(file, 0, (data) => {
-  //     if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-  //       this.documentoService.actualizarResultadosProveedor(data).subscribe(
-  //         respuesta => {
-  //           this.notifier.notify('success', respuesta.mensaje);
-  //           this.excelForm.reset();
-  //           this.listarGuiasSinCerrar();
-  //         },
-  //         error => {
-  //           this.notifier.notify('error', error.error.mensaje);
-  //         }
-  //       )
-  //       return;
-  //     }
-  //     this.notifier.notify('error', data.mensaje);
-  //   })
-  // }
+
+
 
 }

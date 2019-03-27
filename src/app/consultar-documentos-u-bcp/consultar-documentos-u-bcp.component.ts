@@ -50,7 +50,6 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required)
         })
         this.generarColumnas();
-        
         if (!this.buzonService.getBuzonActual()) {
             this.buzonSubscription= this.buzonService.buzonActualChanged.subscribe(() => {
               this.listarDocumentos();
@@ -58,7 +57,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         } else {
             this.listarDocumentos();
         }
-        
+        this.settings.hideSubHeader = false;
+
     }
 
     generarColumnas() {

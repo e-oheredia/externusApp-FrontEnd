@@ -35,7 +35,7 @@ import { ProcesarGuiasModule } from './procesar-guias/procesar-guias.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule, 
