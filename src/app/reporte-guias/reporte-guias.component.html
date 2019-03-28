@@ -35,7 +35,7 @@
               <div class="form-group">
                 <label for="fechaIni">Fecha Inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni" 
-                (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+                (change)="desactivarCodigo(guiaForm.get('fechaIni').value, guiaForm.get('fechaFin').value)">
               </div>
             </div>
 
@@ -43,7 +43,7 @@
               <div class="form-group">
                 <label for="fechaFin">Fecha Final</label>
                 <input class="form-control" type="date" formControlName="fechaFin" 
-                (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+                (change)="desactivarCodigo(guiaForm.get('fechaIni').value, guiaForm.get('fechaFin').value)">
               </div>
             </div>
 

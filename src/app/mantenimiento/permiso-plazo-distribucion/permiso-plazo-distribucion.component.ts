@@ -116,13 +116,12 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
   }
 
 
-  exportarPorUsuario(buzones: Buzon[]) {
-    this.buzonService.exportarPermisosDePlazosPorBuzon(buzones)
+  exportarPorUsuario() {
+    this.buzonService.exportarPermisosDePlazosPorBuzon(this.buzones)
   }
 
   exportarPorArea() {
     this.areaService.exportarPermisosDePlazosPorArea(this.areas)
-    console.log(this.areas)
   }
   
 

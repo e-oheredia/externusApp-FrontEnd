@@ -20,34 +20,10 @@
         </div>
       </div>
 
-<!--       <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="tiempoEnvio">Plazo de Distribución (horas)</label>
-            <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio" formControlName="tiempoEnvio">
-            <span *ngIf="!agregarForm.get('tiempoEnvio').valid && agregarForm.get('tiempoEnvio').touched" class="text-danger small">
-                Es necesario ingresar las horas del plazo.
-              </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="tipoPlazoDistribucion">Tipo de Plazo</label>
-            <select class="form-control" id="tipoPlazo" formControlName="tipoPlazoDistribucion">
-              <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">{{tipoPlazoDistribucion.nombre}}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div> -->
-
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success">Agregar</button>
+      <button type="submit" class="btn btn-success" [disabled]="!agregarForm.valid">Agregar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 

@@ -113,7 +113,7 @@ export class ReporteGuiasComponent implements OnInit {
             })
             this.guias.push(guia);
             this.dataGuias.load(dataGuias);
-            this.guiaForm.controls['codigo'].reset();
+            this.guiaForm.controls['codigo'].setValue('');
             this.guiaForm.controls['fechaIni'].reset();
             this.guiaForm.controls['fechaFin'].reset();
             this.guiaForm.controls['fechaIni'].enable();
@@ -185,6 +185,14 @@ export class ReporteGuiasComponent implements OnInit {
     } else {
       this.guiaForm.controls['fechaIni'].disable();
       this.guiaForm.controls['fechaFin'].disable();
+    }
+  }
+
+  desactivarCodigo(fechaIni, fechaFin) {
+    if (this.utilsService.isUndefinedOrNullOrEmpty(fechaIni) && this.utilsService.isUndefinedOrNullOrEmpty(fechaFin)) {
+      this.guiaForm.controls['codigo'].enable();
+    } else {
+      this.guiaForm.controls['codigo'].disable();
     }
   }
 

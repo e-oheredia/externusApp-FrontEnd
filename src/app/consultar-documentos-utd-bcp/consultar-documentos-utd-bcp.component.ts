@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DocumentoService } from '../shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -107,7 +107,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
   }
 
   listarDocumentos() {
-
+    // console.log("ANTES DE BUSCAR :  " + this.documentoForm.controls['codigo'].value);
     if (this.documentoForm.controls['codigo'].value.length !== 0) {
 
       this.documentosSubscription = this.documentoService.listarDocumentosUtdBCPCodigo(this.documentoForm.controls['codigo'].value)
@@ -130,15 +130,15 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
               fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
             })
-            this.documentos.push(documento);//no se si va
+            this.documentos.push(documento);
             this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);
-            this.documentoForm.controls['codigo'].reset();
+            this.documentoForm.controls['codigo'].setValue('');
             this.documentoForm.controls['fechaIni'].reset();
             this.documentoForm.controls['fechaFin'].reset();
             this.documentoForm.controls['fechaIni'].enable();
             this.documentoForm.controls['fechaFin'].enable();
             this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
-
+            // console.log("DESPUES DE BUSCAR :  " + this.documentoForm.controls['codigo'].value);
           },
           error => {
             if (error.status === 400) {
@@ -178,14 +178,13 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
                       fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
                       fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
-                      // imagen:
                     })
+                    // console.log("DESPUES DE BUSCAR :  " + this.documentoForm.controls['codigo'].value);
                   }
                 )
                 this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);
               }
             )
-            console.log(documentos);
           },
           error => {
             if (error.status === 400) {
