@@ -22,7 +22,9 @@
             <div class="col-4">
               <div class="form-group">
                 <label for="codigo">Código</label>
-                <input class="form-control" type="text" formControlName="codigo"  (input) = "documentoForm.controls['codigo'].setValue(documentoForm.get('codigo').value.toUpperCase())" (change)="desactivarFechas(documentoForm.get('codigo').value)">
+                <input class="form-control" type="text" formControlName="codigo"  
+                (input) = "documentoForm.controls['codigo'].setValue(documentoForm.get('codigo').value.toUpperCase())" 
+                (change)="desactivarFechas(documentoForm.get('codigo').value)">
               </div>
             </div>
           </div>
@@ -32,14 +34,16 @@
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha Inicial</label>
-                <input class="form-control" type="date" formControlName="fechaIni" (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+                <input class="form-control" type="date" formControlName="fechaIni" 
+                (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha Final</label>
-                <input class="form-control" type="date" formControlName="fechaFin" (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+                <input class="form-control" type="date" formControlName="fechaFin" 
+                (change)="desactivarCodigo(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
               </div>
             </div>
 

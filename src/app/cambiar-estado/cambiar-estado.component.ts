@@ -65,7 +65,7 @@ export class CambiarEstadoComponent implements OnInit {
             this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
             this.cargarCombo(this.documentoService.getUltimoEstado(documento).id);
             this.estadoActualDocumento=this.documentoService.getUltimoEstado(documento).id;
-            if(documento.documentosGuia[0].validado===false || documento.documentosGuia.length===0){
+            if(documento.documentosGuia.length === 0 || documento.documentosGuia[0].validado===false || documento.documentosGuia.length===0){
               this.validado=false;
             }else{
               this.validado=true;
@@ -131,13 +131,14 @@ export class CambiarEstadoComponent implements OnInit {
     this.documentoService.cambiarEstado(this.documento.id, this.seguimientoDocumento).subscribe(
       () => {
 
-        this.estadoForm.reset();
+        this.documento = null;
 
         let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
           initialState: {
             mensaje: "SE MODIFICÓ EL ESTADO DEL DOCUMENTO EXITOSAMENTE"
           }
         });
+        this.estadoForm.reset();
         this.bsModalRef.hide();
       }
     )

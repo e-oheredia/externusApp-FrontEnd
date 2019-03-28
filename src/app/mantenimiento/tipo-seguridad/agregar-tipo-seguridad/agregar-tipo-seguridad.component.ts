@@ -22,13 +22,11 @@ export class AgregarTipoSeguridadComponent implements OnInit {
 
   @Output() tipoSeguridadCreadoEvent = new EventEmitter<TipoSeguridad>();
 
-  //tiposPlazos: TipoPlazoDistribucion[];
   tipoSeguridad: TipoSeguridad;
   tiposSeguridad: TipoSeguridad[] = [];
   agregarForm: FormGroup;
 
   crearTipoSeguridadSubscription: Subscription;
- // tiposPlazosSubscription: Subscription;
 
   ngOnInit() {
     this.cargarDatosVista();
@@ -56,7 +54,7 @@ export class AgregarTipoSeguridadComponent implements OnInit {
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR TODOS LOS DATOS');
+      this.notifier.notify('error', 'DEBE INGRESAR EL NOMBRE DEL TIPO DE SEGURIDAD');
     }
   }
 

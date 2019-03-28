@@ -41,7 +41,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
         title: 'Fecha'
       },
       link: {
-         title: 'Tracking',
+         title: 'Imagen',
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
