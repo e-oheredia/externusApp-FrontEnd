@@ -20,6 +20,7 @@ import { HttpParams } from '@angular/common/http';
 import { BuzonService } from './buzon.service';
 import { Proveedor } from '../../model/proveedor.model';
 import { DocumentoGuia } from 'src/model/documentoguia.model';
+import { MotivoEstado } from 'src/model/motivoestado.model';
 
 @Injectable()
 export class DocumentoService {
@@ -152,7 +153,6 @@ export class DocumentoService {
         return estadoDocumento;
     }
 
-    
     custodiarDocumentos(documentos: Documento[]): Observable<Documento[]> {
         return this.requesterService.put<Documento[]>(this.REQUEST_URL + "custodia", documentos, {});
     }
@@ -162,6 +162,10 @@ export class DocumentoService {
     }
 
     mostrarResultadosDocumentosProveedor(file: File, sheet: number, callback: Function) {
+
+        console.log("ESTADO DOCUMENTO" + EstadoDocumento)
+        console.log("MOTIVO ESTADO" + MotivoEstado)
+
         this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
             let documentosCargados: Documento[] = [];
             let i = 1
@@ -185,32 +189,36 @@ export class DocumentoService {
                     estadoDocumento => estadoDocumento.nombre === data[i][16]
                 )
 
-                if (estadoDocumento === null ) {
+                if (this.utilsService.isUndefinedOrNullOrEmpty(estadoDocumento)) {
                     callback({
                         mensaje: "Ingrese Estado permitido en la fila " + (i + 1)
                     });
                     return;
                 }
 
-                if (estadoDocumento === undefined ) {
+                let motivoEstado = estadoDocumento.motivos.find(motivo => motivo.nombre === data[i][17]);
+
+                if (this.utilsService.isUndefinedOrNullOrEmpty(motivoEstado)) {
                     callback({
-                        mensaje: "Ingrese el formato correcto"
+                        mensaje: "Ingrese Motivo en la fila " + (i + 1)
                     });
-                    return;
+                    return; 
                 }
 
                 seguimientoDocumento.estadoDocumento = estadoDocumento;
 
-                if (estadoDocumento.id === EstadoDocumentoEnum.REZAGADO && this.utilsService.isUndefinedOrNullOrEmpty(data[i][17])) {
+                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO ||
+                    estadoDocumento.id === EstadoDocumentoEnum.REZAGADO ||
+                    estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][17])) {
                     callback({
-                        mensaje: "Ingrese Observación del Rezagado en la fila " + (i + 1)
+                        mensaje: "Ingrese el motivo del Estado en la fila " + (i + 1)
                     });
                     return;
                 }
 
-                seguimientoDocumento.observacion = data[i][17] || "";
+                seguimientoDocumento.motivoEstado = motivoEstado;
 
-                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO )  && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
+                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
                     callback({
                         mensaje: "Ingrese Link del Entregado o Rezagado en la fila " + (i + 1)
                     });
@@ -219,7 +227,7 @@ export class DocumentoService {
 
                 seguimientoDocumento.linkImagen = data[i][18] || "";
 
-                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) && this.utilsService.isValidDate(data[i][19])) {                   
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) && this.utilsService.isValidDate(data[i][19])) {
 
                     callback({
                         mensaje: "Ingrese la fecha en el formato correcto en la fila " + (i + 1)
@@ -257,81 +265,77 @@ export class DocumentoService {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
 
-    listarDocumentosEntregados(): Observable<Documento[]>{
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "entregados" ,{});
+    listarDocumentosEntregados(): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "entregados", {});
     }
 
-    listarDocumentosPorDevolver(): Observable<Documento[]>{
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "pordevolver" ,{});
+    listarDocumentosPorDevolver(): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "pordevolver", {});
     }
-    
+
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
 
-    listarDocumentosUtdBCPCodigo(codigo: string){
-        return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('autogenerado', codigo.toString())});
+    listarDocumentosUtdBCPCodigo(codigo: string) {
+        return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }
 
     listarDocumentosUtdBCPFechas(fechaini: Date, fechafin: Date): Observable<Documento[]> {
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    listarDocumentoPorCodigo(codigo: string){
-        return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString())});
+    listarDocumentoPorCodigo(codigo: string) {
+        return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }
 
 
 
-    cambiarEstado(codigo: number, seguimiento: SeguimientoDocumento){
-        return this.requesterService.post<Documento>(this.REQUEST_URL + codigo.toString() + "/cambioestado" , seguimiento, {});
+    cambiarEstado(codigo: number, seguimiento: SeguimientoDocumento) {
+        return this.requesterService.post<Documento>(this.REQUEST_URL + codigo.toString() + "/cambioestado", seguimiento, {});
     }
 
-    desvalidar(id: number){
-        return this.requesterService.put<DocumentoGuia>(this.GUIA_URL + id + "/desvalidar", null ,{});
+    desvalidar(id: number) {
+        return this.requesterService.put<DocumentoGuia>(this.GUIA_URL + id + "/desvalidar", null, {});
     }
 
 
     listarDocumentosReportesVolumen(fechaini: Date, fechafin: Date, idestado: number): Observable<Documento[]> {
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosvolumen", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('estado', idestado.toString()) });
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosvolumen", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('estado', idestado.toString()) });
     }
 
-    getSeguimientoDocumentoByEstadoId(documento: Documento, estadoId: number){
+    getSeguimientoDocumentoByEstadoId(documento: Documento, estadoId: number) {
         return documento.seguimientosDocumento.find(
             seguimientoDocumento => seguimientoDocumento.estadoDocumento.id === estadoId);
     }
 
-    getUltimoSeguimientoDocumento(documento: Documento){
+    getUltimoSeguimientoDocumento(documento: Documento) {
         return documento.seguimientosDocumento.reduce(
-            (max,seguimentoDocumento) => 
-            moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
+            (max, seguimentoDocumento) =>
+                moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
         )
     }
 
     getUltimaFechaEstado(documento: Documento): Date | string {
         return documento.seguimientosDocumento.reduce(
             (max, seguimentoDocumento) =>
-            moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
+                moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
         ).fecha
     }
 
-    // extraerIdAutogenerado(autogenerado: String) {
-    //     return parseInt(autogenerado.substring(1, 10));
-    // }
-
-    recepcionarCargo(codigo: number): Observable<Documento>{
-        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo +  "/recepcioncargo", {}, {});
+    recepcionarCargo(codigo: number): Observable<Documento> {
+        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcioncargo", {}, {});
     }
 
-    recepcionarDocumento(codigo: number): Observable<Documento>{
+    recepcionarDocumento(codigo: number): Observable<Documento> {
         return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/" + "recepciondevueltos", {}, {});
     }
 
-    listarCargos(fechaini: Date, fechafin: Date): Observable<Documento[]>{
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentoscargos", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString())});
+    listarCargos(fechaini: Date, fechafin: Date): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentoscargos", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    asignarCodigoDevolucionCargo(id: number, codigo: string): Observable<Documento>{
+    asignarCodigoDevolucionCargo(id: number, codigo: string): Observable<Documento> {
         return this.requesterService.post<Documento>(this.REQUEST_URL + id + "/codigodevolucion", codigo, {});
     }
 }

@@ -72,37 +72,5 @@ export class AdjuntarArchivoComponent implements OnInit {
     })
   }
 
-  //   if (this.guiaForm.get('archivo') === null || this.guiaForm.get('archivo').value === "" || this.guiaForm.get('archivo').value === null) {
-  //     this.notifier.notify('error', 'Debe seleccionar un archivoo');
-  //     return;
-  //   }
-
-  //   this.documentoService.subirReporte(this.documento).subscribe(
-  //     () => {
-  //       let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-  //         initialState: {
-  //           mensaje: "El reporte fue subido correctamente"
-  //         }
-  //       });
-  //       this.bsModalRef.hide();
-  //     }
-  //   )
-  // }
-
-  // onChangeExcelFile(file: File) {
-  //   if (file == undefined || file == null) {
-  //     this.archivoAdjunto = null;
-  //     return;
-  //   }
-  //   if (file.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-  //     this.archivoAdjunto = null;
-  //     this.notifier.notify('error', 'Error, el archivo debe ser un Excel');
-  //     return null;
-  //   }
-  //   this.archivoAdjunto = file;
-  // }
-
-  
-
 
 }

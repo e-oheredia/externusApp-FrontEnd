@@ -88,6 +88,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       estado: {
         title: 'Estado'
       },
+      motivo: {
+        title: 'Motivo'
+      },
       fisicoRecibido: {
         title: 'Físico recibido'
       },
@@ -124,6 +127,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               direccion: documento.direccion,
               distrito: documento.distrito.nombre,
               estado: this.documentoService.getUltimoEstado(documento).nombre,
+              motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado,
               fisicoRecibido: documento.recepcionado ? "SI" : "NO",
               autorizado: documento.envio.autorizado ? "SI" : "NO",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
@@ -138,7 +142,6 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
             this.documentoForm.controls['fechaIni'].enable();
             this.documentoForm.controls['fechaFin'].enable();
             this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
-            // console.log("DESPUES DE BUSCAR :  " + this.documentoForm.controls['codigo'].value);
           },
           error => {
             if (error.status === 400) {
@@ -169,17 +172,17 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       remitente: documento.envio.buzon.nombre,
                       plazo: documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
                       razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
-                      contacto: documento.contactoDestino,
+                      contacto: documento.contactoDestino ? documento.contactoDestino : "no tiene",
                       direccion: documento.direccion,
                       distrito: documento.distrito.nombre,
                       estado: this.documentoService.getUltimoEstado(documento).nombre,
+                      motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                       fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                       autorizado: documento.envio.autorizado ? "SI" : "NO",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
                       fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
                       fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
                     })
-                    // console.log("DESPUES DE BUSCAR :  " + this.documentoForm.controls['codigo'].value);
                   }
                 )
                 this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);

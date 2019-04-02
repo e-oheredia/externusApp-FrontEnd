@@ -34,6 +34,9 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
       estado: {
         title: 'Estado'
       },
+      motivo: {
+        title: 'Motivo'
+      },
       observacion: {
         title: 'Observacion'
       },
@@ -74,6 +77,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
         dataSeguimientosDocumento.push({
           id: segumientoDocumento.id,
           estado: segumientoDocumento.estadoDocumento.nombre,
+          motivo: segumientoDocumento.motivoEstado ? segumientoDocumento.motivoEstado.nombre : ' ',
           observacion: segumientoDocumento.observacion,
           fecha: segumientoDocumento.fecha,
           link: segumientoDocumento.linkImagen,

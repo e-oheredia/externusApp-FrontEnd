@@ -1,3 +1,4 @@
+import { MotivoEstado } from "./motivoestado.model";
 
 export class EstadoDocumento {
 
@@ -7,4 +8,5 @@ export class EstadoDocumento {
     ) { }
 
     public estadosDocumentoPermitidos: EstadoDocumento[];
+    public motivos: MotivoEstado[];
 }
