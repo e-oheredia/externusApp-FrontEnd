@@ -208,18 +208,26 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     }
 
                     documentosGeneral.Courier = "GENERAL";
+                    // documentosGeneral.Devuelto = documentos.filter(documento => {
+                    //     return documento.recepcionado === true &&
+                    //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
+                    //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
+                    // }).length;
                     documentosGeneral.Devuelto = documentos.filter(documento => {
                         return documento.recepcionado === true &&
-                            (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                    }
-                    ).length;
+                            (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false )
+                    }).length;
+
+                    // documentosGeneral.Pendiente = documentos.filter(documento => {
+                    //     return documento.recepcionado === false &&
+                    //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
+                    //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
+                    // }).length;
                     documentosGeneral.Pendiente = documentos.filter(documento => {
                         return documento.recepcionado === false &&
-                            (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                    }
-                    ).length;
+                            (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false )
+                    }).length;
+                    
 
                     this.dataGraficoDevolucionDocumentos.push(documentosGeneral);
 
@@ -255,9 +263,13 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
                                 return documento.envio.buzon.area.id === area.id &&
                                     documento.recepcionado === false &&
-                                    (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                        this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false ||
-                                        this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false)
+                                    (
+                                    // this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
+                                    // this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false ||
+                                    // this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
+                                    this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
+                                    this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
+                                    )
                             }
                             ).length;
 
@@ -369,20 +381,29 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                             }
 
                             documentoProveedor.Courier = proveedor.nombre;
+                            // documentoProveedor.Devuelto = documentos.filter(documento => {
+                            //     return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+                            //         documento.recepcionado === true &&
+                            //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
+                            //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
+                            // }).length;
                             documentoProveedor.Devuelto = documentos.filter(documento => {
                                 return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                                     documento.recepcionado === true &&
-                                    (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                        this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                            }
-                            ).length;
+                                    (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false)
+                            }).length;
+
+                            // documentoProveedor.Pendiente = documentos.filter(documento => {
+                            //     return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+                            //         documento.recepcionado === false &&
+                            //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
+                            //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
+                            // }).length;
                             documentoProveedor.Pendiente = documentos.filter(documento => {
                                 return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                                     documento.recepcionado === false &&
-                                    (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                        this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                            }
-                            ).length;
+                                    (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false)
+                            }).length;
 
                             this.dataGraficoDevolucionDocumentos.push(documentoProveedor);
 

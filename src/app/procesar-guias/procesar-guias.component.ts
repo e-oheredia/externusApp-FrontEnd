@@ -3,8 +3,6 @@ import { GuiaService } from '../shared/guia.service';
 import { NotifierService } from 'angular-notifier';
 import { Guia } from 'src/model/guia.model';
 import { DocumentoService } from '../shared/documento.service';
-import { EstadoDocumentoService } from '../shared/estadodocumento.service';
-import { UtilsService } from '../shared/utils.service';
 import { AppSettings } from '../shared/app.settings';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -24,8 +22,6 @@ export class ProcesarGuiasComponent implements OnInit {
   constructor(
     public guiaService: GuiaService,
     public documentoService: DocumentoService,
-    private estadoDocumentoService: EstadoDocumentoService,
-    private utilsService: UtilsService,
     private notifier: NotifierService,
     private modalService: BsModalService
   ) { }
@@ -90,11 +86,8 @@ export class ProcesarGuiasComponent implements OnInit {
       rezagados: {
         title: 'Rezagados'
       },
-      devueltos: {
-        title: 'Devueltos'
-      },
-      extraviados: {
-        title: 'Extraviados'
+      nodistribuibles: {
+        title: 'No Distribuibles'
       },
       pendientesResultado: {
         title: 'Pendientes de resultado'
@@ -132,8 +125,7 @@ export class ProcesarGuiasComponent implements OnInit {
               total: guia.documentosGuia.length,
               entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
               rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
-              devueltos: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.DEVUELTO).length,
-              extraviados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.EXTRAVIADO).length,
+              nodistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
               pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length
             })
           })

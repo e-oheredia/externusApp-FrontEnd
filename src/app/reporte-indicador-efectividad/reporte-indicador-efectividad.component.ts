@@ -51,14 +51,16 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
     this.estadosDocumento.push({
       id: 3,
       nombre: 'PENDIENTE DE ENTREGA', 
-      estadosDocumentoPermitidos: []
+      estadosDocumentoPermitidos: [],
+      motivos: []
     });
     this.estadoDocumentoService.estadosDocumentoResultadosProveedorChanged.subscribe(estadosDocumento => {
       this.estadosDocumento = estadosDocumento;
       this.estadosDocumento.push({
         id: 3,
         nombre: 'PENDIENTE DE ENTREGA',
-        estadosDocumentoPermitidos: []
+        estadosDocumentoPermitidos: [],
+        motivos: []
       });
     });
   }

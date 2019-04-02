@@ -98,6 +98,9 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             estado: {
                 title: 'Estado'
             },
+            motivo: {
+                title: 'Motivo'
+            },
             fisicoRecibido: {
                 title: 'Físico recibido'
             },
@@ -144,6 +147,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         direccion: documento.direccion,
                                         distrito: documento.distrito.nombre,
                                         estado: this.documentoService.getUltimoEstado(documento).nombre,
+                                        motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                                         fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                                         autorizado: documento.envio.autorizado ? "SI" : "NO",
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),

@@ -30,7 +30,12 @@ export class TipoServicioService {
 
 
     listarTiposServicio(): Observable<TipoServicio[]>{
-        return this.requester.get<TipoServicio[]>(this.REQUEST_URL, {});
+        return this.requester.get<TipoServicio[]>(this.REQUEST_URL + "activos", {});
     }
+
+    listarTiposServicioAll(): Observable<TipoServicio[]> {
+        return this.requester.get<TipoServicio[]>(this.REQUEST_URL , {});
+    }
+
 
 }

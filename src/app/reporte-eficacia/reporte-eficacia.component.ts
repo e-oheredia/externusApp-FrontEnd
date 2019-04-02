@@ -51,15 +51,18 @@ export class ReporteEficaciaComponent implements OnInit {
         this.estadoDoc.push({
             id: EstadoDocumentoEnum.ENVIADO,
             nombre: "PENDIENTE DE ENTREGA",
-            estadosDocumentoPermitidos: []
+            estadosDocumentoPermitidos: [],
+            motivos: []
         })
+        
         this.estadoDocumentoService.estadosDocumentoResultadosProveedorChanged.subscribe(
             estados => {
                 this.estadoDoc = estados;
                 this.estadoDoc.push({
                     id: EstadoDocumentoEnum.ENVIADO,
                     nombre: "PENDIENTE DE ENTREGA",
-                    estadosDocumentoPermitidos: []
+                    estadosDocumentoPermitidos: [],
+                    motivos: []
                 })
             }
         )

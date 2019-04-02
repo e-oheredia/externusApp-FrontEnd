@@ -4,8 +4,7 @@ export enum EstadoDocumentoEnum {
     ENVIADO = 3, 
     ENTREGADO = 4, 
     REZAGADO = 5, 
-    DEVUELTO = 6,
-    EXTRAVIADO = 7,
-    DENEGADO = 8,
-    ELIMINADO = 9
+    NO_DISTRIBUIBLE = 6,
+    DENEGADO = 7,
+    ELIMINADO = 8
 }
