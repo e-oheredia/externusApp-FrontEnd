@@ -29,23 +29,11 @@ export class ModificarTipoServicioComponent implements OnInit {
   servicios: TipoServicio[] = []
   modificarForm: FormGroup;
 
-  tipoServicioSubscription: Subscription;
-
   ngOnInit() {
-    this.cargarDatosVista();
     this.modificarForm = new FormGroup({
       'nombre': new FormControl(this.servicio.nombre, Validators.required),
       'activo': new FormControl(this.servicio.activo, Validators.required)
     })
-  }
-
-  cargarDatosVista(){
-    this.servicios = this.tipoServicioService.getTiposServicio();
-    this.tipoServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
-      servicios => {
-        this.servicios = servicios;
-      }
-    )
   }
 
   onSubmit(form: any){

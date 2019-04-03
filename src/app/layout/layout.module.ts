@@ -53,6 +53,9 @@ import { ModificarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad
 import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
 import { AgregarTipoServicioComponent } from '../mantenimiento/tipo-servicio/agregar-tiposervicio/agregar-tiposervicio.component';
 import { ModificarTipoServicioComponent } from '../mantenimiento/tipo-servicio/modificar-tiposervicio/modificar-tiposervicio.component';
+import { AgregarProductoComponent } from '../mantenimiento/producto/agregar-producto/agregar-producto.component';
+import { ModificarProductoComponent } from '../mantenimiento/producto/modificar-producto/modificar-producto.component';
+import { ProductoService } from '../shared/producto.service';
 
 @NgModule({
   declarations: [
@@ -71,7 +74,9 @@ import { ModificarTipoServicioComponent } from '../mantenimiento/tipo-servicio/m
     ModificarTipoSeguridadComponent,
     AdjuntarArchivoComponent,
     AgregarTipoServicioComponent,
-    ModificarTipoServicioComponent
+    ModificarTipoServicioComponent,
+    AgregarProductoComponent,
+    ModificarProductoComponent
   ],
   imports: [  
     HttpClientModule,
@@ -123,7 +128,8 @@ import { ModificarTipoServicioComponent } from '../mantenimiento/tipo-servicio/m
     MenuService, 
     CargoPdfService,
     SedeDespachoService,
-    TituloService
+    TituloService,
+    ProductoService
   ], 
   entryComponents: [ 
     ConfirmModalComponent, 
@@ -139,8 +145,9 @@ import { ModificarTipoServicioComponent } from '../mantenimiento/tipo-servicio/m
     ModificarTipoSeguridadComponent,
     AdjuntarArchivoComponent,
     AgregarTipoServicioComponent,
-    ModificarTipoServicioComponent
-
+    ModificarTipoServicioComponent,
+    AgregarProductoComponent,
+    ModificarProductoComponent
    ],
 })
 export class LayoutModule { }
