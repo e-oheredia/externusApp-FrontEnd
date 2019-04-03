@@ -6,6 +6,7 @@ import { PlazoDistribucionComponent } from './plazo-distribucion/plazo-distribuc
 import { ProveedorComponent } from './proveedor/proveedor.component';
 import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.component';
 import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
+import { ProductoComponent } from './producto/producto.component';
 
 const mantenimientoRoutes: Routes = [
     {
@@ -24,6 +25,9 @@ const mantenimientoRoutes: Routes = [
             },
             {
                 path: 'tipo-servicio', component: TipoServicioComponent
+            },
+            {
+                path: 'producto', component: ProductoComponent
             }
         ]
     }

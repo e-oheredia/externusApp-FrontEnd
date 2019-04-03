@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.component';
 import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
+import { ProductoComponent } from './producto/producto.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
     PermisoPlazoDistribucionComponent,
     TipoSeguridadComponent,
     TipoServicioComponent,
+    ProductoComponent
   ],
   entryComponents: [
     ButtonViewComponent,
