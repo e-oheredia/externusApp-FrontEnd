@@ -1,0 +1,43 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h6>Modificar tipo de servicio</h6>
+  </div>
+
+  <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nombre">Nombre del tipo de servicio</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="activo">Estado</label>
+            <select class="form-control" id="activo" formControlName="activo">
+              <option value="true">ACTIVO
+              </option>
+              <option value="false">INACTIVO
+                </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Modificar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

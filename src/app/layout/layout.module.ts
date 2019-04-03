@@ -51,6 +51,8 @@ import { TipoPlazoDistribucionService } from '../shared/tipoplazodistribucion.se
 import { AgregarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad/agregar-tipo-seguridad/agregar-tipo-seguridad.component';
 import { ModificarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad/modificar-tipo-seguridad/modificar-tipo-seguridad.component';
 import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
+import { AgregarTipoServicioComponent } from '../mantenimiento/tipo-servicio/agregar-tiposervicio/agregar-tiposervicio.component';
+import { ModificarTipoServicioComponent } from '../mantenimiento/tipo-servicio/modificar-tiposervicio/modificar-tiposervicio.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-ar
     ModificarProveedorComponent,
     AgregarTipoSeguridadComponent,
     ModificarTipoSeguridadComponent,
-    AdjuntarArchivoComponent
+    AdjuntarArchivoComponent,
+    AgregarTipoServicioComponent,
+    ModificarTipoServicioComponent
   ],
   imports: [  
     HttpClientModule,
@@ -133,7 +137,9 @@ import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-ar
     AgregarTipoSeguridadComponent,
     ModificarTipoSeguridadComponent,
     ModificarTipoSeguridadComponent,
-    AdjuntarArchivoComponent
+    AdjuntarArchivoComponent,
+    AgregarTipoServicioComponent,
+    ModificarTipoServicioComponent
 
    ],
 })
