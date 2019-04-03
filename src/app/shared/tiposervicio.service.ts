@@ -37,5 +37,13 @@ export class TipoServicioService {
         return this.requester.get<TipoServicio[]>(this.REQUEST_URL , {});
     }
 
+    agregarTipoServicio(servicio: TipoServicio): Observable<TipoServicio>{
+        return this.requester.post<TipoServicio>(this.REQUEST_URL, servicio, {});
+    }
+
+    modificarTipoServicio(id:number, servicio: TipoServicio): Observable<TipoServicio> {
+        return this.requester.put<TipoServicio>(this.REQUEST_URL + id, servicio, {});
+    }
+
 
 }

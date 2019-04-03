@@ -11,7 +11,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.component';
-
+import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
 
 @NgModule({
   imports: [
@@ -28,12 +28,11 @@ import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.componen
     PlazoDistribucionComponent,
     ProveedorComponent,
     PermisoPlazoDistribucionComponent,
-    TipoSeguridadComponent 
-    // ModificarPlazoComponent
+    TipoSeguridadComponent,
+    TipoServicioComponent,
   ],
   entryComponents: [
-    ButtonViewComponent, 
-    // ModificarPlazoComponent
+    ButtonViewComponent,
   ]
 })
 export class MantenimientoModule { }
