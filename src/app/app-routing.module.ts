@@ -1,5 +1,4 @@
 import { ReporteDistribucionMesEficienciaComponent } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.component';
-import { ListarGuiasEnviadasComponent } from './listar-guias-enviadas/listar-guias-enviadas.component';
 import { ListarGuiasCreadasComponent } from './listar-guias-creadas/listar-guias-creadas.component';
 import { CustodiarEnviosMasivosComponent } from './custodiar-envios-masivos/custodiar-envios-masivos.component';
 import { CustodiarDocumentosIndividualesComponent } from './custodiar-documentos-individuales/custodiar-documentos-individuales.component';
@@ -7,7 +6,6 @@ import { AutorizarEnviosComponent } from './autorizar-envios/autorizar-envios.co
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from '@angular/router';
 import { ListarDocumentosCustodiadosComponent } from './listar-documentos-custodiados/listar-documentos-custodiados.component';
-import { SubirResultadosEnviosComponent } from './subir-resultados-envios/subir-resultados-envios.component';
 import { ConsultarDocumentosUBCPComponent } from './consultar-documentos-u-bcp/consultar-documentos-u-bcp.component';
 import { RecepcionarCargosComponent } from './recepcionar-cargos/recepcionar-cargos.component';
 import { RecepcionarDocumentosComponent } from './recepcionar-documentos/recepcionar-documentos.component';
@@ -49,14 +47,6 @@ const appRoutes: Routes = [
     {
         path: 'documentos-custodiados',
         component: ListarDocumentosCustodiadosComponent
-    },
-    {
-        path: 'guias-enviadas',
-        component: ListarGuiasEnviadasComponent
-    },
-    {
-        path: 'subir-resultados',
-        component: SubirResultadosEnviosComponent
     },
     {
         path: 'mantenimiento',

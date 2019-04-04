@@ -66,12 +66,7 @@ export class GuiaService {
     }
 
     listarGuiasPorProcesar(): Observable<Guia[]> {
-        return this.requester.get<Guia[]>(this.REQUEST_URL + "paraproveedor", {});
-    }
-    //procesarguias : nombre por el cual debe ser reemplazado 'paraproveedor'
-
-    listarGuiasEnviadas(): Observable<Guia[]> {
-        return this.requester.get<Guia[]>(this.REQUEST_URL + "paraproveedor", {});
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "procesarguias", {});
     }
 
     listarGuiasSinCerrar() : Observable<Guia[]> {
@@ -131,6 +126,7 @@ export class GuiaService {
     }
 
     exportarDocumentosGuia(guia: Guia) {
+        console.log(guia.documentosGuia)
         let objects = [];
         guia.documentosGuia.forEach(documentoGuia => {
             objects.push({
@@ -142,6 +138,7 @@ export class GuiaService {
                 "Tipo de Seguridad": documentoGuia.documento.envio.tipoSeguridad.nombre,
                 "Tipo de Servicio": documentoGuia.documento.envio.tipoServicio.nombre,
                 "Tipo de Documento": documentoGuia.documento.envio.tipoDocumento.nombre,
+                "Producto": documentoGuia.documento.envio.producto ? documentoGuia.documento.envio.producto.nombre : 'NO TIENE',
                 "Razón Social": documentoGuia.documento.razonSocialDestino,
                 "Contacto": documentoGuia.documento.contactoDestino,
                 "Departamento": documentoGuia.documento.distrito.provincia.departamento.nombre,

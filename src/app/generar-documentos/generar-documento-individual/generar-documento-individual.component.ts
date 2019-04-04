@@ -30,6 +30,8 @@ import { UtilsService } from '../../shared/utils.service';
 import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
 import { Sede } from 'src/model/sede.model';
 import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
+import { Producto } from 'src/model/producto.model';
+import { ProductoService } from 'src/app/shared/producto.service';
 
 @Component({
   selector: 'app-generar-documento-individual',
@@ -42,13 +44,13 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     private plazoDistribucionService: PlazoDistribucionService,
     private tipoSeguridadService: TipoSeguridadService,
     private tipoServicioService: TipoServicioService,
+    private productoService: ProductoService,
     private departamentoService: DepartamentoService,
     private provinciaService: ProvinciaService,
     private distritoService: DistritoService,
     private tipoDocumentoService: TipoDocumentoService,
     private buzonService: BuzonService,
     private envioService: EnvioService,
-    private notifier: NotifierService,
     private utilsService: UtilsService, 
     private cargoPdfService: CargoPdfService, 
     private modalService: BsModalService,
@@ -71,12 +73,14 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   departamentos: Departamento[];
   provincias: Provincia[];
   distritos: Distrito[];
+  productos: Producto[];
   tiposDocumento: TipoDocumento[];
   sedesDespacho: Sede[];
   plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), 0, true);
 
   provinciasSubscription: Subscription;
   distritosSubscription: Subscription;
+  productoSubscription: Subscription;
   tiposDocumentoSubscription: Subscription;
   tiposServicioSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
@@ -96,6 +100,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       'tipoDocumento': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
+      'producto': new FormControl(null, Validators.required),
       'comunicacionDestino': new FormGroup({
         'razonSocial': new FormControl(""),
         'contacto': new FormControl("")
@@ -113,6 +118,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
 
     this.tiposDocumento = this.tipoDocumentoService.getTiposDocumento();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
+    this.productos = this.productoService.getProductosActivos();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.departamentos = this.departamentoService.getDepartamentosPeru();
@@ -128,6 +134,11 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;
+      }
+    )
+    this.productoSubscription = this.productoService.productosChanged.subscribe(
+      producto => {
+        this.productos = producto;
       }
     )
     this.tiposSeguridadSubscription = this.tipoSeguridadService.tiposSeguridadChanged.subscribe(
@@ -196,6 +207,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.envio.tipoDocumento = this.documentoForm.get("tipoDocumento").value;
     this.envio.tipoSeguridad = this.documentoForm.get("tipoSeguridad").value;
     this.envio.tipoServicio = this.documentoForm.get("tipoServicio").value;
+    this.envio.producto = this.documentoForm.get("producto").value;
     this.envio.addDocumento(this.documento);
 
     this.envioService.registrarEnvio(this.envio, this.autorizationFile).subscribe(

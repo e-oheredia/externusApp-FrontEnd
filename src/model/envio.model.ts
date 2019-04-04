@@ -5,6 +5,7 @@ import { TipoServicio } from "./tiposervicio.model";
 import { TipoSeguridad } from "./tiposeguridad.model";
 import { TipoDocumento } from "./tipodocumento.model";
 import { Sede } from './sede.model';
+import { Producto } from './producto.model';
 
 export class Envio {
 
@@ -17,6 +18,7 @@ export class Envio {
     public autorizacion: File; 
     public rutaAutorizacion: string; 
     public plazoDistribucion: PlazoDistribucion; 
+    public producto: Producto;
     public tipoServicio: TipoServicio; 
     public tipoSeguridad: TipoSeguridad; 
     public tipoDocumento: TipoDocumento; 
