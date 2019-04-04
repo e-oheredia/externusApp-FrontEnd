@@ -186,7 +186,7 @@ export class DocumentoService {
                 let seguimientoDocumento = new SeguimientoDocumento;
 
                 let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
-                    estadoDocumento => estadoDocumento.nombre === data[i][16]
+                    estadoDocumento => estadoDocumento.nombre === data[i][17]
                 )
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(estadoDocumento)) {
@@ -196,7 +196,7 @@ export class DocumentoService {
                     return;
                 }
 
-                let motivoEstado = estadoDocumento.motivos.find(motivo => motivo.nombre === data[i][17]);
+                let motivoEstado = estadoDocumento.motivos.find(motivo => motivo.nombre === data[i][18]);
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(motivoEstado)) {
                     callback({
@@ -209,7 +209,7 @@ export class DocumentoService {
 
                 if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO ||
                     estadoDocumento.id === EstadoDocumentoEnum.REZAGADO ||
-                    estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][17])) {
+                    estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
                     callback({
                         mensaje: "Ingrese el motivo del Estado en la fila " + (i + 1)
                     });
@@ -218,16 +218,16 @@ export class DocumentoService {
 
                 seguimientoDocumento.motivoEstado = motivoEstado;
 
-                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
+                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {
                     callback({
                         mensaje: "Ingrese Link del Entregado o Rezagado en la fila " + (i + 1)
                     });
                     return;
                 }
 
-                seguimientoDocumento.linkImagen = data[i][18] || "";
+                seguimientoDocumento.linkImagen = data[i][19] || "";
 
-                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) && this.utilsService.isValidDate(data[i][19])) {
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][20]) && this.utilsService.isValidDate(data[i][20])) {
 
                     callback({
                         mensaje: "Ingrese la fecha en el formato correcto en la fila " + (i + 1)
@@ -235,7 +235,7 @@ export class DocumentoService {
                     return;
                 }
 
-                seguimientoDocumento.fecha = moment(this.utilsService.getJsDateFromExcel(data[i][19])).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
+                seguimientoDocumento.fecha = moment(this.utilsService.getJsDateFromExcel(data[i][20])).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
 
                 documentoCargado.seguimientosDocumento.push(seguimientoDocumento);
                 documentosCargados.push(documentoCargado);

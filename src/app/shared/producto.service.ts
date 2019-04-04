@@ -12,16 +12,16 @@ export class ProductoService {
     constructor(private requester: RequesterService ){
         this.listarProductosActivos().subscribe(
             productos => {
-                this.productos = productos;
-                this.productosChanged.next(this.productos);
+                this.productosActivos = productos;
+                this.productosChanged.next(this.productosActivos);
             }
         )
     }
 
-    private productos: Producto[];
+    private productosActivos: Producto[];
     
-    getProductos(): Producto[] {
-        return this.productos;
+    getProductosActivos(): Producto[] {
+        return this.productosActivos;
     }
 
     public productosChanged = new Subject<Producto[]>();

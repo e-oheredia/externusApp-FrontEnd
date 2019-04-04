@@ -49,6 +49,23 @@
           <div class="form-row">
             <div class="col">
               <div class="form-group">
+                <label for="producto">Producto *</label>
+                <select class="form-control" id="producto" formControlName="producto">
+                  <option *ngFor="let producto of productos" [ngValue]="producto">{{producto.nombre}}</option>
+                </select>
+                <span *ngIf="!documentoForm.get('producto').valid && documentoForm.get('producto').touched" class="text-danger small">
+                  Es necesario la elección de un producto
+                </span>
+              </div>
+            </div>
+
+            <!-- FALTA EL AMBITO -->
+
+          </div>
+
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
                 <label for="plazoDistribucion">Plazo de Distribución *</label>
                 <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion" (change)="onPlazoDistribucionSelected($event)">
                   <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">{{plazoDistribucion.nombre}}</option>

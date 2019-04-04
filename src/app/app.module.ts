@@ -1,5 +1,3 @@
-import { SubirResultadosEnviosModule } from './subir-resultados-envios/subir-resultados-envios.module';
-import { ListarGuiasEnviadasModule } from './listar-guias-enviadas/listar-guias-enviadas.module';
 import { ListarDocumentosCustodiadosModule } from './listar-documentos-custodiados/listar-documentos-custodiados.module';
 import { ListarGuiasCreadasModule } from './listar-guias-creadas/listar-guias-creadas.module';
 import { CustodiarEnviosMasivosModule } from './custodiar-envios-masivos/custodiar-envios-masivos.module';
@@ -47,8 +45,6 @@ import { ProcesarGuiasModule } from './procesar-guias/procesar-guias.module';
     CustodiarEnviosMasivosModule, 
     ListarGuiasCreadasModule, 
     ListarDocumentosCustodiadosModule,
-    ListarGuiasEnviadasModule, 
-    SubirResultadosEnviosModule,
     ConsultarDocumentosUBCPModule,
     ConsultarDocumentosUtdBcpModule,
     ReporteEficaciaModule,

@@ -70,6 +70,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       remitente: {
         title: 'Remitente'
       },
+      producto: {
+        title: 'Producto'
+      },
       plazo: {
         title: 'Plazo distribución'
       },
@@ -110,7 +113,6 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
   }
 
   listarDocumentos() {
-    // console.log("ANTES DE BUSCAR :  " + this.documentoForm.controls['codigo'].value);
     if (this.documentoForm.controls['codigo'].value.length !== 0) {
 
       this.documentosSubscription = this.documentoService.listarDocumentosUtdBCPCodigo(this.documentoForm.controls['codigo'].value)
@@ -120,6 +122,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
             let dataTodosLosDocumentos = [];
             dataTodosLosDocumentos.push({
               autogenerado: documento.documentoAutogenerado,
+              producto: documento.envio.producto.nombre,
               remitente: documento.envio.buzon.nombre,
               plazo: documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
               razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
@@ -169,6 +172,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                   documento => {
                     dataTodosLosDocumentos.push({
                       autogenerado: documento.documentoAutogenerado,
+                      producto: documento.envio.producto.nombre,
                       remitente: documento.envio.buzon.nombre,
                       plazo: documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
                       razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",

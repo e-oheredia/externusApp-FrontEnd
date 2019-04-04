@@ -107,7 +107,7 @@ export class ProcesarGuiasComponent implements OnInit {
   }
 
   listarGuiasPorProcesar() {
-    this.guiasSubscription = this.guiaService.listarGuiasEnviadas()
+    this.guiasSubscription = this.guiaService.listarGuiasPorProcesar()
       .subscribe(
         guias => {
           this.guias = guias;

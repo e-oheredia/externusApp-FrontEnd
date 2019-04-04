@@ -80,6 +80,9 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             nroDocumento: {
                 title: 'Nro de documento'
             },
+            producto: {
+              title: 'Producto'
+            },
             plazo: {
                 title: 'Plazo de distribución'
             },
@@ -141,6 +144,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                     dataTodosMisDocumentos.push({
                                         autogenerado: documento.documentoAutogenerado,
                                         nroDocumento: documento.nroDocumento,
+                                        producto: documento.envio.producto.nombre,
                                         plazo: documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
                                         razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
                                         contactoDestino: documento.contactoDestino,
