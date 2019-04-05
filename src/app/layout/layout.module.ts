@@ -23,7 +23,6 @@ import { TipoSeguridadService } from '../shared/tiposeguridad.service';
 import { DepartamentoService } from '../shared/departamento.service';
 import { ProvinciaService } from '../shared/provincia.service';
 import { DistritoService } from '../shared/distrito.service';
-import { TipoDocumentoService } from '../shared/tipodocumento.service';
 import { DocumentoService } from '../shared/documento.service';
 import { UtilsService } from '../shared/utils.service';
 import { EnvioService } from '../shared/envio.service';
@@ -60,6 +59,9 @@ import { AgregarSubambitoComponent } from '../mantenimiento/subambito/agregar-su
 import { ModificarSubambitoComponent } from '../mantenimiento/subambito/modificar-subambito/modificar-subambito.component';
 import { SubAmbitoService } from '../shared/subambito.service';
 import { AmbitoService } from '../shared/ambito.service';
+import { ClasificacionService } from '../shared/clasificacion.service';
+import { AgregarClasificacionComponent } from '../mantenimiento/clasificacion/agregar-clasificacion/agregar-clasificacion.component';
+import { ModificarClasificacionComponent } from '../mantenimiento/clasificacion/modificar-clasificacion/modificar-clasificacion.component';
 
 
 @NgModule({
@@ -83,7 +85,9 @@ import { AmbitoService } from '../shared/ambito.service';
     AgregarProductoComponent,
     ModificarProductoComponent,
     AgregarSubambitoComponent,
-    ModificarSubambitoComponent
+    ModificarSubambitoComponent,
+    AgregarClasificacionComponent,
+    ModificarClasificacionComponent
   ],
   imports: [  
     HttpClientModule,
@@ -112,8 +116,7 @@ import { AmbitoService } from '../shared/ambito.service';
     TipoSeguridadService, 
     DepartamentoService, 
     ProvinciaService, 
-    DistritoService, 
-    TipoDocumentoService, 
+    DistritoService,
     DocumentoService, 
     ReadExcelService, 
     UtilsService, 
@@ -138,7 +141,8 @@ import { AmbitoService } from '../shared/ambito.service';
     TituloService,
     ProductoService,
     AmbitoService,
-    SubAmbitoService
+    SubAmbitoService,
+    ClasificacionService
   ], 
   entryComponents: [ 
     ConfirmModalComponent, 
@@ -158,7 +162,9 @@ import { AmbitoService } from '../shared/ambito.service';
     AgregarProductoComponent,
     ModificarProductoComponent,
     AgregarSubambitoComponent,
-    ModificarSubambitoComponent
+    ModificarSubambitoComponent,    
+    AgregarClasificacionComponent,
+    ModificarClasificacionComponent
    ],
 })
 export class LayoutModule { }

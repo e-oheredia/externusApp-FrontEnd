@@ -20,18 +20,17 @@ import { Departamento } from '../../../model/departamento.model';
 import { Provincia } from '../../../model/provincia.model';
 import { Distrito } from '../../../model/distrito.model';
 import { Subscription } from 'rxjs';
-import { TipoDocumento } from '../../../model/tipodocumento.model';
-import { TipoDocumentoService } from '../../shared/tipodocumento.service';
 import { Buzon } from '../../../model/buzon.model';
 import { BuzonService } from '../../shared/buzon.service';
 import { Documento } from '../../../model/documento.model';
-import { NotifierService } from 'angular-notifier';
 import { UtilsService } from '../../shared/utils.service';
 import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
 import { Sede } from 'src/model/sede.model';
 import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
 import { Producto } from 'src/model/producto.model';
 import { ProductoService } from 'src/app/shared/producto.service';
+import { Clasificacion } from 'src/model/clasificacion.model';
+import { ClasificacionService } from 'src/app/shared/clasificacion.service';
 
 @Component({
   selector: 'app-generar-documento-individual',
@@ -48,13 +47,13 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     private departamentoService: DepartamentoService,
     private provinciaService: ProvinciaService,
     private distritoService: DistritoService,
-    private tipoDocumentoService: TipoDocumentoService,
     private buzonService: BuzonService,
     private envioService: EnvioService,
     private utilsService: UtilsService, 
     private cargoPdfService: CargoPdfService, 
     private modalService: BsModalService,
-    private sedeDespachoService: SedeDespachoService
+    private sedeDespachoService: SedeDespachoService,
+    private clasificacionService: ClasificacionService
   ) { }
 
   documentoForm: FormGroup;
@@ -74,14 +73,14 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   provincias: Provincia[];
   distritos: Distrito[];
   productos: Producto[];
-  tiposDocumento: TipoDocumento[];
+  clasificaciones: Clasificacion[];
   sedesDespacho: Sede[];
   plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), 0, true);
 
   provinciasSubscription: Subscription;
   distritosSubscription: Subscription;
   productoSubscription: Subscription;
-  tiposDocumentoSubscription: Subscription;
+  clasificacionesSubscription: Subscription;
   tiposServicioSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
   plazosDistribucionSubscription: Subscription;
@@ -97,7 +96,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       'sedeDespacho': new FormControl(null, Validators.required),
       'nroDocumento': new FormControl(""),
       'plazoDistribucion': new FormControl(null, Validators.required),
-      'tipoDocumento': new FormControl(null, Validators.required),
+      'clasificacion': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
       'producto': new FormControl(null, Validators.required),
@@ -115,10 +114,9 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   }
 
   cargarDatosVista() {
-
-    this.tiposDocumento = this.tipoDocumentoService.getTiposDocumento();
+    this.clasificaciones = this.clasificacionService.getClasificaciones();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
-    this.productos = this.productoService.getProductosActivos();
+    this.productos = this.productoService.getProductos();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.departamentos = this.departamentoService.getDepartamentosPeru();
@@ -126,9 +124,10 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.buzon = this.buzonService.getBuzonActual();
     this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
 
-    this.tiposDocumentoSubscription = this.tipoDocumentoService.tiposDocumentoChanged.subscribe(
-      tiposDocumento => {
-        this.tiposDocumento = tiposDocumento;
+
+    this.clasificacionesSubscription = this.clasificacionService.clasificacionesChanged.subscribe(
+      clasificaciones => {
+        this.clasificaciones = clasificaciones;
       }
     )
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
@@ -200,11 +199,11 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.documento.direccion = this.documentoForm.get("direccion").value;
     this.documento.distrito = this.documentoForm.get("distrito").value;
     this.documento.nroDocumento = this.documentoForm.get("nroDocumento").value;
+    this.envio.clasificacion = this.documentoForm.get("clasificacion").value;
     this.envio.plazoDistribucion = this.documentoForm.get("plazoDistribucion").value;
     this.documento.razonSocialDestino = this.documentoForm.get("comunicacionDestino.razonSocial").value;
     this.documento.referencia = this.documentoForm.get("referencia").value;
     this.documento.telefono = this.documentoForm.get("telefono").value;
-    this.envio.tipoDocumento = this.documentoForm.get("tipoDocumento").value;
     this.envio.tipoSeguridad = this.documentoForm.get("tipoSeguridad").value;
     this.envio.tipoServicio = this.documentoForm.get("tipoServicio").value;
     this.envio.producto = this.documentoForm.get("producto").value;

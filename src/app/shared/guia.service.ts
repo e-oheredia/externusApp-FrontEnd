@@ -137,7 +137,7 @@ export class GuiaService {
                 "Plazo de Distribución": documentoGuia.documento.envio.plazoDistribucion.nombre,
                 "Tipo de Seguridad": documentoGuia.documento.envio.tipoSeguridad.nombre,
                 "Tipo de Servicio": documentoGuia.documento.envio.tipoServicio.nombre,
-                "Tipo de Documento": documentoGuia.documento.envio.tipoDocumento.nombre,
+                "Clasificación": documentoGuia.documento.envio.clasificacion.nombre,
                 "Producto": documentoGuia.documento.envio.producto ? documentoGuia.documento.envio.producto.nombre : 'NO TIENE',
                 "Razón Social": documentoGuia.documento.razonSocialDestino,
                 "Contacto": documentoGuia.documento.contactoDestino,

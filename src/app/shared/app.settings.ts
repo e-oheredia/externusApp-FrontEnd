@@ -11,8 +11,9 @@ export class AppSettings {
     public static PRODUCTO_URL = "productos/";
     public static AMBITO_URL = "ambitos/";
     public static SUBAMBITO_URL = "subambito/";
+    public static CLASIFICACION = "tiposdocumento/";
     public static TIPO_SEGURIDAD_URL = "tiposseguridad/";
-    public static TIPO_DOCUMENTO_URL = "tiposdocumento/";
+    // public static TIPO_DOCUMENTO_URL = "tiposdocumento/";
     public static PAIS_URL = "paises/";
     public static DEPARTAMENTO_URL = "departamentos/";
     public static PROVINCIA_URL = "provincias/";

@@ -14,8 +14,7 @@ import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.componen
 import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
 import { ProductoComponent } from './producto/producto.component';
 import { SubambitoComponent } from './subambito/subambito.component';
-import { AgregarSubambitoComponent } from './subambito/agregar-subambito/agregar-subambito.component';
-import { ModificarSubambitoComponent } from './subambito/modificar-subambito/modificar-subambito.component';
+import { ClasificacionComponent } from './clasificacion/clasificacion.component';
 
 @NgModule({
   imports: [
@@ -35,7 +34,8 @@ import { ModificarSubambitoComponent } from './subambito/modificar-subambito/mod
     TipoSeguridadComponent,
     TipoServicioComponent,
     ProductoComponent,
-    SubambitoComponent
+    SubambitoComponent,
+    ClasificacionComponent,
   ],
   entryComponents: [
     ButtonViewComponent,
