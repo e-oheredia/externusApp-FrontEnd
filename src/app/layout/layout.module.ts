@@ -53,9 +53,14 @@ import { ModificarTipoSeguridadComponent } from '../mantenimiento/tipo-seguridad
 import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
 import { AgregarTipoServicioComponent } from '../mantenimiento/tipo-servicio/agregar-tiposervicio/agregar-tiposervicio.component';
 import { ModificarTipoServicioComponent } from '../mantenimiento/tipo-servicio/modificar-tiposervicio/modificar-tiposervicio.component';
+import { ProductoService } from '../shared/producto.service';
 import { AgregarProductoComponent } from '../mantenimiento/producto/agregar-producto/agregar-producto.component';
 import { ModificarProductoComponent } from '../mantenimiento/producto/modificar-producto/modificar-producto.component';
-import { ProductoService } from '../shared/producto.service';
+import { AgregarSubambitoComponent } from '../mantenimiento/subambito/agregar-subambito/agregar-subambito.component';
+import { ModificarSubambitoComponent } from '../mantenimiento/subambito/modificar-subambito/modificar-subambito.component';
+import { SubAmbitoService } from '../shared/subambito.service';
+import { AmbitoService } from '../shared/ambito.service';
+
 
 @NgModule({
   declarations: [
@@ -76,7 +81,9 @@ import { ProductoService } from '../shared/producto.service';
     AgregarTipoServicioComponent,
     ModificarTipoServicioComponent,
     AgregarProductoComponent,
-    ModificarProductoComponent
+    ModificarProductoComponent,
+    AgregarSubambitoComponent,
+    ModificarSubambitoComponent
   ],
   imports: [  
     HttpClientModule,
@@ -129,7 +136,9 @@ import { ProductoService } from '../shared/producto.service';
     CargoPdfService,
     SedeDespachoService,
     TituloService,
-    ProductoService
+    ProductoService,
+    AmbitoService,
+    SubAmbitoService
   ], 
   entryComponents: [ 
     ConfirmModalComponent, 
@@ -147,7 +156,9 @@ import { ProductoService } from '../shared/producto.service';
     AgregarTipoServicioComponent,
     ModificarTipoServicioComponent,
     AgregarProductoComponent,
-    ModificarProductoComponent
+    ModificarProductoComponent,
+    AgregarSubambitoComponent,
+    ModificarSubambitoComponent
    ],
 })
 export class LayoutModule { }

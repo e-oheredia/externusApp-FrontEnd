@@ -13,6 +13,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.component';
 import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
 import { ProductoComponent } from './producto/producto.component';
+import { SubambitoComponent } from './subambito/subambito.component';
+import { AgregarSubambitoComponent } from './subambito/agregar-subambito/agregar-subambito.component';
+import { ModificarSubambitoComponent } from './subambito/modificar-subambito/modificar-subambito.component';
 
 @NgModule({
   imports: [
@@ -31,7 +34,8 @@ import { ProductoComponent } from './producto/producto.component';
     PermisoPlazoDistribucionComponent,
     TipoSeguridadComponent,
     TipoServicioComponent,
-    ProductoComponent
+    ProductoComponent,
+    SubambitoComponent
   ],
   entryComponents: [
     ButtonViewComponent,

@@ -8,7 +8,9 @@ export class AppSettings {
     public static PLAZO_DISTRIBUCION_URL = "plazosdistribucion/";
     public static SEDE_DESPACHO_URL = "sedes";
     public static TIPO_SERVICIO_URL = "tiposservicio/";
-    public static PRODUCTO_URL = "productos/"
+    public static PRODUCTO_URL = "productos/";
+    public static AMBITO_URL = "ambitos/";
+    public static SUBAMBITO_URL = "subambito/";
     public static TIPO_SEGURIDAD_URL = "tiposseguridad/";
     public static TIPO_DOCUMENTO_URL = "tiposdocumento/";
     public static PAIS_URL = "paises/";

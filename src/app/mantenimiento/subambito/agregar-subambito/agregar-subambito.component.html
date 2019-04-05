@@ -1,0 +1,48 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h4>Agregar SubAmbito</h4>
+  </div>
+
+  <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nombre">Nombre del SubAmbito</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+            <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+              class="text-danger small">
+              Es necesario ingresar el nombre del subAmbito.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="ambito">Ambito</label>
+            <select class="form-control" id="ambito" formControlName="ambito">
+              <option *ngFor="let ambito of ambitos" [ngValue]="ambito">{{ambito.nombre}}</option>
+            </select>
+            <span *ngIf="!agregarForm.get('ambito').valid && agregarForm.get('ambito').touched"
+              class="text-danger small">
+              Es necesario la elección de un ambito
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Agregar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

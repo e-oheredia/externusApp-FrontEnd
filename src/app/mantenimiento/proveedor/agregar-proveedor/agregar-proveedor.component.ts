@@ -36,7 +36,6 @@ export class AgregarProveedorComponent implements OnInit {
     this.agregarForm = new FormGroup({
       'nombreProveedor' : new FormControl('', Validators.required),
       'plazosProveedor' : new FormControl('', Validators.required),
-      // 'plazo' : new FormControl( ,Validators.required)
     });
 
     this.listarPlazosDistribucion();

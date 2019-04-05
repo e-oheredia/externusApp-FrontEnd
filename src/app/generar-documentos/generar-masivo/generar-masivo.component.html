@@ -24,35 +24,53 @@
       </div>
       <div class="card-body">
         <form [formGroup]="masivoForm" (ngSubmit)="onSubmit(masivoForm)">
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
                 <label for="sedeDespacho">Sede Despacho *</label>
                 <select class="form-control" id="sedeDespacho" formControlName="sedeDespacho">
-                  <option *ngFor="let sedeDespacho of sedesDespacho" [ngValue]="sedeDespacho">{{sedeDespacho.nombre}}</option>
+                  <option *ngFor="let sedeDespacho of sedesDespacho" [ngValue]="sedeDespacho">{{sedeDespacho.nombre}}
+                  </option>
                 </select>
               </div>
             </div>
-          </div>
-          <div class="form-row">
             <div class="col">
               <div class="form-group">
                 <label for="plazoDistribucion">Plazo de Distribución *</label>
                 <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion">
-                  <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">{{plazoDistribucion.nombre}}</option>
+                  <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">
+                    {{plazoDistribucion.nombre}}</option>
                 </select>
-                <span *ngIf="!masivoForm.get('plazoDistribucion').valid && masivoForm.get('plazoDistribucion').touched" class="text-danger small">
+                <span *ngIf="!masivoForm.get('plazoDistribucion').valid && masivoForm.get('plazoDistribucion').touched"
+                  class="text-danger small">
                   Es necesario ingresar el plazo de distribución
                 </span>
               </div>
             </div>
+          </div>
+
+          <div class="form-row">
+              <div class="col">
+                  <div class="form-group">
+                    <label for="producto">Producto *</label>
+                    <select class="form-control" id="producto" formControlName="producto">
+                      <option *ngFor="let producto of productos" [ngValue]="producto">{{producto.nombre}}</option>
+                    </select>
+                    <span *ngIf="!masivoForm.get('producto').valid && masivoForm.get('producto').touched" class="text-danger small">
+                      Es necesario la elección de un producto
+                    </span>
+                  </div>
+                </div>
             <div class="col">
               <div class="form-group">
                 <label for="tipoDocumento">Tipo de Documento *</label>
                 <select class="form-control" id="tipoDocumento" formControlName="tipoDocumento">
-                  <option *ngFor="let tipoDocumento of tiposDocumento" [ngValue]="tipoDocumento">{{tipoDocumento.nombre}}</option>
+                  <option *ngFor="let tipoDocumento of tiposDocumento" [ngValue]="tipoDocumento">
+                    {{tipoDocumento.nombre}}</option>
                 </select>
-                <span *ngIf="!masivoForm.get('tipoDocumento').valid && masivoForm.get('tipoDocumento').touched" class="text-danger small">
+                <span *ngIf="!masivoForm.get('tipoDocumento').valid && masivoForm.get('tipoDocumento').touched"
+                  class="text-danger small">
                   Es necesario ingresar el tipo de documento
                 </span>
               </div>
@@ -63,9 +81,11 @@
               <div class="form-group">
                 <label for="tipoSeguridad">Tipo de Seguridad *</label>
                 <select class="form-control" id="tipoSeguridad" formControlName="tipoSeguridad">
-                  <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">{{tipoSeguridad.nombre}}</option>
+                  <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">
+                    {{tipoSeguridad.nombre}}</option>
                 </select>
-                <span *ngIf="!masivoForm.get('tipoSeguridad').valid && masivoForm.get('tipoSeguridad').touched" class="text-danger small">
+                <span *ngIf="!masivoForm.get('tipoSeguridad').valid && masivoForm.get('tipoSeguridad').touched"
+                  class="text-danger small">
                   Es necesario ingresar el tipo de seguridad
                 </span>
               </div>
@@ -74,9 +94,11 @@
               <div class="form-group">
                 <label for="tipoServicio">Tipo de Servicio *</label>
                 <select class="form-control" id="tipoServicio" formControlName="tipoServicio">
-                  <option *ngFor="let tipoServicio of tiposServicio" [ngValue]="tipoServicio">{{tipoServicio.nombre}}</option>
+                  <option *ngFor="let tipoServicio of tiposServicio" [ngValue]="tipoServicio">{{tipoServicio.nombre}}
+                  </option>
                 </select>
-                <span *ngIf="!masivoForm.get('tipoServicio').valid && masivoForm.get('tipoServicio').touched" class="text-danger small">
+                <span *ngIf="!masivoForm.get('tipoServicio').valid && masivoForm.get('tipoServicio').touched"
+                  class="text-danger small">
                   Es necesario ingresar el tipo de servicio
                 </span>
               </div>
@@ -85,32 +107,37 @@
           <div class="form-row">
             <div class="col">
               <div class="form-group">
-                <input type="file" class="form-control-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+                <input type="file" class="form-control-file"
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
                   formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
               </div>
-            </div>            
+            </div>
           </div>
           <div class="row" *ngIf="dataDocumentosCargados.data.length !== 0">
-            <div class="col">              
+            <div class="col">
               <ng2-smart-table [settings]="tableSettings" [source]="dataDocumentosCargados"></ng2-smart-table>
             </div>
           </div>
-          <div class="form-group" *ngIf="masivoForm.get('plazoDistribucion').value && masivoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
+          <div class="form-group"
+            *ngIf="masivoForm.get('plazoDistribucion').value && masivoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
             <label for="autorizacion">
               Autorización
             </label>
-            <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion" (change)="onChangeAutorizacionFile($event.srcElement.files[0])"  accept=".msg">
+            <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion"
+              (change)="onChangeAutorizacionFile($event.srcElement.files[0])" accept=".msg">
           </div>
           <div class="row">
             <div class="button-group col text-right mb-4 mt-4">
-              <button class="btn btn-outline-success" [disabled]="!masivoForm.valid && documentosCargados.length   === 0" type="submit">
+              <button class="btn btn-outline-success"
+                [disabled]="!masivoForm.valid && documentosCargados.length   === 0" type="submit">
                 Registrar
               </button>
             </div>
           </div>
-          <ngx-barcode id="codebarMasivo" [bc-value]="autogeneradoCreado" [bc-display-value]="true" hidden></ngx-barcode>
+          <ngx-barcode id="codebarMasivo" [bc-value]="autogeneradoCreado" [bc-display-value]="true" hidden>
+          </ngx-barcode>
         </form>
-        </div>
       </div>
     </div>
   </div>
+</div>
