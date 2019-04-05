@@ -20,7 +20,7 @@ export class ProductoService {
 
     private productosActivos: Producto[];
     
-    getProductosActivos(): Producto[] {
+    getProductos(): Producto[] {
         return this.productosActivos;
     }
 

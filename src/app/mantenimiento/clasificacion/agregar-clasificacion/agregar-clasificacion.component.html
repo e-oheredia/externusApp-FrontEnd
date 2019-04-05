@@ -1,0 +1,32 @@
+<div class="card">
+
+    <div class="modal-header">
+      <h4>Agregar Clasificación</h4>
+    </div>
+  
+    <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+  
+      <div class="card-body">
+  
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="nombre">Nombre de la clasificación</label>
+              <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+              <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched" class="text-danger small">
+                  Es necesario ingresar el nombre de la clasificación
+                </span>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" [disabled]="!agregarForm.valid">Agregar</button>
+        <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+      </div>
+  
+    </form>
+  
+  </div>

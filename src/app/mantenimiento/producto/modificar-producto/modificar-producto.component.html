@@ -13,7 +13,8 @@
           <div class="form-group">
             <label for="nombre">Nombre del producto.</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched" class="text-danger small">
+            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+              class="text-danger small">
               Es necesario ingresar el nombre del producto.
             </span>
           </div>
@@ -25,10 +26,10 @@
           <div class="form-group">
             <label for="activo">Estado</label>
             <select class="form-control" id="activo" formControlName="activo">
-              <option value="true">ACTIVO
+              <option value="true">ACTIVADO
               </option>
-              <option value="false">INACTIVO
-                </option>
+              <option value="false">DESACTIVADO
+              </option>
             </select>
           </div>
         </div>

@@ -20,7 +20,7 @@
         <tr>
           <th scope="col">Remitente</th>
           <th scope="col">Área</th>
-          <th scope="col">Tipo de Documento</th>
+          <th scope="col">Clasificación</th>
           <th scope="col">Tipo de Servicio</th>
           <th scope="col">Tipo de Seguridad</th>
           <th scope="col">Plazo de Distribución</th>
@@ -35,7 +35,7 @@
         <tr *ngFor="let envioNoAutorizado of enviosNoAutorizados">
           <td scope="col">{{envioNoAutorizado.buzon.nombre}}</td>
           <td scope="col">{{envioNoAutorizado.buzon.area.nombre}}</td>
-          <td scope="col">{{envioNoAutorizado.tipoDocumento.nombre}}</td>
+          <td scope="col">{{envioNoAutorizado.clasificacion.nombre}}</td>
           <td scope="col">{{envioNoAutorizado.tipoServicio.nombre}}</td>
           <td scope="col">{{envioNoAutorizado.tipoSeguridad.nombre}}</td>
           <td scope="col">{{envioNoAutorizado.plazoDistribucion.nombre}}</td>

@@ -1,6 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UtilsService } from 'src/app/shared/utils.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { NotifierService } from 'angular-notifier';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -29,7 +28,7 @@ export class AgregarTipoSeguridadComponent implements OnInit {
   crearTipoSeguridadSubscription: Subscription;
 
   ngOnInit() {
-    this.cargarDatosVista();
+    // this.cargarDatosVista();
 
     this.agregarForm = new FormGroup({
       'nombre': new FormControl('', Validators.required)

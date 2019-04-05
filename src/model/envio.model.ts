@@ -3,9 +3,9 @@ import { Buzon } from "./buzon.model";
 import { PlazoDistribucion } from "./plazodistribucion.model";
 import { TipoServicio } from "./tiposervicio.model";
 import { TipoSeguridad } from "./tiposeguridad.model";
-import { TipoDocumento } from "./tipodocumento.model";
 import { Sede } from './sede.model';
 import { Producto } from './producto.model';
+import { Clasificacion } from './clasificacion.model';
 
 export class Envio {
 
@@ -20,8 +20,8 @@ export class Envio {
     public plazoDistribucion: PlazoDistribucion; 
     public producto: Producto;
     public tipoServicio: TipoServicio; 
-    public tipoSeguridad: TipoSeguridad; 
-    public tipoDocumento: TipoDocumento; 
+    public tipoSeguridad: TipoSeguridad;
+    public clasificacion: Clasificacion;
     public sede: Sede;
     public documentos: Documento[];
     public checked: boolean;

@@ -83,7 +83,7 @@ export class ProveedorComponent implements OnInit {
               id: proveedor.id,
               nombre: proveedor.nombre,
               plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
-              activo: proveedor.activo ? 'ACTIVO' : 'INACTIVO'
+              activo: proveedor.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
         )

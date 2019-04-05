@@ -31,8 +31,8 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
     area: {
       title: 'Área'
     },
-    tipoDocumento: {
-      title: 'Tipo de Documento'
+    clasificacion: {
+      title: 'Clasificación'
     },
     tipoServicio: {
       title: 'Tipo de Servicio'
@@ -79,7 +79,7 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
               codigo: documentoCustodiado.documentoAutogenerado,
               remitente: documentoCustodiado.envio.buzon.nombre,
               area: documentoCustodiado.envio.buzon.area.nombre,
-              tipoDocumento: documentoCustodiado.envio.tipoDocumento.nombre,
+              clasificacion: documentoCustodiado.envio.clasificacion.nombre,
               tipoServicio: documentoCustodiado.envio.tipoServicio.nombre,
               tipoSeguridad: documentoCustodiado.envio.tipoSeguridad.nombre,
               plazoDistribucion: documentoCustodiado.envio.plazoDistribucion.nombre,

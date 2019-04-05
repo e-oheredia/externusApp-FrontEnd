@@ -8,6 +8,7 @@ import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.componen
 import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
 import { ProductoComponent } from './producto/producto.component';
 import { SubambitoComponent } from './subambito/subambito.component';
+import { ClasificacionComponent } from './clasificacion/clasificacion.component';
 
 const mantenimientoRoutes: Routes = [
     {
@@ -32,6 +33,9 @@ const mantenimientoRoutes: Routes = [
             },
             {
                 path: 'subambito', component: SubambitoComponent
+            },
+            {
+                path: 'clasificacion', component: ClasificacionComponent
             }
         ]
     }

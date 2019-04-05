@@ -13,7 +13,8 @@
           <div class="form-group">
             <label for="nombre">Nombre de Tipo de Seguridad</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched" class="text-danger small">
+            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+              class="text-danger small">
               El nombre de Tipo de Seguridad no puede estar vacío
             </span>
           </div>
@@ -25,10 +26,10 @@
           <div class="form-group">
             <label for="activo">Estado</label>
             <select class="form-control" id="activo" formControlName="activo">
-              <option value="true">ACTIVO
+              <option value="true">ACTIVADO
               </option>
-              <option value="false">INACTIVO
-                </option>
+              <option value="false">DESACTIVADO
+              </option>
             </select>
           </div>
         </div>
@@ -37,7 +38,8 @@
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success" [disabled]="!modificarForm.valid || modificarForm.pristine" >Modificar</button>
+      <button type="submit" class="btn btn-success"
+        [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 

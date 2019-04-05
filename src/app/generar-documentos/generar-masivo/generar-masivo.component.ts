@@ -5,7 +5,6 @@ import { CargoPdfService } from './../../shared/cargo-pdf.service';
 import { AppSettings } from '../../shared/app.settings';
 import { EnvioMasivo } from '../../../model/enviomasivo.model';
 import { Documento } from '../../../model/documento.model';
-import { TipoDocumentoService } from '../../shared/tipodocumento.service';
 import { PlazoDistribucionService } from '../../shared/plazodistribucion.service';
 import { Buzon } from '../../../model/buzon.model';
 import { BuzonService } from '../../shared/buzon.service';
@@ -15,7 +14,6 @@ import { DocumentoService } from '../../shared/documento.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TipoSeguridad } from '../../../model/tiposeguridad.model';
-import { TipoDocumento } from '../../../model/tipodocumento.model';
 import { Subscription } from 'rxjs';
 import { TipoSeguridadService } from '../../shared/tiposeguridad.service';
 import { TipoServicioService } from '../../shared/tiposervicio.service';
@@ -28,6 +26,8 @@ import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
 import { Sede } from 'src/model/sede.model';
 import { ProductoService } from 'src/app/shared/producto.service';
 import { Producto } from 'src/model/producto.model';
+import { ClasificacionService } from 'src/app/shared/clasificacion.service';
+import { Clasificacion } from 'src/model/clasificacion.model';
 
 
 @Component({
@@ -41,7 +41,7 @@ export class GenerarMasivoComponent implements OnInit {
     private buzonService: BuzonService, 
     private plazoDistribucionService: PlazoDistribucionService, 
     private tipoSeguridadService: TipoSeguridadService, 
-    private tipoDocumentoService: TipoDocumentoService, 
+    private clasificacionService: ClasificacionService,
     private tipoServicioService: TipoServicioService, 
     private utilsService: UtilsService, 
     private envioMasivoService: EnvioMasivoService, 
@@ -58,7 +58,7 @@ export class GenerarMasivoComponent implements OnInit {
   productos: Producto[];
   tiposSeguridad: TipoSeguridad[];
   tiposServicio: TipoServicio[];
-  tiposDocumento: TipoDocumento[];
+  clasificaciones: Clasificacion[];
   sedesDespacho: Sede[];
   plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0,""), 0, true);
   buzon: Buzon; 
@@ -104,7 +104,7 @@ export class GenerarMasivoComponent implements OnInit {
   tiposSeguridadSubscription: Subscription;
   sedesSubscription: Subscription;
   tiposServicioSubscription: Subscription;
-  tiposDocumentoSubscription: Subscription;
+  clasificacionesSubscription: Subscription;
   productoSubscription: Subscription;
   plazoDistribucionPermitidoSubscription: Subscription;
   buzonSubscription: Subscription;
@@ -115,9 +115,9 @@ export class GenerarMasivoComponent implements OnInit {
     this.cargarDatosVista();
     this.masivoForm = new FormGroup({
       'sedeDespacho': new FormControl(null, Validators.required),
+      'clasificacion': new FormControl(null, Validators.required),
       'plazoDistribucion': new FormControl(null, Validators.required), 
-      'producto': new FormControl(null, Validators.required),
-      'tipoDocumento': new FormControl(null, Validators.required), 
+      'producto': new FormControl(null, Validators.required), 
       'tipoSeguridad': new FormControl(null, Validators.required), 
       'tipoServicio': new FormControl(null, Validators.required), 
       'excel': new FormControl(null, Validators.required), 
@@ -128,17 +128,17 @@ export class GenerarMasivoComponent implements OnInit {
   cargarDatosVista() {
 
     this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
-    this.tiposDocumento = this.tipoDocumentoService.getTiposDocumento();
-    this.productos = this.productoService.getProductosActivos();
+    this.clasificaciones = this.clasificacionService.getClasificaciones();
+    this.productos = this.productoService.getProductos();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
     this.buzon = this.buzonService.getBuzonActual();
 
-    this.tiposDocumentoSubscription = this.tipoDocumentoService.tiposDocumentoChanged.subscribe(
-      tiposDocumento => {
-        this.tiposDocumento = tiposDocumento;
+    this.clasificacionesSubscription = this.clasificacionService.clasificacionesChanged.subscribe(
+      clasificaciones => {
+        this.clasificaciones = clasificaciones;
       }
     )
     this.productoSubscription = this.productoService.productosChanged.subscribe(
@@ -236,7 +236,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.envioMasivo.buzon = this.buzon;
     this.envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
     this.envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
-    this.envioMasivo.tipoDocumento = datosMasivo.get("tipoDocumento").value;
+    this.envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
     this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
     this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
     this.envioMasivo.documentos = this.documentosCargados;    
