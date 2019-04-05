@@ -1,0 +1,62 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h6>Modificar SubAmbito</h6>
+  </div>
+
+  <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nombre">Nombre del SubAmbito.</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+              class="text-danger small">
+              Es necesario ingresar el nombre del subAmbito.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="ambito">Ambito</label>
+            <select class="form-control" id="ambito" formControlName="ambito">
+              <option *ngFor="let ambito of ambitos" [ngValue]="ambito">{{ambito.nombre}}</option>
+            </select>
+            <span *ngIf="!modificarForm.get('ambito').valid && modificarForm.get('ambito').touched"
+              class="text-danger small">
+              Es necesario la elección de un ambito
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="activo">Estado</label>
+            <select class="form-control" id="activo" formControlName="activo">
+              <option value="true">ACTIVO
+              </option>
+              <option value="false">INACTIVO
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Modificar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

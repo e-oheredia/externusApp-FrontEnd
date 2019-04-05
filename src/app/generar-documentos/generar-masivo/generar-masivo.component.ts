@@ -26,6 +26,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
 import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
 import { Sede } from 'src/model/sede.model';
+import { ProductoService } from 'src/app/shared/producto.service';
+import { Producto } from 'src/model/producto.model';
 
 
 @Component({
@@ -46,12 +48,14 @@ export class GenerarMasivoComponent implements OnInit {
     private notifier: NotifierService, 
     private cargoPdfService: CargoPdfService, 
     private modalService: BsModalService,
-    private sedeDespachoService: SedeDespachoService
+    private sedeDespachoService: SedeDespachoService,
+    private productoService: ProductoService
   ) { }
 
   rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;
   masivoForm: FormGroup;
   plazosDistribucion: PlazoDistribucion[];
+  productos: Producto[];
   tiposSeguridad: TipoSeguridad[];
   tiposServicio: TipoServicio[];
   tiposDocumento: TipoDocumento[];
@@ -101,6 +105,7 @@ export class GenerarMasivoComponent implements OnInit {
   sedesSubscription: Subscription;
   tiposServicioSubscription: Subscription;
   tiposDocumentoSubscription: Subscription;
+  productoSubscription: Subscription;
   plazoDistribucionPermitidoSubscription: Subscription;
   buzonSubscription: Subscription;
   autogeneradoCreado: string;
@@ -111,6 +116,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.masivoForm = new FormGroup({
       'sedeDespacho': new FormControl(null, Validators.required),
       'plazoDistribucion': new FormControl(null, Validators.required), 
+      'producto': new FormControl(null, Validators.required),
       'tipoDocumento': new FormControl(null, Validators.required), 
       'tipoSeguridad': new FormControl(null, Validators.required), 
       'tipoServicio': new FormControl(null, Validators.required), 
@@ -123,6 +129,7 @@ export class GenerarMasivoComponent implements OnInit {
 
     this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
     this.tiposDocumento = this.tipoDocumentoService.getTiposDocumento();
+    this.productos = this.productoService.getProductosActivos();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
@@ -134,7 +141,11 @@ export class GenerarMasivoComponent implements OnInit {
         this.tiposDocumento = tiposDocumento;
       }
     )
-    
+    this.productoSubscription = this.productoService.productosChanged.subscribe(
+      producto => {
+        this.productos = producto;
+      }
+    )
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;
@@ -229,6 +240,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
     this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
     this.envioMasivo.documentos = this.documentosCargados;    
+    this.envioMasivo.producto = datosMasivo.get("producto").value;
     this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {        
         this.documentosCargados = [];
