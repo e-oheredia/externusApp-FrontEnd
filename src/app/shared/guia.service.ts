@@ -37,10 +37,6 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    registrarGuia(guia: Guia): Observable<Guia> {
-        return this.requester.post<Guia>(this.REQUEST_URL, guia, {});
-    }
-
     listarDocumentosGuiaValidados(guia: Guia): DocumentoGuia[] {
         return guia.documentosGuia.filter(documentoGuia => documentoGuia.validado === true);
     }
@@ -51,6 +47,10 @@ export class GuiaService {
     
     getCantidadDocumentosPorGuia(guia: Guia){
         return this.requester.get<any>(this.REQUEST_URL + guia.id + "/documentos" + null, {});
+    }
+    
+    registrarGuia(guia: Guia): Observable<Guia> {
+        return this.requester.post<Guia>(this.REQUEST_URL, guia, {});
     }
 
     enviarGuia(guiaId: number){
@@ -125,6 +125,7 @@ export class GuiaService {
         ) 
     }
 
+    //DESCARGAR BASE
     exportarDocumentosGuia(guia: Guia) {
         console.log(guia.documentosGuia)
         let objects = [];

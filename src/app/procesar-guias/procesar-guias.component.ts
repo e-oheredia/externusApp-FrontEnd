@@ -103,6 +103,10 @@ export class ProcesarGuiasComponent implements OnInit {
           });
         }
       },
+      fechadescarga: {
+        title: 'Fecha de descarga'
+      }
+
     }
   }
 
@@ -126,7 +130,8 @@ export class ProcesarGuiasComponent implements OnInit {
               entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
               rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
               nodistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
-              pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length
+              pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length,
+              fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3).fecha : "",
             })
           })
 

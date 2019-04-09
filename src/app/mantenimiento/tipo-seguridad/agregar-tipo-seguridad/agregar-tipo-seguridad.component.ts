@@ -28,8 +28,6 @@ export class AgregarTipoSeguridadComponent implements OnInit {
   crearTipoSeguridadSubscription: Subscription;
 
   ngOnInit() {
-    // this.cargarDatosVista();
-
     this.agregarForm = new FormGroup({
       'nombre': new FormControl('', Validators.required)
     })

@@ -119,9 +119,9 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             fechaUltimoResultado: {
                 title: 'Fecha último resultado'
             },
-            // link: {
-            //     title: 'link'
-            // },
+            codigodevolucion: {
+              title: 'Código de devolución'
+            }
         }
     }
 
@@ -156,7 +156,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         autorizado: documento.envio.autorizado ? "SI" : "NO",
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),
                                         fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
-                                        fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
+                                        fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
+                                        codigodevolucion: documento.codigoDevolucion
                                         //IMAGEN
                                     })
                                 }

@@ -14,7 +14,7 @@
             <label for="nombre">Nombre del Producto</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
             <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched" class="text-danger small">
-                Es necesario ingresar el nombre del producto.
+                Es necesario ingresar el nombre del Producto
               </span>
           </div>
         </div>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success">Agregar</button>
+      <button type="submit" class="btn btn-success" [disabled]="!agregarForm.valid">Agregar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 
