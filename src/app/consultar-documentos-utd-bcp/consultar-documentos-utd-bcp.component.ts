@@ -108,6 +108,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       },
       fechaUltimoResultado: {
         title: 'Fecha último resultado'
+      },
+      codigodevolucion: {
+        title: 'Código de devolución'
       }
     }
   }
@@ -135,7 +138,8 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               autorizado: documento.envio.autorizado ? "SI" : "NO",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
               fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
-              fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
+              fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
+              codigodevolucion: documento.codigoDevolucion
             })
             this.documentos.push(documento);
             this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);
@@ -185,7 +189,8 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       autorizado: documento.envio.autorizado ? "SI" : "NO",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
                       fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
-                      fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento)
+                      fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
+                      codigodevolucion: documento.codigoDevolucion
                     })
                   }
                 )

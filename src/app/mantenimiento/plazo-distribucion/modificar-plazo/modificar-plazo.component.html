@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h6>Modificar plazo de distribución</h6>
+    <h6>Modificar Plazo de distribución</h6>
   </div>
 
   <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
@@ -13,6 +13,10 @@
           <div class="form-group">
             <label for="nombre">Nombre de plazo</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+              class="text-danger small">
+              El nombre del Plazo no puede estar vacío
+            </span>
           </div>
         </div>
       </div>
@@ -22,6 +26,10 @@
           <div class="form-group">
             <label for="tiempoEnvio">Plazo de distribución (horas)</label>
             <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio" formControlName="tiempoEnvio">
+            <span *ngIf="!modificarForm.get('tiempoEnvio').valid && modificarForm.get('tiempoEnvio').touched"
+              class="text-danger small">
+              El tiempo (horas) del Plazo no puede estar vacío
+            </span>
           </div>
         </div>
       </div>
@@ -35,6 +43,11 @@
                 {{tipoPlazoDistribucion.nombre}}
               </option>
             </select>
+            <!-- AL MOMENTO DE MODIFICAR, EL COMBO YA CARGA EL TIPO DE PLAZO PERO NO LO MUESTRA -->
+            <!-- <span *ngIf="!modificarForm.get('tipoPlazoDistribucion').valid && modificarForm.get('tipoPlazoDistribucion').touched"
+              class="text-danger small">
+              Es necesario la elección de un Tipo de Plazo
+            </span> -->
           </div>
         </div>
       </div>
@@ -56,7 +69,7 @@
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success">Modificar</button>
+      <button type="submit" class="btn btn-success" [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 

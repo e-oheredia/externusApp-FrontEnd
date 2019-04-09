@@ -36,26 +36,34 @@ export class ModificarPlazoComponent implements OnInit {
   tiposPlazosSubscription: Subscription;
 
   ngOnInit() {
+    
+    this.modificarForm = new FormGroup({
+      'nombre': new FormControl(this.plazo.nombre, Validators.required),
+      'tiempoEnvio': new FormControl(this.plazo.tiempoEnvio, Validators.required),
+      'tipoPlazoDistribucion': new FormControl(null, Validators.required),
+      'activo': new FormControl(this.plazo.activo, Validators.required)
+    });
     this.cargarDatosVista();
-    this.modificarForm = new FormGroup ({
-      'nombre' : new FormControl(this.plazo.nombre, Validators.required),
-      'tiempoEnvio' : new FormControl(this.plazo.tiempoEnvio, Validators.required),
-      'tipoPlazoDistribucion' : new FormControl(this.plazo.tipoPlazoDistribucion.nombre, Validators.required),
-      'activo' : new FormControl(this.plazo.activo ,Validators.required)
-    })
   }
 
   cargarDatosVista() {
     this.tiposPlazos = this.tipoPlazosService.getTiposPlazosDistribucion();
+
+    if (this.tiposPlazos) {
+      this.modificarForm.get("tipoPlazoDistribucion").setValue(this.tiposPlazos.find(tipoPlazo => this.plazo.tipoPlazoDistribucion.id === tipoPlazo.id));
+    }
+
     this.tiposPlazosSubscription = this.tipoPlazosService.tiposPlazosDistribucionChanged.subscribe(
       tiposPlazos => {
         this.tiposPlazos = tiposPlazos;
-      }
+        this.modificarForm.get("tipoPlazoDistribucion").setValue(this.tiposPlazos.find(tipoPlazo => this.plazo.tipoPlazoDistribucion.id === tipoPlazo.id));
+      
+        }
     )
   }
 
-  onSubmit(form: any){
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tiempoEnvio'].value && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tipoPlazoDistribucion'].value))){
+  onSubmit(form: any) {
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tiempoEnvio'].value && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tipoPlazoDistribucion'].value))) {
       this.plazo.nombre = this.modificarForm.get("nombre").value;
       this.plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       this.plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
@@ -64,6 +72,6 @@ export class ModificarPlazoComponent implements OnInit {
     this.bsModalRef.hide();
     this.confirmarEvent.emit();
   }
-  
-  
+
+
 }

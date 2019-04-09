@@ -36,19 +36,23 @@ export class ModificarSubambitoComponent implements OnInit {
   ambitosSubscription: Subscription;
 
   ngOnInit() {
-    this.cargarDatosVista();
     this.modificarForm = new FormGroup({
       'nombre': new FormControl(this.subambito.nombre, Validators.required),
-      'ambito': new FormControl(this.subambito.ambito.nombre, Validators.required),
+      'ambito': new FormControl(null, Validators.required),
       'activo': new FormControl(this.subambito.activo, Validators.required)
-    })
+    });
+    this.cargarDatosVista();
   }
 
   cargarDatosVista(){
     this.ambitos = this.ambitoService.getAmbitos();
+    if(this.ambitos){
+      this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.subambito.ambito.id === ambito.id));
+    }
     this.ambitosSubscription = this.ambitoService.ambitosChanged.subscribe(
       ambitos => {
         this.ambitos = ambitos;
+        this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.subambito.ambito.id === ambito.id));
       }
     )
   }

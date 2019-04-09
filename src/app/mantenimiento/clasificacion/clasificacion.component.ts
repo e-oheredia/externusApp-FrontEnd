@@ -11,6 +11,7 @@ import { ButtonViewComponent } from 'src/app/table-management/button-view/button
 import { AgregarClasificacionComponent } from './agregar-clasificacion/agregar-clasificacion.component';
 import { ModificarClasificacionComponent } from './modificar-clasificacion/modificar-clasificacion.component';
 import { MensajeExitoComponent } from 'src/app/modals/mensaje-exito/mensaje-exito.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-clasificacion',
@@ -22,6 +23,7 @@ export class ClasificacionComponent implements OnInit {
   constructor(
     public clasificacionService: ClasificacionService,
     private modalService: BsModalService,
+    private notifier: NotifierService,
     private tituloService: TituloService
   ) { }
 
@@ -104,8 +106,7 @@ export class ClasificacionComponent implements OnInit {
   }
 
   modificarClasificacion(row) {
-    this.clasificacion = this.clasificaciones.find(
-      clasificacion => clasificacion.id == row.id)
+    this.clasificacion = this.clasificaciones.find(clasificacion => clasificacion.id == row.id)
 
     let bsModalRef: BsModalRef = this.modalService.show(ModificarClasificacionComponent, {
       initialState: {
