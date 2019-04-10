@@ -1,11 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from 'src/app/shared/utils.service';
 import { Proveedor } from 'src/model/proveedor.model';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { PlazoDistribucionService } from 'src/app/shared/plazodistribucion.service';
+import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { Subscription } from 'rxjs';
 import { ProveedorService } from 'src/app/shared/proveedor.service';
 import { NotifierService } from 'angular-notifier';
+
 
 @Component({
   selector: 'app-modificar-proveedor',
@@ -17,8 +20,10 @@ export class ModificarProveedorComponent implements OnInit {
   constructor(
     private utilsService: UtilsService,
     private bsModalRef: BsModalRef,
+    private plazoDistribucionService: PlazoDistribucionService , 
     private proveedorService: ProveedorService,
     private notifier: NotifierService
+
   ) { }
 
   @Output() confirmarEvent = new EventEmitter();
@@ -26,15 +31,41 @@ export class ModificarProveedorComponent implements OnInit {
   proveedor: Proveedor;
   proveedores: Proveedor[] = [];
   modificarForm: FormGroup;
+  plazosDistribucion:  PlazoDistribucion[];
+  plazosDistribucionElegidos: PlazoDistribucion[];
 
   modificarProveedorSubscription: Subscription;
 
-  ngOnInit() {
+  
+ ngOnInit() {
     this.modificarForm = new FormGroup({
       'nombreProveedor' : new FormControl(this.proveedor.nombre, Validators.required),
-      // 'plazosProveedor' : new FormControl(this.proveedor.plazosDistribucion, Validators.required),
-      'activo' : new FormControl(this.proveedor.activo, Validators.required)
-    })
+      'activo' : new FormControl(this.proveedor.activo, Validators.required),
+      'plazos': new FormArray([])
+    });
+    this.listarPlazosDistribucion();
+    this.plazosDistribucionElegidos = this.proveedor.plazosDistribucion;
+  }
+
+  listarPlazosDistribucion() {
+    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+
+    if (this.plazosDistribucion) {
+      this.plazosDistribucion.forEach(plazo => {
+        const control = new FormControl(this.proveedor.plazosDistribucion.findIndex(plazoProveedor => plazoProveedor.id === plazo.id) > -1);
+        (<FormArray>this.modificarForm.get('plazos')).push(control);
+      });
+    }
+
+    this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
+      plazosDistribucion => {
+        this.plazosDistribucion = plazosDistribucion;
+        plazosDistribucion.forEach(plazo => {
+          const control = new FormControl(this.proveedor.plazosDistribucion.findIndex(plazoProveedor => plazoProveedor.id === plazo.id) > -1);
+          (<FormArray>this.modificarForm.get('plazos')).push(control);
+        });
+      }
+    )
   }
 
   onSubmit(form: any){
@@ -50,5 +81,14 @@ export class ModificarProveedorComponent implements OnInit {
       )
     }
   }
+
+  onChangePlazoDistribucionElegido(event: any, plazoDistribucion: PlazoDistribucion) {
+    
+    event.srcElement.checked ? this.plazosDistribucionElegidos.push(plazoDistribucion) : this.plazosDistribucionElegidos.splice(this.plazosDistribucionElegidos.indexOf(this.plazosDistribucionElegidos.find(plazo => plazo.id === plazoDistribucion.id)), 1);
+  }
+
+
+  
+ 
 
 }

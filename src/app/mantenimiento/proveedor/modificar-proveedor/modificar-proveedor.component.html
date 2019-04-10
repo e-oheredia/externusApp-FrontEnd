@@ -11,8 +11,7 @@
         <div class="col-9">
           <div class="form-group">
             <label for="nombreProveedor">Nombre del proveedor</label>
-            <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor"
-              formControlName="nombreProveedor">
+            <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor" formControlName="nombreProveedor">
             <span *ngIf="!modificarForm.get('nombreProveedor').valid && modificarForm.get('nombreProveedor').touched"
               class="text-danger small">
               El nombre del Proveedor no puede estar vacío
@@ -20,6 +19,18 @@
           </div>
         </div>
       </div>
+
+      <div class="form-row">
+        <div formArrayName="plazos">
+          <div class="form-group" *ngFor="let plazoDistribucionControl of modificarForm.get('plazos').controls; let i = index">
+            <div class="form-check">
+              <input name="plazosProveedor" type="checkbox" class="form-check-input" [formControl]="plazoDistribucionControl" (change)="onChangePlazoDistribucionElegido($event, plazosDistribucion[i])">
+              <label class="form-check-label">{{plazosDistribucion[i].nombre}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <div class="form-row">
         <div class="col-9">
@@ -39,8 +50,7 @@
 
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success"
-        [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
+      <button type="submit" class="btn btn-success" [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 
