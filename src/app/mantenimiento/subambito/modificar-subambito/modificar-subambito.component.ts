@@ -34,6 +34,7 @@ export class ModificarSubambitoComponent implements OnInit {
   modificarForm: FormGroup; 
 
   ambitosSubscription: Subscription;
+  modificarSubAmbitoSubscription: Subscription;
 
   ngOnInit() {
     this.modificarForm = new FormGroup({
@@ -63,9 +64,16 @@ export class ModificarSubambitoComponent implements OnInit {
       this.subambito.nombre = this.modificarForm.get("nombre").value;
       this.subambito.ambito = this.modificarForm.get("ambito").value;
       this.subambito.activo = this.modificarForm.get('activo').value;
+      this.modificarSubAmbitoSubscription = this.subambitoService.modificarSubAmbito(this.subambito.id, this.subambito).subscribe(
+        subambito => {
+          this.notifier.notify('success', 'SE MODIFICÓ EL SUBAMBITO CON ÉXITO');
+          this.bsModalRef.hide();
+          this.subambitoModificadoEvent.emit();
+        }
+      )
     }
-    this.bsModalRef.hide();
-    this.subambitoModificadoEvent.emit();
+    
+
   }
 
 }

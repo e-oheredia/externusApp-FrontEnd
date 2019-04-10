@@ -39,7 +39,7 @@ export class TipoServicioComponent implements OnInit {
     this.listarTiposDeServicio();
   }
 
-  generarColumnas(){
+  generarColumnas() {
     this.settings.columns = {
       id: {
         title: 'ID'
@@ -54,7 +54,7 @@ export class TipoServicioComponent implements OnInit {
         title: 'Modificar',
         type: 'custom',
         renderComponent: ButtonViewComponent,
-        onComponentInitFunction : (instance: any) => {
+        onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
             this.modificarTipoServicio(row);
@@ -65,7 +65,7 @@ export class TipoServicioComponent implements OnInit {
   }
 
 
-  listarTiposDeServicio(){
+  listarTiposDeServicio() {
     this.dataTipoServicio.reset();
     this.tipoServicioService.listarTiposServicioAll().subscribe(
       servicios => {
@@ -86,13 +86,13 @@ export class TipoServicioComponent implements OnInit {
   }
 
 
-  onAgregar(){
+  onAgregar() {
     this.agregarTipoServicio();
   }
 
-  agregarTipoServicio(){
+  agregarTipoServicio() {
     let bsModalRef: BsModalRef = this.modalService.show(AgregarTipoServicioComponent, {
-      initialState : {
+      initialState: {
         titulo: 'Agregar tipo de servicio',
       },
       class: 'modal-md',
@@ -101,12 +101,12 @@ export class TipoServicioComponent implements OnInit {
     });
 
     bsModalRef.content.tipoServicioCreadoEvent.subscribe(() =>
-    this.listarTiposDeServicio()
+      this.listarTiposDeServicio()
     )
   }
 
 
-  modificarTipoServicio(row){
+  modificarTipoServicio(row) {
     this.servicio = this.servicios.find(servicio => servicio.id == row.id)
 
     let bsModalRef: BsModalRef = this.modalService.show(ModificarTipoServicioComponent, {
@@ -120,21 +120,10 @@ export class TipoServicioComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.tipoServicioModificarEvent.subscribe(() => {
-      this.tipoServicioService.modificarTipoServicio(this.servicio.id, this.servicio).subscribe(
-        () => {
-          let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-            initialState: {
-              mensaje: "Se modificó el tipo de servicio correctamente"
-            }
-          });
-          this.listarTiposDeServicio();
-        },
-        error => {
-
-        }
-      )
-    });
+    bsModalRef.content.tipoServicioModificarEvent.subscribe(() =>
+      this.listarTiposDeServicio()
+    )
   }
+  
 
 }

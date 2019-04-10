@@ -105,9 +105,9 @@ export class ClasificacionComponent implements OnInit {
     )
   }
 
+
   modificarClasificacion(row) {
     this.clasificacion = this.clasificaciones.find(clasificacion => clasificacion.id == row.id)
-
     let bsModalRef: BsModalRef = this.modalService.show(ModificarClasificacionComponent, {
       initialState: {
         id: this.clasificacion.id,
@@ -118,23 +118,11 @@ export class ClasificacionComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
-
-    bsModalRef.content.clasificacionModificadaEvent.subscribe(() => {
-      this.clasificacionService.modificarClasificacion(this.clasificacion.id, this.clasificacion).subscribe(
-        () => {
-          let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-            initialState: {
-              mensaje: "Se modificó la clasificación correctamente"
-            }
-          });
-          this.listarClasificaciones();
-        },
-        error => {
-
-        }
-      )
-    });
+    bsModalRef.content.clasificacionModificadaEvent.subscribe(() => 
+    this.listarClasificaciones()
+    )
   }
+
 
 
 

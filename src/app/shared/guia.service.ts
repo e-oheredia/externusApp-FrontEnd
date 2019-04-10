@@ -125,9 +125,15 @@ export class GuiaService {
         ) 
     }
 
+    setFechaDescargaDeBase(guia: Guia){
+        return this.requester.put<any>(this.REQUEST_URL + guia.id + "/descarga", null, {});
+    }
+
     //DESCARGAR BASE
     exportarDocumentosGuia(guia: Guia) {
-        console.log(guia.documentosGuia)
+        if(!this.getSeguimientoGuiaByEstadoGuiaId(guia, 3)){
+            this.setFechaDescargaDeBase(guia);
+        }
         let objects = [];
         guia.documentosGuia.forEach(documentoGuia => {
             objects.push({

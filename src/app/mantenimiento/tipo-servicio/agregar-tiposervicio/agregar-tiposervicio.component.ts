@@ -42,7 +42,7 @@ export class AgregarTipoServicioComponent implements OnInit {
           this.tipoServicioCreadoEvent.emit(servicio);
         },
         error => {
-          this.notifier.notify('error', error.error.mensaje);
+          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
         }
       );
     }

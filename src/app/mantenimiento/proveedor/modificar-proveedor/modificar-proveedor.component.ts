@@ -5,6 +5,10 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { PlazoDistribucionService } from 'src/app/shared/plazodistribucion.service';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
+import { Subscription } from 'rxjs';
+import { ProveedorService } from 'src/app/shared/proveedor.service';
+import { NotifierService } from 'angular-notifier';
+
 
 @Component({
   selector: 'app-modificar-proveedor',
@@ -16,7 +20,10 @@ export class ModificarProveedorComponent implements OnInit {
   constructor(
     private utilsService: UtilsService,
     private bsModalRef: BsModalRef,
-    private plazoDistribucionService: PlazoDistribucionService  
+    private plazoDistribucionService: PlazoDistribucionService , 
+    private proveedorService: ProveedorService,
+    private notifier: NotifierService
+
   ) { }
 
   @Output() confirmarEvent = new EventEmitter();
@@ -27,8 +34,10 @@ export class ModificarProveedorComponent implements OnInit {
   plazosDistribucion:  PlazoDistribucion[];
   plazosDistribucionElegidos: PlazoDistribucion[];
 
+  modificarProveedorSubscription: Subscription;
 
-  ngOnInit() {   
+  
+ ngOnInit() {
     this.modificarForm = new FormGroup({
       'nombreProveedor' : new FormControl(this.proveedor.nombre, Validators.required),
       'activo' : new FormControl(this.proveedor.activo, Validators.required),
@@ -59,15 +68,18 @@ export class ModificarProveedorComponent implements OnInit {
     )
   }
 
-  onSubmit(proveedorFormValue: any){
-
+  onSubmit(form: any){
     if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombreProveedor'].value)){
       this.proveedor.nombre = this.modificarForm.get("nombreProveedor").value;
       this.proveedor.activo = this.modificarForm.get('activo').value;
-      // plazos de distribucion
+      this.modificarProveedorSubscription = this.proveedorService.modificarProveedor(this.proveedor.id, this.proveedor).subscribe(
+        proveedor => {
+          this.notifier.notify('success', 'SE MODIFICÓ EL PROVEEDOR CON ÉXITO');
+          this.bsModalRef.hide();
+          this.confirmarEvent.emit();
+        }
+      )
     }
-    this.bsModalRef.hide();
-    this.confirmarEvent.emit();
   }
 
   onChangePlazoDistribucionElegido(event: any, plazoDistribucion: PlazoDistribucion) {
