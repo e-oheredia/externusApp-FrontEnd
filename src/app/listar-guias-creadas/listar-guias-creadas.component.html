@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>Guias Activas</h2>
+      <h2>Lista de guías activas</h2>
     </div>
   </div>
 </div>
 <div class="row justify-content-center">
   <div class="col">
-    <button type="button" class="btn btn-primary mb-4" (click)="crearGuia()">Nuevo</button>
+    <button type="button" class="btn btn-primary mb-4" (click)="crearGuia()">Nueva Guía</button>
   </div>
 </div>
 <div class="row" *ngIf="guiasCreadas.length !== 0; else mensaje">
