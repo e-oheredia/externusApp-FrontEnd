@@ -46,7 +46,7 @@ export class AgregarTipoSeguridadComponent implements OnInit {
           this.tipoSeguridadCreadoEvent.emit(tipoSeguridad);
         },
         error => {
-          this.notifier.notify('error', error.error.mensaje);
+          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
         }
       );
     }

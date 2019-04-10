@@ -124,21 +124,9 @@ export class ProveedorComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.proveedorService.modificarProveedor(this.proveedor.id, this.proveedor).subscribe(
-        () => {
-          let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-            initialState: {
-              mensaje: "Se modificó el proveedor correctamente"
-            }
-          });
-          this.listarProveedores();
-        },
-        error => {
-
-        }
-      )
-    });
+    bsModalRef.content.confirmarEvent.subscribe(() => 
+      this.listarProveedores()
+    )
   }
 
 

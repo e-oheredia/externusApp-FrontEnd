@@ -119,22 +119,10 @@ export class SubambitoComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
-
-    bsModalRef.content.subambitoModificadoEvent.subscribe(() => {
-      this.subambitoService.modificarSubAmbito(this.subambito.id, this.subambito).subscribe(
-        () => {
-          let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-            initialState: {
-              mensaje: "Se modificó el subambito correctamente"
-            }
-          });
-          this.listarSubAmbitos();
-        },
-        error => {
-
-        }
-      )
-    })
+    bsModalRef.content.subambitoModificadoEvent.subscribe(() =>
+      this.listarSubAmbitos()
+    )
   }
+
 
 }

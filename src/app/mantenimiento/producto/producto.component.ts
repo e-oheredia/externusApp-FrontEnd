@@ -116,21 +116,9 @@ export class ProductoComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.productoModificadoEvent.subscribe(() => {
-      this.productoService.modificarProducto(this.producto.id, this.producto).subscribe(
-        () => {
-          let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-            initialState: {
-              mensaje: "Se modificó el producto correctamente"
-            }
-          });
-          this.listarProductos();
-        },
-        error => {
-
-        }
-      )
-    });
-  }
+    bsModalRef.content.productoModificadoEvent.subscribe(() =>
+          this.listarProductos()
+        )
+    }
 
 }

@@ -25,7 +25,7 @@ export class TipoSeguridadComponent implements OnInit {
     private tituloService: TituloService
   ) { }
 
-  dataTipoSeguridad : LocalDataSource = new LocalDataSource();
+  dataTipoSeguridad: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
   tiposSeguridad: TipoSeguridad[] = [];
   tipoSeguridad: TipoSeguridad;
@@ -39,22 +39,22 @@ export class TipoSeguridadComponent implements OnInit {
     this.listarTiposSeguridad();
   }
 
-  generarColumnas(){
+  generarColumnas() {
     this.settings.columns = {
-      id : {
-        title : 'ID'
+      id: {
+        title: 'ID'
       },
-      nombre : {
-        title : 'Nombre'
+      nombre: {
+        title: 'Nombre'
       },
-      activo : {
-        title : 'Estado'
+      activo: {
+        title: 'Estado'
       },
       buttonModificar: {
-        title : 'Modificar',
-        type : 'custom',
-        renderComponent : ButtonViewComponent,
-        onComponentInitFunction : (instance : any) => {
+        title: 'Modificar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
             this.modificarTipoSeguridad(row);
@@ -65,7 +65,7 @@ export class TipoSeguridadComponent implements OnInit {
   }
 
 
-    listarTiposSeguridad(){
+  listarTiposSeguridad() {
     this.dataTipoSeguridad.reset();
     this.tipoSeguridadService.listarTiposSeguridadAll().subscribe(
       tiposSeguridad => {
@@ -85,13 +85,13 @@ export class TipoSeguridadComponent implements OnInit {
     )
   }
 
-  onAgregar(){
+  onAgregar() {
     this.agregarTipoSeguridad();
   }
 
-  agregarTipoSeguridad(){
+  agregarTipoSeguridad() {
     let bsModalRef: BsModalRef = this.modalService.show(AgregarTipoSeguridadComponent, {
-      initialState : {
+      initialState: {
         titulo: 'Agregar Tipo de Seguridad',
       },
       class: 'modal-md',
@@ -99,15 +99,15 @@ export class TipoSeguridadComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.tipoSeguridadCreadoEvent.subscribe(() => 
-    this.listarTiposSeguridad()
+    bsModalRef.content.tipoSeguridadCreadoEvent.subscribe(() =>
+      this.listarTiposSeguridad()
     )
   }
 
-  
-  modificarTipoSeguridad(row){
+
+  modificarTipoSeguridad(row) {
     this.tipoSeguridad = this.tiposSeguridad.find(tipoSeguridad => tipoSeguridad.id == row.id)
-  
+
     let bsModalRef: BsModalRef = this.modalService.show(ModificarTipoSeguridadComponent, {
       initialState: {
         id: this.tipoSeguridad.id,
@@ -119,21 +119,9 @@ export class TipoSeguridadComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.tipoSeguridadService.modificarTipoSeguridad(this.tipoSeguridad.id,this.tipoSeguridad).subscribe(
-        () => {
-          let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-            initialState: {
-              mensaje: "Se modificó el tipo de seguridad correctamente"
-            }
-          });
-          this.listarTiposSeguridad();
-        },
-        error => {
-
-        }
-      )
-    });
+    bsModalRef.content.confirmarEvent.subscribe(() =>
+      this.listarTiposSeguridad()
+    )
   }
 
 

@@ -126,22 +126,9 @@ export class PlazoDistribucionComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
-
-    bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.plazoDistribucionService.modificarPlazoDistribucion(this.plazo.id,this.plazo).subscribe(
-        () => {
-          let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
-            initialState: {
-              mensaje: "Se modificó el plazo de distribución correctamente"
-            }
-          });
-          this.listarPlazosDistribucion();
-        },
-        error => {
-
-        }
-      )
-    });
+    bsModalRef.content.confirmarEvent.subscribe(() => 
+    this.listarPlazosDistribucion()
+    )
   }
 
 
