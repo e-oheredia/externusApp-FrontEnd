@@ -1,7 +1,7 @@
 <div class="card">
 
     <div class="modal-header">
-      <h6>Modificar Clasificación</h6>
+      <h4>Modificar clasificación</h4>
     </div>
   
     <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
@@ -11,10 +11,10 @@
         <div class="form-row">
           <div class="col">
             <div class="form-group">
-              <label for="nombre">Nombre de Clasificación</label>
+              <label for="nombre">Nombre de clasificación</label>
               <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
               <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched" class="text-danger small">
-                El nombre de la Clasificación no puede estar vacío
+                El nombre de la clasificación no puede estar vacío
               </span>
             </div>
           </div>

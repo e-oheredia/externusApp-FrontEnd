@@ -1,7 +1,7 @@
 <div class="row" >
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2" >
-      <h1>Documentos Varios - Indicador de Volumen</h1>
+      <h1>Documentos varios - indicador de volumen</h1>
     </div>
   </div>
 </div>
@@ -12,7 +12,7 @@
     <div class="card mb-5">
 
       <div class="card-header">
-        <h4>Datos de Consulta</h4>
+        <h4>Datos de consulta</h4>
       </div>
 
       <div class="card-body">
@@ -22,14 +22,14 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaIni">Fecha Inicial</label>
+                <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="month" formControlName="fechaIni">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaFin">Fecha Final</label>
+                <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="month" formControlName="fechaFin">
               </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
-                  CONSULTAR
+                  Consultar
                 </button>
               </div>
             </div>
@@ -60,13 +60,13 @@
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
-          <h4>Indicador de Volumen</h4>
+          <h4>Indicador de volumen</h4>
         </div>
       </div>
       <div class="card-body">
         <div class="row">
           <div class="col">
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de Volumen'" [description]="''" [showLegend]="true"
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de volumen'" [description]="''" [showLegend]="true"
               [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGrafico"
               [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme05'">
             </jqxChart>
@@ -143,7 +143,7 @@
     <div class="row">
       <div class="col">
         <div class="alert alert-info" role="alert" align=center>
-          No se encontraron documentos
+          No se encontraron documentos.
         </div>
       </div>
     </div>

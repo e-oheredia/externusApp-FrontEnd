@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Reporte - Volumen de Distribución</h1>
+      <h1>Reporte - volumen de distribución</h1>
     </div>
   </div>
 </div>
@@ -11,7 +11,7 @@
     <div class="card mb-5">
 
       <div class="card-header">
-        <h4>Datos de Consulta</h4>
+        <h4>Datos de consulta</h4>
       </div>
 
       <div class="card-body">
@@ -21,14 +21,14 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaIni">Fecha Inicial</label>
+                <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaFin">Fecha Final</label>
+                <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
@@ -36,7 +36,7 @@
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
-                  CONSULTAR
+                  Consultar
                 </button>
               </div>
             </div>
@@ -62,7 +62,7 @@
 
     <div class="card-header">
       <div class="titulo">
-        <h4>Volumen de Distribución - Por Courier</h4>
+        <h4>Volumen de distribución - por courier</h4>
       </div>
     </div>
 
@@ -70,7 +70,7 @@
 
       <div class="row justify-content-center">
         <div class="col-8">
-          <jqxChart #myChart [height]="500" [title]="'Reporte de Volumen por Courier'"
+          <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por courier'"
             [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="paddingC" [titlePadding]="titlePaddingC"
             [source]="dataSource" [showBorderLine]="true" [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme26'">
           </jqxChart>
@@ -103,13 +103,13 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Volumen de Distribución - Por UTD</h4>
+        <h4>Volumen de distribución - por UTD</h4>
       </div>
     </div>
     <div class="card-body">
       <div class="row justify-content-center">
         <div class="col-8" >
-          <jqxChart #myChart [height]="500" [title]="'Reporte de Volumen por UTD'" 
+          <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por UTD'" 
             [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU" 
             [source]="dataSource2" [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme26'">
           </jqxChart>
@@ -124,7 +124,7 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Volumen de Distribución - Por Plazo de Distribución</h4>
+        <h4>Volumen de distribución - por plazo de distribución</h4>
       </div>
     </div>
     <div class="card-body">
@@ -132,7 +132,7 @@
         <div class="col-8" *ngFor="let proveedor of proveedores">
           <br>
           <h4>{{proveedor.nombre}}</h4>
-          <jqxChart #myChart [height]="500" [title]="'Reporte de Volumen Por Plazo de Distribución'"
+          <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por plazo de distribución'"
             [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS"
             [source]="dataSource3[proveedor.nombre]" [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)"
             [seriesGroups]="getSeriesGroups('stackedcolumn', 

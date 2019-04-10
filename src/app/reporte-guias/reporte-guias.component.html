@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>CONSULTA DE GUIAS</h2>
+      <h2>Consulta de guías</h2>
     </div>
   </div>
 </div>
@@ -11,7 +11,7 @@
     <div class="card mb-2">
 
       <div class="card-header">
-        <h5>Datos de Consulta</h5>
+        <h5>Datos de consulta</h5>
       </div>
 
       <div class="card-body">
@@ -33,7 +33,7 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaIni">Fecha Inicial</label>
+                <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni" 
                 (change)="desactivarCodigo(guiaForm.get('fechaIni').value, guiaForm.get('fechaFin').value)">
               </div>
@@ -41,7 +41,7 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaFin">Fecha Final</label>
+                <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="date" formControlName="fechaFin" 
                 (change)="desactivarCodigo(guiaForm.get('fechaIni').value, guiaForm.get('fechaFin').value)">
               </div>
@@ -50,7 +50,7 @@
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
-                  CONSULTAR
+                  Consultar
                 </button>
               </div>
             </div>
@@ -65,7 +65,7 @@
             <div class="row">
               <div class="col">
                 <div class="alert alert-info" role="alert">
-                  No hay resultados
+                  No hay resultados.
                 </div>
               </div>
             </div>

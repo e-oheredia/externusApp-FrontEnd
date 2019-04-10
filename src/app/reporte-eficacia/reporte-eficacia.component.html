@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Reporte - Eficacia</h1>
+      <h1>Reporte - eficacia</h1>
     </div>
   </div>
 </div>
@@ -15,7 +15,7 @@
     <div class="card mb-5">
 
       <div class="card-header">
-        <h4>Datos de Consulta</h4>
+        <h4>Datos de consulta</h4>
       </div>
 
       <div class="card-body">
@@ -25,14 +25,14 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaIni">Fecha Inicial</label>
+                <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaFin">Fecha Final</label>
+                <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
@@ -40,7 +40,7 @@
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
-                  CONSULTAR
+                  Consultar
                 </button>
               </div>
             </div>
@@ -56,13 +56,13 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Por Estados</h4>
+        <h4>Por estados</h4>
       </div>
     </div>
     <div class="card-body" *ngIf="documentos.length !== 0; else mensaje">
       <div class="row justify-content-center">
         <div class="col-10">
-          <jqxChart #myChart [height]="500" [title]="'Reporte de Eficacia'" [description]="''"
+          <jqxChart #myChart [height]="500" [title]="'Reporte de eficacia'" [description]="''"
             [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
             [xAxis]="xAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme26'">
           </jqxChart>
@@ -75,7 +75,7 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Por Proveedor</h4>
+        <h4>Por proveedor</h4>
       </div>
     </div>
     <div class="card-body" *ngIf="documentos.length !== 0; else mensaje">

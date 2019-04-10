@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h6>Modificar Producto</h6>
+    <h4>Modificar producto</h4>
   </div>
 
   <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
@@ -11,11 +11,11 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="nombre">Nombre del producto.</label>
+            <label for="nombre">Nombre del producto</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
             <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
               class="text-danger small">
-              El nombre del Producto no puede estar vacío
+              El nombre del producto no puede estar vacío
             </span>
           </div>
         </div>

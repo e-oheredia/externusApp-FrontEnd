@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h4>Agregar Producto</h4>
+    <h4>Agregar producto</h4>
   </div>
 
   <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
@@ -11,10 +11,10 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="nombre">Nombre del Producto</label>
+            <label for="nombre">Nombre del producto</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
             <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched" class="text-danger small">
-                Es necesario ingresar el nombre del Producto
+                Es necesario ingresar el nombre del producto
               </span>
           </div>
         </div>
