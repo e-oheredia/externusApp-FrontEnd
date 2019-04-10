@@ -77,6 +77,9 @@ export class ProcesarGuiasComponent implements OnInit {
           });
         }
       },
+      fechadescarga: {
+        title: 'Fecha de descarga'
+      },
       total: {
         title: 'Total documentos'
       },
@@ -102,9 +105,6 @@ export class ProcesarGuiasComponent implements OnInit {
             this.subirGuia(row);
           });
         }
-      },
-      fechadescarga: {
-        title: 'Fecha de descarga'
       }
 
     }
@@ -131,7 +131,7 @@ export class ProcesarGuiasComponent implements OnInit {
               rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
               nodistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
               pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length,
-              fechadescarga: guia.fechaDescarga ? guia.fechaDescarga : '-'
+              fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia,3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia,3).fecha : "",
               // fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3).fecha : "",
             })
           })
@@ -152,6 +152,13 @@ export class ProcesarGuiasComponent implements OnInit {
   descargarGuia(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
     this.guiaService.exportarDocumentosGuia(guia)
+    if(!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)){
+      this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
+        this.listarGuiasPorProcesar();
+      }, 
+      error => console.log(error));
+  }
+
   }
 
 
