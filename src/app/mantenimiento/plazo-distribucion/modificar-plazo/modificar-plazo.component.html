@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h6>Modificar Plazo de distribución</h6>
+    <h4>Modificar plazo de distribución</h4>
   </div>
 
   <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
@@ -15,7 +15,7 @@
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
             <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
               class="text-danger small">
-              El nombre del Plazo no puede estar vacío
+              El nombre del plazo no puede estar vacío
             </span>
           </div>
         </div>
@@ -28,7 +28,7 @@
             <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio" formControlName="tiempoEnvio">
             <span *ngIf="!modificarForm.get('tiempoEnvio').valid && modificarForm.get('tiempoEnvio').touched"
               class="text-danger small">
-              El tiempo (horas) del Plazo no puede estar vacío
+              El tiempo (horas) del plazo no puede estar vacío
             </span>
           </div>
         </div>
@@ -37,17 +37,12 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="tipoPlazoDistribucion">Tipo de Plazo</label>
+            <label for="tipoPlazoDistribucion">Tipo de plazo</label>
             <select class="form-control" id="tipoPlazoDistribucion" formControlName="tipoPlazoDistribucion">
               <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">
                 {{tipoPlazoDistribucion.nombre}}
               </option>
             </select>
-            <!-- AL MOMENTO DE MODIFICAR, EL COMBO YA CARGA EL TIPO DE PLAZO PERO NO LO MUESTRA -->
-            <!-- <span *ngIf="!modificarForm.get('tipoPlazoDistribucion').valid && modificarForm.get('tipoPlazoDistribucion').touched"
-              class="text-danger small">
-              Es necesario la elección de un Tipo de Plazo
-            </span> -->
           </div>
         </div>
       </div>

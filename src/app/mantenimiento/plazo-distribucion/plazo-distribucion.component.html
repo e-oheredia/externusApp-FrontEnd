@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>Mantenimiento de plazos de distribución</h2>
+      <h2>Mantenimiento de plazo de distribución</h2>
     </div>
   </div>
 </div>
@@ -19,7 +19,8 @@
 </div>
 
 <br>
-<div *ngIf="plazos.length !== 0; else mensaje">
+
+<div *ngIf="plazos.length !== 0; else mensaje" class="center">
   <ng2-smart-table [settings]="settings" [source]="dataPlazosDistribucion"></ng2-smart-table>
 </div>
 <ng-template #mensaje>

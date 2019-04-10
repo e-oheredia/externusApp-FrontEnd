@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h6>Modificar Tipo de Seguridad</h6>
+    <h4>Modificar tipo de seguridad</h4>
   </div>
 
   <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
@@ -11,11 +11,11 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="nombre">Nombre de Tipo de Seguridad</label>
+            <label for="nombre">Nombre de tipo de seguridad</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
             <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
               class="text-danger small">
-              El nombre del Tipo de Seguridad no puede estar vacío
+              El nombre del tipo de seguridad no puede estar vacío
             </span>
           </div>
         </div>
