@@ -42,7 +42,7 @@ export class AgregarProductoComponent implements OnInit {
           this.productoCreadoEvent.emit(producto);
         },
         error => {
-          this.notifier.notify('error', error.error.mensaje);
+          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
         }
       );
     }

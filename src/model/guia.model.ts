@@ -11,11 +11,12 @@ export class Guia {
         public numeroGuia:string, 
         public plazoDistribucion: PlazoDistribucion, 
         public tipoServicio: TipoServicio, 
-        public tipoSeguridad: TipoSeguridad, 
+        public tipoSeguridad: TipoSeguridad,
         public proveedor: Proveedor, 
         public documentosGuia: DocumentoGuia[], 
         public seguimientosGuia: SeguimientoGuia[],
         public sede: Sede,
-        public cantidadDocumentos: number
+        public cantidadDocumentos: number,
+        public fechaDescarga: Date
     ){}
 }

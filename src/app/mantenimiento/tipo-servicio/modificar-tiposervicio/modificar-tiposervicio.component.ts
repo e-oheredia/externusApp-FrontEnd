@@ -29,6 +29,8 @@ export class ModificarTipoServicioComponent implements OnInit {
   servicios: TipoServicio[] = []
   modificarForm: FormGroup;
 
+  modificarTipoServicioSubscription: Subscription;
+
   ngOnInit() {
     this.modificarForm = new FormGroup({
       'nombre': new FormControl(this.servicio.nombre, Validators.required),
@@ -40,9 +42,17 @@ export class ModificarTipoServicioComponent implements OnInit {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
       this.servicio.nombre = this.modificarForm.get("nombre").value;
       this.servicio.activo = this.modificarForm.get('activo').value;
+      this.modificarTipoServicioSubscription = this.tipoServicioService.modificarTipoServicio(this.servicio.id, this.servicio).subscribe(
+        tiposervicio => {
+          this.notifier.notify('success', 'SE MODIFICÓ EL TIPO DE SERVICIO CON ÉXITO');
+          this.bsModalRef.hide();
+          this.tipoServicioModificarEvent.emit();
+        },
+
+      );
     }
-    this.bsModalRef.hide();
-    this.tipoServicioModificarEvent.emit();
   }
+
+  
 
 }

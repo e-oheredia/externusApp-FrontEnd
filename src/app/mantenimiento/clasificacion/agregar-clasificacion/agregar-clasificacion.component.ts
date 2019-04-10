@@ -42,7 +42,7 @@ export class AgregarClasificacionComponent implements OnInit {
           this.clasificacionCreadaEvente.emit(clasificacion);
         },
         error => {
-          this.notifier.notify('error', error.error.mensaje);
+          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
         }
       );
     }
@@ -50,5 +50,11 @@ export class AgregarClasificacionComponent implements OnInit {
       this.notifier.notify('error', 'DEBE INGRESAR EL NOMBRE DE LA CLASIFICACIÓN');
     }
   }
+
+
+
+
+
+
 
 }

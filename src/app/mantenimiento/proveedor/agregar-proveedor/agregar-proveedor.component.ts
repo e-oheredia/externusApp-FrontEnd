@@ -55,7 +55,7 @@ export class AgregarProveedorComponent implements OnInit {
         this.proveedorCreadoEvent.emit(proveedor);
       },
       error => {
-        this.notifier.notify('error', error.error.mensaje);
+        this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
       }
     );
   }

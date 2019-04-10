@@ -34,6 +34,7 @@ export class ModificarPlazoComponent implements OnInit {
   modificarForm: FormGroup;
 
   tiposPlazosSubscription: Subscription;
+  modificarTipoPlazosSubscription: Subscription;
 
   ngOnInit() {
     
@@ -68,9 +69,17 @@ export class ModificarPlazoComponent implements OnInit {
       this.plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       this.plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
       this.plazo.activo = this.modificarForm.get('activo').value;
+      this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(this.plazo.id,this.plazo).subscribe(
+        plazo => {
+          this.notifier.notify('success', 'SE MODIFICÓ EL PLAZO CON ÉXITO');
+          this.bsModalRef.hide();
+          this.confirmarEvent.emit();
+        },
+        error => {
+
+        }
+      );
     }
-    this.bsModalRef.hide();
-    this.confirmarEvent.emit();
   }
 
 

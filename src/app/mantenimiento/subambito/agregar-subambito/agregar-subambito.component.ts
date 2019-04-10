@@ -61,7 +61,7 @@ export class AgregarSubambitoComponent implements OnInit {
           this.subambitoCreadoEvent.emit(this.subambito);
         },
         error => {
-          this.notifier.notify('error', error.error.mensaje);
+          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
         }
       );
     }

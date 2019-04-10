@@ -3,6 +3,9 @@ import { UtilsService } from 'src/app/shared/utils.service';
 import { Proveedor } from 'src/model/proveedor.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
+import { ProveedorService } from 'src/app/shared/proveedor.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-modificar-proveedor',
@@ -13,7 +16,9 @@ export class ModificarProveedorComponent implements OnInit {
 
   constructor(
     private utilsService: UtilsService,
-    private bsModalRef: BsModalRef
+    private bsModalRef: BsModalRef,
+    private proveedorService: ProveedorService,
+    private notifier: NotifierService
   ) { }
 
   @Output() confirmarEvent = new EventEmitter();
@@ -21,6 +26,8 @@ export class ModificarProveedorComponent implements OnInit {
   proveedor: Proveedor;
   proveedores: Proveedor[] = [];
   modificarForm: FormGroup;
+
+  modificarProveedorSubscription: Subscription;
 
   ngOnInit() {
     this.modificarForm = new FormGroup({
@@ -30,16 +37,18 @@ export class ModificarProveedorComponent implements OnInit {
     })
   }
 
-  onSubmit(proveedorFormValue: any){
-
+  onSubmit(form: any){
     if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombreProveedor'].value)){
       this.proveedor.nombre = this.modificarForm.get("nombreProveedor").value;
       this.proveedor.activo = this.modificarForm.get('activo').value;
-      // plazos de distribucion
-      // this.proveedor.estado = this.modificarForm.get("estadoProveedor").value;
+      this.modificarProveedorSubscription = this.proveedorService.modificarProveedor(this.proveedor.id, this.proveedor).subscribe(
+        proveedor => {
+          this.notifier.notify('success', 'SE MODIFICÓ EL PROVEEDOR CON ÉXITO');
+          this.bsModalRef.hide();
+          this.confirmarEvent.emit();
+        }
+      )
     }
-    this.bsModalRef.hide();
-    this.confirmarEvent.emit();
   }
 
 }

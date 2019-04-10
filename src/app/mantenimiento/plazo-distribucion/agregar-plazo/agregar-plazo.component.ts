@@ -61,7 +61,7 @@ export class AgregarPlazoComponent implements OnInit {
           this.plazoCreadoEvent.emit(plazo);
         },
         error => {
-          this.notifier.notify('error', error.error.mensaje);
+          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
         }
       );
     }

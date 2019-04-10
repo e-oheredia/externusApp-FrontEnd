@@ -5,6 +5,7 @@ import { NotifierService } from 'angular-notifier';
 import { ProductoService } from 'src/app/shared/producto.service';
 import { Producto } from 'src/model/producto.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-modificar-producto',
@@ -28,6 +29,8 @@ export class ModificarProductoComponent implements OnInit {
   productos: Producto[] = [];
   modificarForm: FormGroup;
 
+  modificarProductoSubscription: Subscription;
+
   ngOnInit() {
     this.modificarForm = new FormGroup({
       'nombre': new FormControl(this.producto.nombre, Validators.required),
@@ -39,9 +42,15 @@ export class ModificarProductoComponent implements OnInit {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
       this.producto.nombre = this.modificarForm.get("nombre").value;
       this.producto.activo = this.modificarForm.get('activo').value;
+      this.modificarProductoSubscription = this.productoService.modificarProducto(this.producto.id, this.producto).subscribe(
+        producto => {
+          this.notifier.notify('success', 'SE MODIFICÓ EL PRODUCTO CON ÉXITO');
+          this.bsModalRef.hide();
+          this.productoModificadoEvent.emit(producto);
+        }
+      )
     }
-    this.bsModalRef.hide();
-    this.productoModificadoEvent.emit();
   }
+  
 
 }
