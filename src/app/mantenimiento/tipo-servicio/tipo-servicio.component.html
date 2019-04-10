@@ -19,14 +19,14 @@
 </div>
 
 <br>
-<div *ngIf="servicios.length !== 0; else mensaje">
+<div *ngIf="servicios.length !== 0; else mensaje" class="center">
   <ng2-smart-table [settings]="settings" [source]="dataTipoServicio"></ng2-smart-table>
 </div>
 <ng-template #mensaje>
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert">
-        No existen plazos de distribución.
+        No existen tipos de servicio.
       </div>
     </div>
   </div>

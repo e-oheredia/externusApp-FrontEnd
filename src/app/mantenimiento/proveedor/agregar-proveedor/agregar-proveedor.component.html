@@ -14,9 +14,9 @@
             <label for="nombreProveedor">Nombre del proveedor</label>
             <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor"
               formControlName="nombreProveedor">
-              <span *ngIf="!agregarForm.get('nombreProveedor').valid && agregarForm.get('nombreProveedor').touched"
+            <span *ngIf="!agregarForm.get('nombreProveedor').valid && agregarForm.get('nombreProveedor').touched"
               class="text-danger small">
-              Es necesario ingresar el nombre del Proveedor
+              Es necesario ingresar el nombre del proveedor
             </span>
           </div>
         </div>
@@ -24,13 +24,15 @@
 
       <div class="form-row">
         <div class="col">
-            <div class="form-group" *ngFor="let plazoDistribucion of plazosDistribucion">
-                <div class="form-check">
-                  <input  name="plazosProveedor" id="plazosProveedor" formControlName="plazosProveedor" 
-                  type="checkbox" class="form-check-input" [id]="'pd-' + plazoDistribucion.id" (change)="onChangePlazoDistribucionElegido($event, plazoDistribucion)">
-                  <label class="form-check-label" [for]="'pd-' + plazoDistribucion.id">{{plazoDistribucion.nombre}}</label>
-                </div>
-              </div>
+          <label for="nombreProveedor">Plazos del proveedor</label>
+          <div class="form-group" *ngFor="let plazoDistribucion of plazosDistribucion">
+            <div class="form-check">
+              <input name="plazosProveedor" id="plazosProveedor" formControlName="plazosProveedor" type="checkbox"
+                class="form-check-input" [id]="'pd-' + plazoDistribucion.id"
+                (change)="onChangePlazoDistribucionElegido($event, plazoDistribucion)">
+              <label class="form-check-label" [for]="'pd-' + plazoDistribucion.id">{{plazoDistribucion.nombre}}</label>
+            </div>
+          </div>
         </div>
       </div>
 

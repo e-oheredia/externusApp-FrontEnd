@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>Reporte - Devolución de Cargos y Documentos</h2>
+      <h2>Reporte - devolución de cargos y documentos</h2>
     </div>
   </div>
 </div>
@@ -11,7 +11,7 @@
     <div class="card mb-5">
 
       <div class="card-header">
-        <h5>Datos de Consulta</h5>
+        <h5>Datos de consulta</h5>
       </div>
 
       <div class="card-body">
@@ -20,14 +20,14 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaIni">Fecha Inicial</label>
+                <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="month" formControlName="fechaIni">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaFin">Fecha Final</label>
+                <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="month" formControlName="fechaFin">
               </div>
             </div>
@@ -61,14 +61,14 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Devolución de Cargos</h4>
+        <h4>Devolución de cargos</h4>
       </div>
     </div>
     <div class="card-body">
       <div class="row justify-content-center">
 
         <div class="col-10" >
-          <jqxChart  [height]="500" [title]="'Devolución de Cargos'" [description]="''"
+          <jqxChart  [height]="500" [title]="'Devolución de cargos'" [description]="''"
             [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionCargos"
             [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme01'">
           </jqxChart>
@@ -104,13 +104,13 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Devolución de Documentos</h4>
+        <h4>Devolución de documentos</h4>
       </div>
     </div>
     <div class="card-body">
       <div class="row justify-content-center">
         <div class="col-10">
-          <jqxChart [height]="500" [title]="'Devolución de Documentos'" [description]="''"
+          <jqxChart [height]="500" [title]="'Devolución de documentos'" [description]="''"
             [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionDocumentos"
             [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme01'">
           </jqxChart>
@@ -144,13 +144,13 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Cargos y Documentos Pendientes por Área</h4>
+        <h4>Cargos y documentos pendientes por área</h4>
       </div>
     </div>
     <div class="card-body">
       <div class="row justify-content-center">
         <div class="col-10">
-          <jqxChart #myChart [height]="500" [title]="'Detalle de Pendientes por Área'"
+          <jqxChart #myChart [height]="500" [title]="'Detalle de pendientes por área'"
             [description]="''" [enableAnimations]="true" [showLegend]="true" [padding]="padding" [titlePadding]="titlePadding"
             [source]="dataGraficoDetallePendienteAreaTop" [xAxis]="xAxis3" [valueAxis]="valueAxis3" [seriesGroups]="seriesGroups3"
             [colorScheme]="'scheme01'">
@@ -166,7 +166,7 @@
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>
-        No se encontraron documentos
+        No se encontraron documentos.
       </div>
     </div>
   </div>

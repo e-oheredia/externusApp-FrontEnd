@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h4>Agregar SubAmbito</h4>
+    <h4>Agregar subambito</h4>
   </div>
 
   <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
@@ -11,11 +11,11 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="nombre">Nombre del SubAmbito</label>
+            <label for="nombre">Nombre del subambito</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
             <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
               class="text-danger small">
-              Es necesario ingresar el nombre del subAmbito.
+              Es necesario ingresar el nombre del subambito
             </span>
           </div>
         </div>

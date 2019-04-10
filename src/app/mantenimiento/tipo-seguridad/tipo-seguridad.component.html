@@ -3,12 +3,11 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>Mantenimiento Tipo de Seguridad</h2>
+      <h2>Mantenimiento de tipo de seguridad</h2>
     </div>
   </div>
 </div>
 
-<!--  -->
 
 <div class="row">
   <div class="col-10 btn-group">
@@ -19,14 +18,14 @@
 </div>
 
 <br>
-<div *ngIf="tiposSeguridad.length !== 0; else mensaje">
+<div *ngIf="tiposSeguridad.length !== 0; else mensaje" class="center">
   <ng2-smart-table [settings]="settings" [source]="dataTipoSeguridad"></ng2-smart-table>
 </div>
 <ng-template #mensaje>
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert">
-        No existen Tipos de Seguridad
+        No existen tipos de seguridad.
       </div>
     </div>
   </div>

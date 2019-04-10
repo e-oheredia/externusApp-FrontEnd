@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Control de Cargos</h1>
+      <h1>Control de cargos</h1>
     </div>
   </div>
 </div>
@@ -11,7 +11,7 @@
     <div class="card mb-5">
 
       <div class="card-header">
-        <h4>Datos de Consulta</h4>
+        <h4>Datos de consulta</h4>
       </div>
 
       <div class="card-body">
@@ -21,14 +21,14 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaIni">Fecha Inicial</label>
+                <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni">
               </div>
             </div>
 
             <div class="col-4">
               <div class="form-group">
-                <label for="fechaFin">Fecha Final</label>
+                <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
@@ -36,7 +36,7 @@
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
-                  CONSULTAR
+                  Consultar
                 </button>
               </div>
             </div>
@@ -57,7 +57,7 @@
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
-        <h4>Estado de Devolución de Cargos</h4>
+        <h4>Estado de devolución de cargos</h4>
       </div>
     </div>
     <div class="card-body">
@@ -68,7 +68,7 @@
             <thead>
               <tr>
 
-                <th scope="col">Courier / Estado de Cargo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col">Courier / Estado de cargo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 
                 <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                 <th scope="col">Total</th>
@@ -101,7 +101,7 @@
 
     <div class="card-header">
       <div class="titulo">
-        <h4>Áreas con Cargos Pendientes</h4>
+        <h4>Áreas con cargos pendientes</h4>
       </div>
     </div>
     
@@ -112,7 +112,7 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col">Área Remitente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col">Área remitente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                 <th scope="col">Total</th>
               </tr>
@@ -144,7 +144,7 @@
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>
-        No se encontraron documentos
+        No se encontraron documentos.
       </div>
     </div>
   </div>

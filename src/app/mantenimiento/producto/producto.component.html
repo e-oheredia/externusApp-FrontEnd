@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>Mantenimiento de Producto</h2>
+      <h2>Mantenimiento de producto</h2>
     </div>
   </div>
 </div>
@@ -19,14 +19,14 @@
 </div>
 
 <br>
-<div *ngIf="productos.length !== 0; else mensaje">
+<div *ngIf="productos.length !== 0; else mensaje" class="center">
   <ng2-smart-table [settings]="settings" [source]="dataProductos"></ng2-smart-table>
 </div>
 <ng-template #mensaje>
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert">
-        No existen plazos de distribución.
+        No existen productos.
       </div>
     </div>
   </div>

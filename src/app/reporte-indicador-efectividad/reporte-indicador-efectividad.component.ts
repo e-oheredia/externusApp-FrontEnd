@@ -325,7 +325,7 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
 
 
   getValueAxis = {
-    title: { text: 'Porcentaje de Entregados' },
+    title: { text: 'Porcentaje de entregados' },
     tickMarks: { color: '#BCBCBC' },
     labels: {horizontalAlignment: 'right'
     },
