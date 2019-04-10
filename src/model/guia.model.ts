@@ -16,7 +16,6 @@ export class Guia {
         public documentosGuia: DocumentoGuia[], 
         public seguimientosGuia: SeguimientoGuia[],
         public sede: Sede,
-        public cantidadDocumentos: number,
-        public fechaDescarga: Date
+        public cantidadDocumentos: number
     ){}
 }
