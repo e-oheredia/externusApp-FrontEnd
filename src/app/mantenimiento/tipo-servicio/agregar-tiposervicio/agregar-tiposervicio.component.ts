@@ -34,20 +34,22 @@ export class AgregarTipoServicioComponent implements OnInit {
   }
 
   onSubmit(servicio) {
-    if (this.agregarForm.controls['nombre'].value.length !== 0) {
+    let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
+    if (nombreSinEspacios.length !== 0) {
+      servicio.nombre = nombreSinEspacios;
       this.crearTipoServicioSubscription = this.tipoServicioService.agregarTipoServicio(servicio).subscribe(
         plazo => {
-          this.notifier.notify('success', 'SE AGREGÓ EL TIPO DE SERVICIO CON ÉXITO');
+          this.notifier.notify('success', 'Se ha agregado el tipo de servicio correctamente');
           this.bsModalRef.hide();
           this.tipoServicioCreadoEvent.emit(servicio);
         },
         error => {
-          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
+          this.notifier.notify('error', 'No se puede agregar un nombre existente');
         }
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL NOMBRE');
+      this.notifier.notify('error', 'Debe ingresar el nombre del tipo de servicio');
     }
   }
 

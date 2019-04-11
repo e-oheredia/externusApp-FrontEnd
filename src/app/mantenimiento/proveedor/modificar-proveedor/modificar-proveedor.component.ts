@@ -70,13 +70,17 @@ export class ModificarProveedorComponent implements OnInit {
 
   onSubmit(form: any){
     if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombreProveedor'].value)){
-      this.proveedor.nombre = this.modificarForm.get("nombreProveedor").value;
+      let nombreSinEspacios = this.modificarForm.controls['nombreProveedor'].value.trim();
+      this.proveedor.nombre = nombreSinEspacios;
       this.proveedor.activo = this.modificarForm.get('activo').value;
       this.modificarProveedorSubscription = this.proveedorService.modificarProveedor(this.proveedor.id, this.proveedor).subscribe(
         proveedor => {
-          this.notifier.notify('success', 'SE MODIFICÓ EL PROVEEDOR CON ÉXITO');
+          this.notifier.notify('success', 'Se ha modificado el proveedor correctamente');
           this.bsModalRef.hide();
-          this.confirmarEvent.emit();
+          this.confirmarEvent.emit(proveedor);
+        },
+        error => {
+          this.notifier.notify('error', 'El nombre modificado ya existe');
         }
       )
     }

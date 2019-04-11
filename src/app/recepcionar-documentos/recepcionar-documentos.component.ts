@@ -111,30 +111,30 @@ export class RecepcionarDocumentosComponent implements OnInit {
       let documento = this.documentos.find(documentoList => documentoList.documentoAutogenerado === codigo);
 
       if (documento === undefined) {
-        this.notifier.notify('error', 'NO SE HA ENCONTRADO EL CODIGO INGRESADO');
+        this.notifier.notify('error', 'No se ha encontrado el código ingresado');
       } else if (codigo !== 0) {
         if(documento.recepcionado!=true){
           this.documentoService.recepcionarDocumento(documento.id).subscribe(
             documento => {
-              this.notifier.notify('success', 'DOCUMENTO RECEPCIONADO');
+              this.notifier.notify('success', 'Documento recepcionado');
               this.documentoForm.controls['codigo'].setValue('');
               this.listarDocumentosPendientes();
             },
             error => {
               if (error.status === 404) {
                 this.documentos = [];
-                this.notifier.notify('error', 'ERROR EN BACK NO MAPEADO');
+                this.notifier.notify('error', 'Error en back no mapeado');
               }
             }
           );
         }else{
-          this.notifier.notify('error', 'DOCUMENTO YA SE ENCUENTRA RECEPCIONADO');
+          this.notifier.notify('error', 'El documento ya se encuentra recepcionado');
         }
       }
 
     }
     else {
-      this.notifier.notify('error', 'CODIGO VACIO');
+      this.notifier.notify('error', 'Código vacío');
       console.log(this.documentoForm.controls['codigo'].value);
     }
   }

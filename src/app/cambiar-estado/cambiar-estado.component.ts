@@ -62,7 +62,7 @@ export class CambiarEstadoComponent implements OnInit {
             this.documento = documento;
             this.documentoForm.controls['id'].reset();
             this.estadoForm.controls['observacion'].reset();
-            this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
+            this.notifier.notify('success', 'Código autogenerado encontrado');
             this.cargarCombo(this.documentoService.getUltimoEstado(documento).id);
             this.estadoActualDocumento=this.documentoService.getUltimoEstado(documento).id;
             if(documento.documentosGuia.length === 0 || documento.documentosGuia[0].validado===false || documento.documentosGuia.length===0){
@@ -75,13 +75,13 @@ export class CambiarEstadoComponent implements OnInit {
           },
           error => {
             if (error.status === 400) {
-              this.notifier.notify('error', 'EL CÓDIGO DEL DOCUMENTO NO EXISTE');
+              this.notifier.notify('error', 'El código del documento no existe');
             }
           }
         );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL CÓDIGO DEL DOCUMENTO');
+      this.notifier.notify('error', 'Debe ingresar el código del documento');
     }
     
   }
@@ -110,7 +110,7 @@ export class CambiarEstadoComponent implements OnInit {
 
         let bsModalRef: BsModalRef = this.modalService.show(MensajeExitoComponent, {
           initialState: {
-            mensaje: "SE HA DESVALIDADO EL DOCUMENTO"
+            mensaje: "Se ha desvalidado el documento"
           }
         });
         this.bsModalRef.hide();

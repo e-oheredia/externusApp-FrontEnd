@@ -132,7 +132,6 @@ export class ProcesarGuiasComponent implements OnInit {
               nodistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
               pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length,
               fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia,3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia,3).fecha : "",
-              // fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3).fecha : "",
             })
           })
 
@@ -142,7 +141,7 @@ export class ProcesarGuiasComponent implements OnInit {
         error => {
           if (error.status === 400) {
             this.guias = [];
-            this.notifier.notify('error', 'NO HAY RESULTADOS');
+            this.notifier.notify('error', 'No hay resultados');
           }
         }
       )

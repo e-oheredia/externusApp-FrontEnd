@@ -50,26 +50,29 @@ export class AgregarSubambitoComponent implements OnInit {
     )
   }
 
-  onSubmit(){
-    if (this.agregarForm.controls['nombre'].value.length !== 0) {
+  onSubmit(subambito){
+    let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
+    if (nombreSinEspacios.length !== 0) {
+      subambito.nombre = nombreSinEspacios;
       this.subambito.nombre = this.agregarForm.get("nombre").value;
       this.subambito.ambito = this.agregarForm.get("ambito").value;
-      this.crearSubAmbitoSubscription = this.subAmbitoService.agregarSubAmbito(this.subambito).subscribe(
-        plazo => {
-          this.notifier.notify('success', 'SE AGREGÓ EL SUBAMBITO CON ÉXITO');
+      this.crearSubAmbitoSubscription = this.subAmbitoService.agregarSubAmbito(subambito).subscribe(
+        subambito => {
+          this.notifier.notify('success', 'Se ha agregado el subambito correctamente');
           this.bsModalRef.hide();
-          this.subambitoCreadoEvent.emit(this.subambito);
+          this.subambitoCreadoEvent.emit(subambito);
         },
         error => {
-          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
+          this.notifier.notify('error', 'No se puede agregar un nombre existente');
         }
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL NOMBRE');
+      this.notifier.notify('error', 'Debe ingresar el nombre del subambito');
     }
   }
 
 
 
 }
+

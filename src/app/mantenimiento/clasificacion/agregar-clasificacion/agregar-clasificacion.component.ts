@@ -32,22 +32,23 @@ export class AgregarClasificacionComponent implements OnInit {
       'nombre' : new FormControl('', Validators.required)
     })
   }
-
   onSubmit(clasificacion){
-    if (this.agregarForm.controls['nombre'].value.length !== 0) {
+    let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
+    if (nombreSinEspacios.length !== 0) {
+      clasificacion.nombre = nombreSinEspacios;
       this.crearClasifiacionSubscription = this.clasificacionService.agregarClasificacion(clasificacion).subscribe(
         clasificacion => {
-          this.notifier.notify('success', 'SE AGREGÓ LA CLASIFICACIOÓN CON ÉXITO');
+          this.notifier.notify('success', 'Se ha agregado la clasificación correctamente');
           this.bsModalRef.hide();
           this.clasificacionCreadaEvente.emit(clasificacion);
         },
         error => {
-          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
+          this.notifier.notify('error', 'No se puede agregar un nombre existente');
         }
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL NOMBRE DE LA CLASIFICACIÓN');
+      this.notifier.notify('error', 'Debe ingresar el nombre de la clasificación');
     }
   }
 

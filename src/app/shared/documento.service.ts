@@ -200,7 +200,7 @@ export class DocumentoService {
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(motivoEstado)) {
                     callback({
-                        mensaje: "Ingrese Motivo en la fila " + (i + 1)
+                        mensaje: "Ingrese motivo correcto en la fila " + (i + 1)
                     });
                     return; 
                 }
@@ -272,15 +272,15 @@ export class DocumentoService {
     listarDocumentosPorDevolver(): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "pordevolver", {});
     }
-
+//3
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
-
+//1
     listarDocumentosUtdBCPCodigo(codigo: string) {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }
-
+//2
     listarDocumentosUtdBCPFechas(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
@@ -339,3 +339,5 @@ export class DocumentoService {
         return this.requesterService.post<Documento>(this.REQUEST_URL + id + "/codigodevolucion", codigo, {});
     }
 }
+
+

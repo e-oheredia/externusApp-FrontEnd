@@ -57,13 +57,13 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         },
         error => {
           if (error.status === 400) {
-            this.notifier.notify('error', 'RANGO DE FECHA NO VALIDA');
+            this.notifier.notify('error', 'Rango de fecha no válido');
           }
         }
       );
     }
     else {
-      this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
+      this.notifier.notify('error', 'Seleccione un rango de fechas');
     }
   }
 

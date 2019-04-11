@@ -47,7 +47,7 @@ export class SubambitoComponent implements OnInit {
         title: 'Nombre'
       },
       ambito: {
-        title: 'Ambito'
+        title: 'Ámbito'
       },
       estado: {
         title: 'Estado'

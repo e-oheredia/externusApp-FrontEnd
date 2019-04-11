@@ -42,27 +42,29 @@ export class AgregarProveedorComponent implements OnInit {
 
   }
 
-  onSubmit(proveedorFormValue){
-    // 
-    if (this.agregarForm.controls['nombreProveedor'].value.length !== 0 && this.plazosDistribucionElegidos.length !==0) {
+  onSubmit(proveedor){
+    let nombreSinEspacios = this.agregarForm.controls['nombreProveedor'].value.trim();
+    if (nombreSinEspacios.length !== 0 && this.plazosDistribucionElegidos.length !==0) {
     let proveedor: Proveedor = new Proveedor();
-    proveedor.nombre = proveedorFormValue.nombreProveedor;
+    proveedor.nombre = nombreSinEspacios;
     proveedor.plazosDistribucion = this.plazosDistribucionElegidos;
     this.crearProveedorSubscription = this.proveedorService.agregarProveedor(proveedor).subscribe(
       proveedor => {
-        this.notifier.notify('success', 'EL PROVEEDOR FUE CREADO EXITOSAMENTE');
+        this.notifier.notify('success', 'Se ha agregado el proveedor correctamente');
         this.bsModalRef.hide();
         this.proveedorCreadoEvent.emit(proveedor);
       },
       error => {
-        this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
+        this.notifier.notify('error', 'No se puede agregar un nombre existente');
       }
     );
   }
   else {
-    this.notifier.notify('error', 'DEBE INGRESAR LOS DATOS COMPLETOS');
+    this.notifier.notify('error', 'Debe ingresar todos los datos');
   }
 }
+
+
 
   listarPlazosDistribucion() {
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();

@@ -88,6 +88,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       distrito: {
         title: 'Distrito'
       },
+      clasificacion: {
+        title: 'Clasificación'
+      },
       estado: {
         title: 'Estado'
       },
@@ -132,6 +135,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               contacto: documento.contactoDestino,
               direccion: documento.direccion,
               distrito: documento.distrito.nombre,
+              clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
               estado: this.documentoService.getUltimoEstado(documento).nombre,
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado,
               fisicoRecibido: documento.recepcionado ? "SI" : "NO",
@@ -148,12 +152,12 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
             this.documentoForm.controls['fechaFin'].reset();
             this.documentoForm.controls['fechaIni'].enable();
             this.documentoForm.controls['fechaFin'].enable();
-            this.notifier.notify('success', 'CÓDIGO AUTOGENERADO ENCONTRADO');
+            this.notifier.notify('success', 'Código autogenerado encontrado');
           },
           error => {
             if (error.status === 400) {
               this.documentos = [];
-              this.notifier.notify('error', 'NO HAY RESULTADOS');
+              this.notifier.notify('error', 'No hay resultados');
             }
           }
         );
@@ -183,6 +187,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       contacto: documento.contactoDestino ? documento.contactoDestino : "no tiene",
                       direccion: documento.direccion,
                       distrito: documento.distrito.nombre,
+                      clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
                       estado: this.documentoService.getUltimoEstado(documento).nombre,
                       motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                       fisicoRecibido: documento.recepcionado ? "SI" : "NO",
@@ -201,14 +206,14 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
           error => {
             if (error.status === 400) {
               this.documentos = [];
-              this.notifier.notify('error', 'RANGO DE FECHA NO VÁLIDA');
+              this.notifier.notify('error', 'Rango de fechas no válido');
             }
           }
         );
     }
 
     else {
-      this.notifier.notify('error', 'INGRESE ALGÚN DATO DE CONSULTA');
+      this.notifier.notify('error', 'Ingrese algún dato de consulta');
     }
   }
 

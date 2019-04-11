@@ -98,6 +98,9 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             distrito: {
                 title: 'Distrito'
             },
+            clasificacion: {
+                title: 'Clasificación'
+            },
             estado: {
                 title: 'Estado'
             },
@@ -150,6 +153,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         contactoDestino: documento.contactoDestino,
                                         direccion: documento.direccion,
                                         distrito: documento.distrito.nombre,
+                                        clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
                                         estado: this.documentoService.getUltimoEstado(documento).nombre,
                                         motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                                         fisicoRecibido: documento.recepcionado ? "SI" : "NO",
@@ -169,13 +173,13 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                 error => {
                     if (error.status === 400) {
                         this.documentos = [];
-                        this.notifier.notify('error', 'RANGO DE FECHA NO VALIDA');
+                        this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
             );
         }
         else {
-            this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
+            this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
     }
 
