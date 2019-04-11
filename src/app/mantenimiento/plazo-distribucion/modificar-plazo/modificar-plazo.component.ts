@@ -65,18 +65,19 @@ export class ModificarPlazoComponent implements OnInit {
 
   onSubmit(form: any) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tiempoEnvio'].value && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tipoPlazoDistribucion'].value))) {
-      this.plazo.nombre = this.modificarForm.get("nombre").value;
+      let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
+      this.plazo.nombre = nombreSinEspacios;
       this.plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       this.plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
       this.plazo.activo = this.modificarForm.get('activo').value;
       this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(this.plazo.id,this.plazo).subscribe(
         plazo => {
-          this.notifier.notify('success', 'SE MODIFICÓ EL PLAZO CON ÉXITO');
+          this.notifier.notify('success', 'Se ha modificado el plazo de distribución correctamente');
           this.bsModalRef.hide();
           this.confirmarEvent.emit();
         },
         error => {
-
+          this.notifier.notify('error', 'El nombre modificado ya existe');
         }
       );
     }

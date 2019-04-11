@@ -38,7 +38,7 @@ export class AsignarCodigoDocumentoComponent implements OnInit {
       documento.codigoDevolucion = codigoFormValue.codigoDevDocumento;
       this.AsignarCodigoDocumentoSubscription = this.documentoService.asignarCodigoDevolucionCargo(documento.id, documento.codigoDevolucion).subscribe(
         documento => {
-          this.notifier.notify('success', 'SE ASIGNÓ EL CÓDIGO CORRECTAMENTE');
+          this.notifier.notify('success', 'Se asignó el código correctamente');
           this.bsModalRef.hide();
           this.codigoAsignadoEvent.emit(documento);
         },
@@ -48,7 +48,7 @@ export class AsignarCodigoDocumentoComponent implements OnInit {
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL CODIGO DE DEVOLUCIÓN');
+      this.notifier.notify('error', 'Debe ingresar el código de devolución');
     }
   }
 

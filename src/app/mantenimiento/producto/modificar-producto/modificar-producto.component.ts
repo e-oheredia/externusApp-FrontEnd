@@ -40,13 +40,17 @@ export class ModificarProductoComponent implements OnInit {
 
   onSubmit(form: any) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
-      this.producto.nombre = this.modificarForm.get("nombre").value;
+      let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
+      this.producto.nombre = nombreSinEspacios;
       this.producto.activo = this.modificarForm.get('activo').value;
       this.modificarProductoSubscription = this.productoService.modificarProducto(this.producto.id, this.producto).subscribe(
         producto => {
-          this.notifier.notify('success', 'SE MODIFICÓ EL PRODUCTO CON ÉXITO');
+          this.notifier.notify('success', 'Se ha modificado el producto correctamente');
           this.bsModalRef.hide();
           this.productoModificadoEvent.emit(producto);
+        },
+        error => {
+          this.notifier.notify('error', 'El nombre modificado ya existe');
         }
       )
     }

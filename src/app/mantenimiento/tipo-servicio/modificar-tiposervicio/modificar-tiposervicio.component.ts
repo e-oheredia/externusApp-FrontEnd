@@ -40,19 +40,21 @@ export class ModificarTipoServicioComponent implements OnInit {
 
   onSubmit(form: any){
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
-      this.servicio.nombre = this.modificarForm.get("nombre").value;
+      let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
+      this.servicio.nombre = nombreSinEspacios;
       this.servicio.activo = this.modificarForm.get('activo').value;
       this.modificarTipoServicioSubscription = this.tipoServicioService.modificarTipoServicio(this.servicio.id, this.servicio).subscribe(
         tiposervicio => {
-          this.notifier.notify('success', 'SE MODIFICÓ EL TIPO DE SERVICIO CON ÉXITO');
+          this.notifier.notify('success', 'Se ha modificado el tipo de servicio correctamente');
           this.bsModalRef.hide();
-          this.tipoServicioModificarEvent.emit();
+          this.tipoServicioModificarEvent.emit(tiposervicio);
         },
-
+        error => {
+          this.notifier.notify('error', 'El nombre modificado ya existe');
+        }
       );
     }
   }
 
-  
 
 }

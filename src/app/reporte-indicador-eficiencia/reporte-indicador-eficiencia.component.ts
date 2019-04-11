@@ -94,7 +94,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
         console.log((aFin - aIni) * 12 + (mFin - mIni));
     
         if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
-          this.notifier.notify('error', 'SELECCIONE COMO MÁXIMO UN PERIODO DE 13 MESES');
+          this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
           return;
         }
 
@@ -353,13 +353,13 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                 },
                 error => {
                     if (error.status === 400) {
-                        this.notifier.notify('error', 'RANGOS DE FECHA NO VALIDA');
+                        this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
             );
         }
         else {
-            this.notifier.notify('error', 'SELECCIONE RANGO DE FECHAS');
+            this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
     }
 

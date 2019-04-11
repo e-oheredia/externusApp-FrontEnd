@@ -53,24 +53,23 @@ export class AgregarPlazoComponent implements OnInit {
   }
 
   onSubmit(plazo) {
-    if (this.agregarForm.controls['nombre'].value.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0) {
+    let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
+    if (nombreSinEspacios.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0) {
+      plazo.nombre = nombreSinEspacios;
       this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo).subscribe(
         plazo => {
-          this.notifier.notify('success', 'SE AGREGÓ EL PLAZO DE DISTRIBUCIÓN CON ÉXITO');
+          this.notifier.notify('success', 'Se ha agregado el plazo de distribución correctamente');
           this.bsModalRef.hide();
           this.plazoCreadoEvent.emit(plazo);
         },
         error => {
-          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
+          this.notifier.notify('error', 'No se puede ingresar un nombre existente');
         }
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR TODOS LOS DATOS');
+      this.notifier.notify('error', 'Debe ingresar todos los datos');
     }
   }
-
-
-  
 
 }

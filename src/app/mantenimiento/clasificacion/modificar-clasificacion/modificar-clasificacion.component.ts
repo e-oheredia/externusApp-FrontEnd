@@ -39,16 +39,17 @@ export class ModificarClasificacionComponent implements OnInit {
 
   onSubmit(form: any){
     if (this.modificarForm.controls['nombre'].value.length !== 0){
-      this.clasificacion.nombre = this.modificarForm.get("nombre").value;
+      let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
+      this.clasificacion.nombre = nombreSinEspacios;
       this.clasificacion.activo = this.modificarForm.get('activo').value;
       this.modificarClasificacionSubscription = this.clasificacionService.modificarClasificacion(this.clasificacion.id, this.clasificacion).subscribe(
         clasificacion => {
-          this.notifier.notify('success', 'SE MODIFICÓ LA CLASIFICACIOÓN CON ÉXITO');
+          this.notifier.notify('success', 'Se ha modificado la clasificación correctamente');
           this.bsModalRef.hide();
           this.clasificacionModificadaEvent.emit(clasificacion);
         },
         error => {
-          //this.notifier.notify('error', 'MENSAJE');
+          this.notifier.notify('error', 'El nombre modificado ya existe');
         }
       );
     }

@@ -107,7 +107,7 @@ export class ReporteGuiasComponent implements OnInit {
               tipoSeguridad: guia.tipoSeguridad.nombre,
               sede: guia.sede.nombre,
               totalDocumentos: guia.documentosGuia.length,
-              fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : 'SIN FECHA',
+              fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
               fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
               estado: this.guiaService.getEstadoGuia(guia).nombre
             })
@@ -118,12 +118,12 @@ export class ReporteGuiasComponent implements OnInit {
             this.guiaForm.controls['fechaFin'].reset();
             this.guiaForm.controls['fechaIni'].enable();
             this.guiaForm.controls['fechaFin'].enable();
-            this.notifier.notify('success', 'GUIA ENCONTRADA');
+            this.notifier.notify('success', 'Guía encontrada');
           },
           error => {
             if (error.status === 400) {
               this.guias = [];
-              this.notifier.notify('error', 'NO HAY RESULTADOS');
+              this.notifier.notify('error', 'No hay resultados');
             }
           }
         );
@@ -152,7 +152,7 @@ export class ReporteGuiasComponent implements OnInit {
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
                       totalDocumentos: guia.documentosGuia.length,
-                      fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : 'SIN FECHA',
+                      fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre
                     })
@@ -165,14 +165,14 @@ export class ReporteGuiasComponent implements OnInit {
           error => {
             if (error.status === 400) {
               this.guias = [];
-              this.notifier.notify('error', 'EL RANGO DE FECHAS ES INCORRECTO');
+              this.notifier.notify('error', 'El rango de fechas es incorrecto');
             }
           }
         );
     }
 
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL CÓDIGO O UN RANGO DE FECHAS');
+      this.notifier.notify('error', 'Debe ingresar el código o un rango de fechas');
     }
   }
 

@@ -39,19 +39,22 @@ export class ModificarTipoSeguridadComponent implements OnInit {
 
   onSubmit(form: any) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)) {
-      this.tipoSeguridad.nombre = this.modificarForm.get("nombre").value;
+      let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
+      this.tipoSeguridad.nombre = nombreSinEspacios;
       this.tipoSeguridad.activo = this.modificarForm.get('activo').value;
       this.modificarTipoSeguridadSubscribe = this.tipoSeguridadService.modificarTipoSeguridad(this.tipoSeguridad.id, this.tipoSeguridad).subscribe(
         tiposeguridad => {
-          this.notifier.notify('success', 'SE MODIFICÓ EL TIPO DE SEGURIDAD CON ÉXITO');
+          this.notifier.notify('success', 'Se ha modificado el tipo de seguirdad correctamente');
           this.bsModalRef.hide();
-          this.confirmarEvent.emit();
+          this.confirmarEvent.emit(tiposeguridad);
         },
-
+        error => {
+          this.notifier.notify('error', 'El nombre modificado ya existe');
+        }
       );
     }
   }
 
-  
+
 
 }

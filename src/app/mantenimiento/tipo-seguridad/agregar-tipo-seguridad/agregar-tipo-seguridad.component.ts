@@ -38,20 +38,22 @@ export class AgregarTipoSeguridadComponent implements OnInit {
   }
 
   onSubmit(tipoSeguridad) {
-    if (this.agregarForm.controls['nombre'].value.length !== 0) {
+    let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
+    if (nombreSinEspacios.length !== 0) {
+      tipoSeguridad.nombre = nombreSinEspacios;
       this.crearTipoSeguridadSubscription = this.tipoSeguridadService.agregarTipoSeguridad(tipoSeguridad).subscribe(
         tipoSeguridad => {
-          this.notifier.notify('success', 'SE AGREGÓ EL TIPO DE SEGURIDAD CON ÉXITO');
+          this.notifier.notify('success', 'Se ha agregado el tipo de seguridad correctamente');
           this.bsModalRef.hide();
           this.tipoSeguridadCreadoEvent.emit(tipoSeguridad);
         },
         error => {
-          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
+          this.notifier.notify('error', 'No se puede agregar un nombre existente');
         }
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL NOMBRE DEL TIPO DE SEGURIDAD');
+      this.notifier.notify('error', 'Debe ingresar el nombre del tipo de seguridad');
     }
   }
 

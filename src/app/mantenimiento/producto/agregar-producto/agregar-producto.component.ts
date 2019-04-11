@@ -34,21 +34,24 @@ export class AgregarProductoComponent implements OnInit {
   }
 
   onSubmit(producto) {
+    let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
     if (this.agregarForm.controls['nombre'].value.length !== 0) {
+      producto.nombre = nombreSinEspacios;
       this.crearProductoSubscription = this.productoService.agregarProducto(producto).subscribe(
         plazo => {
-          this.notifier.notify('success', 'SE AGREGÓ EL PRODUCTO CON ÉXITO');
+          this.notifier.notify('success', 'Se ha agregado el producto correctamente');
           this.bsModalRef.hide();
           this.productoCreadoEvent.emit(producto);
         },
         error => {
-          this.notifier.notify('error', 'NO SE PUEDE INGRESAR UN NOMBRE EXISTENTE');
+          this.notifier.notify('error', 'No se puede agregar un nombre existente');
         }
       );
     }
     else {
-      this.notifier.notify('error', 'DEBE INGRESAR EL NOMBRE');
+      this.notifier.notify('error', 'Debe ingresar el nombre del producto');
     }
   }
 
 }
+
