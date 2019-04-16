@@ -62,6 +62,7 @@ import { AmbitoService } from '../shared/ambito.service';
 import { ClasificacionService } from '../shared/clasificacion.service';
 import { AgregarClasificacionComponent } from '../mantenimiento/clasificacion/agregar-clasificacion/agregar-clasificacion.component';
 import { ModificarClasificacionComponent } from '../mantenimiento/clasificacion/modificar-clasificacion/modificar-clasificacion.component';
+import { EnvioBloqueService } from '../shared/enviobloque.service';
 
 
 @NgModule({
@@ -142,7 +143,8 @@ import { ModificarClasificacionComponent } from '../mantenimiento/clasificacion/
     ProductoService,
     AmbitoService,
     SubAmbitoService,
-    ClasificacionService
+    ClasificacionService,
+    EnvioBloqueService
   ], 
   entryComponents: [ 
     ConfirmModalComponent, 

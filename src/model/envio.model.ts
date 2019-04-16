@@ -26,7 +26,8 @@ export class Envio {
     public documentos: Documento[];
     public checked: boolean;
     public autorizado: boolean;
-
+    public autogenerado: string;
+    
     public addDocumento(documento: Documento){
         this.documentos.push(documento);
     }

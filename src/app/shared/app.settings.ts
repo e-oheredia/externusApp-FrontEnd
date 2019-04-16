@@ -21,6 +21,7 @@ export class AppSettings {
     public static AREA_URL = "areas/";
     public static ENVIO_URL = "envios/";
     public static ENVIO_MASIVO_URL = "enviosmasivos/";
+    public static ENVIO_BLOQUE_URL = "enviosbloques/";
     public static PROVEEDOR_URL = "proveedores/";
     public static TIPOPLAZODISTRIBUCION_URL = "tiposplazo/";
     public static GUIA_URL = "guias/";

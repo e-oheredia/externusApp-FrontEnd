@@ -209,7 +209,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.envio.producto = this.documentoForm.get("producto").value;
     this.envio.addDocumento(this.documento);
 
-    this.envioService.registrarEnvio(this.envio, this.autorizationFile).subscribe(
+    this.envioService.registrarEnvio(this.envio, this.autorizationFile, null, null).subscribe(
       envio => {
 
         this.autogeneradoCreado = envio.documentos[0].documentoAutogenerado;
