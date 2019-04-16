@@ -9,6 +9,7 @@ import { GenerarMasivoComponent } from './generar-masivo/generar-masivo.componen
 import { GenerarDocumentosRoutingModule } from './generar-documentos-routing.module';
 import { GenerarDocumentosComponent } from './generar-documentos.component';
 import { DatosBuzonComponent } from './datos-buzon/datos-buzon.component';
+import { GenerarBloqueComponent } from './generar-bloque/generar-bloque.component';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { DatosBuzonComponent } from './datos-buzon/datos-buzon.component';
     GenerarDocumentosComponent,
     GenerarDocumentoIndividualComponent, 
     GenerarMasivoComponent, 
-    DatosBuzonComponent
+    DatosBuzonComponent, 
+    GenerarBloqueComponent
   ], 
   entryComponents: [
   ]

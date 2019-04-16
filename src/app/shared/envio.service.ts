@@ -16,7 +16,7 @@ export class EnvioService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.ENVIO_URL;
 
-    registrarEnvio(envio: Envio, file: File): Observable<Envio> {
+    registrarEnvio(envio: Envio, file: File, codigoGuia: number, proveedor: number): Observable<Envio> {
         let form: FormData = new FormData;
         form.append("envio", JSON.stringify(envio));
         if (file !== null && file != undefined) {

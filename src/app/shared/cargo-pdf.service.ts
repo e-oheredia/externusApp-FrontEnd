@@ -3,6 +3,7 @@ import { Envio } from './../../model/envio.model';
 import { Injectable } from "@angular/core";
 import * as jsPDF from "jspdf";
 import { UtilsService } from "./utils.service";
+import { EnvioBloque } from 'src/model/enviobloque.model';
 
 
 @Injectable()
@@ -80,6 +81,37 @@ export class CargoPdfService {
             this.escribirInformacionPdf(doc, info, 160);
 
             doc.save(envio.masivoAutogenerado + '.pdf');       
+            canvas = null;
+        }
+        image.src = codigoBarrasBase64;
+    }
+
+    generarPdfBloque(envio: EnvioBloque, codigoBarrasSvg: any) {
+        let doc = new jsPDF(); 
+        let codigoBarrasBase64 = this.utilsService.svgToBase64(codigoBarrasSvg);
+        var svgSize = codigoBarrasSvg.viewBox.baseVal;
+        var image = new Image();
+        image.onload = () => {            
+            var canvas = document.createElement('canvas');
+            canvas.width = svgSize.width;
+            canvas.height = svgSize.height;
+            var context = canvas.getContext('2d');            
+            context.drawImage(image, 0, 0);
+            doc.setFontSize(25);
+            var imgData = canvas.toDataURL('image/png');
+            doc.text(40, 20, 'EXTERNUS - ENVÍO MASIVO');
+            doc.addImage(imgData, 'PNG', (this.PAGE_WIDTH - this.CODIGO_BARRAS_WIDTH) / 2, 40, this.CODIGO_BARRAS_WIDTH, this.CODIGO_BARRAS_WIDTH * image.height / image.width);
+            doc.setFontSize(12);
+            let info = {
+                'DE:': envio.buzon.nombre, 
+                'SEDE ORIGEN: ': 'LA MOLINA',
+                'PLAZO DISTRIBUCIÓN:': envio.plazoDistribucion.nombre, 
+                'TIPO DE SEGURIDAD:': envio.tipoSeguridad.nombre, 
+                'TIPO DE SERVICIO:': envio.tipoServicio.nombre
+            }
+            this.escribirInformacionPdf(doc, info, 160);
+
+            doc.save(envio.autogenerado + '.pdf');       
             canvas = null;
         }
         image.src = codigoBarrasBase64;

@@ -126,7 +126,6 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   cargarDatosVista() {
-
     this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
     this.clasificaciones = this.clasificacionService.getClasificaciones();
     this.productos = this.productoService.getProductos();
