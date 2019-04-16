@@ -6,5 +6,5 @@ export class EnvioBloque extends Envio {
         super();
     }
 
-    // public bloqueAutogenerado: string;
+    public bloqueAutogenerado: string;
 }

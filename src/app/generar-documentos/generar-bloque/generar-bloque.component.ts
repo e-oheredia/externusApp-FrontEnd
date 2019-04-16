@@ -23,6 +23,10 @@ import { EnvioService } from 'src/app/shared/envio.service';
 import { CargoPdfService } from 'src/app/shared/cargo-pdf.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AutogeneradoCreadoModalComponent } from '../autogenerado-creado-modal/autogenerado-creado-modal.component';
+import { Documento } from 'src/model/documento.model';
+import { DocumentoService } from 'src/app/shared/documento.service';
+import { UtilsService } from 'src/app/shared/utils.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-generar-bloque',
@@ -42,16 +46,18 @@ export class GenerarBloqueComponent implements OnInit {
     private envioBloqueService: EnvioBloqueService,
     private envioService: EnvioService,
     private cargoPdfService: CargoPdfService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private documentoService: DocumentoService,
+    private utilsService: UtilsService,
+    private notifier: NotifierService
   ) { }
 
   bloqueForm: FormGroup;
-  excelFile: File;
   envioBloque: EnvioBloque = new EnvioBloque();
   buzon: Buzon;
   autogeneradoCreado: string;
   proveedor: Proveedor;
-  guia: Guia;
+  codigoGuia: string;
   
   plazosDistribucion: PlazoDistribucion[];
   productos: Producto[];
@@ -60,12 +66,15 @@ export class GenerarBloqueComponent implements OnInit {
   proveedores: Proveedor[];
   tiposSeguridad: TipoSeguridad[];
 
+  documentosEnBloque: Documento[] = [];
+
   plazosDistribucionSubscription: Subscription;
   productosSubscription: Subscription;
   clasificacionesSubscription: Subscription;
   tiposServicioSubscription: Subscription;
   proveedoresSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
+  buzonSubscription: Subscription;
   
   ngOnInit() {
     this.cargarDatosVista();
@@ -121,14 +130,29 @@ export class GenerarBloqueComponent implements OnInit {
         this.tiposSeguridad = tiposSeguridad;
       }
     )
+    this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(
+      buzon => {
+        this.buzon = buzon;
+      }
+    )
+  }
+
+  mostrarDocumentosCargados(file: File){
+    this.documentoService.mostrarDocumentosCargados(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        this.documentosEnBloque = data;        
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    });
   }
 
   onChangeExcelFile(file: File){
     if (file == null) {
-      this.excelFile = null;
+      this.documentosEnBloque = [];
       return null;
     }
-    this.excelFile = file;
+    this.mostrarDocumentosCargados(file);
   }
 
   onSubmit(datosBloque: FormGroup){
@@ -139,10 +163,12 @@ export class GenerarBloqueComponent implements OnInit {
     this.envioBloque.clasificacion = datosBloque.get('clasificacion').value;
     this.envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
     this.envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
-    this.guia = datosBloque.get('codigoGuia').value;
+    this.envioBloque.documentos = this.documentosEnBloque;  
+    this.codigoGuia = datosBloque.get('codigoGuia').value;
     this.proveedor = datosBloque.get('proveedor').value;
-    this.envioService.registrarEnvio(this.envioBloque, null, this.guia.id, this.proveedor.id).subscribe(
+    this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
       envioBloque => {
+        this.documentosEnBloque = [];
         this.autogeneradoCreado = envioBloque.autogenerado
         setTimeout(() =>{
           this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
@@ -155,9 +181,8 @@ export class GenerarBloqueComponent implements OnInit {
         this.bloqueForm.reset();
       }
     )
-
     console.log(this.envioBloque)
-    console.log(this.guia)
+    console.log(this.codigoGuia)
     console.log(this.proveedor)
   }
 

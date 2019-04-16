@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { EnvioBloque } from 'src/model/enviobloque.model';
 import { Guia } from 'src/model/guia.model';
 import { Proveedor } from 'src/model/proveedor.model';
+import { HttpParams } from '@angular/common/http';
 
 
 @Injectable()
@@ -13,17 +14,18 @@ export class EnvioBloqueService {
 
     constructor(private requester: RequesterService){}
 
-    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.ENVIO_BLOQUE_URL;
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.ENVIO_URL;
 
-    // registrarEnvioBloque(envioBloque: EnvioBloque, codigoGuia: number, proveedor: number): Observable<EnvioBloque> {
-    //     let form: FormData = new FormData;
-    //     form.append("envioBloque", JSON.stringify(envioBloque));
-    //     return this.requester.post<EnvioBloque>(this.REQUEST_URL, form, {});
-    // }
+    registrarEnvioBloque(envioBloque: EnvioBloque, codigoGuia: string, proveedorId: number): Observable<EnvioBloque> {
+        let form: FormData = new FormData;
+        form.append("envio", JSON.stringify(envioBloque));
+        return this.requester.post<EnvioBloque>(this.REQUEST_URL + "bloque", form, { params: new HttpParams().append('codigoGuia', codigoGuia).append('proveedorId', proveedorId.toString()) } );
+    }
 
-    // listarEnviosBloqueCreados(){
-    //     return this.requester.get<Envio[]>(this.REQUEST_URL + "creados", {});
-    // }
+
+    listarEnviosBloqueCreados(){
+        return this.requester.get<Envio[]>(this.REQUEST_URL + "creados", {});
+    }
     
 
 
