@@ -169,13 +169,13 @@ export class GenerarBloqueComponent implements OnInit {
     this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
       envioBloque => {
         this.documentosEnBloque = [];
-        this.autogeneradoCreado = envioBloque.autogenerado
-        setTimeout(() =>{
-          this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
-        }, 200);
+        this.autogeneradoCreado = envioBloque.masivoAutogenerado
+        // setTimeout(() =>{
+        //   this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
+        // }, 200);
         let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
           initialState : {
-            autogenerado: envioBloque.autogenerado
+            autogenerado: envioBloque.masivoAutogenerado
           }
         });
         this.bloqueForm.reset();

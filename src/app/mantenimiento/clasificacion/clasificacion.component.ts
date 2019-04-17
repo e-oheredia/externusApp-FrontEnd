@@ -10,7 +10,6 @@ import { FormGroup } from '@angular/forms';
 import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
 import { AgregarClasificacionComponent } from './agregar-clasificacion/agregar-clasificacion.component';
 import { ModificarClasificacionComponent } from './modificar-clasificacion/modificar-clasificacion.component';
-import { MensajeExitoComponent } from 'src/app/modals/mensaje-exito/mensaje-exito.component';
 import { NotifierService } from 'angular-notifier';
 
 @Component({

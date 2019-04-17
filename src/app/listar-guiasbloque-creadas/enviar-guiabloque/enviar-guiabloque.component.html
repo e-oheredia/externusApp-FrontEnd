@@ -1,0 +1,28 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h4>Enviar guía bloque</h4>
+  </div>
+
+  <form [formGroup]="enviarForm" (ngSubmit)=onSubmit(enviarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="mensaje">¿Está seguro de enviar la guía {{guia.numeroGuia}}?</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Enviar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

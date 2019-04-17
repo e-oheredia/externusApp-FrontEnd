@@ -36,6 +36,26 @@
               Es necesario ingresar el tipo de servicio
             </span>
           </div>
+          <!--  -->
+          <div class="form-group">
+            <label for="clasificacion">Clasificación *</label>
+            <select class="form-control" id="clasificacion" formControlName="clasificacion">
+              <option *ngFor="let clasificacion of clasificaciones" [ngValue]="clasificacion">{{clasificacion.nombre}}</option>
+            </select>
+            <span *ngIf="!guiaForm.get('clasificacion').valid && guiaForm.get('clasificacion').touched" class="text-danger small">
+              Es necesario ingresar la clasificacion
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="producto">Producto *</label>
+            <select class="form-control" id="producto" formControlName="producto">
+              <option *ngFor="let producto of productos" [ngValue]="producto">{{producto.nombre}}</option>
+            </select>
+            <span *ngIf="!guiaForm.get('producto').valid && guiaForm.get('producto').touched" class="text-danger small">
+              Es necesario ingresar el producto
+            </span>
+          </div>
+          <!--  -->
           <div class="form-group">
             <label for="proveedor">Proveedor</label>
             <select class="form-control" id="proveedor" formControlName="proveedor">
