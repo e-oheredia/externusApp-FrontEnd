@@ -1,0 +1,169 @@
+import { Component, OnInit } from '@angular/core';
+import { GuiaService } from '../shared/guia.service';
+import { DocumentoService } from '../shared/documento.service';
+import { NotifierService } from 'angular-notifier';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { LocalDataSource } from 'ng2-smart-table';
+import { AppSettings } from '../shared/app.settings';
+import { Guia } from 'src/model/guia.model';
+import { Documento } from 'src/model/documento.model';
+import { Subscription } from 'rxjs';
+import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
+import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
+
+@Component({
+  selector: 'app-recepcionar-bloque',
+  templateUrl: './recepcionar-bloque.component.html',
+  styleUrls: ['./recepcionar-bloque.component.css']
+})
+export class RecepcionarBloqueComponent implements OnInit {
+
+  constructor(
+    private guiaService: GuiaService,
+    public documentoService: DocumentoService,
+    private notifier: NotifierService,
+    private modalService: BsModalService
+  ) { }
+
+  dataDevolucionesDeBloque: LocalDataSource = new LocalDataSource();
+  rutaPlantillaResultados: string = AppSettings.PANTILLA_RESULTADOS;
+  settings = AppSettings.tableSettings;
+
+  guias: Guia[] = [];
+  guia: Guia;
+  documento: Documento;
+
+  guiasSubscription: Subscription;
+  estadoDocumentoForm = EstadoDocumentoEnum;
+
+  ngOnInit() {
+    this.generarColumnas();
+    this.listarGuiasPorProcesar();
+    this.settings.hideSubHeader = false;
+  }
+
+  generarColumnas(){
+    this.settings.columns = {
+      fechaEnvio: {
+        title: 'Fecha de envío'
+      },
+      nroGuia: {
+        title: 'Número de guía'
+      },
+      plazoDistribucion: {
+        title: 'Plazo de distribución'
+      },
+      tipoServicio: {
+        title: 'Tipo de servicio'
+      },
+      tipoSeguridad: {
+        title: 'Tipo de seguridad'
+      },
+      fechaLimiteResultado: {
+        title: 'Fecha límite de resultado'
+      },
+      descargarBase: {
+        title: 'Descargar Base',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-download";
+          instance.pressed.subscribe(row => {
+            this.descargarBase(row);
+          });
+        }
+      },
+      entregados: {
+        title: 'Entregados'
+      },
+      rezagados: {
+        title: 'Rezagados'
+      },
+      noDistribuibles: {
+        title: 'No distribuibles'
+      },
+      total: {
+        title: 'Total'
+      },
+      subirBase: {
+        title: 'Descargar Base',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-download";
+          instance.pressed.subscribe(row => {
+            this.subirResultados(row);
+          });
+        }
+      },
+    }
+  }
+
+  descargarBase(row){
+    let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
+    this.guiaService.exportarDocumentosGuia(guia)
+    if(!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)){
+      this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
+        this.listarGuiasPorProcesar();
+      },
+        error => console.log(error));
+    }
+  }
+
+  subirResultados(row){
+    let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
+    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
+      initialState: {
+        documento: this.documento,
+        guia: guia,
+        titulo: 'Subir resultado.',
+        mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
+      },
+      class: 'modal-lg',
+      keyboard: false,
+      backdrop: "static"
+    });
+
+    this.modalService.onHide.subscribe(
+      () => {
+        this.listarGuiasPorProcesar();
+      }
+    )
+  }
+
+  listarGuiasPorProcesar(){
+    this.guiasSubscription = this.guiaService.listarGuiasPorProcesar().subscribe(
+      guias => {
+        this.guias = guias;
+        let dataDevolucionesDeBloque = [];
+
+        guias.forEach(guia => {
+          dataDevolucionesDeBloque.push({
+            fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
+            nroGuia: guia.numeroGuia,
+            plazoDistribucion: guia.plazoDistribucion.nombre,
+            tipoServicio: guia.tipoServicio.nombre,
+            tipoSeguridad: guia.tipoSeguridad.nombre,
+            fechaLimiteResultado: '',
+            entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
+            rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
+            noDistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
+            // total:
+          })
+        })
+        this.guias.push(this.guia);
+        this.dataDevolucionesDeBloque.load(dataDevolucionesDeBloque);
+      },
+      error => {
+        if (error.status === 400){
+          this.guias = [];
+          this.notifier.notify('error', 'no hay resultadosss');
+        }
+      }
+    )
+  }
+
+
+
+}

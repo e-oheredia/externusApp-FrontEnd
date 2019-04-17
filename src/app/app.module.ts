@@ -28,6 +28,8 @@ import { CambiarEstadoModule } from './cambiar-estado/cambiar-estado.module';
 import { RecepcionarCargosModule } from './recepcionar-cargos/recepcionar-cargos.module';
 import { ReporteGuiasModule } from './reporte-guias/reporte-guias.module';
 import { ProcesarGuiasModule } from './procesar-guias/procesar-guias.module';
+import { ListarGuiasbloqueCreadasModule } from './listar-guiasbloque-creadas/listar-guiasbloque-creadas.module';
+import { RecepcionarBloqueModule } from './recepcionar-bloque/recepcionar-bloque.module';
 
 
 
@@ -59,7 +61,9 @@ import { ProcesarGuiasModule } from './procesar-guias/procesar-guias.module';
     RecepcionarCargosModule,
     RecepcionarDocumentosModule,
     ReporteGuiasModule,
-    ProcesarGuiasModule
+    ProcesarGuiasModule,
+    ListarGuiasbloqueCreadasModule,
+    RecepcionarBloqueModule
   ],
   providers: [],
   bootstrap: [AppComponent]

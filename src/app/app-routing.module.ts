@@ -20,6 +20,8 @@ import { ReporteIndicadorEficienciaComponent } from './reporte-indicador-eficien
 import { CambiarEstadoComponent } from './cambiar-estado/cambiar-estado.component';
 import { ReporteGuiasComponent } from './reporte-guias/reporte-guias.component';
 import { ProcesarGuiasComponent } from './procesar-guias/procesar-guias.component';
+import { ListarGuiasbloqueCreadasComponent } from './listar-guiasbloque-creadas/listar-guiasbloque-creadas.component';
+import { RecepcionarBloqueComponent } from './recepcionar-bloque/recepcionar-bloque.component';
 
 
 
@@ -43,6 +45,10 @@ const appRoutes: Routes = [
     {
         path: 'guias-creadas',
         component: ListarGuiasCreadasComponent
+    },
+    {
+        path: 'guiasbloque-creadas',
+        component: ListarGuiasbloqueCreadasComponent
     },
     {
         path: 'documentos-custodiados',
@@ -113,6 +119,10 @@ const appRoutes: Routes = [
     {
         path: 'procesar-guias',
         component: ProcesarGuiasComponent
+    },
+    {
+        path: 'recepcionar-bloques',
+        component: RecepcionarBloqueComponent
     }
 
 ]

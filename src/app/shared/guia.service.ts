@@ -29,6 +29,10 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creados", {});
     }
 
+    listarGuiasBloqueCreadas(): Observable<Guia[]> {
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "creadosbloque", {});
+    }
+
     listarGuiaPorCodigo(codigo: string): Observable<Guia>{
         return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString())});
     }

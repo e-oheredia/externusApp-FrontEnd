@@ -13,6 +13,10 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { TipoServicio } from '../../../model/tiposervicio.model';
 import { NotifierService } from 'angular-notifier';
+import { Clasificacion } from 'src/model/clasificacion.model';
+import { Producto } from 'src/model/producto.model';
+import { ClasificacionService } from 'src/app/shared/clasificacion.service';
+import { ProductoService } from 'src/app/shared/producto.service';
 
 @Component({
   selector: 'app-crear-guia-modal',
@@ -27,6 +31,8 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
     private plazoDistribucionService: PlazoDistribucionService,
     private tipoSeguridadService: TipoSeguridadService,
     private tipoServicioService: TipoServicioService,
+    private clasificacionService: ClasificacionService,
+    private productoService: ProductoService,
     private proveedorService: ProveedorService,
     private guiaService: GuiaService,
     private notifier: NotifierService
@@ -40,10 +46,14 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
   tiposSeguridad: TipoSeguridad[];
   tiposServicio: TipoServicio[];
   proveedores: Proveedor[];
+  clasificaciones: Clasificacion[];
+  productos: Producto[];
 
   tiposServicioSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
   plazosDistribucionSubscription: Subscription;
+  clasificacionesSubscription: Subscription;
+  productosSubscription: Subscription;
   proveedoresSubscription: Subscription;
   crearGuiaSubscription: Subscription;
 
@@ -53,6 +63,8 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
       'plazoDistribucion': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
+      'clasificacion': new FormControl(null, Validators.required),
+      'producto': new FormControl(null, Validators.required),
       'proveedor': new FormControl(null, Validators.required),
       'numeroGuia': new FormControl(null, [Validators.required, Validators.minLength(5), Validators.maxLength(20)])
     });
@@ -62,7 +74,10 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+    this.clasificaciones = this.clasificacionService.getClasificaciones();
+    this.productos = this.productoService.getProductos();
     this.proveedores = this.proveedorService.getProveedores();
+
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;
@@ -78,7 +93,16 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
         this.plazosDistribucion = plazosDistribucion;
       }
     );
-
+    this.clasificacionesSubscription = this.clasificacionService.clasificacionesChanged.subscribe(
+      clasificaciones => {
+        this.clasificaciones = clasificaciones;
+      }
+    )
+    this.productosSubscription = this.productoService.productosChanged.subscribe(
+      productos => {
+        this.productos = productos;
+      }
+    )
     this.proveedoresSubscription = this.proveedorService.proveedoresChanged.subscribe(
       proveedores => {
         this.proveedores = proveedores;

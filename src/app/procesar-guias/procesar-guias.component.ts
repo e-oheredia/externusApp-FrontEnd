@@ -111,52 +111,50 @@ export class ProcesarGuiasComponent implements OnInit {
   }
 
   listarGuiasPorProcesar() {
-    this.guiasSubscription = this.guiaService.listarGuiasPorProcesar()
-      .subscribe(
-        guias => {
-          this.guias = guias;
-          let dataGuiasPorProcesar = [];
-
-          guias.forEach(guia => {
-            dataGuiasPorProcesar.push({
-              nroGuia: guia.numeroGuia,
-              sede: guia.sede.nombre,
-              plazo: guia.plazoDistribucion.nombre,
-              tipoServicio: guia.tipoServicio.nombre,
-              tipoSeguridad: guia.tipoSeguridad.nombre,
-              fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
-              fechalimite: '',
-              total: guia.documentosGuia.length,
-              entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
-              rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
-              nodistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
-              pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length,
-              fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia,3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia,3).fecha : "",
-            })
+    this.guiasSubscription = this.guiaService.listarGuiasPorProcesar().subscribe(
+      guias => {
+        this.guias = guias;
+        let dataGuiasPorProcesar = [];
+        guias.forEach(guia => {
+          dataGuiasPorProcesar.push({
+            nroGuia: guia.numeroGuia,
+            sede: guia.sede.nombre,
+            plazo: guia.plazoDistribucion.nombre,
+            tipoServicio: guia.tipoServicio.nombre,
+            tipoSeguridad: guia.tipoSeguridad.nombre,
+            fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
+            fechalimite: '',
+            total: guia.documentosGuia.length,
+            entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
+            rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
+            nodistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
+            pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length,
+            fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3).fecha : "",
           })
+        })
 
-          this.guias.push(this.guia);
-          this.dataGuiasPorProcesar.load(dataGuiasPorProcesar);
-        },
-        error => {
-          if (error.status === 400) {
-            this.guias = [];
-            this.notifier.notify('error', 'No hay resultados');
-          }
+        this.guias.push(this.guia);
+        this.dataGuiasPorProcesar.load(dataGuiasPorProcesar);
+      },
+      error => {
+        if (error.status === 400) {
+          this.guias = [];
+          this.notifier.notify('error', 'No hay resultados');
         }
-      )
+      }
+    )
   }
 
 
   descargarGuia(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
     this.guiaService.exportarDocumentosGuia(guia)
-    if(!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)){
+    if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
       this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
         this.listarGuiasPorProcesar();
-      }, 
-      error => console.log(error));
-  }
+      },
+        error => console.log(error));
+    }
 
   }
 

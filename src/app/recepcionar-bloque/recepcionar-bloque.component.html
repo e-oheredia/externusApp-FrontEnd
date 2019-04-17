@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Devoluciones de envíos por bloque</h2>
+    </div>
+  </div>
+  <div class="col-2 text-right">
+    <div class="pb-2 mt-4 mb-4">
+      <a class="btn btn-primary" [href]="rutaPlantillaResultados" target="_blank">
+        Plantilla de carga
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-2">
+
+      <div class="card-header">
+        <h5>Descarga de bases y subida de resultados</h5>
+      </div>
+
+      <div class="card-body">
+
+        <div *ngIf="guias.length !== 0; else mensaje">
+          <ng2-smart-table [settings]="settings" [source]="dataDevolucionesDeBloque"></ng2-smart-table>
+        </div>
+
+        <ng-template #mensaje>
+          <div class="row">
+            <div class="col">
+              <div class="alert alert-info" role="alert">
+                No existen guias cerradas por consultar.
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+      </div>
+
+    </div>
+  </div>
+</div>
