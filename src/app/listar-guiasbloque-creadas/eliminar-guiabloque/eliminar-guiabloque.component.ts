@@ -32,10 +32,10 @@ export class EliminarGuiabloqueComponent implements OnInit {
   }
 
   onSubmit(form: any){
-    let numero = Number(this.guia.numeroGuia)
+    let numero = Number(this.guia.id)
       this.eliminarGuiaBloqueSubscription = this.guiaService.eliminarGuia(numero).subscribe(
         guia => {
-          this.notifier.notify('success', 'Se ha modificado la guía correctamente');
+          this.notifier.notify('success', 'Se ha eliminado la guía correctamente');
           this.bsModalRef.hide();
           this.eliminarGuiaBloqueEvent.emit(guia);
         },

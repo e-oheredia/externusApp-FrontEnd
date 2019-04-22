@@ -32,7 +32,7 @@ export class GuiaService {
     listarGuiasBloqueCreadas(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creadosbloque", {});
     }
-//creadosbloque
+    
     listarGuiaPorCodigo(codigo: string): Observable<Guia>{
         return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString())});
     }
@@ -59,6 +59,10 @@ export class GuiaService {
 
     enviarGuia(guiaId: number){
         return this.requester.put<Guia>(this.REQUEST_URL + guiaId.toString() + "/envio", null, {});
+    }
+
+    enviarGuiaBloque(guiaId: number){
+        return this.requester.put<Guia>(this.REQUEST_URL + guiaId.toString() + "/enviobloque", null, {});
     }
 
     modificarGuia(guia: Guia){
