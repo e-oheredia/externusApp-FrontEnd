@@ -34,6 +34,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
   ngOnInit() {
     this.generarColumnas();
     this.listarGuiasBloque();
+    console.log(this.guia)
   }
 
   generarColumnas() {
@@ -67,7 +68,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
-          instance.claseIcono = "fas fa-wrench";
+          instance.claseIcono = "fas fa-times";
           instance.pressed.subscribe(row => {
             this.eliminarGuiaBloque(row);
           });
@@ -89,7 +90,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
-          instance.claseIcono = "fas fa-wrench";
+          instance.claseIcono = "fas fa-share";
           instance.pressed.subscribe(row => {
             this.enviarGuiaBloque(row);
           });
@@ -104,7 +105,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
       guias => {
         this.guias = guias;
         let dataGuiasBloque = [];
-        dataGuiasBloque.forEach(
+        guias.forEach(
           guia => {
             dataGuiasBloque.push({
               numeroGuia: guia.numeroGuia,
@@ -118,6 +119,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
             })
           }
         )
+        this.dataGuiasBloque.load(dataGuiasBloque);
       }
     )
   }

@@ -32,7 +32,7 @@ export class GuiaService {
     listarGuiasBloqueCreadas(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creadosbloque", {});
     }
-
+//creadosbloque
     listarGuiaPorCodigo(codigo: string): Observable<Guia>{
         return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString())});
     }
