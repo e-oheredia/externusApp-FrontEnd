@@ -21,6 +21,8 @@ import { BuzonService } from './buzon.service';
 import { Proveedor } from '../../model/proveedor.model';
 import { DocumentoGuia } from 'src/model/documentoguia.model';
 import { MotivoEstado } from 'src/model/motivoestado.model';
+import { Guia } from 'src/model/guia.model';
+import { TipoDevolucion } from 'src/model/tipodevolucion.model';
 
 @Injectable()
 export class DocumentoService {
@@ -289,7 +291,9 @@ export class DocumentoService {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }
 
-
+    // descargarBase(guia: Guia) {
+    //     return this.requesterService.get<Documento>(this.REQUEST_URL + guia+ "documentosguia", { params: new HttpParams().append('autogenerado', guia.toString()) });
+    // }
 
     cambiarEstado(codigo: number, seguimiento: SeguimientoDocumento) {
         return this.requesterService.post<Documento>(this.REQUEST_URL + codigo.toString() + "/cambioestado", seguimiento, {});
@@ -298,7 +302,6 @@ export class DocumentoService {
     desvalidar(id: number) {
         return this.requesterService.put<DocumentoGuia>(this.GUIA_URL + id + "/desvalidar", null, {});
     }
-
 
     listarDocumentosReportesVolumen(fechaini: Date, fechafin: Date, idestado: number): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosvolumen", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('estado', idestado.toString()) });
@@ -338,6 +341,170 @@ export class DocumentoService {
     asignarCodigoDevolucionCargo(id: number, codigo: string): Observable<Documento> {
         return this.requesterService.post<Documento>(this.REQUEST_URL + id + "/codigodevolucion", codigo, {});
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    mostrarResultadosDocumentosDevueltos(file: File, sheet: number, callback: Function) {
+
+        this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
+            let tiposDevolucion : TipoDevolucion[] = [];
+            let documentosCargados: Documento[] = [];
+            let i = 1
+            while (true) {
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i])) {
+                    break;
+                }
+                let tipoDevolucion = new Documento();
+                let documentoCargado = new Documento();
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
+                    callback({
+                        mensaje: "Ingrese el autogenerado en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                documentoCargado.documentoAutogenerado = data[i][1];
+
+                let seguimientoDocumento = new SeguimientoDocumento;
+
+                let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
+                    estadoDocumento => estadoDocumento.nombre === data[i][17]
+                )
+
+                if (this.utilsService.isUndefinedOrNullOrEmpty(estadoDocumento)) {
+                    callback({
+                        mensaje: "Ingrese Estado permitido en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                let motivoEstado = estadoDocumento.motivos.find(motivo => motivo.nombre === data[i][18]);
+
+                if (this.utilsService.isUndefinedOrNullOrEmpty(motivoEstado)) {
+                    callback({
+                        mensaje: "Ingrese motivo correcto en la fila " + (i + 1)
+                    });
+                    return; 
+                }
+
+                seguimientoDocumento.estadoDocumento = estadoDocumento;
+
+                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO ||
+                    estadoDocumento.id === EstadoDocumentoEnum.REZAGADO ||
+                    estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
+                    callback({
+                        mensaje: "Ingrese el motivo del Estado en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                seguimientoDocumento.motivoEstado = motivoEstado;
+
+                if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {
+                    callback({
+                        mensaje: "Ingrese Link del Entregado o Rezagado en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                seguimientoDocumento.linkImagen = data[i][19] || "";
+
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][20]) && this.utilsService.isValidDate(data[i][20])) {
+
+                    callback({
+                        mensaje: "Ingrese la fecha en el formato correcto en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                seguimientoDocumento.fecha = moment(this.utilsService.getJsDateFromExcel(data[i][20])).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
+
+                documentoCargado.seguimientosDocumento.push(seguimientoDocumento);
+                documentosCargados.push(documentoCargado);
+                i++;
+            }
+
+            callback(documentosCargados);
+
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

@@ -32,10 +32,11 @@ export class EnviarGuiabloqueComponent implements OnInit {
   }
 
   onSubmit(form: any){
-    let numero = Number(this.guia.numeroGuia)
-      this.enviarGuiaBloqueSubscription = this.guiaService.enviarGuia(numero).subscribe(
+    let numero = Number(this.guia.id)
+    console.log(this.guia)
+      this.enviarGuiaBloqueSubscription = this.guiaService.enviarGuiaBloque(numero).subscribe(
         guia => {
-          this.notifier.notify('success', 'Se ha modificado la guía correctamente');
+          this.notifier.notify('success', 'Se ha enviado la guía correctamente');
           this.bsModalRef.hide();
           this.enviarGuiaBloqueEvent.emit(guia);
         },

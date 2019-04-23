@@ -31,8 +31,8 @@ export class ProcesarGuiasComponent implements OnInit {
   settings = AppSettings.tableSettings;
 
   guias: Guia[] = [];
-  guia: Guia;
   documento: Documento;
+  documentos: Documento[] = [];
 
   guiasSubscription: Subscription;
   estadoDocumentoForm = EstadoDocumentoEnum;
@@ -41,6 +41,7 @@ export class ProcesarGuiasComponent implements OnInit {
     this.generarColumnas();
     this.listarGuiasPorProcesar();
     this.settings.hideSubHeader = false;
+    console.log(this.guias)
   }
 
   generarColumnas() {
@@ -124,16 +125,14 @@ export class ProcesarGuiasComponent implements OnInit {
             tipoSeguridad: guia.tipoSeguridad.nombre,
             fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
             fechalimite: '',
-            total: guia.documentosGuia.length,
-            entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
-            rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
-            nodistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
-            pendientesResultado: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENVIADO).length,
+            total: guia.cantidadDocumentos,
+            entregados: guia.cantidadEntregados,
+            rezagados: guia.cantidadRezagados,
+            nodistribuibles: guia.cantidadNoDistribuibles,
+            pendientesResultado: guia.cantidadPendientes,
             fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3).fecha : "",
           })
         })
-
-        this.guias.push(this.guia);
         this.dataGuiasPorProcesar.load(dataGuiasPorProcesar);
       },
       error => {
@@ -148,14 +147,19 @@ export class ProcesarGuiasComponent implements OnInit {
 
   descargarGuia(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
-    this.guiaService.exportarDocumentosGuia(guia)
-    if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
-      this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
-        this.listarGuiasPorProcesar();
-      },
-        error => console.log(error));
-    }
 
+    this.guiaService.listarDocumentosByGuiaId(guia).subscribe(
+      documentos => {
+        this.documentos = documentos;
+        this.guiaService.exportarDocumentosGuia(documentos, guia)
+        if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
+          this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
+            this.listarGuiasPorProcesar();
+          },
+            error => console.log(error));
+        }
+      }
+    )
   }
 
 

@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Guia } from 'src/model/guia.model';
 import { Subscription } from 'rxjs';
+import { Sede } from 'src/model/sede.model';
 
 @Component({
   selector: 'app-modificar-guiabloque',
@@ -38,6 +39,7 @@ export class ModificarGuiabloqueComponent implements OnInit {
   onSubmit(form: any){
     if (this.modificarForm.controls['numeroGuia'].value.length !== 0){
       this.guia.numeroGuia = this.modificarForm.controls['numeroGuia'].value;
+      console.log(this.guia)
       this.modificarGuiaBloqueSubscription = this.guiaService.modificarGuia(this.guia).subscribe(
         guia => {
           this.notifier.notify('success', 'Se ha modificado la guía correctamente');

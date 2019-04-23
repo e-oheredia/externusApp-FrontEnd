@@ -6,6 +6,7 @@ import { TipoSeguridad } from "./tiposeguridad.model";
 import { Sede } from './sede.model';
 import { Producto } from './producto.model';
 import { Clasificacion } from './clasificacion.model';
+import { TipoEnvio } from './tipoenvio.model';
 
 export class Envio {
 
@@ -27,6 +28,7 @@ export class Envio {
     public checked: boolean;
     public autorizado: boolean;
     public autogenerado: string;
+    public tipoEnvio: TipoEnvio;
     
     public addDocumento(documento: Documento){
         this.documentos.push(documento);

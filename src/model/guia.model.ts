@@ -22,6 +22,10 @@ export class Guia {
         public cantidadDocumentos: number,
         public tipoGuia: TipoGuia,
         public producto: Producto,
-        public clasificacion: Clasificacion
+        public clasificacion: Clasificacion,
+        public cantidadEntregados: number,
+        public cantidadRezagados: number,
+        public cantidadNoDistribuibles: number,
+        public cantidadPendientes: number
     ){}
 }

@@ -63,6 +63,9 @@ import { ClasificacionService } from '../shared/clasificacion.service';
 import { AgregarClasificacionComponent } from '../mantenimiento/clasificacion/agregar-clasificacion/agregar-clasificacion.component';
 import { ModificarClasificacionComponent } from '../mantenimiento/clasificacion/modificar-clasificacion/modificar-clasificacion.component';
 import { EnvioBloqueService } from '../shared/enviobloque.service';
+import { EliminarGuiabloqueComponent } from '../listar-guiasbloque-creadas/eliminar-guiabloque/eliminar-guiabloque.component';
+import { ModificarGuiabloqueComponent } from '../listar-guiasbloque-creadas/modificar-guiabloque/modificar-guiabloque.component';
+import { EnviarGuiabloqueComponent } from '../listar-guiasbloque-creadas/enviar-guiabloque/enviar-guiabloque.component';
 
 
 @NgModule({
@@ -88,7 +91,10 @@ import { EnvioBloqueService } from '../shared/enviobloque.service';
     AgregarSubambitoComponent,
     ModificarSubambitoComponent,
     AgregarClasificacionComponent,
-    ModificarClasificacionComponent
+    ModificarClasificacionComponent,
+    EliminarGuiabloqueComponent,
+    ModificarGuiabloqueComponent,
+    EnviarGuiabloqueComponent
   ],
   imports: [  
     HttpClientModule,
@@ -166,7 +172,10 @@ import { EnvioBloqueService } from '../shared/enviobloque.service';
     AgregarSubambitoComponent,
     ModificarSubambitoComponent,    
     AgregarClasificacionComponent,
-    ModificarClasificacionComponent
+    ModificarClasificacionComponent,
+    EliminarGuiabloqueComponent,
+    ModificarGuiabloqueComponent,
+    EnviarGuiabloqueComponent
    ],
 })
 export class LayoutModule { }

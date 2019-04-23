@@ -117,12 +117,29 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
               totalDocumentos: guia.cantidadDocumentos,
               tipoSeguridad: guia.tipoSeguridad.nombre
             })
-          }
-        )
+          })
         this.dataGuiasBloque.load(dataGuiasBloque);
       }
     )
   }
+
+  eliminarGuiaBloque(row) {
+    this.guia = this.guias.find(guia => guia.numeroGuia == row.numeroGuia)
+    let bsModalRef: BsModalRef = this.modalService.show(EliminarGuiabloqueComponent, {
+      initialState: {
+        id: this.guia.id,
+        guia: this.guia,
+        titulo: 'Eliminar guía bloque'
+      },
+      class: 'modal-md',
+      keyboard: false,
+      backdrop: "static"
+    });
+    bsModalRef.content.eliminarGuiaBloqueEvent.subscribe(() =>
+    this.listarGuiasBloque()
+    )
+  }
+
 
   modificarGuiaBloque(row) {
     this.guia = this.guias.find(guia => guia.numeroGuia == row.numeroGuia)
@@ -141,22 +158,10 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
     )
   }
 
-  eliminarGuiaBloque(row) {
-    this.guia = this.guias.find(guia => guia.id == row.id)
-    let bsModalRef: BsModalRef = this.modalService.show(EliminarGuiabloqueComponent, {
-      initialState: {
-        id: this.guia.id,
-        guia: this.guia,
-        titulo: 'Eliminar guía bloque'
-      },
-      class: 'modal-md',
-      keyboard: false,
-      backdrop: "static"
-    });
-  }
 
   enviarGuiaBloque(row) {
-    this.guia = this.guias.find(guia => guia.id == row.id)
+    this.guia = this.guias.find(guia => guia.numeroGuia == row.numeroGuia)
+    console.log(this.guia)
     let bsModalRef: BsModalRef = this.modalService.show(EnviarGuiabloqueComponent, {
       initialState: {
         id: this.guia.id,
@@ -167,6 +172,9 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
+    bsModalRef.content.enviarGuiaBloqueEvent.subscribe(() =>
+    this.listarGuiasBloque()
+    )
   }
 
 

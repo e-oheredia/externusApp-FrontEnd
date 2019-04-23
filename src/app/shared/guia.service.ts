@@ -11,6 +11,7 @@ import { Observable } from "rxjs";
 import { Sede } from 'src/model/sede.model';
 import { HttpParams } from '@angular/common/http';
 import { EstadoGuia } from 'src/model/estadoguia.model';
+import { Documento } from 'src/model/documento.model';
 
 @Injectable()
 export class GuiaService {
@@ -32,7 +33,7 @@ export class GuiaService {
     listarGuiasBloqueCreadas(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creadosbloque", {});
     }
-//creadosbloque
+
     listarGuiaPorCodigo(codigo: string): Observable<Guia>{
         return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString())});
     }
@@ -61,6 +62,10 @@ export class GuiaService {
         return this.requester.put<Guia>(this.REQUEST_URL + guiaId.toString() + "/envio", null, {});
     }
 
+    enviarGuiaBloque(guiaId: number){
+        return this.requester.put<Guia>(this.REQUEST_URL + guiaId.toString() + "/enviobloque", null, {});
+    }
+
     modificarGuia(guia: Guia){
         return this.requester.put<Guia>(this.REQUEST_URL + guia.id.toString(), guia, {});
     }
@@ -71,6 +76,11 @@ export class GuiaService {
 
     listarGuiasPorProcesar(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "procesarguias", {});
+    }
+
+    //verificar 
+    listarGuiasBloquePorProcesar(): Observable<Guia[]> {
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "guiasbloque", {});
     }
 
     listarGuiasSinCerrar() : Observable<Guia[]> {
@@ -133,32 +143,37 @@ export class GuiaService {
         return this.requester.put<any>(this.REQUEST_URL + guia.id.toString() + "/descarga", null, {});
     }
 
+    listarDocumentosByGuiaId(guia: Guia): Observable<Documento[]> {
+        return this.requester.get<Documento[]>(this.REQUEST_URL + guia.id.toString() + "/documentosguia" , {});
+    }
+
     //DESCARGAR BASE
-    exportarDocumentosGuia(guia: Guia) {
+    exportarDocumentosGuia(documentos, guia) {
 
         let objects = [];
-        guia.documentosGuia.forEach(documentoGuia => {
+        documentos.forEach(documento => {
             objects.push({
                 "Guía": guia.numeroGuia, 
-                "Autogenerado": documentoGuia.documento.documentoAutogenerado,
-                "Guía + Autogenerado": guia.numeroGuia + documentoGuia.documento.documentoAutogenerado,
+                "Autogenerado": documento.documentoAutogenerado,
+                "Guía + Autogenerado": guia.numeroGuia + documento.documentoAutogenerado,
                 "Sede Remitente": guia.sede.nombre,
-                "Plazo de Distribución": documentoGuia.documento.envio.plazoDistribucion.nombre,
-                "Tipo de Seguridad": documentoGuia.documento.envio.tipoSeguridad.nombre,
-                "Tipo de Servicio": documentoGuia.documento.envio.tipoServicio.nombre,
-                "Clasificación": documentoGuia.documento.envio.clasificacion.nombre,
-                "Producto": documentoGuia.documento.envio.producto ? documentoGuia.documento.envio.producto.nombre : 'NO TIENE',
-                "Razón Social": documentoGuia.documento.razonSocialDestino,
-                "Contacto": documentoGuia.documento.contactoDestino,
-                "Departamento": documentoGuia.documento.distrito.provincia.departamento.nombre,
-                "Provincia": documentoGuia.documento.distrito.provincia.nombre,
-                "Distrito": documentoGuia.documento.distrito.nombre,
-                "Direccion": documentoGuia.documento.direccion,
-                "Referencia": documentoGuia.documento.referencia,
-                "Teléfono": documentoGuia.documento.telefono
+                "Plazo de Distribución": documento.envio.plazoDistribucion.nombre,
+                "Tipo de Seguridad": documento.envio.tipoSeguridad.nombre,
+                "Tipo de Servicio": documento.envio.tipoServicio.nombre,
+                "Clasificación": documento.envio.clasificacion.nombre,
+                "Producto": documento.envio.producto ? documento.envio.producto.nombre : 'NO TIENE',
+                "Razón Social": documento.razonSocialDestino,
+                "Contacto": documento.contactoDestino,
+                "Departamento": documento.distrito.provincia.departamento.nombre,
+                "Provincia": documento.distrito.provincia.nombre,
+                "Distrito": documento.distrito.nombre,
+                "Direccion": documento.direccion,
+                "Referencia": documento.referencia,
+                "Teléfono": documento.telefono
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Guia: " + guia.numeroGuia);
     }
+
 
 }

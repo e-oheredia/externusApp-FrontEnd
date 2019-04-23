@@ -41,9 +41,10 @@ export class RecepcionarBloqueComponent implements OnInit {
     this.generarColumnas();
     this.listarGuiasPorProcesar();
     this.settings.hideSubHeader = false;
+    console.log(this.guia)
   }
 
-  generarColumnas(){
+  generarColumnas() {
     this.settings.columns = {
       fechaEnvio: {
         title: 'Fecha de envío'
@@ -100,10 +101,10 @@ export class RecepcionarBloqueComponent implements OnInit {
     }
   }
 
-  descargarBase(row){
+  descargarBase(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
-    this.guiaService.exportarDocumentosGuia(guia)
-    if(!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)){
+    // this.guiaService.exportarDocumentosGuia(documentos,guia)
+    if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
       this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
         this.listarGuiasPorProcesar();
       },
@@ -111,7 +112,7 @@ export class RecepcionarBloqueComponent implements OnInit {
     }
   }
 
-  subirResultados(row){
+  subirResultados(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
     let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
       initialState: {
@@ -132,31 +133,30 @@ export class RecepcionarBloqueComponent implements OnInit {
     )
   }
 
-  listarGuiasPorProcesar(){
+  listarGuiasPorProcesar() {
     this.guiasSubscription = this.guiaService.listarGuiasPorProcesar().subscribe(
       guias => {
         this.guias = guias;
         let dataDevolucionesDeBloque = [];
-
-        guias.forEach(guia => {
-          dataDevolucionesDeBloque.push({
-            fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
-            nroGuia: guia.numeroGuia,
-            plazoDistribucion: guia.plazoDistribucion.nombre,
-            tipoServicio: guia.tipoServicio.nombre,
-            tipoSeguridad: guia.tipoSeguridad.nombre,
-            fechaLimiteResultado: '',
-            entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
-            rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
-            noDistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
-            // total:
+        guias.forEach(
+          guia => {
+            dataDevolucionesDeBloque.push({
+              fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
+              nroGuia: guia.numeroGuia,
+              plazoDistribucion: guia.plazoDistribucion.nombre,
+              tipoServicio: guia.tipoServicio.nombre,
+              tipoSeguridad: guia.tipoSeguridad.nombre,
+              fechaLimiteResultado: '',
+              entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
+              rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
+              noDistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
+              // total:
+            })
           })
-        })
-        this.guias.push(this.guia);
         this.dataDevolucionesDeBloque.load(dataDevolucionesDeBloque);
       },
       error => {
-        if (error.status === 400){
+        if (error.status === 400) {
           this.guias = [];
           this.notifier.notify('error', 'no hay resultadosss');
         }

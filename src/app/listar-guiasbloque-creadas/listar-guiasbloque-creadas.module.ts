@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ListarGuiasbloqueCreadasComponent } from './listar-guiasbloque-creadas.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
-import { ModificarGuiabloqueComponent } from './modificar-guiabloque/modificar-guiabloque.component';
-import { EliminarGuiabloqueComponent } from './eliminar-guiabloque/eliminar-guiabloque.component';
-import { EnviarGuiabloqueComponent } from './enviar-guiabloque/enviar-guiabloque.component';
+// import { ModificarGuiabloqueComponent } from './modificar-guiabloque/modificar-guiabloque.component';
+// import { EliminarGuiabloqueComponent } from './eliminar-guiabloque/eliminar-guiabloque.component';
+// import { EnviarGuiabloqueComponent } from './enviar-guiabloque/enviar-guiabloque.component';
 
 @NgModule({
   imports: [
@@ -16,9 +16,9 @@ import { EnviarGuiabloqueComponent } from './enviar-guiabloque/enviar-guiabloque
   ],
   declarations: [
     ListarGuiasbloqueCreadasComponent,
-    ModificarGuiabloqueComponent,
-    EliminarGuiabloqueComponent,
-    EnviarGuiabloqueComponent
+    // ModificarGuiabloqueComponent,
+    // EliminarGuiabloqueComponent,
+    // EnviarGuiabloqueComponent
   ]
 })
 export class ListarGuiasbloqueCreadasModule { }
