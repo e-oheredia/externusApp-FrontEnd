@@ -102,7 +102,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
   }
 
   enviar(guia: Guia) {
-    if (guia.documentosGuia.length - this.guiaService.listarDocumentosGuiaValidados(guia).length !== 0) {
+    if (guia.cantidadDocumentos - guia.cantidadValidados !== 0) {
       this.notifier.notify('error', 'Valide todos los documentos de la guía antes de enviar');
       return;
     }

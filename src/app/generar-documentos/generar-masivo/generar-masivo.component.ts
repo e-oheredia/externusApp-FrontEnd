@@ -52,7 +52,7 @@ export class GenerarMasivoComponent implements OnInit {
     private productoService: ProductoService
   ) { }
 
-  rutaPlantilla: string = AppSettings.PANTILLA_MASIVO;
+  rutaPlantilla: string = AppSettings.PLANTILLA_MASIVO;
   masivoForm: FormGroup;
   plazosDistribucion: PlazoDistribucion[];
   productos: Producto[];

@@ -27,7 +27,7 @@ export class ProcesarGuiasComponent implements OnInit {
   ) { }
 
   dataGuiasPorProcesar: LocalDataSource = new LocalDataSource();
-  rutaPlantillaResultados: string = AppSettings.PANTILLA_RESULTADOS;
+  rutaPlantillaResultados: string = AppSettings.PLANTILLA_RESULTADOS;
   settings = AppSettings.tableSettings;
 
   guias: Guia[] = [];

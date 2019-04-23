@@ -38,8 +38,8 @@
           <td scope="col">{{guiaCreada.plazoDistribucion.nombre}}</td>
           <td scope="col">{{guiaCreada.tipoServicio.nombre}}</td>
           <td scope="col">{{guiaCreada.tipoSeguridad.nombre}}</td>
-          <td scope="col">{{guiaCreada.documentosGuia.length}}</td>
-          <td scope="col">{{guiaService.listarDocumentosGuiaValidados(guiaCreada).length}}</td>
+          <td scope="col">{{guiaCreada.cantidadDocumentos}}</td>
+          <td scope="col">{{guiaCreada.cantidadValidados}}</td>
           <td scope="col" class="text-center">
             <span class="oi oi-location text-success pointable" (click)="enviar(guiaCreada)"></span>
           </td>

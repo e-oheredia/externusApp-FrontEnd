@@ -42,9 +42,10 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    listarDocumentosGuiaValidados(guia: Guia): DocumentoGuia[] {
-        return guia.documentosGuia.filter(documentoGuia => documentoGuia.validado === true);
-    }
+    // COMENTADO 1:
+    // listarDocumentosGuiaValidados(guia: Guia): DocumentoGuia[] {
+    //     return guia.documentosGuia.filter(documentoGuia => documentoGuia.validado === true);
+    // }
 
     retirarNoValidados(guia: Guia) {
         return this.requester.put<any>(this.REQUEST_URL + guia.id + "/retiro", null, {});
@@ -78,8 +79,7 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "procesarguias", {});
     }
 
-    //verificar 
-    listarGuiasBloquePorProcesar(): Observable<Guia[]> {
+    listarGuiasBloquePorCerrar(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "guiasbloque", {});
     }
 
@@ -87,11 +87,12 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "sincerrar", {});
     }
 
-    listarDocumentosGuiaByUltimoEstadoAndGuia(guia: Guia, estadoId: number): DocumentoGuia[] {
-        return guia.documentosGuia.filter(
-            documentoGuia => this.documentoService.getUltimoEstado(documentoGuia.documento).id === estadoId
-        );
-    }
+    // COMENTADO 2:
+    // listarDocumentosGuiaByUltimoEstadoAndGuia(guia: Guia, estadoId: number): DocumentoGuia[] {
+    //     return guia.documentosGuia.filter(
+    //         documentoGuia => this.documentoService.getUltimoEstado(documentoGuia.documento).id === estadoId
+    //     );
+    // }
 
     fechaLimiteReparto(guia: Guia): Date{
         let a = guia.plazoDistribucion.tiempoEnvio

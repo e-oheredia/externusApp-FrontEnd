@@ -31,8 +31,9 @@ export class AppSettings {
 
     /** ARCHIVOS */
 
-    public static PANTILLA_MASIVO = "http://localhost:8080/externa-static/archivos/plantilla-excel-masivo.xlsx";
-    public static PANTILLA_RESULTADOS = "http://localhost:8080/externa-static/archivos/plantilla-excel-resultados.xlsx";
+    public static PLANTILLA_MASIVO = "http://localhost:8080/externa-static/archivos/plantilla-excel-masivo.xlsx";
+    public static PLANTILLA_RESULTADOS = "http://localhost:8080/externa-static/archivos/plantilla-excel-resultados.xlsx";
+    public static PLANTILLA_DEVUELTOS = "http://localhost:8080/externa-static/archivos/plantilla-excel-devueltos.xlsx";
     public static MANUAL_REGISTRO = "http://localhost:8080/externa-static/archivos/registro.pdf";
 
     /** IMAGENES */
