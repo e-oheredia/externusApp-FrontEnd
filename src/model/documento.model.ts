@@ -2,6 +2,7 @@ import { Distrito } from "./distrito.model";
 import { SeguimientoDocumento } from "./seguimientodocumento.model";
 import { Envio } from "./envio.model";
 import { DocumentoGuia } from "./documentoguia.model";
+import { TipoDevolucion } from "./tipodevolucion.model";
 
 export class Documento {
 
@@ -23,4 +24,5 @@ export class Documento {
     public checked: boolean;   
     public documentosGuia: DocumentoGuia[] = [];  
     public codigoDevolucion: string;
+    public tiposDevolucion: TipoDevolucion[] = [];
 }

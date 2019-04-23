@@ -117,8 +117,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
               totalDocumentos: guia.cantidadDocumentos,
               tipoSeguridad: guia.tipoSeguridad.nombre
             })
-          }
-        )
+          })
         this.dataGuiasBloque.load(dataGuiasBloque);
       }
     )
@@ -162,6 +161,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
 
   enviarGuiaBloque(row) {
     this.guia = this.guias.find(guia => guia.numeroGuia == row.numeroGuia)
+    console.log(this.guia)
     let bsModalRef: BsModalRef = this.modalService.show(EnviarGuiabloqueComponent, {
       initialState: {
         id: this.guia.id,
@@ -172,6 +172,9 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
+    bsModalRef.content.enviarGuiaBloqueEvent.subscribe(() =>
+    this.listarGuiasBloque()
+    )
   }
 
 
