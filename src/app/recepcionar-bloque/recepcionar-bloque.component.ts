@@ -32,6 +32,7 @@ export class RecepcionarBloqueComponent implements OnInit {
 
   guias: Guia[] = [];
   documento: Documento;
+  documentos: Documento[] = [];
 
   guiasSubscription: Subscription;
   estadoDocumentoForm = EstadoDocumentoEnum;
@@ -101,13 +102,19 @@ export class RecepcionarBloqueComponent implements OnInit {
 
   descargarBase(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
-    // this.guiaService.exportarDocumentosGuia(documentos,guia)
-    if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
-      this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
-        this.listarGuiasPorProcesar();
-      },
-        error => console.log(error));
-    }
+
+    this.guiaService.listarDocumentosByGuiaId(guia).subscribe(
+      documentos => {
+        this.documentos = documentos;
+        this.guiaService.exportarResultadosGuia(documentos, guia)
+        if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
+          this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
+            this.listarGuiasPorProcesar();
+          },
+            error => console.log(error));
+        }
+      }
+    )
   }
 
   subirResultados(row) {

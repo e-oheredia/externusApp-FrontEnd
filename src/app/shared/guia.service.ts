@@ -12,6 +12,8 @@ import { Sede } from 'src/model/sede.model';
 import { HttpParams } from '@angular/common/http';
 import { EstadoGuia } from 'src/model/estadoguia.model';
 import { Documento } from 'src/model/documento.model';
+import { SeguimientoDocumento } from 'src/model/seguimientodocumento.model';
+import { EstadoDocumento } from 'src/model/estadodocumento.model';
 
 @Injectable()
 export class GuiaService {
@@ -148,9 +150,8 @@ export class GuiaService {
         return this.requester.get<Documento[]>(this.REQUEST_URL + guia.id.toString() + "/documentosguia" , {});
     }
 
-    //DESCARGAR BASE
-    exportarDocumentosGuia(documentos, guia) {
 
+    exportarDocumentosGuia(documentos, guia) {
         let objects = [];
         documentos.forEach(documento => {
             objects.push({
@@ -171,6 +172,37 @@ export class GuiaService {
                 "Direccion": documento.direccion,
                 "Referencia": documento.referencia,
                 "Teléfono": documento.telefono
+            })
+        });
+        this.writeExcelService.jsonToExcel(objects, "Guia: " + guia.numeroGuia);
+    }
+
+    exportarResultadosGuia(documentos, guia) {
+        let objects = [];
+        documentos.forEach(documento => {
+            objects.push({
+                "Guía": guia.numeroGuia, 
+                "Autogenerado": documento.documentoAutogenerado,
+                "Guía + Autogenerado": guia.numeroGuia + documento.documentoAutogenerado,
+                "Sede Remitente": guia.sede.nombre,
+                "Plazo de Distribución": documento.envio.plazoDistribucion.nombre,
+                "Tipo de Seguridad": documento.envio.tipoSeguridad.nombre,
+                "Tipo de Servicio": documento.envio.tipoServicio.nombre,
+                "Clasificación": documento.envio.clasificacion.nombre,
+                "Producto": documento.envio.producto ? documento.envio.producto.nombre : 'NO TIENE',
+                "Razón Social": documento.razonSocialDestino,
+                "Contacto": documento.contactoDestino,
+                "Departamento": documento.distrito.provincia.departamento.nombre,
+                "Provincia": documento.distrito.provincia.nombre,
+                "Distrito": documento.distrito.nombre,
+                "Direccion": documento.direccion,
+                "Referencia": documento.referencia,
+                "Teléfono": documento.telefono,
+                "Estado": this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre,
+                "Motivo": this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre,
+                "Cargo" : " ",
+                "Rezago" : " ",
+                "Denuncia" : " "
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Guia: " + guia.numeroGuia);
