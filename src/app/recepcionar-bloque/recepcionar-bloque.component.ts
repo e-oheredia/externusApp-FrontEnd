@@ -27,12 +27,12 @@ export class RecepcionarBloqueComponent implements OnInit {
   ) { }
 
   dataDevolucionesDeBloque: LocalDataSource = new LocalDataSource();
-  rutaPlantillaResultados: string = AppSettings.PANTILLA_RESULTADOS;
+  rutaPlantillaResultados: string = AppSettings.PLANTILLA_DEVUELTOS;
   settings = AppSettings.tableSettings;
 
   guias: Guia[] = [];
-  guia: Guia;
   documento: Documento;
+  documentos: Documento[] = [];
 
   guiasSubscription: Subscription;
   estadoDocumentoForm = EstadoDocumentoEnum;
@@ -41,7 +41,6 @@ export class RecepcionarBloqueComponent implements OnInit {
     this.generarColumnas();
     this.listarGuiasPorProcesar();
     this.settings.hideSubHeader = false;
-    console.log(this.guia)
   }
 
   generarColumnas() {
@@ -64,8 +63,8 @@ export class RecepcionarBloqueComponent implements OnInit {
       fechaLimiteResultado: {
         title: 'Fecha límite de resultado'
       },
-      descargarBase: {
-        title: 'Descargar Base',
+      descargarResultado: {
+        title: 'Descargar resultado',
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
@@ -87,12 +86,12 @@ export class RecepcionarBloqueComponent implements OnInit {
       total: {
         title: 'Total'
       },
-      subirBase: {
-        title: 'Descargar Base',
+      subirDevoluciones: {
+        title: 'Subir devoluciones',
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
-          instance.claseIcono = "fas fa-download";
+          instance.claseIcono = "fas fa-upload";
           instance.pressed.subscribe(row => {
             this.subirResultados(row);
           });
@@ -103,13 +102,19 @@ export class RecepcionarBloqueComponent implements OnInit {
 
   descargarBase(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
-    // this.guiaService.exportarDocumentosGuia(documentos,guia)
-    if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
-      this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
-        this.listarGuiasPorProcesar();
-      },
-        error => console.log(error));
-    }
+
+    this.guiaService.listarDocumentosByGuiaId(guia).subscribe(
+      documentos => {
+        this.documentos = documentos;
+        this.guiaService.exportarResultadosGuia(documentos, guia)
+        if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
+          this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
+            this.listarGuiasPorProcesar();
+          },
+            error => console.log(error));
+        }
+      }
+    )
   }
 
   subirResultados(row) {
@@ -134,7 +139,7 @@ export class RecepcionarBloqueComponent implements OnInit {
   }
 
   listarGuiasPorProcesar() {
-    this.guiasSubscription = this.guiaService.listarGuiasPorProcesar().subscribe(
+    this.guiasSubscription = this.guiaService.listarGuiasBloquePorCerrar().subscribe(
       guias => {
         this.guias = guias;
         let dataDevolucionesDeBloque = [];
@@ -147,10 +152,10 @@ export class RecepcionarBloqueComponent implements OnInit {
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
               fechaLimiteResultado: '',
-              entregados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.ENTREGADO).length,
-              rezagados: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.REZAGADO).length,
-              noDistribuibles: this.guiaService.listarDocumentosGuiaByUltimoEstadoAndGuia(guia, EstadoDocumentoEnum.NO_DISTRIBUIBLE).length,
-              // total:
+              entregados: guia.cantidadEntregados,
+              rezagados: guia.cantidadRezagados,
+              noDistribuibles: guia.cantidadNoDistribuibles,
+              total: guia.cantidadDocumentos
             })
           })
         this.dataDevolucionesDeBloque.load(dataDevolucionesDeBloque);

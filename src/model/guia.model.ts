@@ -26,6 +26,7 @@ export class Guia {
         public cantidadEntregados: number,
         public cantidadRezagados: number,
         public cantidadNoDistribuibles: number,
-        public cantidadPendientes: number
+        public cantidadPendientes: number,
+        public cantidadValidados: number
     ){}
 }

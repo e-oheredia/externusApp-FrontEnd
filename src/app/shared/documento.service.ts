@@ -267,6 +267,11 @@ export class DocumentoService {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
 
+    //NUEVO
+    subirDocumentosDevolucion(documentos: Documento[]): Observable<any> {
+        return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
+    }
+
     listarDocumentosEntregados(): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "entregados", {});
     }
