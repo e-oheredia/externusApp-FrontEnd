@@ -13,7 +13,10 @@ import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.com
 })
 export class AutorizarEnviosComponent implements OnInit {
 
-  constructor(private envioService: EnvioService, public documentoService: DocumentoService, private notifier: NotifierService, private modalService: BsModalService) { }
+  constructor(private envioService: EnvioService, 
+    public documentoService: DocumentoService, 
+    private notifier: NotifierService, 
+    private modalService: BsModalService) { }
   enviosNoAutorizados = [];
 
   ngOnInit() {

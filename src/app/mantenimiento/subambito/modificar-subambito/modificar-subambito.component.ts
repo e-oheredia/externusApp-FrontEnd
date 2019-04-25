@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AmbitoService } from 'src/app/shared/ambito.service';
 import { Ambito } from 'src/model/ambito.model';
 import { Subscription } from 'rxjs';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-modificar-subambito',
@@ -65,6 +66,12 @@ export class ModificarSubambitoComponent implements OnInit {
       this.subambito.nombre = nombreSinEspacios;
       this.subambito.ambito = this.modificarForm.get("ambito").value;
       this.subambito.activo = this.modificarForm.get('activo').value;
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los ámbitos actuales."
+        }
+      });
+      bsModalRef.content.confirmarEvent.subscribe(() => {
       this.modificarSubAmbitoSubscription = this.subambitoService.modificarSubAmbito(this.subambito.id, this.subambito).subscribe(
         subambito => {
           this.notifier.notify('success', 'Se ha modificado el subambito correctamente');
@@ -74,10 +81,11 @@ export class ModificarSubambitoComponent implements OnInit {
         error => {
           this.notifier.notify('error', 'El nombre modificado ya existe');
         }
-      )
+        );
+      })
     }
-    
-
   }
+
+  
 
 }

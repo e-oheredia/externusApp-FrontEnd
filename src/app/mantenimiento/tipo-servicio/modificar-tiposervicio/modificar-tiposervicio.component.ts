@@ -6,6 +6,7 @@ import { TipoServicioService } from 'src/app/shared/tiposervicio.service';
 import { TipoServicio } from 'src/model/tiposervicio.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-modificar-tiposervicio',
@@ -43,6 +44,13 @@ export class ModificarTipoServicioComponent implements OnInit {
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
       this.servicio.nombre = nombreSinEspacios;
       this.servicio.activo = this.modificarForm.get('activo').value;
+
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los tipos de servicios actuales."
+        }
+      });
+      bsModalRef.content.confirmarEvent.subscribe(() => {
       this.modificarTipoServicioSubscription = this.tipoServicioService.modificarTipoServicio(this.servicio.id, this.servicio).subscribe(
         tiposervicio => {
           this.notifier.notify('success', 'Se ha modificado el tipo de servicio correctamente');
@@ -52,9 +60,11 @@ export class ModificarTipoServicioComponent implements OnInit {
         error => {
           this.notifier.notify('error', 'El nombre modificado ya existe');
         }
-      );
+        );
+      })
     }
   }
+
 
 
 }

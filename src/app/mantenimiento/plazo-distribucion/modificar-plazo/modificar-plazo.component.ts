@@ -8,6 +8,7 @@ import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TipoPlazoDistribucion } from 'src/model/tipoplazodistribucion.model';
 import { TipoPlazoDistribucionService } from 'src/app/shared/tipoplazodistribucion.service';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-modificar-plazo',
@@ -70,6 +71,13 @@ export class ModificarPlazoComponent implements OnInit {
       this.plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       this.plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
       this.plazo.activo = this.modificarForm.get('activo').value;
+
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los plazos actuales."
+        }
+      });
+      bsModalRef.content.confirmarEvent.subscribe(() => {
       this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(this.plazo.id,this.plazo).subscribe(
         plazo => {
           this.notifier.notify('success', 'Se ha modificado el plazo de distribución correctamente');
@@ -79,7 +87,8 @@ export class ModificarPlazoComponent implements OnInit {
         error => {
           this.notifier.notify('error', 'El nombre modificado ya existe');
         }
-      );
+        );
+      })
     }
   }
 

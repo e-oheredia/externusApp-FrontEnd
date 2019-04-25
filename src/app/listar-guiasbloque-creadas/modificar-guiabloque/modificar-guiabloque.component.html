@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h4>Modificar guía bloque</h4>
+    <h4>Modificar guía</h4>
   </div>
 
   <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
@@ -14,7 +14,7 @@
             <label for="numeroGuia">Número de guía</label>
             <input class="form-control" type="text" name="numeroGuia" id="numeroGuia" formControlName="numeroGuia">
             <span *ngIf="!modificarForm.get('numeroGuia').valid && modificarForm.get('numeroGuia').touched" class="text-danger small">
-              El número de la guía no puede estar vacío
+              Debe ingresar un número de guía
             </span>
           </div>
         </div>

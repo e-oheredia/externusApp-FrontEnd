@@ -14,7 +14,7 @@ export enum MotivoEstadoEnum {
     RECHAZADO = 13,
     NO_PERMITE_ENTREGA = 14,
     FALLECIDO = 15,
-    EXTRAVIADO_ROBADO = 16,
+    EXTRAVIADO_O_ROBADO = 16,
     FALTANTE = 17,
     ANULADO = 18,
     DEVUELTO = 19,

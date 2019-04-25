@@ -29,8 +29,7 @@ import { MotivoEstadoEnum } from '../enum/motivoestado.enum';
 @Injectable()
 export class DocumentoService {
 
-    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
-    GUIA_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DOCUMENTO_URL;
 
     constructor(
         private readExcelService: ReadExcelService,
@@ -179,13 +178,9 @@ export class DocumentoService {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
 
+    //REPORTE
     subirReporte(documentos: Documento[]): Observable<any> {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
-    }
-
-    //NUEVO
-    subirDocumentosDevolucion(documentos: Documento[]): Observable<any> {
-        return this.requesterService.put<any>(this.REQUEST_URL + "cargadevolucionbloque", documentos, {});
     }
 
     listarDocumentosEntregados(): Observable<Documento[]> {
@@ -195,15 +190,15 @@ export class DocumentoService {
     listarDocumentosPorDevolver(): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "pordevolver", {});
     }
-    //3
+
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
-    //1
+    
     listarDocumentosUtdBCPCodigo(codigo: string) {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }
-    //2
+    
     listarDocumentosUtdBCPFechas(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
@@ -212,16 +207,12 @@ export class DocumentoService {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }
 
-    // descargarBase(guia: Guia) {
-    //     return this.requesterService.get<Documento>(this.REQUEST_URL + guia+ "documentosguia", { params: new HttpParams().append('autogenerado', guia.toString()) });
-    // }
-
     cambiarEstado(codigo: number, seguimiento: SeguimientoDocumento) {
         return this.requesterService.post<Documento>(this.REQUEST_URL + codigo.toString() + "/cambioestado", seguimiento, {});
     }
 
     desvalidar(id: number) {
-        return this.requesterService.put<DocumentoGuia>(this.GUIA_URL + id + "/desvalidar", null, {});
+        return this.requesterService.put<DocumentoGuia>(this.REQUEST_URL + id + "/desvalidar", null, {});
     }
 
     listarDocumentosReportesVolumen(fechaini: Date, fechafin: Date, idestado: number): Observable<Documento[]> {
@@ -362,13 +353,15 @@ export class DocumentoService {
                     break;
                 }
                 let documentoDevuelto = new Documento();
-
+                
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
                     callback({
                         mensaje: "Ingrese el autogenerado en la fila " + (i + 1)
                     });
                     return;
                 }
+
+                documentoDevuelto.documentoAutogenerado = data[i][1]; 
 
                 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -446,7 +439,7 @@ export class DocumentoService {
                 //EL ESTADO DEL DOCUMENTO ES NO_DISTRIBUIBLE?
                 if (estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) {
                     //EL MOTIVO DEL DOCUMENTO ES EXTRAVIADO_ROBADO?
-                    if (motivoDocumento.id === MotivoEstadoEnum.EXTRAVIADO_ROBADO) {
+                    if (motivoDocumento.id === MotivoEstadoEnum.EXTRAVIADO_O_ROBADO) {
                         //SI EL NO_DISTRIBUIBLE TIENE LA DEVOLUCION DENUNCIA VACÍA
                         if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][21])) {
                             callback({
@@ -468,6 +461,7 @@ export class DocumentoService {
                         }
                     }
                 }
+
 
                 //-------------------------------------------------------------------------------------------------------------------------------------
 

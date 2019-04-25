@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TipoSeguridadService } from 'src/app/shared/tiposeguridad.service';
 import { TipoSeguridad } from 'src/model/tiposeguridad.model';
 import { Subscription } from 'rxjs';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-modificar-tipo-seguridad',
@@ -18,7 +19,8 @@ export class ModificarTipoSeguridadComponent implements OnInit {
     private bsModalRef: BsModalRef,
     private utilsService: UtilsService,
     private notifier: NotifierService,
-    private tipoSeguridadService: TipoSeguridadService
+    private tipoSeguridadService: TipoSeguridadService,
+    private modalService: BsModalService,
   ) { }
 
   @Output() confirmarEvent = new EventEmitter();
@@ -42,6 +44,13 @@ export class ModificarTipoSeguridadComponent implements OnInit {
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
       this.tipoSeguridad.nombre = nombreSinEspacios;
       this.tipoSeguridad.activo = this.modificarForm.get('activo').value;
+
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los tipos de seguridad actuales."
+        }
+      });
+      bsModalRef.content.confirmarEvent.subscribe(() => {
       this.modificarTipoSeguridadSubscribe = this.tipoSeguridadService.modificarTipoSeguridad(this.tipoSeguridad.id, this.tipoSeguridad).subscribe(
         tiposeguridad => {
           this.notifier.notify('success', 'Se ha modificado el tipo de seguridad correctamente');
@@ -51,9 +60,11 @@ export class ModificarTipoSeguridadComponent implements OnInit {
         error => {
           this.notifier.notify('error', 'El nombre modificado ya existe');
         }
-      );
+        );
+      })
     }
   }
+
 
 
 

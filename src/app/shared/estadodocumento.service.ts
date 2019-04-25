@@ -13,6 +13,8 @@ export class EstadoDocumentoService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.ESTADO_DOCUMENTO_URL;
     TIPO_ESTADO_DOCUMENTO_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_ESTADO_DOCUMENTO_URL;
+
+    MOTIVO_ESTADO_URL = AppSettings.API_ENDPOINT + AppSettings.MOTIVO_ESTADO_DOCUMENTO_URL;
     
     constructor(private requesterService: RequesterService) {
         this.listarEstadosDocumento().subscribe(
@@ -27,7 +29,7 @@ export class EstadoDocumentoService {
                 this.estadosDocumentoResultadosProveedorChanged.next(this.getEstadosDocumentoResultadosProveedor());
             }
         )
-        this.listarMotivosEstadoDocumentoByTipoEstadoDocumentoId(TipoEstadoDocumentoEnum.RESULTADOS_PROVEEDOR).subscribe(
+        this.listarMotivosEstadoDocumento().subscribe(
             motivosEstadoDocumento => {
                 this.motivosEstadoDocumentoResultadosProveedor = motivosEstadoDocumento
                 this.motivosEstadoDocumentoResultadosProveedorChanged.next(this.getMotivosEstadoDocumentoResultadosProveedor());
@@ -51,6 +53,8 @@ export class EstadoDocumentoService {
         return this.requesterService.get<EstadoDocumento[]>(this.REQUEST_URL, {});
     }
 
+
+
     getEstadosDocumentoResultadosProveedor() {
         return this.estadosDocumentoResultadosProveedor;
     }
@@ -59,12 +63,14 @@ export class EstadoDocumentoService {
         return this.motivosEstadoDocumentoResultadosProveedor;
     }
 
+
+
     listarEstadosDocumentoByTipoEstadoDocumentoId(tipoEstadoDocumentoId: number): Observable<EstadoDocumento[]> {
         return this.requesterService.get<EstadoDocumento[]>(this.TIPO_ESTADO_DOCUMENTO_REQUEST_URL + tipoEstadoDocumentoId.toString() + "/" + AppSettings.ESTADO_DOCUMENTO_URL, {});
     }
 
-    listarMotivosEstadoDocumentoByTipoEstadoDocumentoId(tipoEstadoDocumentoId: number): Observable<EstadoDocumento[]> {
-        return this.requesterService.get<EstadoDocumento[]>(this.TIPO_ESTADO_DOCUMENTO_REQUEST_URL + tipoEstadoDocumentoId.toString() + "/" + AppSettings.MOTIVO_ESTADO_DOCUMENTO_URL, {});
+    listarMotivosEstadoDocumento(): Observable<MotivoEstado[]> {
+        return this.requesterService.get<MotivoEstado[]>(this.MOTIVO_ESTADO_URL, {});
     }
 
 

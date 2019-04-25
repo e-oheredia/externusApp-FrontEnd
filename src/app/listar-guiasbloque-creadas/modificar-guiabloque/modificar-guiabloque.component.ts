@@ -42,7 +42,7 @@ export class ModificarGuiabloqueComponent implements OnInit {
       console.log(this.guia)
       this.modificarGuiaBloqueSubscription = this.guiaService.modificarGuia(this.guia).subscribe(
         guia => {
-          this.notifier.notify('success', 'Se ha modificado la guía correctamente');
+          this.notifier.notify('success', 'Se modificó la guía con éxito');
           this.bsModalRef.hide();
           this.modificarGuiaBloqueEvent.emit(guia);
         },
