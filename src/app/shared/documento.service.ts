@@ -454,6 +454,7 @@ export class DocumentoService {
                             });
                             return;
                         }
+                        //SI LA DEVOLUCION TIENE UNA "X" o "x"
                         if (data[i][21] == "x" || data[i][21] == "X") {
                             let tipodevolucion = new TipoDevolucion();
                             tipodevolucion.id = TipoDevolucionEnum.DENUNCIA;
