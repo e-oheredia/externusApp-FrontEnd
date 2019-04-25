@@ -31,8 +31,6 @@ export class RecepcionarBloqueComponent implements OnInit {
   settings = AppSettings.tableSettings;
 
   guias: Guia[] = [];
-  documento: Documento;
-  documentos: Documento[] = [];
 
   guiasSubscription: Subscription;
   estadoDocumentoForm = EstadoDocumentoEnum;
@@ -105,7 +103,6 @@ export class RecepcionarBloqueComponent implements OnInit {
 
     this.guiaService.listarDocumentosByGuiaId(guia).subscribe(
       documentos => {
-        this.documentos = documentos;
         this.guiaService.exportarResultadosGuia(documentos, guia)
         if (!this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3)) {
           this.guiaService.asignarFechaDescarga(guia).subscribe(guia => {
@@ -121,7 +118,7 @@ export class RecepcionarBloqueComponent implements OnInit {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
     let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
       initialState: {
-        documento: this.documento,
+        condicion: "recepcionar",
         guia: guia,
         titulo: 'Subir resultado.',
         mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'

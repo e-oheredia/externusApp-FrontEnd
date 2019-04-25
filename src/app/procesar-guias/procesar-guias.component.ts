@@ -167,6 +167,7 @@ export class ProcesarGuiasComponent implements OnInit {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
     let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
       initialState: {
+        condicion: "procesar",
         documento: this.documento,
         guia: guia,
         titulo: 'Subir reporte de Guía.',

@@ -11,7 +11,7 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="numeroGuia">Número de la guía</label>
+            <label for="numeroGuia">Número de guía</label>
             <input class="form-control" type="text" name="numeroGuia" id="numeroGuia" formControlName="numeroGuia">
             <span *ngIf="!modificarForm.get('numeroGuia').valid && modificarForm.get('numeroGuia').touched" class="text-danger small">
               El número de la guía no puede estar vacío

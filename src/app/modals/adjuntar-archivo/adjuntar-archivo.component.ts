@@ -5,6 +5,8 @@ import { NotifierService } from 'angular-notifier';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DocumentoService } from 'src/app/shared/documento.service';
 import { Documento } from 'src/model/documento.model';
+import { Guia } from 'src/model/guia.model';
+import { GuiaService } from 'src/app/shared/guia.service';
 
 @Component({
   selector: 'app-adjuntar-archivo',
@@ -18,59 +20,83 @@ export class AdjuntarArchivoComponent implements OnInit {
     public utilsService: UtilsService,
     private notifier: NotifierService,
     private documentoService: DocumentoService,
+    private guiaService: GuiaService
   ) { }
-
-
 
   @Output() confirmarEvent = new EventEmitter<File>();
 
+  condicion: String;
   documento: Documento;
   guiaForm: FormGroup;
   archivoAdjunto: File;
+  guia: Guia;
 
   mensaje: string;
   titulo: string;
   textoAceptar: string = "Aceptar";
-  textoCancelar: string ="Cancelar";
+  textoCancelar: string = "Cancelar";
   tipoArchivo: string = ".xlsx";
 
   ngOnInit() {
     this.guiaForm = new FormGroup({
-      'archivoAdjunto' : new FormControl(null, Validators.required)
+      'archivoAdjunto': new FormControl(null, Validators.required)
     })
   }
 
-  onChangeExcelFile(file: File){
+  onChangeExcelFile(file: File) {
     this.archivoAdjunto = file;
   }
 
   onSubmit(archivoAdjunto: File) {
     if (this.utilsService.isUndefinedOrNull(archivoAdjunto)) {
-      this.notifier.notify("success","Seleccione el archivo excel a subir");
+      this.notifier.notify("success", "Seleccione el archivo excel a subir");
       return;
     }
     this.subirResutados(archivoAdjunto);
   }
 
-  subirResutados(file: File){
-    this.documentoService.mostrarResultadosDocumentosProveedor(file, 0, (data) => {
-      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)){
-        this.documentoService.subirReporte(data).subscribe(
-          respuesta => {
-            this.notifier.notify('success', respuesta.mensaje);
-            this.guiaForm.reset();
-            this.confirmarEvent.emit();
-            this.bsModalRef.hide();
-          },
-          error => {
-            this.notifier.notify('error', error.error.mensaje);
-          }
-        )
-        return;
-      }
-      this.notifier.notify('error', data.mensaje);
-    })
+  subirResutados(file: File) {
+    if (this.condicion == "procesar") {
+      this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
+        if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+          this.documentoService.subirReporte(data).subscribe(
+            respuesta => {
+              this.notifier.notify('success', respuesta.mensaje);
+              this.guiaForm.reset();
+              this.confirmarEvent.emit();
+              this.bsModalRef.hide();
+            },
+            error => {
+              this.notifier.notify('error', error.error.mensaje);
+            }
+          )
+          return;
+        }
+        this.notifier.notify('error', data.mensaje);
+      })
+    }
+    else {
+      this.documentoService.validarDevolucionesDelProveedor(file, 0, (data) => {
+        if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+          this.documentoService.subirDocumentosDevolucion(data).subscribe(
+            respuesta => {
+              this.notifier.notify('success', respuesta.mensaje);
+              this.guiaForm.reset();
+              this.confirmarEvent.emit();
+              this.bsModalRef.hide();
+            },
+            error => {
+              this.notifier.notify('error', error.error.mensaje);
+            }
+          )
+          return;
+        }
+        this.notifier.notify('error', data.mensaje);
+      })
+    }
   }
+
+  
 
 
 }
