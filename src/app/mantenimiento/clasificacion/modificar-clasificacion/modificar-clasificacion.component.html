@@ -8,17 +8,23 @@
   
       <div class="card-body">
   
+        <div *ngIf="clasificacion.activo">
+          
         <div class="form-row">
-          <div class="col">
-            <div class="form-group">
-              <label for="nombre">Nombre de clasificación</label>
-              <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-              <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched" class="text-danger small">
-                El nombre de la clasificación no puede estar vacío
-              </span>
+            <div class="col">
+              <div class="form-group">
+                <label for="nombre">Nombre de clasificación</label>
+                <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+                <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched" class="text-danger small">
+                  El nombre de la clasificación no puede estar vacío
+                </span>
+              </div>
             </div>
           </div>
+
         </div>
+
+
   
         <div class="form-row">
           <div class="col-9">
@@ -30,6 +36,10 @@
                 <option value="false">DESACTIVADO
                   </option>
               </select>
+              <span *ngIf="!modificarForm.get('activo').value"
+                  class="text-danger small">
+                  No se puede modificar si está desactivado
+                </span>
             </div>
           </div>
         </div>

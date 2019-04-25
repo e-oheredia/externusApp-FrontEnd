@@ -27,7 +27,7 @@ export class ModificarTipoSeguridadComponent implements OnInit {
   tipoSeguridad: TipoSeguridad;
   tiposSeguridad: TipoSeguridad[] = [];
   modificarForm: FormGroup;
-
+  rpta: boolean;
   modificarTipoSeguridadSubscribe: Subscription;
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class ModificarTipoSeguridadComponent implements OnInit {
       this.tipoSeguridad.activo = this.modificarForm.get('activo').value;
       this.modificarTipoSeguridadSubscribe = this.tipoSeguridadService.modificarTipoSeguridad(this.tipoSeguridad.id, this.tipoSeguridad).subscribe(
         tiposeguridad => {
-          this.notifier.notify('success', 'Se ha modificado el tipo de seguirdad correctamente');
+          this.notifier.notify('success', 'Se ha modificado el tipo de seguridad correctamente');
           this.bsModalRef.hide();
           this.confirmarEvent.emit(tiposeguridad);
         },
