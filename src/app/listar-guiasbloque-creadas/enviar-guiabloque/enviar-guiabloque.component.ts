@@ -36,7 +36,7 @@ export class EnviarGuiabloqueComponent implements OnInit {
     console.log(this.guia)
       this.enviarGuiaBloqueSubscription = this.guiaService.enviarGuiaBloque(numero).subscribe(
         guia => {
-          this.notifier.notify('success', 'Se ha enviado la guía correctamente');
+          this.notifier.notify('success', 'Se envió la guía con éxito');
           this.bsModalRef.hide();
           this.enviarGuiaBloqueEvent.emit(guia);
         },

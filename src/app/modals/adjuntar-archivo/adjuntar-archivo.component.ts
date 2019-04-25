@@ -78,7 +78,7 @@ export class AdjuntarArchivoComponent implements OnInit {
     else {
       this.documentoService.validarDevolucionesDelProveedor(file, 0, (data) => {
         if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-          this.documentoService.subirDocumentosDevolucion(data).subscribe(
+          this.guiaService.subirDocumentosDevolucion(data).subscribe(
             respuesta => {
               this.notifier.notify('success', respuesta.mensaje);
               this.guiaForm.reset();

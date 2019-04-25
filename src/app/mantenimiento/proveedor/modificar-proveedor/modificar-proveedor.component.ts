@@ -2,12 +2,13 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UtilsService } from 'src/app/shared/utils.service';
 import { Proveedor } from 'src/model/proveedor.model';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { PlazoDistribucionService } from 'src/app/shared/plazodistribucion.service';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { Subscription } from 'rxjs';
 import { ProveedorService } from 'src/app/shared/proveedor.service';
 import { NotifierService } from 'angular-notifier';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class ModificarProveedorComponent implements OnInit {
     private bsModalRef: BsModalRef,
     private plazoDistribucionService: PlazoDistribucionService , 
     private proveedorService: ProveedorService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private modalService: BsModalService
 
   ) { }
 
@@ -73,6 +75,13 @@ export class ModificarProveedorComponent implements OnInit {
       let nombreSinEspacios = this.modificarForm.controls['nombreProveedor'].value.trim();
       this.proveedor.nombre = nombreSinEspacios;
       this.proveedor.activo = this.modificarForm.get('activo').value;
+
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los proveedores actuales."
+        }
+      });
+      bsModalRef.content.confirmarEvent.subscribe(() => {
       this.modificarProveedorSubscription = this.proveedorService.modificarProveedor(this.proveedor.id, this.proveedor).subscribe(
         proveedor => {
           this.notifier.notify('success', 'Se ha modificado el proveedor correctamente');
@@ -82,7 +91,8 @@ export class ModificarProveedorComponent implements OnInit {
         error => {
           this.notifier.notify('error', 'El nombre modificado ya existe');
         }
-      )
+        );
+      })
     }
   }
 

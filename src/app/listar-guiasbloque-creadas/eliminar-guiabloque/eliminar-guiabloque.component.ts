@@ -35,7 +35,7 @@ export class EliminarGuiabloqueComponent implements OnInit {
     let numero = Number(this.guia.id)
       this.eliminarGuiaBloqueSubscription = this.guiaService.eliminarGuia(numero).subscribe(
         guia => {
-          this.notifier.notify('success', 'Se ha eliminado la guía correctamente');
+          this.notifier.notify('success', 'Se eliminó la guía con éxito');
           this.bsModalRef.hide();
           this.eliminarGuiaBloqueEvent.emit(guia);
         },

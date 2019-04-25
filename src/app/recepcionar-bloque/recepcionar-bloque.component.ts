@@ -120,7 +120,7 @@ export class RecepcionarBloqueComponent implements OnInit {
       initialState: {
         condicion: "recepcionar",
         guia: guia,
-        titulo: 'Subir resultado.',
+        titulo: 'Subir resultados de recepción de documentos',
         mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
       },
       class: 'modal-lg',

@@ -18,7 +18,6 @@ import { EnvioBloque } from 'src/model/enviobloque.model';
 import { Buzon } from 'src/model/buzon.model';
 import { BuzonService } from 'src/app/shared/buzon.service';
 import { EnvioBloqueService } from 'src/app/shared/enviobloque.service';
-import { Guia } from 'src/model/guia.model';
 import { EnvioService } from 'src/app/shared/envio.service';
 import { CargoPdfService } from 'src/app/shared/cargo-pdf.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -52,6 +51,8 @@ export class GenerarBloqueComponent implements OnInit {
     private notifier: NotifierService
   ) { }
 
+  rutaPlantilla: string = AppSettings.PLANTILLA_MASIVO;
+  
   bloqueForm: FormGroup;
   envioBloque: EnvioBloque = new EnvioBloque();
   buzon: Buzon;

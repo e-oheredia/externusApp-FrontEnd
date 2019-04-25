@@ -6,6 +6,7 @@ import { ProductoService } from 'src/app/shared/producto.service';
 import { Producto } from 'src/model/producto.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-modificar-producto',
@@ -43,6 +44,13 @@ export class ModificarProductoComponent implements OnInit {
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
       this.producto.nombre = nombreSinEspacios;
       this.producto.activo = this.modificarForm.get('activo').value;
+
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los productos actuales."
+        }
+      });
+      bsModalRef.content.confirmarEvent.subscribe(() => {
       this.modificarProductoSubscription = this.productoService.modificarProducto(this.producto.id, this.producto).subscribe(
         producto => {
           this.notifier.notify('success', 'Se ha modificado el producto correctamente');
@@ -52,9 +60,11 @@ export class ModificarProductoComponent implements OnInit {
         error => {
           this.notifier.notify('error', 'El nombre modificado ya existe');
         }
-      )
+        );
+      })
     }
   }
+
   
 
 }

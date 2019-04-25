@@ -26,7 +26,7 @@ export class AppSettings {
     public static GUIA_URL = "guias/";
     public static DOCUMENTO_GUIA_URL = "documentosguia/";
     public static ESTADO_DOCUMENTO_URL = "estadosdocumento/";
-    public static MOTIVO_ESTADO_DOCUMENTO_URL = "motivosestadosdocumento/";
+    public static MOTIVO_ESTADO_DOCUMENTO_URL = "motivosestados/";
     public static TIPO_ESTADO_DOCUMENTO_URL = "tiposestadodocumento/";
     public static MENU_URL = "menus/";
 

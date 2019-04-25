@@ -43,6 +43,11 @@ export class GuiaService {
     listarGuiasPorFechas(fechaini: Date, fechafin: Date){
         return this.requester.get<Guia[]>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
+    
+    //DEVOLUCION
+    subirDocumentosDevolucion(documentos: Documento[]): Observable<any> {
+        return this.requester.put<any>(this.REQUEST_URL + "cargadevolucionbloque", documentos, {});
+    }
 
     // COMENTADO 1:
     // listarDocumentosGuiaValidados(guia: Guia): DocumentoGuia[] {
