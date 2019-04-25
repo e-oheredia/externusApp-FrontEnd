@@ -24,6 +24,7 @@ import { MotivoEstado } from 'src/model/motivoestado.model';
 import { Guia } from 'src/model/guia.model';
 import { TipoDevolucion } from 'src/model/tipodevolucion.model';
 import { TipoDevolucionEnum } from '../enum/tipodevolucion.enum';
+import { MotivoEstadoEnum } from '../enum/motivoestado.enum';
 
 @Injectable()
 export class DocumentoService {
@@ -361,7 +362,7 @@ export class DocumentoService {
                     break;
                 }
                 let documentoDevuelto = new Documento();
-                
+
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
                     callback({
                         mensaje: "Ingrese el autogenerado en la fila " + (i + 1)
@@ -373,6 +374,10 @@ export class DocumentoService {
 
                 let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
                     estadoDocumento => estadoDocumento.nombre === data[i][17]
+                )
+
+                let motivoDocumento = this.estadoDocumentoService.getMotivosEstadoDocumentoResultadosProveedor().find(
+                    motivoDocumento => motivoDocumento.nombre === data[i][18]
                 )
 
                 let cargoDevuelto = data[i][19];
@@ -390,9 +395,9 @@ export class DocumentoService {
 
 
                 //EL ESTADO DEL DOCUMENTO ES ENTREGADO?
-                if (estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO){
+                if (estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO) {
                     //SI EL ENTREGADO TIENE LA DEVOLUCION CARGO VACÍA
-                    if(this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])){
+                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {
                         callback({
                             mensaje: "Ingrese la devolución del Entregado en la fila " + (i + 1)
                         });
@@ -400,7 +405,7 @@ export class DocumentoService {
                     }
                     if (data[i][19] == "x" || data[i][19] == "X") {
                         let tipodevolucion = new TipoDevolucion();
-                        tipodevolucion.id = TipoDevolucionEnum.CARGO;                        
+                        tipodevolucion.id = TipoDevolucionEnum.CARGO;
                         documentoDevuelto.tiposDevolucion.push(tipodevolucion)
                         console.log("CARGO DE ENTREGA RECIBIDO");
                     } else {
@@ -413,9 +418,9 @@ export class DocumentoService {
 
 
                 //EL ESTADO DEL DOCUMENTO ES REZAGADO?
-                if (estadoDocumento.id === EstadoDocumentoEnum.REZAGADO){
+                if (estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) {
                     //SI EL REZAGADO TIENE LA DEVOLUCION CARGO O REZAGO VACÍA
-                    if(this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][20])){
+                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][20])) {
                         callback({
                             mensaje: "Ingrese las 2 devoluciones del Rezagado en la fila " + (i + 1)
                         });
@@ -423,10 +428,10 @@ export class DocumentoService {
                     }
                     if ((data[i][19] == "x" || data[i][19] == "X") && (data[i][20] == "x" || data[i][20] == "X")) {
                         let tipodevolucion = new TipoDevolucion();
-                        tipodevolucion.id = TipoDevolucionEnum.REZAGO;                        
+                        tipodevolucion.id = TipoDevolucionEnum.REZAGO;
                         documentoDevuelto.tiposDevolucion.push(tipodevolucion);
                         let tipodevolucion2 = new TipoDevolucion();
-                        tipodevolucion2.id = TipoDevolucionEnum.CARGO;                        
+                        tipodevolucion2.id = TipoDevolucionEnum.CARGO;
                         documentoDevuelto.tiposDevolucion.push(tipodevolucion2)
                         console.log("CARGO DE REZAGO RECIBIDO");
                     } else {
@@ -436,27 +441,30 @@ export class DocumentoService {
                         return;
                     }
                 }
-                
+
 
                 //EL ESTADO DEL DOCUMENTO ES NO_DISTRIBUIBLE?
-                if (estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE){
-                    //SI EL NO_DISTRIBUIBLE TIENE LA DEVOLUCION DENUNCIA VACÍA
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][21])){
-                        callback({
-                            mensaje: "Ingrese la devolución del No Distribuible en la fila " + (i + 1)
-                        });
-                        return;
-                    }
-                    if (data[i][21] == "x" || data[i][21] == "X") {
-                        let tipodevolucion = new TipoDevolucion();
-                        tipodevolucion.id = TipoDevolucionEnum.DENUNCIA;                        
-                        documentoDevuelto.tiposDevolucion.push(tipodevolucion)
-                        console.log("CARGO DE NO_DISTRIBUIBLE RECIBIDO");
-                    } else {
-                        callback({
-                            mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
-                        })
-                        return;
+                if (estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) {
+                    //EL MOTIVO DEL DOCUMENTO ES EXTRAVIADO_ROBADO?
+                    if (motivoDocumento.id === MotivoEstadoEnum.EXTRAVIADO_ROBADO) {
+                        //SI EL NO_DISTRIBUIBLE TIENE LA DEVOLUCION DENUNCIA VACÍA
+                        if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][21])) {
+                            callback({
+                                mensaje: "Ingrese la devolución del No Distribuible en la fila " + (i + 1)
+                            });
+                            return;
+                        }
+                        if (data[i][21] == "x" || data[i][21] == "X") {
+                            let tipodevolucion = new TipoDevolucion();
+                            tipodevolucion.id = TipoDevolucionEnum.DENUNCIA;
+                            documentoDevuelto.tiposDevolucion.push(tipodevolucion)
+                            console.log("CARGO DE NO_DISTRIBUIBLE RECIBIDO");
+                        } else {
+                            callback({
+                                mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
+                            })
+                            return;
+                        }
                     }
                 }
 
