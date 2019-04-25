@@ -8,33 +8,38 @@
 
     <div class="card-body">
 
-      <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="nombre">Nombre del subambito</label>
-            <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
-              class="text-danger small">
-              El nombre del subambito no puede estar vacío
-            </span>
-          </div>
-        </div>
-      </div>
+     <div *ngIf="subambito.activo"> 
 
-      <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="ambito">Ambito</label>
-            <select class="form-control" id="ambito" formControlName="ambito">
-              <option *ngFor="let ambito of ambitos" [ngValue]="ambito">{{ambito.nombre}}</option>
-            </select>
-            <span *ngIf="!modificarForm.get('ambito').valid && modificarForm.get('ambito').touched"
-              class="text-danger small">
-              Es necesario la elección de un ambito
-            </span>
+        <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="nombre">Nombre del subambito</label>
+                <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+                <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+                  class="text-danger small">
+                  El nombre del subambito no puede estar vacío
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+    
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <label for="ambito">Ambito</label>
+                <select class="form-control" id="ambito" formControlName="ambito">
+                  <option *ngFor="let ambito of ambitos" [ngValue]="ambito">{{ambito.nombre}}</option>
+                </select>
+                <span *ngIf="!modificarForm.get('ambito').valid && modificarForm.get('ambito').touched"
+                  class="text-danger small">
+                  Es necesario la elección de un ambito
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+     </div>
 
       <div class="form-row">
         <div class="col">
@@ -46,6 +51,10 @@
               <option value="false">DESACTIVADO
               </option>
             </select>
+            <span *ngIf="!modificarForm.get('activo').value"
+                  class="text-danger small">
+                  No se puede modificar si está desactivado
+                </span>
           </div>
         </div>
       </div>

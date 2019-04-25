@@ -7,51 +7,61 @@
   <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
 
     <div class="card-body">
-      <div class="form-row">
-        <div class="col-9">
-          <div class="form-group">
-            <label for="nombreProveedor">Nombre del proveedor</label>
-            <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor"
-              formControlName="nombreProveedor">
-            <span *ngIf="!modificarForm.get('nombreProveedor').valid && modificarForm.get('nombreProveedor').touched"
-              class="text-danger small">
-              El nombre del proveedor no puede estar vacío
-            </span>
-          </div>
-        </div>
-      </div>
 
-      <div class="form-row">
-        <div class="col">
-          <div formArrayName="plazos">
-            <label for="nombreProveedor">Plazos del proveedor</label>
-            <div class="form-group"
-              *ngFor="let plazoDistribucionControl of modificarForm.get('plazos').controls; let i = index">
-              <div class="form-check">
-                <input name="plazosProveedor" type="checkbox" class="form-check-input"
-                  [formControl]="plazoDistribucionControl"
-                  (change)="onChangePlazoDistribucionElegido($event, plazosDistribucion[i])">
-                <label class="form-check-label">{{plazosDistribucion[i].nombre}}</label>
+        <div *ngIf="proveedor.activo">
+            <div class="form-row">
+                <div class="col-9">
+                  <div class="form-group">
+                    <label for="nombreProveedor">Nombre del proveedor</label>
+                    <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor"
+                      formControlName="nombreProveedor">
+                    <span *ngIf="!modificarForm.get('nombreProveedor').valid && modificarForm.get('nombreProveedor').touched"
+                      class="text-danger small">
+                      El nombre del proveedor no puede estar vacío
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
+        
+              <div class="form-row">
+                <div class="col">
+                  <div formArrayName="plazos">
+                    <label for="nombreProveedor">Plazos del proveedor</label>
+                    <div class="form-group"
+                      *ngFor="let plazoDistribucionControl of modificarForm.get('plazos').controls; let i = index">
+                      <div class="form-check">
+                        <input name="plazosProveedor" type="checkbox" class="form-check-input"
+                          [formControl]="plazoDistribucionControl"
+                          (change)="onChangePlazoDistribucionElegido($event, plazosDistribucion[i])">
+                        <label class="form-check-label">{{plazosDistribucion[i].nombre}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
           </div>
-        </div>
-      </div>
+
+          <div class="form-row">
+              <div class="col-9">
+                <div class="form-group">
+                  <label for="activo">Estado</label>
+                  <select class="form-control" id="activo" formControlName="activo">
+                    <option value="true">ACTIVADO
+                    </option>
+                    <option value="false">DESACTIVADO
+                    </option>
+                  </select>
+                  <span *ngIf="!modificarForm.get('activo').value"
+                  class="text-danger small">
+                  No se puede modificar si está desactivado
+                </span>
+                </div>
+              </div>
+            </div>    
+      
 
 
-      <div class="form-row">
-        <div class="col-9">
-          <div class="form-group">
-            <label for="activo">Estado</label>
-            <select class="form-control" id="activo" formControlName="activo">
-              <option value="true">ACTIVADO
-              </option>
-              <option value="false">DESACTIVADO
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
+
 
     </div>
 
