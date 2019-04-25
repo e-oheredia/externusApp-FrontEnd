@@ -78,6 +78,9 @@ export class ReporteGuiasComponent implements OnInit {
       totalDocumentos: {
         title: 'Total de documentos'
       },
+      fechaCreacion: {
+        title: 'Fecha Creación'
+      },
       fechaEnvio: {
         title: 'Fecha envío'
       },
@@ -106,7 +109,8 @@ export class ReporteGuiasComponent implements OnInit {
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
               sede: guia.sede.nombre,
-              totalDocumentos: guia.documentosGuia.length,
+              totalDocumentos: guia.cantidadDocumentos,
+              fechaCreacion:this.guiaService.getFechaCreacion(guia),
               fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
               fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
               estado: this.guiaService.getEstadoGuia(guia).nombre
@@ -151,7 +155,8 @@ export class ReporteGuiasComponent implements OnInit {
                       tipoServicio: guia.tipoServicio.nombre,
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
-                      totalDocumentos: guia.documentosGuia.length,
+                      totalDocumentos: guia.cantidadDocumentos,
+                      fechaCreacion:this.guiaService.getFechaCreacion(guia),
                       fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre

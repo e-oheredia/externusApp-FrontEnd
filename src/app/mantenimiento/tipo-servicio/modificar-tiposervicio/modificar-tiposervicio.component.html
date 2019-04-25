@@ -8,17 +8,21 @@
 
     <div class="card-body">
 
-      <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="nombre">Nombre del tipo de servicio</label>
-            <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-            <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
-              class="text-danger small">
-              El nombre del tipo de servicio no puede estar vacío
-            </span>
-          </div>
-        </div>
+      <div *ngIf="servicio.activo">
+
+          <div class="form-row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="nombre">Nombre del tipo de servicio</label>
+                  <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+                  <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+                    class="text-danger small">
+                    El nombre del tipo de servicio no puede estar vacío
+                  </span>
+                </div>
+              </div>
+            </div>
+
       </div>
 
       <div class="form-row">
@@ -31,6 +35,10 @@
               <option value="false">DESACTIVADO
               </option>
             </select>
+            <span *ngIf="!modificarForm.get('activo').value"
+                  class="text-danger small">
+                  No se puede modificar si está desactivado
+                </span>
           </div>
         </div>
       </div>
