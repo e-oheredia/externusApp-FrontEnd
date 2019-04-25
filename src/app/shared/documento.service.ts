@@ -23,11 +23,12 @@ import { DocumentoGuia } from 'src/model/documentoguia.model';
 import { MotivoEstado } from 'src/model/motivoestado.model';
 import { Guia } from 'src/model/guia.model';
 import { TipoDevolucion } from 'src/model/tipodevolucion.model';
+import { TipoDevolucionEnum } from '../enum/tipodevolucion.enum';
 
 @Injectable()
 export class DocumentoService {
 
-    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DOCUMENTO_URL;
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
     GUIA_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
 
     constructor(
@@ -183,7 +184,7 @@ export class DocumentoService {
 
     //NUEVO
     subirDocumentosDevolucion(documentos: Documento[]): Observable<any> {
-        return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
+        return this.requesterService.put<any>(this.REQUEST_URL + "cargadevolucionbloque", documentos, {});
     }
 
     listarDocumentosEntregados(): Observable<Documento[]> {
@@ -360,72 +361,104 @@ export class DocumentoService {
                     break;
                 }
                 let documentoDevuelto = new Documento();
+                
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
                     callback({
                         mensaje: "Ingrese el autogenerado en la fila " + (i + 1)
                     });
                     return;
-                }                
+                }
 
                 //-------------------------------------------------------------------------------------------------------------------------------------
+
+                let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
+                    estadoDocumento => estadoDocumento.nombre === data[i][17]
+                )
 
                 let cargoDevuelto = data[i][19];
                 let rezagoDevuelto = data[i][20];
                 let denunciaDevuelta = data[i][21];
+                let abc = data[i][18];
 
-                // if (cargoDevuelto === "x" || cargoDevuelto === "X"){
-
-                // } else {
-                //     callback({
-                //         mensaje: "Debe llenar los tipos de devoluciones con una 'x'. "
-                //     })
-                // }
-
-                if ((this.utilsService.isUndefinedOrNullOrEmpty(cargoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(rezagoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(denunciaDevuelta))){
+                //VALIDACIÓN DE LAS 3 DEVOLUCIONES VACÍAS
+                if ((this.utilsService.isUndefinedOrNullOrEmpty(cargoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(rezagoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(denunciaDevuelta))) {
                     callback({
                         mensaje: "Ingrese las devoluciones en la fila " + (i + 1)
                     });
                     return;
-                } 
-
-
-                if ((cargoDevuelto !== "x" && cargoDevuelto !== "X") || (rezagoDevuelto !== "x" && rezagoDevuelto !== "X") || (denunciaDevuelta !== "x" && denunciaDevuelta !== "X")){
-
                 }
 
+
+                //EL ESTADO DEL DOCUMENTO ES ENTREGADO?
+                if (estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO){
+                    //SI EL ENTREGADO TIENE LA DEVOLUCION CARGO VACÍA
+                    if(this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])){
+                        callback({
+                            mensaje: "Ingrese la devolución del Entregado en la fila " + (i + 1)
+                        });
+                        return;
+                    }
+                    if (data[i][19] == "x" || data[i][19] == "X") {
+                        let tipodevolucion = new TipoDevolucion();
+                        tipodevolucion.id = TipoDevolucionEnum.CARGO;                        
+                        documentoDevuelto.tiposDevolucion.push(tipodevolucion)
+                        console.log("CARGO DE ENTREGA RECIBIDO");
+                    } else {
+                        callback({
+                            mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
+                        })
+                        return;
+                    }
+                }
+
+
+                //EL ESTADO DEL DOCUMENTO ES REZAGADO?
+                if (estadoDocumento.id === EstadoDocumentoEnum.REZAGADO){
+                    //SI EL REZAGADO TIENE LA DEVOLUCION CARGO O REZAGO VACÍA
+                    if(this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][20])){
+                        callback({
+                            mensaje: "Ingrese las 2 devoluciones del Rezagado en la fila " + (i + 1)
+                        });
+                        return;
+                    }
+                    if ((data[i][19] == "x" || data[i][19] == "X") && (data[i][20] == "x" || data[i][20] == "X")) {
+                        let tipodevolucion = new TipoDevolucion();
+                        tipodevolucion.id = TipoDevolucionEnum.REZAGO;                        
+                        documentoDevuelto.tiposDevolucion.push(tipodevolucion);
+                        let tipodevolucion2 = new TipoDevolucion();
+                        tipodevolucion2.id = TipoDevolucionEnum.CARGO;                        
+                        documentoDevuelto.tiposDevolucion.push(tipodevolucion2)
+                        console.log("CARGO DE REZAGO RECIBIDO");
+                    } else {
+                        callback({
+                            mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
+                        })
+                        return;
+                    }
+                }
                 
-                if (!this.utilsService.isUndefinedOrNullOrEmpty(cargoDevuelto)){
-                    if ((cargoDevuelto === "x" && cargoDevuelto === "X")){
-                        documentoDevuelto.tiposDevolucion.push(cargoDevuelto)
+
+                //EL ESTADO DEL DOCUMENTO ES NO_DISTRIBUIBLE?
+                if (estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE){
+                    //SI EL NO_DISTRIBUIBLE TIENE LA DEVOLUCION DENUNCIA VACÍA
+                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][21])){
+                        callback({
+                            mensaje: "Ingrese la devolución del No Distribuible en la fila " + (i + 1)
+                        });
+                        return;
                     }
-                    callback({
-                        mensaje: "En la fila " + (i + 1) + ", el caracter ingresado no es una 'x'"
-                    })
-                    return;
-                }
-
-                if (!this.utilsService.isUndefinedOrNullOrEmpty(rezagoDevuelto)){
-                    if ((rezagoDevuelto === "x" && rezagoDevuelto === "X")){
-                        documentoDevuelto.tiposDevolucion.push(rezagoDevuelto)
+                    if (data[i][21] == "x" || data[i][21] == "X") {
+                        let tipodevolucion = new TipoDevolucion();
+                        tipodevolucion.id = TipoDevolucionEnum.DENUNCIA;                        
+                        documentoDevuelto.tiposDevolucion.push(tipodevolucion)
+                        console.log("CARGO DE NO_DISTRIBUIBLE RECIBIDO");
+                    } else {
+                        callback({
+                            mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
+                        })
+                        return;
                     }
-                    callback({
-                        mensaje: "En la fila " + (i + 1) + ", el caracter ingresado no es una 'x'"
-                    })
-                    return;
                 }
-
-                if (!this.utilsService.isUndefinedOrNullOrEmpty(denunciaDevuelta)){
-                    if ((denunciaDevuelta === "x" && denunciaDevuelta === "X")){
-                        documentoDevuelto.tiposDevolucion.push(denunciaDevuelta)
-                    }
-                    callback({
-                        mensaje: "En la fila " + (i + 1) + ", el caracter ingresado no es una 'x'"
-                    })
-                    return;
-                }
-
-
-
 
                 //-------------------------------------------------------------------------------------------------------------------------------------
 
