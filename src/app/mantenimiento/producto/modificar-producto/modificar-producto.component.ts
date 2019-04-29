@@ -41,9 +41,10 @@ export class ModificarProductoComponent implements OnInit {
 
   onSubmit(form: any) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
+      let producto = Object.assign({}, this.producto)
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
-      this.producto.nombre = nombreSinEspacios;
-      this.producto.activo = this.modificarForm.get('activo').value;
+      producto.nombre = nombreSinEspacios;
+      producto.activo = this.modificarForm.get('activo').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -51,7 +52,7 @@ export class ModificarProductoComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarProductoSubscription = this.productoService.modificarProducto(this.producto.id, this.producto).subscribe(
+      this.modificarProductoSubscription = this.productoService.modificarProducto(producto.id, producto).subscribe(
         producto => {
           this.notifier.notify('success', 'Se ha modificado el producto correctamente');
           this.bsModalRef.hide();

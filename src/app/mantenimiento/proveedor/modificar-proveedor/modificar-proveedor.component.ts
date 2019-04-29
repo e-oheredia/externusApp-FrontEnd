@@ -72,9 +72,10 @@ export class ModificarProveedorComponent implements OnInit {
 
   onSubmit(form: any){
     if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombreProveedor'].value)){
+      let proveedor = Object.assign({}, this.proveedor)
       let nombreSinEspacios = this.modificarForm.controls['nombreProveedor'].value.trim();
-      this.proveedor.nombre = nombreSinEspacios;
-      this.proveedor.activo = this.modificarForm.get('activo').value;
+      proveedor.nombre = nombreSinEspacios;
+      proveedor.activo = this.modificarForm.get('activo').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -82,7 +83,7 @@ export class ModificarProveedorComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarProveedorSubscription = this.proveedorService.modificarProveedor(this.proveedor.id, this.proveedor).subscribe(
+      this.modificarProveedorSubscription = this.proveedorService.modificarProveedor(proveedor.id, proveedor).subscribe(
         proveedor => {
           this.notifier.notify('success', 'Se ha modificado el proveedor correctamente');
           this.bsModalRef.hide();

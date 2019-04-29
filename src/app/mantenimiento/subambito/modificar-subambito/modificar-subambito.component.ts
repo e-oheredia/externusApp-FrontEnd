@@ -62,17 +62,18 @@ export class ModificarSubambitoComponent implements OnInit {
 
   onSubmit(form: any) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
+      let subambito = Object.assign({}, this.subambito);
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
-      this.subambito.nombre = nombreSinEspacios;
-      this.subambito.ambito = this.modificarForm.get("ambito").value;
-      this.subambito.activo = this.modificarForm.get('activo').value;
+      subambito.nombre = nombreSinEspacios;
+      subambito.ambito = this.modificarForm.get("ambito").value;
+      subambito.activo = this.modificarForm.get('activo').value;
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
           mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los ámbitos actuales."
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarSubAmbitoSubscription = this.subambitoService.modificarSubAmbito(this.subambito.id, this.subambito).subscribe(
+      this.modificarSubAmbitoSubscription = this.subambitoService.modificarSubAmbito(subambito.id, subambito).subscribe(
         subambito => {
           this.notifier.notify('success', 'Se ha modificado el subambito correctamente');
           this.bsModalRef.hide();

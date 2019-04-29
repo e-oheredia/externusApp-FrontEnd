@@ -41,9 +41,10 @@ export class ModificarTipoSeguridadComponent implements OnInit {
 
   onSubmit(form: any) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)) {
+      let tipoSeguridad = Object.assign({}, this.tipoSeguridad);
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
-      this.tipoSeguridad.nombre = nombreSinEspacios;
-      this.tipoSeguridad.activo = this.modificarForm.get('activo').value;
+      tipoSeguridad.nombre = nombreSinEspacios;
+      tipoSeguridad.activo = this.modificarForm.get('activo').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -51,7 +52,7 @@ export class ModificarTipoSeguridadComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarTipoSeguridadSubscribe = this.tipoSeguridadService.modificarTipoSeguridad(this.tipoSeguridad.id, this.tipoSeguridad).subscribe(
+      this.modificarTipoSeguridadSubscribe = this.tipoSeguridadService.modificarTipoSeguridad(tipoSeguridad.id, tipoSeguridad).subscribe(
         tiposeguridad => {
           this.notifier.notify('success', 'Se ha modificado el tipo de seguridad correctamente');
           this.bsModalRef.hide();

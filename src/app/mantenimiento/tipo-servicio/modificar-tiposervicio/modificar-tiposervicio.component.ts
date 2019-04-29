@@ -41,9 +41,10 @@ export class ModificarTipoServicioComponent implements OnInit {
 
   onSubmit(form: any){
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
+      let servicio = Object.assign({}, this.servicio);
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
-      this.servicio.nombre = nombreSinEspacios;
-      this.servicio.activo = this.modificarForm.get('activo').value;
+      servicio.nombre = nombreSinEspacios;
+      servicio.activo = this.modificarForm.get('activo').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -51,7 +52,7 @@ export class ModificarTipoServicioComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarTipoServicioSubscription = this.tipoServicioService.modificarTipoServicio(this.servicio.id, this.servicio).subscribe(
+      this.modificarTipoServicioSubscription = this.tipoServicioService.modificarTipoServicio(servicio.id, servicio).subscribe(
         tiposervicio => {
           this.notifier.notify('success', 'Se ha modificado el tipo de servicio correctamente');
           this.bsModalRef.hide();

@@ -41,9 +41,10 @@ export class ModificarClasificacionComponent implements OnInit {
 
   onSubmit(form: any) {
     if (this.modificarForm.controls['nombre'].value.length !== 0) {
+      let clasificacion = Object.assign({}, this.clasificacion);
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
-      this.clasificacion.nombre = nombreSinEspacios;
-      this.clasificacion.activo = this.modificarForm.get('activo').value;
+      clasificacion.nombre = nombreSinEspacios;
+      clasificacion.activo = this.modificarForm.get('activo').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -51,7 +52,7 @@ export class ModificarClasificacionComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-        this.modificarClasificacionSubscription = this.clasificacionService.modificarClasificacion(this.clasificacion.id, this.clasificacion).subscribe(
+        this.modificarClasificacionSubscription = this.clasificacionService.modificarClasificacion(clasificacion.id, clasificacion).subscribe(
           clasificacion => {
             this.notifier.notify('success', 'Se ha modificado la clasificación correctamente');
             this.bsModalRef.hide();
