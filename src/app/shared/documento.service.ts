@@ -73,6 +73,13 @@ export class DocumentoService {
             let i = 1
             while (true) {
 
+                if (this.utilsService.isUndefinedOrNull(data[i])    ) {
+                    callback({
+                        mensaje: "El formato está vacío "
+                    });
+                    return;
+                }
+
                 if (data[i].length === 0) {
                     break;
                 }

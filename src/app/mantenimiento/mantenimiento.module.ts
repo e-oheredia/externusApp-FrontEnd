@@ -15,6 +15,7 @@ import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
 import { ProductoComponent } from './producto/producto.component';
 import { SubambitoComponent } from './subambito/subambito.component';
 import { ClasificacionComponent } from './clasificacion/clasificacion.component';
+import { DiasLaborablesComponent } from './dias-laborables/dias-laborables.component';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { ClasificacionComponent } from './clasificacion/clasificacion.component'
     ProductoComponent,
     SubambitoComponent,
     ClasificacionComponent,
+    DiasLaborablesComponent
   ],
   entryComponents: [
     ButtonViewComponent,

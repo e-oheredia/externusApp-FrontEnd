@@ -43,9 +43,7 @@ export class RecepcionarBloqueComponent implements OnInit {
 
   generarColumnas() {
     this.settings.columns = {
-      fechaEnvio: {
-        title: 'Fecha de envío'
-      },
+      
       nroGuia: {
         title: 'Número de guía'
       },
@@ -57,6 +55,15 @@ export class RecepcionarBloqueComponent implements OnInit {
       },
       tipoSeguridad: {
         title: 'Tipo de seguridad'
+      },
+      clasificacion: {
+        title: 'Clasificación'
+      },
+      producto: {
+        title: 'Producto'
+      },
+      fechaEnvio: {
+        title: 'Fecha de envío'
       },
       fechaLimiteResultado: {
         title: 'Fecha límite de resultado'
@@ -148,6 +155,8 @@ export class RecepcionarBloqueComponent implements OnInit {
               plazoDistribucion: guia.plazoDistribucion.nombre,
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
+              clasificacion: guia.clasificacion.nombre,
+              producto: guia.producto.nombre,
               fechaLimiteResultado: '',
               entregados: guia.cantidadEntregados,
               rezagados: guia.cantidadRezagados,

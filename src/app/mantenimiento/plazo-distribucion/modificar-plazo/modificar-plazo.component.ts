@@ -67,10 +67,11 @@ export class ModificarPlazoComponent implements OnInit {
   onSubmit(form: any) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tiempoEnvio'].value && !this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['tipoPlazoDistribucion'].value))) {
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
-      this.plazo.nombre = nombreSinEspacios;
-      this.plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
-      this.plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
-      this.plazo.activo = this.modificarForm.get('activo').value;
+      let plazo = Object.assign({}, this.plazo);
+      plazo.nombre = nombreSinEspacios;
+      plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
+      plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
+      plazo.activo = this.modificarForm.get('activo').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -78,7 +79,7 @@ export class ModificarPlazoComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(this.plazo.id,this.plazo).subscribe(
+      this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(plazo.id,plazo).subscribe(
         plazo => {
           this.notifier.notify('success', 'Se ha modificado el plazo de distribución correctamente');
           this.bsModalRef.hide();

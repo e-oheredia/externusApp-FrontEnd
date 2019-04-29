@@ -40,7 +40,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
   generarColumnas() {
     this.settings.columns = {
       numeroGuia: {
-        title: 'Guía'
+        title: 'Número de Guía'
       },
       producto: {
         title: 'Producto'
