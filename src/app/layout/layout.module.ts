@@ -66,6 +66,9 @@ import { EnvioBloqueService } from '../shared/enviobloque.service';
 import { EliminarGuiabloqueComponent } from '../listar-guiasbloque-creadas/eliminar-guiabloque/eliminar-guiabloque.component';
 import { ModificarGuiabloqueComponent } from '../listar-guiasbloque-creadas/modificar-guiabloque/modificar-guiabloque.component';
 import { EnviarGuiabloqueComponent } from '../listar-guiasbloque-creadas/enviar-guiabloque/enviar-guiabloque.component';
+import { DiaLaborableService } from '../shared/dialaborable.service';
+import { FeriadoService } from '../shared/feriado.service';
+import { AgregarFeriadoComponent } from '../mantenimiento/dias-laborables/agregar-feriado/agregar-feriado.component';
 
 
 @NgModule({
@@ -94,7 +97,8 @@ import { EnviarGuiabloqueComponent } from '../listar-guiasbloque-creadas/enviar-
     ModificarClasificacionComponent,
     EliminarGuiabloqueComponent,
     ModificarGuiabloqueComponent,
-    EnviarGuiabloqueComponent
+    EnviarGuiabloqueComponent,
+    AgregarFeriadoComponent
   ],
   imports: [  
     HttpClientModule,
@@ -150,7 +154,9 @@ import { EnviarGuiabloqueComponent } from '../listar-guiasbloque-creadas/enviar-
     AmbitoService,
     SubAmbitoService,
     ClasificacionService,
-    EnvioBloqueService
+    EnvioBloqueService,
+    DiaLaborableService,
+    FeriadoService
   ], 
   entryComponents: [ 
     ConfirmModalComponent, 
@@ -175,7 +181,8 @@ import { EnviarGuiabloqueComponent } from '../listar-guiasbloque-creadas/enviar-
     ModificarClasificacionComponent,
     EliminarGuiabloqueComponent,
     ModificarGuiabloqueComponent,
-    EnviarGuiabloqueComponent
+    EnviarGuiabloqueComponent,
+    AgregarFeriadoComponent
    ],
 })
 export class LayoutModule { }

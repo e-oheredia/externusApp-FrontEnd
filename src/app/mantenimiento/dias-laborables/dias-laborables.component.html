@@ -1,3 +1,43 @@
-<p>
-  dias-laborables works!
-</p>
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Mantenimiento de días laborables</h2>
+    </div>
+  </div>
+</div>
+<!--  -->
+<div *ngIf="ambitos.length !== 0; else mensaje" class="center">
+  <ng2-smart-table [settings]="settings" [source]="dataAmbitos"></ng2-smart-table>
+</div>
+<!--  -->
+<div class="row">
+  <div class="col-10 btn-group">
+    <div class="mb-2">
+      <button type="button" class="btn btn-success" (click)="onAgregar()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="feriados.length !== 0; else mensaje2" class="center">
+  <ng2-smart-table [settings]="settings" [source]="dataFeriados"></ng2-smart-table>
+</div>
+<!--  -->
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No existen ámbitos.
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!--  -->
+<ng-template #mensaje2>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No existen feriados.
+      </div>
+    </div>
+  </div>
+</ng-template>

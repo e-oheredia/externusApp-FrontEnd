@@ -9,7 +9,7 @@ export class SubAmbitoService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.AMBITO_URL;
 
-    private subambitosActivos: SubAmbito[];
+    private subambitos: SubAmbito[];
 
     constructor(private requester: RequesterService ){
         /* NO EXISTEN SUB-AMBITOS ACTIVOS PUESTO QUE EL USUARIO NO 
@@ -23,9 +23,9 @@ export class SubAmbitoService {
         // )
     }    
     
-    getSubAmbitosActivos(): SubAmbito[] {
-        return this.subambitosActivos;
-    }
+    // getSubAmbitosActivos(): SubAmbito[] {
+    //     return this.subambitos;
+    // }
 
     public subambitosChanged = new Subject<SubAmbito[]>();
 

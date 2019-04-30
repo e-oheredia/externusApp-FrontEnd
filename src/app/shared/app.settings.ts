@@ -10,6 +10,7 @@ export class AppSettings {
     public static TIPO_SERVICIO_URL = "tiposservicio/";
     public static PRODUCTO_URL = "productos/";
     public static AMBITO_URL = "ambitos/";
+    public static FERIADO_URL = "feriados/";
     public static SUBAMBITO_URL = "subambito/";
     public static CLASIFICACION = "tiposdocumento/";
     public static TIPO_SEGURIDAD_URL = "tiposseguridad/";
