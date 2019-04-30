@@ -1,0 +1,72 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h4>Agregar feriado</h4>
+  </div>
+
+  <form [formGroup]="agregarForm" (ngSubmit)=onSubmit(agregarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+            <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+              class="text-danger small">
+              Es necesario ingresar el nombre del feriado
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input class="form-control" type="date" name="fecha" id="fecha" formControlName="fecha">
+            <span *ngIf="!agregarForm.get('fecha').valid && agregarForm.get('fecha').touched"
+              class="text-danger small">
+              Es necesario ingresar la fecha del feriado
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="periodo">Periodo</label>
+            <input class="form-control" type="text" name="periodo" id="periodo" formControlName="periodo">
+            <span *ngIf="!agregarForm.get('periodo').valid && agregarForm.get('periodo').touched"
+              class="text-danger small">
+              Es necesario ingresar el periodo del feriado
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <label for="nombreProveedor">Ámbito</label>
+          <div class="form-group" *ngFor="let ambito of ambitos">
+            <div class="form-check">
+              <input name="ambitos" id="ambitos" formControlName="ambitos" type="checkbox" class="form-check-input"
+                [id]="'pd-' + ambito.id" (change)="onChangeAmbitoElegido($event, ambito)">
+              <label class="form-check-label" [for]="'pd-' + ambito.id">{{ambito.nombre}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success" [disabled]="!agregarForm.valid">Agregar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

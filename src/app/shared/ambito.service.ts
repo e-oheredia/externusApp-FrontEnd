@@ -33,7 +33,7 @@ export class AmbitoService {
     // }
 
     listarAmbitosAll(): Observable<Ambito[]> {
-        return this.requester.get<Ambito[]>(this.REQUEST_URL , {});
+        return this.requester.get<Ambito[]>(this.REQUEST_URL + "diaslaborables" , {});
     }
 
     agregarAmbito(ambito: Ambito): Observable<Ambito>{

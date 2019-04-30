@@ -9,6 +9,7 @@ import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
 import { ProductoComponent } from './producto/producto.component';
 import { SubambitoComponent } from './subambito/subambito.component';
 import { ClasificacionComponent } from './clasificacion/clasificacion.component';
+import { DiaLaborableComponent } from './dias-laborables/dias-laborables.component';
 
 const mantenimientoRoutes: Routes = [
     {
@@ -36,6 +37,9 @@ const mantenimientoRoutes: Routes = [
             },
             {
                 path: 'clasificacion', component: ClasificacionComponent
+            },
+            {
+                path: 'dia-laborable', component: DiaLaborableComponent
             }
         ]
     }
