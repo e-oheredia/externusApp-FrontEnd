@@ -42,8 +42,8 @@ export class DiaLaborableComponent implements OnInit {
   ngOnInit() {
     this.generarTablaAmbitos();
     this.listarAmbitos();
-    this.generarTablaFeriado();
-    this.listarFeriados();
+    // this.generarTablaFeriado();
+    // this.listarFeriados();
   }
 
   generarTablaAmbitos() {
@@ -82,7 +82,7 @@ export class DiaLaborableComponent implements OnInit {
             dataAmbitos.push({
               id: ambito ? ambito.id : 'no tiene',
               nombre: ambito ? ambito.nombre : 'no tiene',
-              dias: ambito.diasHora.map(dialaborable => dialaborable.dia.nombre).join(", ")
+              dias: ambito.diasHora.map(diasHora => diasHora.dia.nombre).join(", ")
             })
           }
         )

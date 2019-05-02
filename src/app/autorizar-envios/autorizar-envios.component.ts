@@ -5,6 +5,13 @@ import { Component, OnInit } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { Subscription } from 'rxjs';
+import { LocalDataSource } from 'ng2-smart-table';
+import { AppSettings } from '../shared/app.settings';
+import { Envio } from 'src/model/envio.model';
+import { FormGroup } from '@angular/forms';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
+import { ModificarEnvioComponent } from './modificar-envio/modificar-envio.component';
 
 @Component({
   selector: 'app-autorizar-envios',
@@ -13,32 +20,163 @@ import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.com
 })
 export class AutorizarEnviosComponent implements OnInit {
 
-  constructor(private envioService: EnvioService, 
-    public documentoService: DocumentoService, 
-    private notifier: NotifierService, 
-    private modalService: BsModalService) { }
-  enviosNoAutorizados = [];
+  constructor(
+    private envioService: EnvioService,
+    public documentoService: DocumentoService,
+    private notifier: NotifierService,
+    private modalService: BsModalService
+  ) { }
+
+  dataEnviosPendientesDeAutorizacion: LocalDataSource = new LocalDataSource();
+  settings = AppSettings.tableSettings;
+  envios: Envio[] = [];
+  envio: Envio;
+
+  enviosNoAutorizadosSubscription: Subscription;
+  envioForm: FormGroup;
 
   ngOnInit() {
+    this.generarColumnas();
     this.listarEnviosNoAutorizados();
   }
 
-  listarEnviosNoAutorizados(){
+  generarColumnas() {
+    this.settings.columns = {
+      id: {
+        title: 'ID'
+      },
+      remitente: {
+        title: 'Remitente'
+      },
+      area: {
+        title: 'Área'
+      },
+      clasificacion: {
+        title: 'Clasificación'
+      },
+      tipoServicio: {
+        title: 'Tipo de servicio'
+      },
+      tipoSeguridad: {
+        title: 'Tipo de seguridad'
+      },
+      plazoDistribucion: {
+        title: 'Plazo de distribución'
+      },
+      fechaCreacion: {
+        title: 'Fecha creación'
+      },
+      cantidadDocumentos: {
+        title: 'Cantidad de documentos'
+      },
+      buttonDescargarPermiso: {
+        title: 'Adjunto',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-download";
+          instance.pressed.subscribe(row => {
+            this.descargarPermiso(row);
+          });
+        }
+      },
+      buttonModificar: {
+        title: 'Modificar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-wrench";
+          instance.pressed.subscribe(row => {
+            this.modificar(row);
+          });
+        }
+      },
+      buttonAutorizar: {
+        title: 'Autorizar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-check";
+          instance.pressed.subscribe(row => {
+            this.autorizar(row);
+          });
+        }
+      },
+      buttonDenegar: {
+        title: 'Denegar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-times";
+          instance.pressed.subscribe(row => {
+            this.denegar(row);
+          });
+        }
+      },
+    }
+  }
+
+  listarEnviosNoAutorizados() {
+    this.dataEnviosPendientesDeAutorizacion.reset();
     this.envioService.listarEnviosNoAutorizados().subscribe(
       envios => {
-        this.enviosNoAutorizados = envios;
+        this.envios = envios;
+        let dataEnviosPendientesDeAutorizacion = [];
+        envios.forEach(
+          envio => {
+            dataEnviosPendientesDeAutorizacion.push({
+              id: envio.id,
+              remitente: envio.buzon.nombre,
+              area: envio.buzon.area.nombre,
+              clasificacion: envio.clasificacion.nombre,
+              tipoServicio: envio.tipoServicio.nombre,
+              tipoSeguridad: envio.tipoSeguridad.nombre,
+              plazoDistribucion: envio.plazoDistribucion.nombre,
+              fechaCreacion: this.documentoService.getFechaCreacion(envio.documentos[0]),
+              cantidadDocumentos: envio.documentos.length
+            })
+          }
+        )
+        this.dataEnviosPendientesDeAutorizacion.load(dataEnviosPendientesDeAutorizacion);
       }
     )
   }
 
-  autorizar(id: number) {
+  descargarPermiso(row) {
+
+  }
+
+  modificar(row) {
+    this.envio = this.envios.find(envio => envio.id == row.id)
+    let bsModalRef: BsModalRef = this.modalService.show(ModificarEnvioComponent, {
+      initialState: {
+        id: this.envio.id,
+        envio: this.envio,
+        titulo: 'Modificar envío'
+      },
+      class: 'modal-md',
+      keyboard: false,
+      backdrop: "static"
+    });
+    bsModalRef.content.modificarEnvioEvent.subscribe(() =>
+    this.listarEnviosNoAutorizados()
+    )
+  }
+
+  autorizar(row) {
+    this.envio = this.envios.find(envio => envio.id == row.id)
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
-      initialState : {
+      initialState: {
+        id: this.envio.id,
+        envio: this.envio,
         mensaje: "¿Está seguro que desea autorizar el envío?"
-      }
+      },
+      class: 'modal-md',
+      keyboard: false,
+      backdrop: "static"
     });
     bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.envioService.autorizarEnvio(id).subscribe(
+      this.envioService.autorizarEnvio(this.envio.id).subscribe(
         () => {
           this.notifier.notify('success', 'Se ha autorizado correctamente el envío');
           this.listarEnviosNoAutorizados();
@@ -46,18 +184,19 @@ export class AutorizarEnviosComponent implements OnInit {
         error => {
           console.log(error);
         }
-      )
-    });    
+      )   
+    });
   }
 
-  denegar(id: number) {
+  denegar(row) {
+    this.envio = this.envios.find(envio => envio.id == row.id)
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
-      initialState : {
+      initialState: {
         mensaje: "¿Está seguro que desea denegar el envío?"
       }
     });
     bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.envioService.denegarEnvio(id).subscribe(
+      this.envioService.denegarEnvio(this.envio.id).subscribe(
         () => {
           this.notifier.notify('success', 'Se ha denegado correctamente el envío');
           this.listarEnviosNoAutorizados();
@@ -67,6 +206,11 @@ export class AutorizarEnviosComponent implements OnInit {
         }
       )
     });
-    
   }
+
+
+
+
+
+
 }
