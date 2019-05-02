@@ -6,7 +6,6 @@ import { NotifierService } from 'angular-notifier';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Guia } from 'src/model/guia.model';
 import { Subscription } from 'rxjs';
-import { Sede } from 'src/model/sede.model';
 
 @Component({
   selector: 'app-modificar-guiabloque',
@@ -17,7 +16,6 @@ export class ModificarGuiabloqueComponent implements OnInit {
 
   constructor(
     private bsModalRef: BsModalRef,
-    private utilsService: UtilsService,
     private guiaService: GuiaService,
     private notifier: NotifierService
   ) { }

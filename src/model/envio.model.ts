@@ -7,6 +7,7 @@ import { Sede } from './sede.model';
 import { Producto } from './producto.model';
 import { Clasificacion } from './clasificacion.model';
 import { TipoEnvio } from './tipoenvio.model';
+import { SeguimientoAutorizacion } from './seguimientoautorizacion.model';
 
 export class Envio {
 
@@ -29,6 +30,7 @@ export class Envio {
     public autorizado: boolean;
     public autogenerado: string;
     public tipoEnvio: TipoEnvio;
+    public seguimientoAutorizado: SeguimientoAutorizacion[];
     
     public addDocumento(documento: Documento){
         this.documentos.push(documento);

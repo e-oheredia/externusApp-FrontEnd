@@ -22,6 +22,7 @@ import { ReporteGuiasComponent } from './reporte-guias/reporte-guias.component';
 import { ProcesarGuiasComponent } from './procesar-guias/procesar-guias.component';
 import { ListarGuiasbloqueCreadasComponent } from './listar-guiasbloque-creadas/listar-guiasbloque-creadas.component';
 import { RecepcionarBloqueComponent } from './recepcionar-bloque/recepcionar-bloque.component';
+import { ReporteAutorizacionComponent } from './reporte-autorizacion/reporte-autorizacion.component';
 
 
 
@@ -83,23 +84,23 @@ const appRoutes: Routes = [
         component: ReporteIndicadorVolumenComponent
     },
     {
-        path: 'reportes-volumen',
+        path: 'reporte-volumen',
         component: ReporteMensualVolumenComponent
     },
     {
-        path: 'reportes-eficacia',
+        path: 'reporte-eficacia',
         component: ReporteEficaciaComponent
     },
     {    
-        path: 'reportes-cargos',
+        path: 'reporte-cargos',
         component: ReporteMensualCargosComponent
     },
     {
-        path: 'reportes-distribucion-mes-eficiencia',
+        path: 'reporte-distribucion-mes-eficiencia',
         component: ReporteDistribucionMesEficienciaComponent
     },
     {
-        path: 'reportes-indicador-efectividad',
+        path: 'reporte-indicador-efectividad',
         component: ReporteIndicadorEfectividadComponent
     },
     {
@@ -123,6 +124,10 @@ const appRoutes: Routes = [
     {
         path: 'recepcionar-bloques',
         component: RecepcionarBloqueComponent
+    },
+    {
+        path: 'reporte-autorizacion',
+        component: ReporteAutorizacionComponent
     }
 
 ]

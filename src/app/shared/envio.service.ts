@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Documento } from '../../model/documento.model';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { DocumentoService } from './documento.service';
+import { HttpParams } from '@angular/common/http';
 
 
 @Injectable()
@@ -44,6 +45,14 @@ export class EnvioService {
 
     listarEnviosNoAutorizados(): Observable<Envio[]> {
         return this.requester.get<Envio[]>(this.REQUEST_URL + "noautorizados", {});
+    }
+
+    listarEnviosParaAutorizarPorFechas(fechaini: Date, fechafin: Date){
+        return this.requester.get<Envio[]>(this.REQUEST_URL + "enviosautorizacion" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
+    modificarEnvio(envio: Envio): Observable<Envio>{
+        return this.requester.put<Envio>(this.REQUEST_URL + envio.id.toString() + "/modificautorizacion", envio, {});
     }
 
     autorizarEnvio(id: number): Observable<Envio> {

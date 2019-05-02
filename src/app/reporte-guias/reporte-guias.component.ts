@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentoService } from '../shared/documento.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { UtilsService } from '../shared/utils.service';
 import { NotifierService } from 'angular-notifier';
 import * as moment from "moment-timezone";
@@ -8,7 +6,6 @@ import { EnvioService } from '../shared/envio.service';
 import { TituloService } from '../shared/titulo.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { AppSettings } from '../shared/app.settings';
-import { Documento } from 'src/model/documento.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GuiaService } from '../shared/guia.service';
@@ -24,12 +21,11 @@ export class ReporteGuiasComponent implements OnInit {
 
   constructor(
     public guiaService: GuiaService,
-    // public documentoService: DocumentoService,
     public envioService: EnvioService,
-    private modalService: BsModalService,
     private utilsService: UtilsService,
     private notifier: NotifierService,
-    private tituloService: TituloService) { }
+    private tituloService: TituloService
+    ) { }
 
 
   dataGuias: LocalDataSource = new LocalDataSource();
@@ -37,8 +33,6 @@ export class ReporteGuiasComponent implements OnInit {
 
   guias: Guia[] = [];
   guia: Guia;
-  // documentos: Documento[] = [];
-  // documento: Documento;
 
   guiaSubscription: Subscription;
   guiaForm: FormGroup;
