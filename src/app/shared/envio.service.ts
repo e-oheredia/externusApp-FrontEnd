@@ -7,6 +7,7 @@ import { Documento } from '../../model/documento.model';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { DocumentoService } from './documento.service';
 import { HttpParams } from '@angular/common/http';
+import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 
 
 @Injectable()
@@ -51,8 +52,8 @@ export class EnvioService {
         return this.requester.get<Envio[]>(this.REQUEST_URL + "enviosautorizacion" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    modificarEnvio(envio: Envio): Observable<Envio>{
-        return this.requester.put<Envio>(this.REQUEST_URL + envio.id.toString() + "/modificautorizacion", envio, {});
+    modificarEnvio(envio: Envio, plazoDistribucion: PlazoDistribucion): Observable<Envio>{
+        return this.requester.put<Envio>(this.REQUEST_URL + envio.id.toString() + "/modificautorizacion", plazoDistribucion, {});
     }
 
     autorizarEnvio(id: number): Observable<Envio> {

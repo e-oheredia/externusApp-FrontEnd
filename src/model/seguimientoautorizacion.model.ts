@@ -6,6 +6,7 @@ export class SeguimientoAutorizacion {
         public id: number, 
         public envio:Envio, 
         public estadoAutorizacion: EstadoAutorizacion, 
-        public fecha: Date
+        public fecha: Date,
+        public autorizador: string
     ){}
 }

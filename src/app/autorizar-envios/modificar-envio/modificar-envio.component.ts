@@ -30,6 +30,7 @@ export class ModificarEnvioComponent implements OnInit {
   @Output() modificarEnvioEvent = new EventEmitter();
 
   envio: Envio;
+  plazoDistribucion: PlazoDistribucion;
   plazos: PlazoDistribucion[] = [];
   modificarForm: FormGroup;
 
@@ -56,9 +57,9 @@ export class ModificarEnvioComponent implements OnInit {
   onSubmit(form: any){
     if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['plazonuevo'].value)){
       let envio = Object.assign({}, this.envio);
-      envio.plazoDistribucion = this.modificarForm.get('plazonuevo').value;
+      this.plazoDistribucion = this.modificarForm.get('plazonuevo').value;
       
-      this.modificarEnvioSubscription = this.envioService.modificarEnvio(envio).subscribe(
+      this.modificarEnvioSubscription = this.envioService.modificarEnvio(envio, this.plazoDistribucion).subscribe(
         envio => {
           this.notifier.notify('success', 'Se modificó el envío con éxito');
           this.bsModalRef.hide();
