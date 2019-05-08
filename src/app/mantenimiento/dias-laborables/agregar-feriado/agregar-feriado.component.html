@@ -26,8 +26,7 @@
           <div class="form-group">
             <label for="fecha">Fecha</label>
             <input class="form-control" type="date" name="fecha" id="fecha" formControlName="fecha">
-            <span *ngIf="!agregarForm.get('fecha').valid && agregarForm.get('fecha').touched"
-              class="text-danger small">
+            <span *ngIf="!agregarForm.get('fecha').valid && agregarForm.get('fecha').touched" class="text-danger small">
               Es necesario ingresar la fecha del feriado
             </span>
           </div>
@@ -38,7 +37,9 @@
         <div class="col">
           <div class="form-group">
             <label for="periodo">Periodo</label>
-            <input class="form-control" type="text" name="periodo" id="periodo" formControlName="periodo">
+            <select class="form-control" id="periodo" formControlName="periodo">
+              <option *ngFor = "let periodo of periodos" [ngValue]="periodo">{{periodo.nombre}}</option>
+            </select>
             <span *ngIf="!agregarForm.get('periodo').valid && agregarForm.get('periodo').touched"
               class="text-danger small">
               Es necesario ingresar el periodo del feriado
@@ -47,9 +48,10 @@
         </div>
       </div>
 
+
       <div class="form-row">
         <div class="col">
-          <label for="nombreProveedor">Ámbito</label>
+          <label for="ambito">Ámbito</label>
           <div class="form-group" *ngFor="let ambito of ambitos">
             <div class="form-check">
               <input name="ambitos" id="ambitos" formControlName="ambitos" type="checkbox" class="form-check-input"

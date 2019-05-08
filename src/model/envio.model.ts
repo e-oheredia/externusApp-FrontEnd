@@ -30,7 +30,7 @@ export class Envio {
     public autorizado: boolean;
     public autogenerado: string;
     public tipoEnvio: TipoEnvio;
-    public seguimientoAutorizado: SeguimientoAutorizacion[];
+    public seguimientosAutorizado: SeguimientoAutorizacion[] = [];
     
     public addDocumento(documento: Documento){
         this.documentos.push(documento);

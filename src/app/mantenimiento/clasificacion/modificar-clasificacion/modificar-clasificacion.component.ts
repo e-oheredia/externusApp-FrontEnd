@@ -17,7 +17,6 @@ export class ModificarClasificacionComponent implements OnInit {
 
   constructor(
     private bsModalRef: BsModalRef,
-    private utilsService: UtilsService,
     private clasificacionService: ClasificacionService,
     private notifier: NotifierService,
     private modalService: BsModalService,
@@ -25,7 +24,7 @@ export class ModificarClasificacionComponent implements OnInit {
 
   @Output() clasificacionModificadaEvent = new EventEmitter();
 
-  estados: boolean;
+  // estados: boolean;
   clasificacion: Clasificacion;
   clasificaciones: Clasificacion[] = [];
   modificarForm: FormGroup;

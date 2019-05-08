@@ -16,7 +16,6 @@ import { ProductoComponent } from './producto/producto.component';
 import { SubambitoComponent } from './subambito/subambito.component';
 import { ClasificacionComponent } from './clasificacion/clasificacion.component';
 import { DiaLaborableComponent } from './dias-laborables/dias-laborables.component';
-import { ModificarAmbitoComponent } from './dias-laborables/modificar-ambito/modificar-ambito.component';
 
 @NgModule({
   imports: [
@@ -39,7 +38,6 @@ import { ModificarAmbitoComponent } from './dias-laborables/modificar-ambito/mod
     SubambitoComponent,
     ClasificacionComponent,
     DiaLaborableComponent,
-    ModificarAmbitoComponent
   ],
   entryComponents: [
     ButtonViewComponent,

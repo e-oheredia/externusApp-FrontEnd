@@ -7,7 +7,7 @@ import { Feriado } from "src/model/feriado.model";
 @Injectable()
 export class FeriadoService {
 
-    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.FERIADO_URL; //falta confirmar
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.FERIADO_URL;
 
     private feriado: Feriado[];
 
@@ -44,5 +44,8 @@ export class FeriadoService {
         return this.requester.put<Feriado>(this.REQUEST_URL + id, feriado, {});
     }
 
+    eliminarFeriado(id: number): Observable<Feriado> {
+        return this.requester.delete<Feriado>(this.REQUEST_URL + id.toString(), {});
+    }
 
 }

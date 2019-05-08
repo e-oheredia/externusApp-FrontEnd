@@ -14,6 +14,7 @@ import { Ambito } from 'src/model/ambito.model';
 import { AmbitoService } from 'src/app/shared/ambito.service';
 import { ModificarAmbitoComponent } from './modificar-ambito/modificar-ambito.component';
 import { AgregarFeriadoComponent } from './agregar-feriado/agregar-feriado.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-dias-laborables',
@@ -25,32 +26,30 @@ export class DiaLaborableComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     private feriadoService: FeriadoService,
-    private ambitoService: AmbitoService
+    private ambitoService: AmbitoService,
+    private notifier: NotifierService,
   ) { }
 
   dataAmbitos: LocalDataSource = new LocalDataSource();
   dataFeriados: LocalDataSource = new LocalDataSource();
-  settings = AppSettings.tableSettings;
+  settings = Object.assign({},AppSettings.tableSettings);
+  settings2 = Object.assign({},AppSettings.tableSettings);
   feriado: Feriado;
   feriados: Feriado[] = [];
   ambito: Ambito;
   ambitos: Ambito[] = [];
 
-  // diaslaborablesSubscription: Subscription;
   dialaborableForm: FormGroup;
 
   ngOnInit() {
     this.generarTablaAmbitos();
     this.listarAmbitos();
-    // this.generarTablaFeriado();
-    // this.listarFeriados();
+    this.generarTablaFeriado();
+    this.listarFeriados();
   }
 
   generarTablaAmbitos() {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
       nombre: {
         title: 'Ámbito'
       },
@@ -71,6 +70,7 @@ export class DiaLaborableComponent implements OnInit {
     }
   }
 
+
   listarAmbitos() {
     this.dataAmbitos.reset();
     this.ambitoService.listarAmbitosAll().subscribe(
@@ -80,9 +80,9 @@ export class DiaLaborableComponent implements OnInit {
         ambitos.forEach(
           ambito => {
             dataAmbitos.push({
-              id: ambito ? ambito.id : 'no tiene',
+              id: ambito.id,
               nombre: ambito ? ambito.nombre : 'no tiene',
-              dias: ambito.diasHora.map(diasHora => diasHora.dia.nombre).join(", ")
+              dias: ambito.diasLaborables.filter(dia => dia.activo==1).sort((a,b) => a.id - b.id).map(diaLaborable => diaLaborable.dia.nombre).join(", ")
             })
           }
         )
@@ -92,10 +92,7 @@ export class DiaLaborableComponent implements OnInit {
   }
 
   generarTablaFeriado() {
-    this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
+    this.settings2.columns = {
       nombre: {
         title: 'Nombre'
       },
@@ -113,7 +110,7 @@ export class DiaLaborableComponent implements OnInit {
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
-          instance.claseIcono = "fas fa-wrench";
+          instance.claseIcono = "fas fa-times";
           instance.pressed.subscribe(row => {
             this.eliminarFeriado(row);
           });
@@ -134,8 +131,8 @@ export class DiaLaborableComponent implements OnInit {
               id: feriado.id,
               nombre: feriado.nombre,
               fecha: feriado.fecha,
-              periodo: feriado.periodo,
-              ambito: feriado.ambito
+              periodo: feriado.modeltipo.nombre,
+              ambito: feriado.ambitos.map(ambito => ambito.nombre).join(", ")
             })
           }
         )
@@ -149,14 +146,14 @@ export class DiaLaborableComponent implements OnInit {
     let bsModalRef: BsModalRef = this.modalService.show(ModificarAmbitoComponent, {
       initialState: {
         id: this.ambito.id,
-        feriado: this.ambito,
+        ambito: this.ambito,
         titulo: 'Modificar horario de atención'
       },
       class: 'modal-md',
       keyboard: false,
       backdrop: "static"
     });
-    bsModalRef.content.modificarEvent.subscribe(() =>
+    bsModalRef.content.ambitoModificadoEvent.subscribe(() =>
       this.listarAmbitos()
     )
   }
@@ -188,18 +185,22 @@ export class DiaLaborableComponent implements OnInit {
       initialState: {
         id: this.feriado.id,
         feriado: this.feriado,
-        titulo: 'Eliminar Feriado'
-      },
-      class: 'modal-md',
-      keyboard: false,
-      backdrop: "static"
+        titulo: 'Eliminar Feriado',
+        mensaje: "¿Está seguro que desea eliminar el feriado?"
+      }
     });
-    bsModalRef.content.confirmarEvent.subscribe(() =>
-      this.listarFeriados()
-    )
+    bsModalRef.content.confirmarEvent.subscribe(() => {
+      this.feriadoService.eliminarFeriado(this.feriado.id).subscribe(
+        () => {
+          this.notifier.notify('success', 'Se ha eliminado correctamente el feriado');
+          this.listarFeriados();
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    })
   }
-
-
 
 
 }
