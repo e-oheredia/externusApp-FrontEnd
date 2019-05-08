@@ -4,7 +4,7 @@ export class DiaLaborable {
     constructor(){}
     public id: number;
     public dia: Dia;
-    public activo: boolean;
-    public horaInicio: string;
-    public horaFinal: string;
+    public activo: any | boolean;
+    public inicio: string;
+    public fin: string;
 }

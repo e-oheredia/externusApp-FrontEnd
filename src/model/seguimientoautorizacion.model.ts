@@ -5,8 +5,8 @@ export class SeguimientoAutorizacion {
     constructor(
         public id: number, 
         public envio:Envio, 
-        public estadoAutorizacion: EstadoAutorizacion, 
+        public estadoAutorizado: EstadoAutorizacion, 
         public fecha: Date,
-        public autorizador: string
+        public nombreUsuario: string
     ){}
 }

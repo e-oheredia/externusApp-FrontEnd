@@ -9,6 +9,7 @@ import { AppSettings } from '../shared/app.settings';
 import { Envio } from 'src/model/envio.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { EnvioMasivo } from 'src/model/enviomasivo.model';
 
 @Component({
   selector: 'app-reporte-autorizacion',
@@ -26,7 +27,9 @@ export class ReporteAutorizacionComponent implements OnInit {
 
   dataEnvios: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
+  rutaManual: string = AppSettings.MANUAL_REGISTRO;
 
+  // envioMasivo: EnvioMasivo[] = [];
   envios: Envio[] = [];
   envio: Envio;
 
@@ -42,13 +45,11 @@ export class ReporteAutorizacionComponent implements OnInit {
     this.settings.hideSubHeader = false;
     this.generarColumnas();
     this.listarAutorizaciones();
+
   }
 
   generarColumnas() {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
       area: {
         title: 'Área'
       },
@@ -66,6 +67,9 @@ export class ReporteAutorizacionComponent implements OnInit {
       },
       plazoDistribucion: {
         title: 'Plazo de distribución'
+      },
+      cantidadDocumentos: {
+        title: 'Cantidad de documentos'
       },
       estadoDocumento: {
         title: 'Estado del documento'
@@ -94,17 +98,17 @@ export class ReporteAutorizacionComponent implements OnInit {
               dataEnvios.push({
                 id: envio.id,
                 area: envio.buzon.area.nombre,
-                matricula: envio.buzon.nombre,
+                matricula: "a",
                 nombreUsuario: envio.buzon.nombre,
-                autogenerado: envio.autogenerado,
+                autogenerado: this.envioService.getAutogeneradoEnvio(envio),
                 producto: envio.producto.nombre,
                 plazoDistribucion: envio.plazoDistribucion.nombre,
-                estadoDocumento: envio,
-                autorizacion: envio.seguimientoAutorizado,
-                usuarioAutorizador: envio,
-                fechaAutorizacion: envio
+                cantidadDocumentos: envio.documentos.length,
+                estadoDocumento: "a",
+                autorizacion: this.envioService.getUltimoEstadoAutorizacion(envio).nombre,
+                usuarioAutorizador: this.envioService.getAutorizador(envio),
+                fechaAutorizacion: this.envioService.getUltimaFechaEstadoAutorizacion(envio)
               })
-              this.envios.push(envio);
               this.dataEnvios.load(dataEnvios);
               this.envioForm.controls['fechaIni'].reset();
               this.envioForm.controls['fechaFin'].reset();
@@ -123,6 +127,10 @@ export class ReporteAutorizacionComponent implements OnInit {
     else {
       this.notifier.notify('error', 'Debe ingresar un rango de fechas');
     }
+  }
+
+  exportar(){
+    this.envioService.exportarAutorizaciones(this.envios)
   }
 
 }

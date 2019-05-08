@@ -98,12 +98,9 @@ export class ModificarProveedorComponent implements OnInit {
   }
 
   onChangePlazoDistribucionElegido(event: any, plazoDistribucion: PlazoDistribucion) {
-    
     event.srcElement.checked ? this.plazosDistribucionElegidos.push(plazoDistribucion) : this.plazosDistribucionElegidos.splice(this.plazosDistribucionElegidos.indexOf(this.plazosDistribucionElegidos.find(plazo => plazo.id === plazoDistribucion.id)), 1);
   }
-
-
-  
+ 
  
 
 }

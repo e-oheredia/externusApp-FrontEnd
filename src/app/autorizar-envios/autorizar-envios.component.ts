@@ -75,9 +75,11 @@ export class AutorizarEnviosComponent implements OnInit {
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-download";
-          instance.pressed.subscribe(row => {
-            this.descargarPermiso(row);
+          instance.mostrarData.subscribe(row => {
+            let envio = this.envios.find(envio => envio.id == row.id)
+            instance.ruta = envio.rutaAutorizacion
           });
+
         }
       },
       buttonModificar: {
@@ -140,10 +142,6 @@ export class AutorizarEnviosComponent implements OnInit {
         this.dataEnviosPendientesDeAutorizacion.load(dataEnviosPendientesDeAutorizacion);
       }
     )
-  }
-
-  descargarPermiso(row) {
-
   }
 
   modificar(row) {

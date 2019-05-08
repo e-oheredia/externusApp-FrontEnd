@@ -5,11 +5,19 @@
     </div>
   </div>
 </div>
-<!--  -->
+
 <div *ngIf="ambitos.length !== 0; else mensaje" class="center">
   <ng2-smart-table [settings]="settings" [source]="dataAmbitos"></ng2-smart-table>
 </div>
-<!--  -->
+
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Mantenimiento de feriados</h2>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-10 btn-group">
     <div class="mb-2">
@@ -19,7 +27,7 @@
 </div>
 
 <div *ngIf="feriados.length !== 0; else mensaje2" class="center">
-  <ng2-smart-table [settings]="settings" [source]="dataFeriados"></ng2-smart-table>
+  <ng2-smart-table [settings]="settings2" [source]="dataFeriados"></ng2-smart-table>
 </div>
 <!--  -->
 <ng-template #mensaje>

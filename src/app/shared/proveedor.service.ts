@@ -39,7 +39,7 @@ export class ProveedorService {
     }
 
     modificarProveedor(id:number, proveedor: Proveedor): Observable<Proveedor> {
-        return this.requester.put<Proveedor>(this.REQUEST_URL +id, proveedor, {});
+        return this.requester.put<Proveedor>(this.REQUEST_URL + id, proveedor, {});
     }
 
     listarProveedoresAll(): Observable<Proveedor[]>{
