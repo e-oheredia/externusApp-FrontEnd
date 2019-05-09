@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { DiaLaborable } from 'src/model/dialaborable.model';
 import { DiaLaborableService } from 'src/app/shared/dialaborable.service';
 import { UtilsService } from 'src/app/shared/utils.service';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-modificar-ambito',
@@ -18,6 +19,7 @@ export class ModificarAmbitoComponent implements OnInit {
 
   constructor(
     private utilsService: UtilsService,
+    private modalService: BsModalService,
     private bsModalRef: BsModalRef,
     private ambitoService: AmbitoService,
     private notifier: NotifierService,
@@ -39,23 +41,23 @@ export class ModificarAmbitoComponent implements OnInit {
   }
 
   construirForm() {
-    this.ambito.diasLaborables.sort((a,b) => a.id - b.id).forEach(dia => {
+    this.ambito.diasLaborables.sort((a, b) => a.id - b.id).forEach(dia => {
       (<FormArray>this.modificarForm.controls['diaslaborables']).
         push(new FormGroup({
           'id': new FormControl(dia.id, Validators.required),
           'nombre': new FormControl(dia.dia.nombre, Validators.required),
           'activo': new FormControl(dia.activo, Validators.required),
-          'horaini': new FormControl(dia.inicio, Validators.required),
-          'horafin': new FormControl(dia.fin, Validators.required)
+          'horaini': new FormControl({value: dia.inicio, disabled: dia.activo == 0}, Validators.required),
+          'horafin': new FormControl({value: dia.fin, disabled: dia.activo == 0}, Validators.required)
         }))
     })
     console.log(this.modificarForm)
   }
 
-  validarAlMenosUnActivo(form: any) : boolean {
+  validarAlMenosUnActivo(form: any): boolean {
     console.log(this.modificarForm.value);
     let diaActivo = (<Array<DiaLaborable>>this.modificarForm.value.diaslaborables).find(dialaborable => dialaborable.activo == true || dialaborable.activo == 1);
-    if (this.utilsService.isUndefinedOrNullOrEmpty(diaActivo)){
+    if (this.utilsService.isUndefinedOrNullOrEmpty(diaActivo)) {
       return false;
     } else {
       return true;
@@ -63,27 +65,34 @@ export class ModificarAmbitoComponent implements OnInit {
   }
 
   onSubmit(form: any) {
-    if(!this.validarAlMenosUnActivo(form)){
-      this.notifier.notify('warning','Al menos un día debe estar activo');
+    if (!this.validarAlMenosUnActivo(form)) {
+      this.notifier.notify('warning', 'Al menos un día debe estar activo');
     }
-      this.ambito.diasLaborables.forEach(dia => {
+    this.ambito.diasLaborables.forEach(dia => {
 
-        let diaCambiado = this.modificarForm.value.diaslaborables.find(dia2 => dia2.id === dia.id);
-        dia.activo = diaCambiado.activo;
-        dia.inicio = diaCambiado.horaini;
-        dia.fin = diaCambiado.horafin;
+      let diaCambiado = this.modificarForm.value.diaslaborables.find(dia2 => dia2.id === dia.id);
+      dia.activo = diaCambiado.activo;
+      dia.inicio = diaCambiado.horaini ? diaCambiado.horaini : dia.inicio;
+      dia.fin = diaCambiado.horafin ? diaCambiado.horafin : dia.fin;
 
-        if (dia.activo == true) {
-          dia.activo = 1
-        }
-        if (dia.activo == false) {
-          dia.activo = 0
-        }
-      })
-      
+      if (dia.activo == true) {
+        dia.activo = 1
+      }
+      if (dia.activo == false) {
+        dia.activo = 0
+      }
+    })
+
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+      initialState: {
+        titulo: 'Modificar horario',
+        mensaje: "¿Está seguro de guardar los cambios?"
+      }
+    });
+    bsModalRef.content.confirmarEvent.subscribe(() => {
       this.ambitoService.modificarAmbito(this.ambito.id, this.ambito).subscribe(
         ambito => {
-          this.notifier.notify('success', 'Se ha modificado el ambito correctamente');
+          this.notifier.notify('success', 'Se ha modificado el horario correctamente');
           this.bsModalRef.hide();
           this.ambitoModificadoEvent.emit(ambito);
         },
@@ -92,23 +101,25 @@ export class ModificarAmbitoComponent implements OnInit {
         }
       )
       console.log(this.modificarForm)
-
+    })
   }
 
 
-  desactivarDias(activo){
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(activo)){
-      // this.modificarForm.get('diaslaborables').controls;
-      // this.modificarForm.value.diaslaborables['horaini'].disable();
-      // this.modificarForm.value.diaslaborables['horaini'].reset();
-      // this.modificarForm.controls['diaslaborables'].reset();
-      // this.modificarForm.value.diaslaborables['horaini'].reset();
-      // this.modificarForm.value.diaslaborables['horaini'].disable();
-      // this.modificarForm.value.diaslaborables['horafin'].reset();
-      // this.modificarForm.value.diaslaborables['horafin'].disable();
+
+  desactivarDias(diaLaborableGroup: FormGroup) {
+
+    if (diaLaborableGroup.controls['activo'].value === 0 || diaLaborableGroup.controls['activo'].value === false) {
+
+      diaLaborableGroup.controls['horaini'].disable();
+      diaLaborableGroup.controls['horafin'].disable();
+      // diaLaborableGroup.controls['horaini'].setValue(null);
+      // diaLaborableGroup.controls['horafin'].setValue(null);
+
     } else {
-      this.modificarForm.value.diaslaborables['horaini'].enable();
-      this.modificarForm.value.diaslaborables['horafin'].enable();
+
+      diaLaborableGroup.controls['horaini'].enable();
+      diaLaborableGroup.controls['horafin'].enable();
+
     }
   }
 

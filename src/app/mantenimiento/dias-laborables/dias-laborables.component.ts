@@ -193,12 +193,13 @@ export class DiaLaborableComponent implements OnInit {
     bsModalRef.content.confirmarEvent.subscribe(() => {
       this.feriadoService.eliminarFeriado(this.feriado.id).subscribe(
         respuesta => {
-          this.notifier.notify('success', 'Se ha eliminado correctamente el feriado');
+          this.notifier.notify('success', 'Se ha eliminado el feriado con éxito');
           this.listarFeriados();
         },
         error => {
           this.notifier.notify('error', error.message);
         }
+        
       )
     })
   }

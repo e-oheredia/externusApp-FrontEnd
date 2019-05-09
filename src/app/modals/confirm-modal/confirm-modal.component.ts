@@ -11,6 +11,7 @@ export class ConfirmModalComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef) {}
 
   @Output() confirmarEvent = new EventEmitter();
+  titulo: string;
   mensaje: string;
 
   ngOnInit() {

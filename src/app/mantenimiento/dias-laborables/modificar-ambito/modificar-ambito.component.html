@@ -39,14 +39,14 @@
                 <div class="form-check">
                   <input type="checkbox" class="form-check-input" 
                   [formControl]="diaLaborableGroup.get('activo')"
-                  (change)="desactivarDias(diaLaborableGroup.get('activo').value)">
+                  (change)="desactivarDias(diaLaborableGroup)">
                 </div>
               </div>
               <div class="col">
-                <input type="text" class="form-control" [formControl]="diaLaborableGroup.get('horaini')">
+                <input type="time" class="form-control" [formControl]="diaLaborableGroup.get('horaini')">
               </div>
               <div class="col">
-                <input type="text" class="form-control" [formControl]="diaLaborableGroup.get('horafin')">
+                <input type="time" class="form-control" [formControl]="diaLaborableGroup.get('horafin')">
               </div>
             </div>
 

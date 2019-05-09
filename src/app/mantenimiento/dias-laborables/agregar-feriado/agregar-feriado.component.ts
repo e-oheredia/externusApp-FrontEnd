@@ -61,18 +61,17 @@ export class AgregarFeriadoComponent implements OnInit {
 
   onSubmit(){
     console.log(this.agregarForm.value);
-    let fechadate = new Date(this.agregarForm.controls['fecha'].value);
     
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
     if (nombreSinEspacios.length !== 0 && this.ambitosElegidos.length !== 0) {
       let feriado: Feriado = new Feriado();
       feriado.nombre = nombreSinEspacios;
-      feriado.fecha = moment(fechadate).format('DD-MM-YYYY');
+      feriado.fecha = moment(this.agregarForm.controls['fecha'].value).format('DD-MM-YYYY');
       feriado.modeltipo = this.agregarForm.get("periodo").value;
       feriado.ambitos = this.ambitosElegidos;
       this.crearFeriadoSubscription = this.feriadoService.agregarFeriado(feriado).subscribe(
         feriado => {
-          this.notifier.notify('success', 'Se ha agregado el feriado correctamente');
+          this.notifier.notify('success', 'Se agregó el día feriado con éxito');
           this.bsModalRef.hide();
           this.feriadoCreadoEvent.emit(feriado);
         },
