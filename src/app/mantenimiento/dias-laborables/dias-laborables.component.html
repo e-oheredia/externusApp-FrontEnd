@@ -6,14 +6,24 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h4>Horario de atención</h4>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="ambitos.length !== 0; else mensaje" class="center">
   <ng2-smart-table [settings]="settings" [source]="dataAmbitos"></ng2-smart-table>
 </div>
 
+<br>
+
 <div class="row">
   <div class="col-10">
-    <div class="pb-2 mt-4 mb-2">
-      <h2>Mantenimiento de feriados</h2>
+    <div class="pb-2 mt-4">
+      <h4>Feriados</h4>
     </div>
   </div>
 </div>
