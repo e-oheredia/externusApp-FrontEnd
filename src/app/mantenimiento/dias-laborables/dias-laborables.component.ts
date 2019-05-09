@@ -46,6 +46,7 @@ export class DiaLaborableComponent implements OnInit {
     this.listarAmbitos();
     this.generarTablaFeriado();
     this.listarFeriados();
+    this.settings2.hideSubHeader = false;
   }
 
   generarTablaAmbitos() {
@@ -191,12 +192,12 @@ export class DiaLaborableComponent implements OnInit {
     });
     bsModalRef.content.confirmarEvent.subscribe(() => {
       this.feriadoService.eliminarFeriado(this.feriado.id).subscribe(
-        () => {
+        respuesta => {
           this.notifier.notify('success', 'Se ha eliminado correctamente el feriado');
           this.listarFeriados();
         },
         error => {
-          console.log(error);
+          this.notifier.notify('error', error.message);
         }
       )
     })

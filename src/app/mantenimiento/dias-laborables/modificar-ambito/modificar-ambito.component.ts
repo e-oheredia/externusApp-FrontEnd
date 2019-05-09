@@ -98,8 +98,9 @@ export class ModificarAmbitoComponent implements OnInit {
 
   desactivarDias(activo){
     if (!this.utilsService.isUndefinedOrNullOrEmpty(activo)){
-      this.modificarForm.value.diaslaborables['horaini'].disable();
-      this.modificarForm.value.diaslaborables['horaini'].reset();
+      // this.modificarForm.get('diaslaborables').controls;
+      // this.modificarForm.value.diaslaborables['horaini'].disable();
+      // this.modificarForm.value.diaslaborables['horaini'].reset();
       // this.modificarForm.controls['diaslaborables'].reset();
       // this.modificarForm.value.diaslaborables['horaini'].reset();
       // this.modificarForm.value.diaslaborables['horaini'].disable();
