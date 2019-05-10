@@ -41,7 +41,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
     buzon: Buzon;
 
     documentosSubscription: Subscription;
-    buzonSubscription:Subscription;
+    buzonSubscription: Subscription;
     documentoForm: FormGroup;
 
     ngOnInit() {
@@ -51,8 +51,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         })
         this.generarColumnas();
         if (!this.buzonService.getBuzonActual()) {
-            this.buzonSubscription= this.buzonService.buzonActualChanged.subscribe(() => {
-              this.listarDocumentos();
+            this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(() => {
+                this.listarDocumentos();
             });
         } else {
             this.listarDocumentos();
@@ -81,7 +81,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                 title: 'Nro de documento'
             },
             producto: {
-              title: 'Producto'
+                title: 'Producto'
             },
             plazo: {
                 title: 'Plazo de distribución'
@@ -101,11 +101,14 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             clasificacion: {
                 title: 'Clasificación'
             },
-            estado: {
-                title: 'Estado'
+            estadodocumento: {
+                title: 'Estado del documento'
             },
             motivo: {
                 title: 'Motivo'
+            },
+            estadocargo: {
+                title: 'Estado del cargo'
             },
             fisicoRecibido: {
                 title: 'Físico recibido'
@@ -123,7 +126,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                 title: 'Fecha último resultado'
             },
             codigodevolucion: {
-              title: 'Código de devolución'
+                title: 'Código de devolución'
             }
         }
     }
@@ -132,7 +135,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
 
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-            this.documentosSubscription = this.documentoService.listarDocumentosUsuarioBCP(this.documentoForm.controls['fechaIni'].value,this.documentoForm.controls['fechaFin'].value).subscribe(
+            this.documentosSubscription = this.documentoService.listarDocumentosUsuarioBCP(this.documentoForm.controls['fechaIni'].value, this.documentoForm.controls['fechaFin'].value).subscribe(
                 documentos => {
                     this.documentos = documentos;
 
@@ -154,8 +157,9 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         direccion: documento.direccion,
                                         distrito: documento.distrito.nombre,
                                         clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
-                                        estado: this.documentoService.getUltimoEstado(documento).nombre,
+                                        estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
                                         motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
+                                        estadocargo: 'a',
                                         fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                                         autorizado: documento.envio.autorizado ? "SI" : "NO",
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),

@@ -75,6 +75,9 @@ export class ReporteGuiasComponent implements OnInit {
       fechaCreacion: {
         title: 'Fecha Creación'
       },
+      fechalimite: {
+        title: 'Fecha Límite'
+      },
       fechaEnvio: {
         title: 'Fecha envío'
       },
@@ -105,6 +108,7 @@ export class ReporteGuiasComponent implements OnInit {
               sede: guia.sede.nombre,
               totalDocumentos: guia.cantidadDocumentos,
               fechaCreacion:this.guiaService.getFechaCreacion(guia),
+              fechalimite: guia.fechaLimite ? guia.fechaLimite : '-',
               fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
               fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
               estado: this.guiaService.getEstadoGuia(guia).nombre
@@ -193,6 +197,11 @@ export class ReporteGuiasComponent implements OnInit {
     } else {
       this.guiaForm.controls['codigo'].disable();
     }
+  }
+
+
+  exportar(){
+    this.guiaService.exportarGuias(this.guias)
   }
 
 

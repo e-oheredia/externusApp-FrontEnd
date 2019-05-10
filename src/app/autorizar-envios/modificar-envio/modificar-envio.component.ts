@@ -66,8 +66,10 @@ export class ModificarEnvioComponent implements OnInit {
           this.modificarEnvioEvent.emit(envio);
         },
         error => {
-          this.notifier.notify('error', 'El envío modificado ya existe');
-        }
+          if (error.status === 400){
+            this.notifier.notify('error', error.error.message);
+          }
+        }  
       );
     }    
   }

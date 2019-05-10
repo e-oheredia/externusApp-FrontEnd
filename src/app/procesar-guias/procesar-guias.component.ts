@@ -124,7 +124,7 @@ export class ProcesarGuiasComponent implements OnInit {
             tipoServicio: guia.tipoServicio.nombre,
             tipoSeguridad: guia.tipoSeguridad.nombre,
             fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
-            fechalimite: '',
+            fechalimite: guia.fechaLimite ? guia.fechaLimite : '-',
             total: guia.cantidadDocumentos,
             entregados: guia.cantidadEntregados,
             rezagados: guia.cantidadRezagados,

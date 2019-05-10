@@ -97,8 +97,13 @@ export class ModificarAmbitoComponent implements OnInit {
           this.ambitoModificadoEvent.emit(ambito);
         },
         error => {
-          this.notifier.notify('error', 'NO SE PUEDE MODIFICAR, LLAMA A ORLA');
-        }
+          if (error.status === 400){
+            this.notifier.notify('error', error.error.message);
+          }
+        }  
+        // error => {
+        //   this.notifier.notify('error', 'NO SE PUEDE MODIFICAR, LLAMA A ORLA');
+        // }
       )
       console.log(this.modificarForm)
     })
@@ -110,10 +115,11 @@ export class ModificarAmbitoComponent implements OnInit {
 
     if (diaLaborableGroup.controls['activo'].value === 0 || diaLaborableGroup.controls['activo'].value === false) {
 
+      diaLaborableGroup.controls['horaini'].reset();
+      diaLaborableGroup.controls['horafin'].reset();
       diaLaborableGroup.controls['horaini'].disable();
       diaLaborableGroup.controls['horafin'].disable();
-      // diaLaborableGroup.controls['horaini'].setValue(null);
-      // diaLaborableGroup.controls['horafin'].setValue(null);
+
 
     } else {
 

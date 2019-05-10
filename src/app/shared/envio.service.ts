@@ -111,17 +111,17 @@ export class EnvioService {
         let objects = [];
         envios.forEach(envio => {
             objects.push({
-                "area" : envio.buzon.area.nombre,
-                "matricula" : "a",
-                "nombreUsuario" : envio.buzon.nombre,
-                "autogenerado" : this.getAutogeneradoEnvio(envio),
-                "producto" : envio.producto.nombre,
-                "plazoDistribucion" : envio.plazoDistribucion.nombre,
-                "cantidadDocumentos" : envio.documentos.length,
-                "estadoDocumento" : "a",
-                "autorizacion" : this.getUltimoEstadoAutorizacion(envio).nombre,
-                "usuarioAutorizador" : this.getAutorizador(envio),
-                "fechaAutorizacion" : this.getUltimaFechaEstadoAutorizacion(envio)
+                "Área" : envio.buzon.area.nombre,
+                "Matrícula" : "a",
+                "Usuario" : envio.buzon.nombre,
+                "Autogenerado" : this.getAutogeneradoEnvio(envio),
+                "Producto" : envio.producto.nombre,
+                "Plazo Distribución" : envio.plazoDistribucion.nombre,
+                "Cantidad Documentos" : envio.documentos.length,
+                "Estado Documento" : "a",
+                "Autorización" : this.getUltimoEstadoAutorizacion(envio).nombre,
+                "Usuario Autorizador" : this.getAutorizador(envio),
+                "Fecha Autorización" : this.getUltimaFechaEstadoAutorizacion(envio)
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Buzón: ");

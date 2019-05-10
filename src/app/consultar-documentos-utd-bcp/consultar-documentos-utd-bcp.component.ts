@@ -91,11 +91,14 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       clasificacion: {
         title: 'Clasificación'
       },
-      estado: {
-        title: 'Estado'
+      estadodocumento: {
+        title: 'Estado del documento'
       },
       motivo: {
         title: 'Motivo'
+      },
+      estadocargo: {
+        title: 'Estado del cargo'
       },
       fisicoRecibido: {
         title: 'Físico recibido'
@@ -136,8 +139,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               direccion: documento.direccion,
               distrito: documento.distrito.nombre,
               clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
-              estado: this.documentoService.getUltimoEstado(documento).nombre,
+              estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado,
+              estadocargo: 'a',
               fisicoRecibido: documento.recepcionado ? "SI" : "NO",
               autorizado: documento.envio.autorizado ? "SI" : "NO",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
@@ -188,8 +192,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       direccion: documento.direccion,
                       distrito: documento.distrito.nombre,
                       clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
-                      estado: this.documentoService.getUltimoEstado(documento).nombre,
+                      estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
                       motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
+                      estadocargo: ' ',
                       fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                       autorizado: documento.envio.autorizado ? "SI" : "NO",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
@@ -252,6 +257,12 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
 
   ngOnDestroy() {
     this.documentosSubscription.unsubscribe();
+  }
+
+
+
+  exportar(){
+    this.documentoService.exportarDocumentos(this.documentos)
   }
 
 }

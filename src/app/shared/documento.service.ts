@@ -25,6 +25,7 @@ import { Guia } from 'src/model/guia.model';
 import { TipoDevolucion } from 'src/model/tipodevolucion.model';
 import { TipoDevolucionEnum } from '../enum/tipodevolucion.enum';
 import { MotivoEstadoEnum } from '../enum/motivoestado.enum';
+import { WriteExcelService } from './write-excel.service';
 
 @Injectable()
 export class DocumentoService {
@@ -39,7 +40,8 @@ export class DocumentoService {
         private utilsService: UtilsService,
         private requesterService: RequesterService,
         private estadoDocumentoService: EstadoDocumentoService,
-        private buzonService: BuzonService
+        private buzonService: BuzonService,
+        private writeExcelService: WriteExcelService
     ) {
         this.departamentosPeruSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
             departamentosPeru => {
@@ -481,6 +483,33 @@ export class DocumentoService {
         });
     }
 
+
+    exportarDocumentos(documentos){
+        let objects = [];
+        documentos.forEach(documento => {
+            objects.push({
+               "Autogenerado": documento.documentoAutogenerado,
+               "Remitente": documento.envio.buzon.nombre,
+               "Producto": documento.envio.producto.nombre,
+               "Plazo de distribución": documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
+               "Razón social": documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
+               "Contacto": documento.contactoDestino ? documento.contactoDestino : "no tiene",
+               "Dirección": documento.direccion,
+               "Distrito": documento.distrito.nombre,
+               "Clasificación": documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
+               "Estado del documento": this.getUltimoEstado(documento).nombre,
+               "Motivo": this.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
+               "Estado del cargo": ' ',
+               "Físico recibido": documento.recepcionado ? "SI" : "NO",
+               "Autorizado": documento.envio.autorizado ? "SI" : "NO",
+               "Fecha de creación": this.getFechaCreacion(documento),
+               "Fecha de envío": this.getFechaCreacion(documento),
+               "Fecha último resultado": this.getUltimaFechaEstado(documento),
+               "Código  de devolución": documento.codigoDevolucion
+            })
+        });
+        this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");
+    }
 
 
 
