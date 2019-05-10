@@ -6,6 +6,6 @@ export class Feriado {
     public id: number;
     public nombre:string;
     public fecha: Date;
-    public modeltipo: TipoPeriodo;
+    public tipoperiodo: TipoPeriodo;
     public ambitos: Ambito[];
 }

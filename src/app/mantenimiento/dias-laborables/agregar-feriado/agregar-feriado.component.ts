@@ -67,7 +67,7 @@ export class AgregarFeriadoComponent implements OnInit {
       let feriado: Feriado = new Feriado();
       feriado.nombre = nombreSinEspacios;
       feriado.fecha = moment(this.agregarForm.controls['fecha'].value).format('DD-MM-YYYY');
-      feriado.modeltipo = this.agregarForm.get("periodo").value;
+      feriado.tipoperiodo = this.agregarForm.get("periodo").value;
       feriado.ambitos = this.ambitosElegidos;
       this.crearFeriadoSubscription = this.feriadoService.agregarFeriado(feriado).subscribe(
         feriado => {
@@ -76,7 +76,9 @@ export class AgregarFeriadoComponent implements OnInit {
           this.feriadoCreadoEvent.emit(feriado);
         },
         error => {
-          this.notifier.notify('error', 'No se puede agregar un nombre existente');
+          if (error.status === 400){
+            this.notifier.notify('error', error.error.message);
+          }
         }
       );
     }

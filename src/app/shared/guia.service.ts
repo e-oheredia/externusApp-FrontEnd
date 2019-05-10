@@ -14,6 +14,7 @@ import { EstadoGuia } from 'src/model/estadoguia.model';
 import { Documento } from 'src/model/documento.model';
 import { SeguimientoDocumento } from 'src/model/seguimientodocumento.model';
 import { EstadoDocumento } from 'src/model/estadodocumento.model';
+import { UtilsService } from './utils.service';
 
 @Injectable()
 export class GuiaService {
@@ -23,7 +24,8 @@ export class GuiaService {
     constructor(
         private requester: RequesterService, 
         private writeExcelService: WriteExcelService,
-        private documentoService: DocumentoService
+        private documentoService: DocumentoService,
+        private utilsService: UtilsService,
     ) {
 
     }
@@ -211,6 +213,28 @@ export class GuiaService {
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Guia: " + guia.numeroGuia);
+    }
+
+
+
+    exportarGuias(guias){
+        let objects = [];
+        guias.forEach(guia => {
+            objects.push({
+                "Número de guía" : guia.numeroGuia,
+                "Proveedor" : guia.proveedor.nombre,
+                "Plazo de distribución" : guia.plazoDistribucion.nombre,
+                "Tipo de servicio" : guia.tipoServicio.nombre,
+                "Tipo de seguridad" : guia.tipoSeguridad.nombre,
+                "Sede" : guia.sede.nombre,
+                "Total de documentos" : guia.cantidadDocumentos,
+                "Fecha creación" : this.getFechaCreacion(guia),
+                "Fecha envío" : !this.utilsService.isUndefinedOrNullOrEmpty(this.getFechaEnvio(guia)) ? this.getFechaEnvio(guia) : ' ',
+                "Fecha último estado" : this.getFechaUltimoEstadoGuia(guia),
+                "Estado" : this.getEstadoGuia(guia).nombre
+            })
+        });
+        this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");
     }
 
 

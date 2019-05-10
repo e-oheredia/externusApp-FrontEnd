@@ -132,7 +132,7 @@ export class DiaLaborableComponent implements OnInit {
               id: feriado.id,
               nombre: feriado.nombre,
               fecha: feriado.fecha,
-              periodo: feriado.modeltipo.nombre,
+              periodo: feriado.tipoperiodo.nombre,
               ambito: feriado.ambitos.map(ambito => ambito.nombre).join(", ")
             })
           }
@@ -197,9 +197,8 @@ export class DiaLaborableComponent implements OnInit {
           this.listarFeriados();
         },
         error => {
-          this.notifier.notify('error', error.message);
-        }
-        
+          this.notifier.notify('error', error.error.message);
+        }        
       )
     })
   }

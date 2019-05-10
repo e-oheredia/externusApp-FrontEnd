@@ -29,7 +29,6 @@ export class ReporteAutorizacionComponent implements OnInit {
   settings = AppSettings.tableSettings;
   rutaManual: string = AppSettings.MANUAL_REGISTRO;
 
-  // envioMasivo: EnvioMasivo[] = [];
   envios: Envio[] = [];
   envio: Envio;
 
@@ -39,7 +38,7 @@ export class ReporteAutorizacionComponent implements OnInit {
   ngOnInit() {
     this.envioForm = new FormGroup({
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
-      "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required)
+      "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
     })
     this.tituloService.setTitulo("REPORTE DE AUTORIZACIONES");
     this.settings.hideSubHeader = false;
@@ -87,49 +86,49 @@ export class ReporteAutorizacionComponent implements OnInit {
   }
 
   listarAutorizaciones() {
+    this.envios = [];
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaFin'].value)) {
       this.envioSubscription = this.envioService.listarEnviosParaAutorizarPorFechas(this.envioForm.controls['fechaIni'].value, this.envioForm.controls['fechaFin'].value).subscribe(
-        envios => {
-          this.envios = envios
+        envios => {          
           this.dataEnvios.reset();
           let dataEnvios = [];
-          envios.forEach(
-            envio => {
-              dataEnvios.push({
-                id: envio.id,
-                area: envio.buzon.area.nombre,
-                matricula: "a",
-                nombreUsuario: envio.buzon.nombre,
-                autogenerado: this.envioService.getAutogeneradoEnvio(envio),
-                producto: envio.producto.nombre,
-                plazoDistribucion: envio.plazoDistribucion.nombre,
-                cantidadDocumentos: envio.documentos.length,
-                estadoDocumento: "a",
-                autorizacion: this.envioService.getUltimoEstadoAutorizacion(envio).nombre,
-                usuarioAutorizador: this.envioService.getAutorizador(envio),
-                fechaAutorizacion: this.envioService.getUltimaFechaEstadoAutorizacion(envio)
-              })
-              this.dataEnvios.load(dataEnvios);
-              this.envioForm.controls['fechaIni'].reset();
-              this.envioForm.controls['fechaFin'].reset();
-            }
-          )
+          if (!this.utilsService.isUndefinedOrNullOrEmpty(envios)){
+            this.envios = envios
+            envios.forEach(
+              envio => {
+                dataEnvios.push({
+                  id: envio.id,
+                  area: envio.buzon.area.nombre,
+                  matricula: "a",
+                  nombreUsuario: envio.buzon.nombre,
+                  autogenerado: this.envioService.getAutogeneradoEnvio(envio),
+                  producto: envio.producto.nombre,
+                  plazoDistribucion: envio.plazoDistribucion.nombre,
+                  cantidadDocumentos: envio.documentos ? envio.documentos.length : 'no hay',
+                  estadoDocumento: "a",
+                  autorizacion: this.envioService.getUltimoEstadoAutorizacion(envio).nombre,
+                  usuarioAutorizador: this.envioService.getAutorizador(envio),
+                  fechaAutorizacion: this.envioService.getUltimaFechaEstadoAutorizacion(envio)
+                })
+              }
+            )
+          }
           this.dataEnvios.load(dataEnvios);
         }
       ),
-      error => {
-        if (error.status === 400) {
-          this.envios = [];
-          this.notifier.notify('error', 'El rango de fechas es incorrecto');
+        error => {
+          if (error.status === 400) {
+            this.envios = [];
+            this.notifier.notify('error', 'El rango de fechas es incorrecto');
+          }
         }
-      }
     }
     else {
       this.notifier.notify('error', 'Debe ingresar un rango de fechas');
     }
   }
 
-  exportar(){
+  exportar() {
     this.envioService.exportarAutorizaciones(this.envios)
   }
 

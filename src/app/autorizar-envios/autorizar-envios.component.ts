@@ -42,9 +42,6 @@ export class AutorizarEnviosComponent implements OnInit {
 
   generarColumnas() {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
       remitente: {
         title: 'Remitente'
       },
