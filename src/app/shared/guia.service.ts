@@ -229,12 +229,13 @@ export class GuiaService {
                 "Sede" : guia.sede.nombre,
                 "Total de documentos" : guia.cantidadDocumentos,
                 "Fecha creación" : this.getFechaCreacion(guia),
+                "Fecha límite" : guia.fechaLimite,
                 "Fecha envío" : !this.utilsService.isUndefinedOrNullOrEmpty(this.getFechaEnvio(guia)) ? this.getFechaEnvio(guia) : ' ',
                 "Fecha último estado" : this.getFechaUltimoEstadoGuia(guia),
                 "Estado" : this.getEstadoGuia(guia).nombre
             })
         });
-        this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");
+        this.writeExcelService.jsonToExcel(objects, "Reporte de guías: ");
     }
 
 

@@ -154,7 +154,8 @@ export class ReporteGuiasComponent implements OnInit {
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
                       totalDocumentos: guia.cantidadDocumentos,
-                      fechaCreacion:this.guiaService.getFechaCreacion(guia),
+                      fechaCreacion: this.guiaService.getFechaCreacion(guia),
+                      fechalimite: guia.fechaLimite,
                       fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre

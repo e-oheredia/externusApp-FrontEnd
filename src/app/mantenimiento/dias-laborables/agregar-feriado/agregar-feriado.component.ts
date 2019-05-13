@@ -71,7 +71,7 @@ export class AgregarFeriadoComponent implements OnInit {
       feriado.ambitos = this.ambitosElegidos;
       this.crearFeriadoSubscription = this.feriadoService.agregarFeriado(feriado).subscribe(
         feriado => {
-          this.notifier.notify('success', 'Se agregó el día feriado con éxito');
+          this.notifier.notify('success', 'Se agregó el feriado con éxito');
           this.bsModalRef.hide();
           this.feriadoCreadoEvent.emit(feriado);
         },
