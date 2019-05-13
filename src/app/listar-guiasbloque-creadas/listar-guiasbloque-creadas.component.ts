@@ -63,6 +63,9 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
       tipoSeguridad: {
         title: 'Tipo de seguridad'
       },
+      fechaCreacion: {
+        title: 'Fecha de creación'
+      },
       buttonEliminar: {
         title: 'Eliminar',
         type: 'custom',
@@ -115,7 +118,8 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
               proveedor: guia.proveedor.nombre,
               plazoDistribucion: guia.plazoDistribucion.nombre,
               totalDocumentos: guia.cantidadDocumentos,
-              tipoSeguridad: guia.tipoSeguridad.nombre
+              tipoSeguridad: guia.tipoSeguridad.nombre,
+              fechaCreacion: this.guiaService.getFechaCreacion(guia)
             })
           })
         this.dataGuiasBloque.load(dataGuiasBloque);

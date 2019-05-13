@@ -36,7 +36,7 @@ export class ModificarAmbitoComponent implements OnInit {
   ngOnInit() {
     this.modificarForm = new FormGroup({
       'diaslaborables': new FormArray([])
-    });
+    }, this.atLeastOne);
     this.construirForm();
   }
 
@@ -47,10 +47,10 @@ export class ModificarAmbitoComponent implements OnInit {
           'id': new FormControl(dia.id, Validators.required),
           'nombre': new FormControl(dia.dia.nombre, Validators.required),
           'activo': new FormControl(dia.activo, Validators.required),
-          'horaini': new FormControl({value: dia.inicio, disabled: dia.activo == 0}, Validators.required),
-          'horafin': new FormControl({value: dia.fin, disabled: dia.activo == 0}, Validators.required)
+          'horaini': new FormControl({value: dia.activo == 0  ? null: dia.inicio, disabled: dia.activo == 0}, Validators.required),
+          'horafin': new FormControl({value: dia.activo == 0 ? null: dia.fin, disabled: dia.activo == 0}, Validators.required)
         }))
-    })
+      })
     console.log(this.modificarForm)
   }
 
@@ -62,6 +62,15 @@ export class ModificarAmbitoComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  atLeastOne(form: FormGroup): { [key: string]: boolean } | null {
+
+    if ((<Array<DiaLaborable>>form.value.diaslaborables).findIndex(dialaborable => dialaborable.activo == true || dialaborable.activo == 1) > -1) {
+      return null;
+    }
+
+    return {'atLeastOneActiveRequired': true}
   }
 
   onSubmit(form: any) {

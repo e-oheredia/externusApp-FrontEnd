@@ -52,9 +52,6 @@ export class ReporteAutorizacionComponent implements OnInit {
       area: {
         title: 'Área'
       },
-      matricula: {
-        title: 'Matrícula'
-      },
       nombreUsuario: {
         title: 'Nombre de usuario'
       },
@@ -70,9 +67,6 @@ export class ReporteAutorizacionComponent implements OnInit {
       cantidadDocumentos: {
         title: 'Cantidad de documentos'
       },
-      estadoDocumento: {
-        title: 'Estado del documento'
-      },
       autorizacion: {
         title: 'Estado autorización'
       },
@@ -80,7 +74,7 @@ export class ReporteAutorizacionComponent implements OnInit {
         title: 'Usuario autorizador'
       },
       fechaAutorizacion: {
-        title: 'Fecha autorización'
+        title: 'Fecha respuesta '
       }
     }
   }
@@ -99,13 +93,11 @@ export class ReporteAutorizacionComponent implements OnInit {
                 dataEnvios.push({
                   id: envio.id,
                   area: envio.buzon.area.nombre,
-                  matricula: "a",
                   nombreUsuario: envio.buzon.nombre,
                   autogenerado: this.envioService.getAutogeneradoEnvio(envio),
                   producto: envio.producto.nombre,
                   plazoDistribucion: envio.plazoDistribucion.nombre,
                   cantidadDocumentos: envio.documentos ? envio.documentos.length : 'no hay',
-                  estadoDocumento: "a",
                   autorizacion: this.envioService.getUltimoEstadoAutorizacion(envio).nombre,
                   usuarioAutorizador: this.envioService.getAutorizador(envio),
                   fechaAutorizacion: this.envioService.getUltimaFechaEstadoAutorizacion(envio)

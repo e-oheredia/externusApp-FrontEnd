@@ -112,13 +112,11 @@ export class EnvioService {
         envios.forEach(envio => {
             objects.push({
                 "Área" : envio.buzon.area.nombre,
-                "Matrícula" : "a",
                 "Usuario" : envio.buzon.nombre,
                 "Autogenerado" : this.getAutogeneradoEnvio(envio),
                 "Producto" : envio.producto.nombre,
                 "Plazo Distribución" : envio.plazoDistribucion.nombre,
                 "Cantidad Documentos" : envio.documentos.length,
-                "Estado Documento" : "a",
                 "Autorización" : this.getUltimoEstadoAutorizacion(envio).nombre,
                 "Usuario Autorizador" : this.getAutorizador(envio),
                 "Fecha Autorización" : this.getUltimaFechaEstadoAutorizacion(envio)
