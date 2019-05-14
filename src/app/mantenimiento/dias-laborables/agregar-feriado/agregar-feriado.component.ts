@@ -5,9 +5,9 @@ import { FeriadoService } from 'src/app/shared/feriado.service';
 import { Feriado } from 'src/model/feriado.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Ambito } from 'src/model/ambito.model';
+import { Region } from 'src/model/region.model';
 import * as moment from "moment-timezone";
-import { AmbitoService } from 'src/app/shared/ambito.service';
+import { RegionService } from 'src/app/shared/region.service';
 import { TipoPeriodoService } from 'src/app/shared/tipoperiodo.service';
 import { TipoPeriodo } from 'src/model/tipoperiodo.model';
 
@@ -22,7 +22,7 @@ export class AgregarFeriadoComponent implements OnInit {
     private bsModalRef: BsModalRef,
     private notifier: NotifierService,
     private feriadoService: FeriadoService,
-    private ambitoService: AmbitoService,
+    private regionService: RegionService,
     private periodoService: TipoPeriodoService,
   ) { }
 
@@ -31,8 +31,8 @@ export class AgregarFeriadoComponent implements OnInit {
   feriado: Feriado;
   feriados: Feriado[] = [];
   agregarForm: FormGroup;
-  ambitos: Ambito[] = [];
-  ambitosElegidos: Ambito[] = [];
+  regiones: Region[] = [];
+  regionesElegidas: Region[] = [];
   periodos: TipoPeriodo[];
 
   crearFeriadoSubscription: Subscription;
@@ -44,9 +44,9 @@ export class AgregarFeriadoComponent implements OnInit {
       'nombre' : new FormControl('', Validators.required),
       'fecha' : new FormControl('', Validators.required),
       'periodo' : new FormControl(null, Validators.required),
-      'ambitos': new FormControl('', Validators.required)
+      'regiones': new FormControl('', Validators.required)
     });
-    this.listarAmbitos();
+    this.listarRegiones();
   }
 
   cargarDatosVista(){
@@ -63,12 +63,12 @@ export class AgregarFeriadoComponent implements OnInit {
     console.log(this.agregarForm.value);
     
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
-    if (nombreSinEspacios.length !== 0 && this.ambitosElegidos.length !== 0) {
+    if (nombreSinEspacios.length !== 0 && this.regionesElegidas.length !== 0) {
       let feriado: Feriado = new Feriado();
       feriado.nombre = nombreSinEspacios;
       feriado.fecha = moment(this.agregarForm.controls['fecha'].value).format('DD-MM-YYYY');
       feriado.tipoperiodo = this.agregarForm.get("periodo").value;
-      feriado.ambitos = this.ambitosElegidos;
+      feriado.regiones = this.regionesElegidas;
       this.crearFeriadoSubscription = this.feriadoService.agregarFeriado(feriado).subscribe(
         feriado => {
           this.notifier.notify('success', 'Se agregó el feriado con éxito');
@@ -87,15 +87,15 @@ export class AgregarFeriadoComponent implements OnInit {
     }
   }
 
-  listarAmbitos(){
-    this.ambitos = this.ambitoService.getAmbitos();
-    this.ambitoService.ambitosChanged.subscribe(
-      ambitos => this.ambitos = ambitos
+  listarRegiones(){
+    this.regiones = this.regionService.getRegiones();
+    this.regionService.regionesChanged.subscribe(
+      regiones => this.regiones = regiones
     )
   }
 
-  onChangeAmbitoElegido(event: any, ambito: Ambito) {    
-    event.srcElement.checked ? this.ambitosElegidos.push(ambito) : this.ambitosElegidos.splice(this.ambitosElegidos.indexOf(ambito), 1);
+  onChangeRegionElegida(event: any, region: Region) {    
+    event.srcElement.checked ? this.regionesElegidas.push(region) : this.regionesElegidas.splice(this.regionesElegidas.indexOf(region), 1);
   }
 
 

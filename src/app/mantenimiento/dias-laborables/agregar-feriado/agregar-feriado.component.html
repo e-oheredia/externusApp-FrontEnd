@@ -51,12 +51,12 @@
 
       <div class="form-row">
         <div class="col">
-          <label for="ambito">Ámbito</label>
-          <div class="form-group" *ngFor="let ambito of ambitos">
+          <label for="region">Región</label>
+          <div class="form-group" *ngFor="let region of regiones">
             <div class="form-check">
-              <input name="ambitos" id="ambitos" formControlName="ambitos" type="checkbox" class="form-check-input"
-                [id]="'pd-' + ambito.id" (change)="onChangeAmbitoElegido($event, ambito)">
-              <label class="form-check-label" [for]="'pd-' + ambito.id">{{ambito.nombre}}</label>
+              <input name="regiones" id="regiones" formControlName="regiones" type="checkbox" class="form-check-input"
+                [id]="'pd-' + region.id" (change)="onChangeRegionElegida($event, region)">
+              <label class="form-check-label" [for]="'pd-' + region.id">{{region.nombre}}</label>
             </div>
           </div>
         </div>

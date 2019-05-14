@@ -17,5 +17,4 @@ export class DocumentoGuiaService {
         return this.requester.put<DocumentoGuia>(this.GUIA_REQUEST_URL + guiaId.toString() + "/" + AppSettings.DOCUMENTO_URL + documentoId.toString() + "/" +   "validacion", null, {});
     }    
 
-    
 }

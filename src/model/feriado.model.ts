@@ -1,4 +1,4 @@
-import { Ambito } from "./ambito.model";
+import { Region } from "./region.model";
 import { TipoPeriodo } from "./tipoperiodo.model";
 
 export class Feriado {
@@ -7,5 +7,5 @@ export class Feriado {
     public nombre:string;
     public fecha: Date;
     public tipoperiodo: TipoPeriodo;
-    public ambitos: Ambito[];
+    public regiones: Region[];
 }

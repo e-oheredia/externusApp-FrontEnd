@@ -1,23 +1,23 @@
 <div class="card">
 
   <div class="modal-header">
-    <h4>Modificar subambito</h4>
+    <h4>Modificar ámbito</h4>
   </div>
 
   <form [formGroup]="modificarForm" (ngSubmit)=onSubmit(modificarForm.value)>
 
     <div class="card-body">
 
-     <div *ngIf="subambito.activo"> 
+     <div *ngIf="ambito.activo"> 
 
         <div class="form-row">
             <div class="col">
               <div class="form-group">
-                <label for="nombre">Nombre del subambito</label>
+                <label for="nombre">Nombre del ámbito</label>
                 <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
                 <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
                   class="text-danger small">
-                  El nombre del subambito no puede estar vacío
+                  El nombre del ámbito no puede estar vacío
                 </span>
               </div>
             </div>
@@ -26,13 +26,13 @@
           <div class="form-row">
             <div class="col">
               <div class="form-group">
-                <label for="ambito">Ambito</label>
-                <select class="form-control" id="ambito" formControlName="ambito">
-                  <option *ngFor="let ambito of ambitos" [ngValue]="ambito">{{ambito.nombre}}</option>
+                <label for="region">Región</label>
+                <select class="form-control" id="region" formControlName="region">
+                  <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
                 </select>
-                <span *ngIf="!modificarForm.get('ambito').valid && modificarForm.get('ambito').touched"
+                <span *ngIf="!modificarForm.get('region').valid && modificarForm.get('region').touched"
                   class="text-danger small">
-                  Es necesario la elección de un ambito
+                  Es necesario la elección de una región
                 </span>
               </div>
             </div>

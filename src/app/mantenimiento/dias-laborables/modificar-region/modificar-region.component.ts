@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { AmbitoService } from 'src/app/shared/ambito.service';
+import { RegionService } from 'src/app/shared/region.service';
 import { NotifierService } from 'angular-notifier';
-import { Ambito } from 'src/model/ambito.model';
+import { Region } from 'src/model/region.model';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DiaLaborable } from 'src/model/dialaborable.model';
@@ -11,27 +11,27 @@ import { UtilsService } from 'src/app/shared/utils.service';
 import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
-  selector: 'app-modificar-ambito',
-  templateUrl: './modificar-ambito.component.html',
-  styleUrls: ['./modificar-ambito.component.css']
+  selector: 'app-modificar-region',
+  templateUrl: './modificar-region.component.html',
+  styleUrls: ['./modificar-region.component.css']
 })
-export class ModificarAmbitoComponent implements OnInit {
+export class ModificarRegionComponent implements OnInit {
 
   constructor(
     private utilsService: UtilsService,
     private modalService: BsModalService,
     private bsModalRef: BsModalRef,
-    private ambitoService: AmbitoService,
+    private regionService: RegionService,
     private notifier: NotifierService,
   ) { }
 
-  @Output() ambitoModificadoEvent = new EventEmitter();
+  @Output() regionModificadaEvent = new EventEmitter();
 
   dialaborable: DiaLaborable;
   diaslaborables: DiaLaborable[] = [];
-  ambito: Ambito;
+  region: Region;
   modificarForm: FormGroup;
-  modificarAmbitoSubscription: Subscription;
+  modificarRegionSubscription: Subscription;
 
   ngOnInit() {
     this.modificarForm = new FormGroup({
@@ -41,7 +41,7 @@ export class ModificarAmbitoComponent implements OnInit {
   }
 
   construirForm() {
-    this.ambito.diasLaborables.sort((a, b) => a.id - b.id).forEach(dia => {
+    this.region.diasLaborables.sort((a, b) => a.id - b.id).forEach(dia => {
       (<FormArray>this.modificarForm.controls['diaslaborables']).
         push(new FormGroup({
           'id': new FormControl(dia.id, Validators.required),
@@ -77,7 +77,7 @@ export class ModificarAmbitoComponent implements OnInit {
     if (!this.validarAlMenosUnActivo(form)) {
       this.notifier.notify('warning', 'Al menos un día debe estar activo');
     }
-    this.ambito.diasLaborables.forEach(dia => {
+    this.region.diasLaborables.forEach(dia => {
 
       let diaCambiado = this.modificarForm.value.diaslaborables.find(dia2 => dia2.id === dia.id);
       dia.activo = diaCambiado.activo;
@@ -99,11 +99,11 @@ export class ModificarAmbitoComponent implements OnInit {
       }
     });
     bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.ambitoService.modificarAmbito(this.ambito.id, this.ambito).subscribe(
-        ambito => {
+      this.regionService.modificarRegion(this.region.id, this.region).subscribe(
+        region => {
           this.notifier.notify('success', 'Se ha modificado el horario correctamente');
           this.bsModalRef.hide();
-          this.ambitoModificadoEvent.emit(ambito);
+          this.regionModificadaEvent.emit(region);
         },
         error => {
           if (error.status === 400){

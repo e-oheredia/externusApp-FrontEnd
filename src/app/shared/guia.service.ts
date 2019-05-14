@@ -154,9 +154,12 @@ export class GuiaService {
     }
 
     listarDocumentosByGuiaId(guia: Guia): Observable<Documento[]> {
-        return this.requester.get<Documento[]>(this.REQUEST_URL + guia.id.toString() + "/documentosguia" , {});
+        return this.requester.get<Documento[]>(this.REQUEST_URL + guia.id.toString() + "/documentos" , {});
     }
 
+    getDocumentoGuia(documento: Documento): Observable<DocumentoGuia> {
+        return this.requester.get<DocumentoGuia>(this.REQUEST_URL + documento.id + "/documentoguia", {})
+    }
 
     exportarDocumentosGuia(documentos, guia) {
         let objects = [];

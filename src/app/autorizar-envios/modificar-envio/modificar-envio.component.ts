@@ -67,7 +67,7 @@ export class ModificarEnvioComponent implements OnInit {
         },
         error => {
           if (error.status === 400){
-            this.notifier.notify('error', error.error.message);
+            this.notifier.notify('error', error.error);
           }
         }  
       );

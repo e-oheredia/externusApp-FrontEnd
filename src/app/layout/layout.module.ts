@@ -55,10 +55,8 @@ import { ModificarTipoServicioComponent } from '../mantenimiento/tipo-servicio/m
 import { ProductoService } from '../shared/producto.service';
 import { AgregarProductoComponent } from '../mantenimiento/producto/agregar-producto/agregar-producto.component';
 import { ModificarProductoComponent } from '../mantenimiento/producto/modificar-producto/modificar-producto.component';
-import { AgregarSubambitoComponent } from '../mantenimiento/subambito/agregar-subambito/agregar-subambito.component';
-import { ModificarSubambitoComponent } from '../mantenimiento/subambito/modificar-subambito/modificar-subambito.component';
-import { SubAmbitoService } from '../shared/subambito.service';
 import { AmbitoService } from '../shared/ambito.service';
+import { RegionService } from '../shared/region.service';
 import { ClasificacionService } from '../shared/clasificacion.service';
 import { AgregarClasificacionComponent } from '../mantenimiento/clasificacion/agregar-clasificacion/agregar-clasificacion.component';
 import { ModificarClasificacionComponent } from '../mantenimiento/clasificacion/modificar-clasificacion/modificar-clasificacion.component';
@@ -70,15 +68,17 @@ import { DiaLaborableService } from '../shared/dialaborable.service';
 import { FeriadoService } from '../shared/feriado.service';
 import { AgregarFeriadoComponent } from '../mantenimiento/dias-laborables/agregar-feriado/agregar-feriado.component';
 import { ModificarEnvioComponent } from '../autorizar-envios/modificar-envio/modificar-envio.component';
-import { ModificarAmbitoComponent } from '../mantenimiento/dias-laborables/modificar-ambito/modificar-ambito.component';
+import { ModificarRegionComponent } from '../mantenimiento/dias-laborables/modificar-region/modificar-region.component';
+import { AgregarAmbitoComponent } from '../mantenimiento/ambito/agregar-ambito/agregar-ambito.component';
 import { TipoPeriodoService } from '../shared/tipoperiodo.service';
+import { ModificarAmbitoComponent } from '../mantenimiento/ambito/modificar-ambito/modificar-ambito.component';
 
 
 @NgModule({
   declarations: [
-    HeaderComponent, 
-    ConfirmModalComponent, 
-    TreeViewComponent, 
+    HeaderComponent,
+    ConfirmModalComponent,
+    TreeViewComponent,
     AutogeneradoCreadoModalComponent,
     TrackingDocumentoComponent,
     TituloComponent,
@@ -94,8 +94,8 @@ import { TipoPeriodoService } from '../shared/tipoperiodo.service';
     ModificarTipoServicioComponent,
     AgregarProductoComponent,
     ModificarProductoComponent,
-    AgregarSubambitoComponent,
-    ModificarSubambitoComponent,
+    AgregarAmbitoComponent,
+    ModificarRegionComponent,
     AgregarClasificacionComponent,
     ModificarClasificacionComponent,
     EliminarGuiabloqueComponent,
@@ -103,69 +103,71 @@ import { TipoPeriodoService } from '../shared/tipoperiodo.service';
     EnviarGuiabloqueComponent,
     AgregarFeriadoComponent,
     ModificarEnvioComponent,
-    ModificarAmbitoComponent
+    ModificarAmbitoComponent,
   ],
-  imports: [  
+  imports: [
     HttpClientModule,
     BrowserModule,
     LocalStorageModule.withConfig({
       prefix: '',
       storageType: 'localStorage'
     }),
-    ModalModule.forRoot(), 
-    NgSelectModule, 
+    ModalModule.forRoot(),
+    NgSelectModule,
     Ng2SmartTableModule,
-    OrderModule, 
+    OrderModule,
     BsDropdownModule.forRoot(),
     FormsModule,
     ReactiveFormsModule
   ],
   exports: [
     HeaderComponent
-  ], 
+  ],
   providers: [
     RequesterService,
-    EmpleadoService, 
-    BuzonService, 
-    PlazoDistribucionService, 
-    TipoServicioService, 
-    TipoSeguridadService, 
-    DepartamentoService, 
-    ProvinciaService, 
+    EmpleadoService,
+    BuzonService,
+    PlazoDistribucionService,
+    TipoServicioService,
+    TipoSeguridadService,
+    DepartamentoService,
+    ProvinciaService,
     DistritoService,
-    DocumentoService, 
-    ReadExcelService, 
-    UtilsService, 
-    EnvioService, 
-    EnvioMasivoService, 
-    BsModalRef, 
-    BsModalService, 
+    DocumentoService,
+    ReadExcelService,
+    UtilsService,
+    EnvioService,
+    EnvioMasivoService,
+    BsModalRef,
+    BsModalService,
     ProveedorService,
     TipoPlazoDistribucionService,
-    GuiaService, 
-    DocumentoGuiaService, 
+    GuiaService,
+    DocumentoGuiaService,
     BrowserStorageService,
-    {provide: HTTP_INTERCEPTORS, 
-      useClass: AuthInterceptor, 
-      multi: true}, 
-    WriteExcelService, 
-    AreaService, 
-    EstadoDocumentoService, 
-    MenuService, 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    WriteExcelService,
+    AreaService,
+    EstadoDocumentoService,
+    MenuService,
     CargoPdfService,
     SedeDespachoService,
     TituloService,
     ProductoService,
+    RegionService,
     AmbitoService,
-    SubAmbitoService,
     ClasificacionService,
     EnvioBloqueService,
     DiaLaborableService,
     FeriadoService,
     TipoPeriodoService
-  ], 
-  entryComponents: [ 
-    ConfirmModalComponent, 
+  ],
+  entryComponents: [
+    ConfirmModalComponent,
     AutogeneradoCreadoModalComponent,
     AgregarPlazoComponent,
     AgregarProveedorComponent,
@@ -181,8 +183,7 @@ import { TipoPeriodoService } from '../shared/tipoperiodo.service';
     ModificarTipoServicioComponent,
     AgregarProductoComponent,
     ModificarProductoComponent,
-    AgregarSubambitoComponent,
-    ModificarSubambitoComponent,    
+    AgregarAmbitoComponent,
     AgregarClasificacionComponent,
     ModificarClasificacionComponent,
     EliminarGuiabloqueComponent,
@@ -190,7 +191,8 @@ import { TipoPeriodoService } from '../shared/tipoperiodo.service';
     EnviarGuiabloqueComponent,
     AgregarFeriadoComponent,
     ModificarEnvioComponent,
-    ModificarAmbitoComponent
-   ],
+    ModificarAmbitoComponent,
+    ModificarRegionComponent
+  ],
 })
 export class LayoutModule { }

@@ -19,8 +19,8 @@
   </div>
   
   <br>
-  <div *ngIf="subambitos.length !== 0; else mensaje" class="center">
-    <ng2-smart-table [settings]="settings" [source]="dataSubAmbitos"></ng2-smart-table>
+  <div *ngIf="ambitos.length !== 0; else mensaje" class="center">
+    <ng2-smart-table [settings]="settings" [source]="dataAmbitos"></ng2-smart-table>
   </div>
   <ng-template #mensaje>
     <div class="row">

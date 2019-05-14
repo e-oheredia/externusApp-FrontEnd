@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotifierService } from 'angular-notifier';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { GuiaService } from '../../shared/guia.service';
+import { Documento } from 'src/model/documento.model';
 
 @Component({
   selector: 'app-validar-documentos-guia-modal',
@@ -22,50 +23,63 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
     public documentoService: DocumentoService,
     private documentoGuiaService: DocumentoGuiaService,
     private guiaService: GuiaService,
-    private notifier: NotifierService, 
-    private modalService: BsModalService 
+    private notifier: NotifierService,
+    private modalService: BsModalService
   ) { }
 
   documentoAutogenerado = '';
   guia: Guia;
+  documentos: Documento[] = [];
 
   validarDocumentoGuiaSubscription: Subscription;
   retirarNoValidadosSubscription: Subscription;
 
   ngOnInit() {
-
+    this.listarDocumentosPorGuia();
   }
+
+  listarDocumentosPorGuia() {
+    this.guiaService.listarDocumentosByGuiaId(this.guia).subscribe(
+      documentos => {
+        this.documentos = documentos;
+      }
+    )
+  }
+
+
 
   validar(documentoAutogenerado: string) {
 
-    let documentoGuia: DocumentoGuia = this.guia.documentosGuia.find(documentoGuia => documentoGuia.documento.documentoAutogenerado === documentoAutogenerado.toUpperCase());
+    let documentoaValidar = this.documentos.find(documentosValidar => documentosValidar.documentoAutogenerado === documentoAutogenerado.toUpperCase());
 
-    if (documentoGuia === undefined) {
+    if (documentoaValidar === undefined) {
       this.notifier.notify('warning', 'No se encontró el código');
       return;
     }
 
-    if (documentoGuia.validado) {
+    if (documentoaValidar.documentosGuia[0].validado) {
       this.notifier.notify('warning', 'El documento ya se encuentra validado');
       return;
     }
 
-    this.validarDocumentoGuiaSubscription = this.documentoGuiaService.validarDocumentoGuia(this.guia.id, documentoGuia.documento.id).subscribe(
+    this.validarDocumentoGuiaSubscription = this.documentoGuiaService.validarDocumentoGuia(this.guia.id, documentoaValidar.id).subscribe(
       () => {
         this.notifier.notify('success', 'Se ha validado correctamente el documento');
         this.documentoAutogenerado = "";
-        documentoGuia.validado = true;
+        documentoaValidar.documentosGuia[0].validado = true;
       }
     );
 
   }
 
+
+  //REVISAR
   retirarNoValidados() {
 
-    let documentosValidadosGuia: DocumentoGuia[] =  this.guia.documentosGuia.filter(documentoGuia => documentoGuia.validado);
+    let documentosValidadosGuia: DocumentoGuia[] = this.guia.documentosGuia.filter(documentoGuia => documentoGuia.validado);
     let mensajeInicial = documentosValidadosGuia.length === 0 ? "Se eliminará la entrega" : "Se retirarán los documentos no validados";
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
-      initialState : {
+      initialState: {
         mensaje: mensajeInicial + " ¿Está seguro que desea continuar?"
       }
     });
@@ -78,7 +92,7 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
           if (documentosValidadosGuia.length === 0) {
             this.bsModalRef.hide();
           }
-          
+
         }
       );
     });
