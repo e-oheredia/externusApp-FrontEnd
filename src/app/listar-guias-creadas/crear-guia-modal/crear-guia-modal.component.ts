@@ -17,6 +17,8 @@ import { Clasificacion } from 'src/model/clasificacion.model';
 import { Producto } from 'src/model/producto.model';
 import { ClasificacionService } from 'src/app/shared/clasificacion.service';
 import { ProductoService } from 'src/app/shared/producto.service';
+import { RegionService } from 'src/app/shared/region.service';
+import { Region } from 'src/model/region.model';
 
 @Component({
   selector: 'app-crear-guia-modal',
@@ -28,6 +30,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
 
   constructor(
     public bsModalRef: BsModalRef,
+    private regionService: RegionService,
     private plazoDistribucionService: PlazoDistribucionService,
     private tipoSeguridadService: TipoSeguridadService,
     private tipoServicioService: TipoServicioService,
@@ -42,6 +45,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
 
   @Output() guiaCreadaEvent = new EventEmitter<Guia>();
 
+  regiones: Region[];
   plazosDistribucion: PlazoDistribucion[];
   tiposSeguridad: TipoSeguridad[];
   tiposServicio: TipoServicio[];
@@ -49,6 +53,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
   clasificaciones: Clasificacion[];
   productos: Producto[];
 
+  regionesSubscription: Subscription;
   tiposServicioSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
   plazosDistribucionSubscription: Subscription;
@@ -60,6 +65,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cargarDatosVista();
     this.guiaForm = new FormGroup({
+      'region': new FormControl(null, Validators.required),
       'plazoDistribucion': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
@@ -71,12 +77,19 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
   }
 
   cargarDatosVista() {
+    this.regiones = this.regionService.getRegiones();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.clasificaciones = this.clasificacionService.getClasificaciones();
     this.productos = this.productoService.getProductos();
     this.proveedores = this.proveedorService.getProveedores();
+
+    this.regionesSubscription = this.regionService.regionesChanged.subscribe(
+      regiones => {
+        this.regiones = regiones;
+      }
+    )
 
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {

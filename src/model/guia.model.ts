@@ -8,6 +8,7 @@ import { Sede } from './sede.model';
 import { TipoGuia } from './tipoguia.model';
 import { Producto } from './producto.model';
 import { Clasificacion } from './clasificacion.model';
+import { Region } from './region.model';
 export class Guia {
     constructor(
         public id: number, 
@@ -28,6 +29,7 @@ export class Guia {
         public cantidadNoDistribuibles: number,
         public cantidadPendientes: number,
         public cantidadValidados: number,
-        public fechaLimite: Date
+        public fechaLimite: Date,
+        public region: Region
     ){}
 }

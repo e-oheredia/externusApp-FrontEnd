@@ -10,29 +10,46 @@
       <div class="pb-2 mt-4 mb-2">
         <form [formGroup]="guiaForm" (ngSubmit)="onSubmit(guiaForm.value)">
           <div class="form-group">
+            <label for="region">Región *</label>
+            <select class="form-control" id="region" formControlName="region">
+              <option *ngFor="let region of regiones" [ngValue]="region">
+                {{region.nombre}}</option>
+            </select>
+            <span *ngIf="!guiaForm.get('region').valid && guiaForm.get('region').touched"
+              class="text-danger small">
+              Es necesario ingresar la región
+            </span>
+          </div>
+          <div class="form-group">
             <label for="plazoDistribucion">Plazo de Distribución *</label>
             <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion">
-              <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">{{plazoDistribucion.nombre}}</option>
+              <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">
+                {{plazoDistribucion.nombre}}</option>
             </select>
-            <span *ngIf="!guiaForm.get('plazoDistribucion').valid && guiaForm.get('plazoDistribucion').touched" class="text-danger small">
+            <span *ngIf="!guiaForm.get('plazoDistribucion').valid && guiaForm.get('plazoDistribucion').touched"
+              class="text-danger small">
               Es necesario ingresar el plazo de distribución
             </span>
           </div>
           <div class="form-group">
             <label for="tipoSeguridad">Tipo de Seguridad *</label>
             <select class="form-control" id="tipoSeguridad" formControlName="tipoSeguridad">
-              <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">{{tipoSeguridad.nombre}}</option>
+              <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">{{tipoSeguridad.nombre}}
+              </option>
             </select>
-            <span *ngIf="!guiaForm.get('tipoSeguridad').valid && guiaForm.get('tipoSeguridad').touched" class="text-danger small">
+            <span *ngIf="!guiaForm.get('tipoSeguridad').valid && guiaForm.get('tipoSeguridad').touched"
+              class="text-danger small">
               Es necesario ingresar el tipo de seguridad
             </span>
           </div>
           <div class="form-group">
             <label for="tipoServicio">Tipo de Servicio *</label>
             <select class="form-control" id="tipoServicio" formControlName="tipoServicio">
-              <option *ngFor="let tipoServicio of tiposServicio" [ngValue]="tipoServicio">{{tipoServicio.nombre}}</option>
+              <option *ngFor="let tipoServicio of tiposServicio" [ngValue]="tipoServicio">{{tipoServicio.nombre}}
+              </option>
             </select>
-            <span *ngIf="!guiaForm.get('tipoServicio').valid && guiaForm.get('tipoServicio').touched" class="text-danger small">
+            <span *ngIf="!guiaForm.get('tipoServicio').valid && guiaForm.get('tipoServicio').touched"
+              class="text-danger small">
               Es necesario ingresar el tipo de servicio
             </span>
           </div>
@@ -40,9 +57,11 @@
           <div class="form-group">
             <label for="clasificacion">Clasificación *</label>
             <select class="form-control" id="clasificacion" formControlName="clasificacion">
-              <option *ngFor="let clasificacion of clasificaciones" [ngValue]="clasificacion">{{clasificacion.nombre}}</option>
+              <option *ngFor="let clasificacion of clasificaciones" [ngValue]="clasificacion">{{clasificacion.nombre}}
+              </option>
             </select>
-            <span *ngIf="!guiaForm.get('clasificacion').valid && guiaForm.get('clasificacion').touched" class="text-danger small">
+            <span *ngIf="!guiaForm.get('clasificacion').valid && guiaForm.get('clasificacion').touched"
+              class="text-danger small">
               Es necesario ingresar la clasificacion
             </span>
           </div>
@@ -61,17 +80,21 @@
             <select class="form-control" id="proveedor" formControlName="proveedor">
               <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">{{proveedor.nombre}}</option>
             </select>
-            <span *ngIf="!guiaForm.get('proveedor').valid && guiaForm.get('proveedor').touched" class="text-danger small">
+            <span *ngIf="!guiaForm.get('proveedor').valid && guiaForm.get('proveedor').touched"
+              class="text-danger small">
               Es necesario ingresar el proveedor
             </span>
           </div>
           <div class="form-group">
-              <label for="numeroGuia">Número de Guía</label>
-              <input class="form-control" type="text" name="numeroGuia" (input) = "guiaForm.controls['numeroGuia'].setValue(guiaForm.get('numeroGuia').value.toUpperCase())" pattern = "([a-zA-Z0-9])+" id="numeroGuia" formControlName="numeroGuia">
-              <span *ngIf="!guiaForm.get('numeroGuia').valid && guiaForm.get('numeroGuia').touched" class="text-danger small">
+            <label for="numeroGuia">Número de Guía</label>
+            <input class="form-control" type="text" name="numeroGuia"
+              (input)="guiaForm.controls['numeroGuia'].setValue(guiaForm.get('numeroGuia').value.toUpperCase())"
+              pattern="([a-zA-Z0-9])+" id="numeroGuia" formControlName="numeroGuia">
+            <span *ngIf="!guiaForm.get('numeroGuia').valid && guiaForm.get('numeroGuia').touched"
+              class="text-danger small">
               Ingrese el número de guía correctamente (5-20)
-              </span>
-          </div>          
+            </span>
+          </div>
           <div class="row">
             <div class="col text-right">
               <button type="submit" class="btn btn-primary" [disabled]="!guiaForm.valid">Crear</button>
