@@ -75,7 +75,7 @@ export class DocumentoService {
             let i = 1
             while (true) {
 
-                if (this.utilsService.isUndefinedOrNull(data[i])    ) {
+                if (this.utilsService.isUndefinedOrNull(data[i])) {
                     callback({
                         mensaje: "El formato está vacío "
                     });
@@ -203,11 +203,11 @@ export class DocumentoService {
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
-    
+
     listarDocumentosUtdBCPCodigo(codigo: string) {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }
-    
+
     listarDocumentosUtdBCPFechas(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
@@ -362,7 +362,7 @@ export class DocumentoService {
                     break;
                 }
                 let documentoDevuelto = new Documento();
-                
+
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
                     callback({
                         mensaje: "Ingrese el autogenerado en la fila " + (i + 1)
@@ -370,7 +370,7 @@ export class DocumentoService {
                     return;
                 }
 
-                documentoDevuelto.documentoAutogenerado = data[i][1]; 
+                documentoDevuelto.documentoAutogenerado = data[i][1];
 
                 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -390,22 +390,65 @@ export class DocumentoService {
                 //VALIDACIÓN DE LAS 3 DEVOLUCIONES VACÍAS
                 if ((this.utilsService.isUndefinedOrNullOrEmpty(cargoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(rezagoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(denunciaDevuelta))) {
                     callback({
-                        mensaje: "Ingrese las devoluciones en la fila " + (i + 1)
+                        mensaje: "Ingrese una o más devoluciones en la fila " + (i + 1)
                     });
                     return;
                 }
 
+                if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {
+                    if (data[i][19] == "x" || data[i][19] == "X") {
+                        let tipodevolucion = new TipoDevolucion();
+                        tipodevolucion.id = TipoDevolucionEnum.CARGO;
+                        documentoDevuelto.tiposDevolucion.push(tipodevolucion)
+                    } else {
+                        callback({
+                            mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
+                        })
+                        return;
+                    }
+                }
 
+
+                if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][20])) {
+                    if (data[i][20] == "x" || data[i][20] == "X") {
+                        let tipodevolucion = new TipoDevolucion();
+                        tipodevolucion.id = TipoDevolucionEnum.REZAGO;
+                        documentoDevuelto.tiposDevolucion.push(tipodevolucion);
+                    } else {
+                        callback({
+                            mensaje: "El caracter ingresado en la columna rezago de la fila " + (i + 1) + ", no es una 'x'"
+                        })
+                        return;
+                    }
+                }
+
+
+                if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][21])) {
+                    if (data[i][21] == "x" || data[i][21] == "X") {
+                        let tipodevolucion = new TipoDevolucion();
+                        tipodevolucion.id = TipoDevolucionEnum.DENUNCIA;
+                        documentoDevuelto.tiposDevolucion.push(tipodevolucion)
+                    } else {
+                        callback({
+                            mensaje: "El caracter ingresado en la columna denuncia de la fila " + (i + 1) + ", no es una 'x'"
+                        })
+                        return;
+                    }
+                }
+
+
+
+                /* VALIDACIONES
                 //EL ESTADO DEL DOCUMENTO ES ENTREGADO?
                 if (estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO) {
-                    //SI EL ENTREGADO TIENE LA DEVOLUCION CARGO VACÍA
+                    // SI EL ENTREGADO TIENE LA DEVOLUCION CARGO VACÍA
                     if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {
                         callback({
                             mensaje: "Ingrese la devolución del Entregado en la fila " + (i + 1)
                         });
                         return;
                     }
-                    if (data[i][19] == "x" || data[i][19] == "X") {
+                    if (data[i][19] == "x" || data[i][19] == "X" || data[i][20] == "x" || data[i][20] == "X" || data[i][21] == "x" || data[i][21] == "X") {
                         let tipodevolucion = new TipoDevolucion();
                         tipodevolucion.id = TipoDevolucionEnum.CARGO;
                         documentoDevuelto.tiposDevolucion.push(tipodevolucion)
@@ -417,7 +460,6 @@ export class DocumentoService {
                         return;
                     }
                 }
-
 
                 //EL ESTADO DEL DOCUMENTO ES REZAGADO?
                 if (estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) {
@@ -444,7 +486,6 @@ export class DocumentoService {
                     }
                 }
 
-
                 //EL ESTADO DEL DOCUMENTO ES NO_DISTRIBUIBLE?
                 if (estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) {
                     //EL MOTIVO DEL DOCUMENTO ES EXTRAVIADO_ROBADO?
@@ -457,7 +498,7 @@ export class DocumentoService {
                             return;
                         }
                         //SI LA DEVOLUCION TIENE UNA "X" o "x"
-                        if (data[i][21] == "x" || data[i][21] == "X") {
+                        if (data[i][19] == "x" || data[i][19] == "X" || data[i][20] == "x" || data[i][20] == "X" || data[i][21] == "x" || data[i][21] == "X") {
                             let tipodevolucion = new TipoDevolucion();
                             tipodevolucion.id = TipoDevolucionEnum.DENUNCIA;
                             documentoDevuelto.tiposDevolucion.push(tipodevolucion)
@@ -470,7 +511,7 @@ export class DocumentoService {
                         }
                     }
                 }
-
+                */
 
                 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -484,28 +525,28 @@ export class DocumentoService {
     }
 
 
-    exportarDocumentos(documentos){
+    exportarDocumentos(documentos) {
         let objects = [];
         documentos.forEach(documento => {
             objects.push({
-               "Autogenerado": documento.documentoAutogenerado,
-               "Remitente": documento.envio.buzon.nombre,
-               "Producto": documento.envio.producto.nombre,
-               "Plazo de distribución": documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
-               "Razón social": documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
-               "Contacto": documento.contactoDestino ? documento.contactoDestino : "no tiene",
-               "Dirección": documento.direccion,
-               "Distrito": documento.distrito.nombre,
-               "Clasificación": documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
-               "Estado del documento": this.getUltimoEstado(documento).nombre,
-               "Motivo": this.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
-               "Estado del cargo": ' ',
-               "Físico recibido": documento.recepcionado ? "SI" : "NO",
-               "Autorizado": documento.envio.autorizado ? "SI" : "NO",
-               "Fecha de creación": this.getFechaCreacion(documento),
-               "Fecha de envío": this.getFechaCreacion(documento),
-               "Fecha último resultado": this.getUltimaFechaEstado(documento),
-               "Código  de devolución": documento.codigoDevolucion
+                "Autogenerado": documento.documentoAutogenerado,
+                "Remitente": documento.envio.buzon.nombre,
+                "Producto": documento.envio.producto.nombre,
+                "Plazo de distribución": documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : "no tiene",
+                "Razón social": documento.razonSocialDestino ? documento.razonSocialDestino : "no tiene",
+                "Contacto": documento.contactoDestino ? documento.contactoDestino : "no tiene",
+                "Dirección": documento.direccion,
+                "Distrito": documento.distrito.nombre,
+                "Clasificación": documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
+                "Estado del documento": this.getUltimoEstado(documento).nombre,
+                "Motivo": this.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
+                "Estado del cargo": ' ',
+                "Físico recibido": documento.recepcionado ? "SI" : "NO",
+                "Autorizado": documento.envio.autorizado ? "SI" : "NO",
+                "Fecha de creación": this.getFechaCreacion(documento),
+                "Fecha de envío": this.getFechaCreacion(documento),
+                "Fecha último resultado": this.getUltimaFechaEstado(documento),
+                "Código  de devolución": documento.codigoDevolucion
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");

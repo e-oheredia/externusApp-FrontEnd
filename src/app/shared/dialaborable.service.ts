@@ -7,7 +7,7 @@ import { DiaLaborable } from "src/model/dialaborable.model";
 @Injectable()
 export class DiaLaborableService {
 
-    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.AMBITO_URL; //falta confirmar
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_SERVICIO_URL; //falta confirmar
 
     private diaslaborablesActivos: DiaLaborable[];
 

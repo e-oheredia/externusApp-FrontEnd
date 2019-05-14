@@ -85,13 +85,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let documentoGuia of guia.documentosGuia">
-              <td scope="col">{{documentoGuia.documento.documentoAutogenerado }}</td>
-              <td scope="col">{{documentoGuia.documento.razonSocialDestino}}</td>
-              <td scope="col">{{documentoGuia.documento.contactoDestino}}</td>
-              <td scope="col">{{documentoGuia.documento.direccion}}</td>
-              <td scope="col">{{documentoService.getFechaCreacion(documentoGuia.documento)}}</td>
-              <td scope="col">{{documentoGuia.validado ? 'Sí': 'No'}}</td>
+            <tr *ngFor="let documento of documentos">
+              <td scope="col">{{documento.documentoAutogenerado }}</td>
+              <td scope="col">{{documento.razonSocialDestino}}</td>
+              <td scope="col">{{documento.contactoDestino}}</td>
+              <td scope="col">{{documento.direccion}}</td>
+              <td scope="col">{{documentoService.getFechaCreacion(documento)}}</td>
+              <td scope="col">{{documento.documentosGuia[0].validado ? 'Sí': 'No'}}</td>
             </tr>
           </tbody>
         </table>

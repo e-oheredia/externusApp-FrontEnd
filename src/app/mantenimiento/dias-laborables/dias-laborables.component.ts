@@ -2,19 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { LocalDataSource } from 'ng2-smart-table';
 import { AppSettings } from 'src/app/shared/app.settings';
-import { DiaLaborable } from 'src/model/dialaborable.model';
-import { Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { DiaLaborableService } from 'src/app/shared/dialaborable.service';
 import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
 import { FeriadoService } from 'src/app/shared/feriado.service';
 import { Feriado } from 'src/model/feriado.model';
 import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
-import { Ambito } from 'src/model/ambito.model';
-import { AmbitoService } from 'src/app/shared/ambito.service';
-import { ModificarAmbitoComponent } from './modificar-ambito/modificar-ambito.component';
+import { Region } from 'src/model/region.model';
+import { RegionService } from 'src/app/shared/region.service';
 import { AgregarFeriadoComponent } from './agregar-feriado/agregar-feriado.component';
 import { NotifierService } from 'angular-notifier';
+import { ModificarRegionComponent } from './modificar-region/modificar-region.component';
 
 @Component({
   selector: 'app-dias-laborables',
@@ -26,33 +23,33 @@ export class DiaLaborableComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     private feriadoService: FeriadoService,
-    private ambitoService: AmbitoService,
+    private regionService: RegionService,
     private notifier: NotifierService,
   ) { }
 
-  dataAmbitos: LocalDataSource = new LocalDataSource();
+  dataRegiones: LocalDataSource = new LocalDataSource();
   dataFeriados: LocalDataSource = new LocalDataSource();
   settings = Object.assign({},AppSettings.tableSettings);
   settings2 = Object.assign({},AppSettings.tableSettings);
   feriado: Feriado;
   feriados: Feriado[] = [];
-  ambito: Ambito;
-  ambitos: Ambito[] = [];
+  region: Region;
+  regiones: Region[] = [];
 
   dialaborableForm: FormGroup;
 
   ngOnInit() {
-    this.generarTablaAmbitos();
-    this.listarAmbitos();
+    this.generarTablaRegiones();
+    this.listarRegiones();
     this.generarTablaFeriado();
     this.listarFeriados();
     this.settings2.hideSubHeader = false;
   }
 
-  generarTablaAmbitos() {
+  generarTablaRegiones() {
     this.settings.columns = {
       nombre: {
-        title: 'Ámbito'
+        title: 'Región'
       },
       dias: {
         title: 'Días laborables'
@@ -64,7 +61,7 @@ export class DiaLaborableComponent implements OnInit {
         onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
-            this.modificarAmbito(row);
+            this.modificarRegion(row);
           });
         }
       }
@@ -72,22 +69,22 @@ export class DiaLaborableComponent implements OnInit {
   }
 
 
-  listarAmbitos() {
-    this.dataAmbitos.reset();
-    this.ambitoService.listarAmbitosAll().subscribe(
-      ambitos => {
-        this.ambitos = ambitos;
-        let dataAmbitos = [];
-        ambitos.forEach(
-          ambito => {
-            dataAmbitos.push({
-              id: ambito.id,
-              nombre: ambito ? ambito.nombre : 'no tiene',
-              dias: ambito.diasLaborables.filter(dia => dia.activo==1).sort((a,b) => a.id - b.id).map(diaLaborable => diaLaborable.dia.nombre).join(", ")
+  listarRegiones() {
+    this.dataRegiones.reset();
+    this.regionService.listarRegionesAll().subscribe(
+      regiones => {
+        this.regiones = regiones;
+        let dataRegiones = [];
+        regiones.forEach(
+          region => {
+            dataRegiones.push({
+              id: region.id,
+              nombre: region ? region.nombre : 'no tiene',
+              dias: region.diasLaborables.filter(dia => dia.activo==1).sort((a,b) => a.id - b.id).map(diaLaborable => diaLaborable.dia.nombre).join(", ")
             })
           }
         )
-        this.dataAmbitos.load(dataAmbitos);
+        this.dataRegiones.load(dataRegiones);
       }
     )
   }
@@ -103,8 +100,8 @@ export class DiaLaborableComponent implements OnInit {
       periodo: {
         title: 'Periodo'
       },
-      ambito: {
-        title: 'Ámbito'
+      region: {
+        title: 'Región'
       },
       buttonEliminar: {
         title: 'Eliminar',
@@ -133,7 +130,7 @@ export class DiaLaborableComponent implements OnInit {
               nombre: feriado.nombre,
               fecha: feriado.fecha,
               periodo: feriado.tipoperiodo.nombre,
-              ambito: feriado.ambitos.map(ambito => ambito.nombre).join(", ")
+              region: feriado.regiones.map(region => region.nombre).join(", ")
             })
           }
         )
@@ -142,20 +139,20 @@ export class DiaLaborableComponent implements OnInit {
     )
   }
 
-  modificarAmbito(row) {
-    this.ambito = this.ambitos.find(ambito => ambito.id == row.id)
-    let bsModalRef: BsModalRef = this.modalService.show(ModificarAmbitoComponent, {
+  modificarRegion(row) {
+    this.region = this.regiones.find(region => region.id == row.id)
+    let bsModalRef: BsModalRef = this.modalService.show(ModificarRegionComponent, {
       initialState: {
-        id: this.ambito.id,
-        ambito: this.ambito,
+        id: this.region.id,
+        region: this.region,
         titulo: 'Modificar horario de atención'
       },
       class: 'modal-md',
       keyboard: false,
       backdrop: "static"
     });
-    bsModalRef.content.ambitoModificadoEvent.subscribe(() =>
-      this.listarAmbitos()
+    bsModalRef.content.regionModificadaEvent.subscribe(() =>
+      this.listarRegiones()
     )
   }
 

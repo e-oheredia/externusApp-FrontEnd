@@ -13,7 +13,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { TipoSeguridadComponent } from './tipo-seguridad/tipo-seguridad.component';
 import { TipoServicioComponent } from './tipo-servicio/tipo-servicio.component';
 import { ProductoComponent } from './producto/producto.component';
-import { SubambitoComponent } from './subambito/subambito.component';
+import { AmbitoComponent } from './ambito/ambito.component';
 import { ClasificacionComponent } from './clasificacion/clasificacion.component';
 import { DiaLaborableComponent } from './dias-laborables/dias-laborables.component';
 
@@ -35,7 +35,7 @@ import { DiaLaborableComponent } from './dias-laborables/dias-laborables.compone
     TipoSeguridadComponent,
     TipoServicioComponent,
     ProductoComponent,
-    SubambitoComponent,
+    AmbitoComponent,
     ClasificacionComponent,
     DiaLaborableComponent,
   ],
