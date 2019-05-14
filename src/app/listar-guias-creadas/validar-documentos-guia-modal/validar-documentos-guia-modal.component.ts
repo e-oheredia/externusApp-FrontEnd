@@ -72,11 +72,11 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
 
   }
 
-
   //REVISAR
   retirarNoValidados() {
 
     let documentosValidadosGuia: DocumentoGuia[] = this.guia.documentosGuia.filter(documentoGuia => documentoGuia.validado);
+
     let mensajeInicial = documentosValidadosGuia.length === 0 ? "Se eliminará la entrega" : "Se retirarán los documentos no validados";
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
