@@ -75,7 +75,14 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
   //REVISAR
   retirarNoValidados() {
 
-    let documentosValidadosGuia: DocumentoGuia[] = this.guia.documentosGuia.filter(documentoGuia => documentoGuia.validado);
+    let documentosValidadosGuia: Documento[] = this.documentos.filter(documento => documento.documentosGuia[0].validado);
+
+    let documentosNoValidadosGuia = this.documentos.length - documentosValidadosGuia.length 
+
+    if(documentosNoValidadosGuia === 0){
+      this.notifier.notify('info', 'Todos los documentos están validados');
+      return
+    }
 
     let mensajeInicial = documentosValidadosGuia.length === 0 ? "Se eliminará la entrega" : "Se retirarán los documentos no validados";
     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
@@ -88,7 +95,7 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
       this.retirarNoValidadosSubscription = this.guiaService.retirarNoValidados(this.guia).subscribe(
         data => {
           this.notifier.notify('success', data.mensaje);
-          this.guia.documentosGuia = documentosValidadosGuia;
+          this.documentos = documentosValidadosGuia;
           if (documentosValidadosGuia.length === 0) {
             this.bsModalRef.hide();
           }

@@ -31,6 +31,7 @@ import { ProcesarGuiasModule } from './procesar-guias/procesar-guias.module';
 import { ListarGuiasbloqueCreadasModule } from './listar-guiasbloque-creadas/listar-guiasbloque-creadas.module';
 import { RecepcionarBloqueModule } from './recepcionar-bloque/recepcionar-bloque.module';
 import { ReporteAutorizacionModule } from './reporte-autorizacion/reporte-autorizacion.module';
+import { ReporteInconsistenciaModule } from './reporte-inconsistencia/reporte-inconsistencia.module';
 
 
 
@@ -65,7 +66,8 @@ import { ReporteAutorizacionModule } from './reporte-autorizacion/reporte-autori
     ProcesarGuiasModule,
     ListarGuiasbloqueCreadasModule,
     RecepcionarBloqueModule,
-    ReporteAutorizacionModule
+    ReporteAutorizacionModule,
+    ReporteInconsistenciaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
