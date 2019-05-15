@@ -177,29 +177,38 @@ export class GenerarMasivoComponent implements OnInit {
     )
   }  
 
+    importarExcel(){
+    if (this.excelFile == null) {
+      this.dataDocumentosCargados = new LocalDataSource();
+      this.documentosCargados = [];
+      return null;
+    }
+    this.mostrarDocumentosCargados(this.excelFile);
+  }
+
   mostrarDocumentosCargados(file: File){
     this.documentoService.mostrarDocumentosCargados(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        this.documentosCargados = data;
-        let dataDocumentosCargados = [];
-        data.forEach(element => {
-          dataDocumentosCargados.push({
-            nroDocumento: element.nroDocumento,
-            razonSocialDestino: element.razonSocialDestino,
-            contactoDestino: element.contactoDestino,
-            departamentoNombre: element.distrito.provincia.departamento.nombre,
-            provinciaNombre: element.distrito.provincia.nombre,
-            distritoNombre: element.distrito.nombre,
-            direccion: element.direccion,
-            referencia: element.referencia,
-            telefono: element.telefono
-          })
-        });
-        this.dataDocumentosCargados.load(dataDocumentosCargados);
-        return;
+        // this.documentosCargados = data;
+        // let dataDocumentosCargados = [];
+        // data.forEach(element => {
+        //   dataDocumentosCargados.push({
+        //     nroDocumento: element.nroDocumento,
+        //     razonSocialDestino: element.razonSocialDestino,
+        //     contactoDestino: element.contactoDestino,
+        //     departamentoNombre: element.distrito.provincia.departamento.nombre,
+        //     provinciaNombre: element.distrito.provincia.nombre,
+        //     distritoNombre: element.distrito.nombre,
+        //     direccion: element.direccion,
+        //     referencia: element.referencia,
+        //     telefono: element.telefono
+        //   })
+        // });
+        // this.dataDocumentosCargados.load(dataDocumentosCargados);
+        // return;
       }
-      this.notifier.notify('error', data.mensaje);
-      this.dataDocumentosCargados = new LocalDataSource();
+      // this.notifier.notify('error', data.mensaje);
+      // this.dataDocumentosCargados = new LocalDataSource();
     });
   }
 
@@ -220,15 +229,6 @@ export class GenerarMasivoComponent implements OnInit {
       return;
     }
     this.autorizacionFile = file;
-  }
-
-  importarExcel(){
-    if (this.excelFile == null) {
-      this.dataDocumentosCargados = new LocalDataSource();
-      this.documentosCargados = [];
-      return null;
-    }
-    this.mostrarDocumentosCargados(this.excelFile);
   }
 
   onSubmit(datosMasivo : FormGroup){
