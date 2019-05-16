@@ -190,7 +190,7 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   mostrarDocumentosCargados(file: File){
-    this.documentoService.mostrarDocumentosCargados(file, 0, (data) => {
+    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosCorrectos = data.documentos;
         this.documentosIncorrectos = data.inconsistencias;
@@ -209,9 +209,9 @@ export class GenerarMasivoComponent implements OnInit {
         //   })
         // });
         // this.dataDocumentosCargados.load(dataDocumentosCargados);
-        // return;
+        return;
       }
-      // this.notifier.notify('error', data.mensaje);
+      this.notifier.notify('error', data.mensaje);
       // this.dataDocumentosCargados = new LocalDataSource();
     });
   }
