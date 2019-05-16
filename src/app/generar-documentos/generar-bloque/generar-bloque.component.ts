@@ -139,7 +139,7 @@ export class GenerarBloqueComponent implements OnInit {
   }
 
   mostrarDocumentosCargados(file: File){
-    this.documentoService.mostrarDocumentosCargados(file, 0, (data) => {
+    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosEnBloque = data;        
         return;
