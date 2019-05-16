@@ -143,7 +143,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado,
               estadocargo: 'a',
               fisicoRecibido: documento.recepcionado ? "SI" : "NO",
-              autorizado: documento.envio.autorizado ? "SI" : "NO",
+              autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
               fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
               fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
@@ -196,7 +196,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                       estadocargo: ' ',
                       fisicoRecibido: documento.recepcionado ? "SI" : "NO",
-                      autorizado: documento.envio.autorizado ? "SI" : "NO",
+                      autorizado:  this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
                       fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
                       fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),

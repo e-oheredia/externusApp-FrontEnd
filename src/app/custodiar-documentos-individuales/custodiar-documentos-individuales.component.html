@@ -57,7 +57,7 @@
           <td scope="col">{{envioCreado.documentos[0].razonSocialDestino}}</td>
           <td scope="col">{{envioCreado.documentos[0].contactoDestino}}</td>
           <td scope="col">{{envioCreado.documentos[0].direccion}}</td>
-          <td scope="col">{{envioCreado.autorizado ? "Sí" : "No"}}</td>
+          <td scope="col">{{envioService.getUltimoSeguimientoAutorizacion(envioCreado).estadoAutorizado.nombre}}</td>
           <td scope="col">{{documentoService.getFechaCreacion(envioCreado.documentos[0])}}</td>
         </tr>
       </tbody>

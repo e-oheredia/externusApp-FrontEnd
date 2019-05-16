@@ -98,7 +98,7 @@ export class ReporteAutorizacionComponent implements OnInit {
                   producto: envio.producto.nombre,
                   plazoDistribucion: envio.plazoDistribucion.nombre,
                   cantidadDocumentos: envio.documentos ? envio.documentos.length : 'no hay',
-                  autorizacion: this.envioService.getUltimoEstadoAutorizacion(envio).nombre,
+                  autorizacion: this.envioService.getUltimoSeguimientoAutorizacion(envio) ? this.envioService.getUltimoSeguimientoAutorizacion(envio).estadoAutorizado.nombre : "APROBADA",
                   usuarioAutorizador: this.envioService.getAutorizador(envio),
                   fechaAutorizacion: this.envioService.getUltimaFechaEstadoAutorizacion(envio)
                 })
