@@ -71,115 +71,103 @@ export class DocumentoService {
     provinciasSubscription: Subscription;
     distritosSubscription: Subscription;
 
-
-    mostrarDocumentosCargados(file: File, sheet: number, callback: Function) {
+    validarDocumentosMasivos(file: File, sheet: number, callback: Function) {
         this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
+            let documentosCargados: Documento[] = [];
             let i = 1
-
             let envio: Envio = new Envio();
             let registrosCorrectos: Documento[] = []
             let registrosIncorrectos: Inconsistencia[] = []
-            let distritocorrecto: Distrito;
-            //LUEGO DEL 4TO REGISTRO NO DEBERIA VOLVER AL WHILE
+
             while (true) {
 
-                console.log("ESTA ES LA DATA i : " + data[i]);
-
                 if (this.utilsService.isUndefinedOrNull(data[i])) {
-                    callback({
-                        mensaje: "El formato está vacío "
-                    });
-                    return;
+                    if (i === 1){
+                        callback({
+                            mensaje: "El formato está vacío "
+                        });
+                        return;
+                    } else {
+                        break;
+                    }
                 }
 
                 if (data[i].length === 0) {
                     break;
                 }
 
-                let documentoCargado: Documento = new Documento();
-                let registroIncorrecto: Inconsistencia = new Inconsistencia();
+                let todoCorrecto: boolean = true;
 
-                // VALIDACIONES
-                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][0]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) ||
-                    this.utilsService.isUndefinedOrNullOrEmpty(data[i][2]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][3]) ||
-                    this.utilsService.isUndefinedOrNullOrEmpty(data[i][4]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][5]) ||
-                    this.utilsService.isUndefinedOrNullOrEmpty(data[i][6]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][7]) ||
-                    this.utilsService.isUndefinedOrNullOrEmpty(data[i][8])) {
+                let documentoCorrecto: Documento = new Documento();
+                let documentoIncorrecto: Inconsistencia = new Inconsistencia();
 
-                    registroIncorrecto.numeroDocumento = data[i][0];
-                    registroIncorrecto.razonSocial = data[i][1];
-                    registroIncorrecto.contacto = data[i][2];
-                    registroIncorrecto.departamento = data[i][3];
-                    registroIncorrecto.provincia = data[i][4];
-                    registroIncorrecto.distrito = data[i][5];
-                    registroIncorrecto.telefono = data[i][6];
-                    registroIncorrecto.direccion = data[i][7];
-                    registroIncorrecto.referencia = data[i][8];
-                    registrosIncorrectos.push(registroIncorrecto);
 
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
+                    documentoIncorrecto.resumen += "Ingrese la razón social o el contacto. "
+                    todoCorrecto = false;
+                }
+
+                if (this.departamentoService.listarDepartamentoByNombre(data[i][3]) === null) {
+                    documentoIncorrecto.resumen += "Ingrese Departamento válido (Es posible que la provincia y el distrito estén incorrectos). "
+                    todoCorrecto = false;
                 } else {
-                    //departamento
-                    if (this.departamentoService.listarDepartamentoByNombre(data[i][3]) === null) {
-                        registroIncorrecto.numeroDocumento = data[i][0];
-                        registroIncorrecto.razonSocial = data[i][1];
-                        registroIncorrecto.contacto = data[i][2];
-                        registroIncorrecto.departamento = data[i][3];
-                        registroIncorrecto.provincia = data[i][4];
-                        registroIncorrecto.distrito = data[i][5];
-                        registroIncorrecto.telefono = data[i][6];
-                        registroIncorrecto.direccion = data[i][7];
-                        registroIncorrecto.referencia = data[i][8];
-                        registrosIncorrectos.push(registroIncorrecto);
+                    if (this.provinciaService.listarProvinciaByNombreProvinciaAndNombreDepartamento(data[i][4], data[i][3]) === null) {
+                        documentoIncorrecto.resumen += "Ingrese Provincia válida (Es posible que el distrito esté incorrecto). "
+                        todoCorrecto = false;
                     } else {
-                        //provincia
-                        if (this.provinciaService.listarProvinciaByNombreProvinciaAndNombreDepartamento(data[i][4], data[i][3]) === null) {
-                            registroIncorrecto.numeroDocumento = data[i][0];
-                            registroIncorrecto.razonSocial = data[i][1];
-                            registroIncorrecto.contacto = data[i][2];
-                            registroIncorrecto.departamento = data[i][3];
-                            registroIncorrecto.provincia = data[i][4];
-                            registroIncorrecto.distrito = data[i][5];
-                            registroIncorrecto.telefono = data[i][6];
-                            registroIncorrecto.direccion = data[i][7];
-                            registroIncorrecto.referencia = data[i][8];
-                            registrosIncorrectos.push(registroIncorrecto);
+                        let distrito = this.distritoService.listarDistritoByNombreDistritoAndNombreProvincia(data[i][5], data[i][4])
+
+                        if (distrito === null) {
+                            documentoIncorrecto.resumen += "Ingrese Distrito válido. "
+                            todoCorrecto = false;
                         } else {
-                            //distrito
-                            let distrito = this.distritoService.listarDistritoByNombreDistritoAndNombreProvincia(data[i][5], data[i][4])
-                            if (distrito === null) {
-                                registroIncorrecto.numeroDocumento = data[i][0];
-                                registroIncorrecto.razonSocial = data[i][1];
-                                registroIncorrecto.contacto = data[i][2];
-                                registroIncorrecto.departamento = data[i][3];
-                                registroIncorrecto.provincia = data[i][4];
-                                registroIncorrecto.distrito = data[i][5];
-                                registroIncorrecto.telefono = data[i][6];
-                                registroIncorrecto.direccion = data[i][7];
-                                registroIncorrecto.referencia = data[i][8];
-                                registrosIncorrectos.push(registroIncorrecto);
-                            }
-                            else {
-                                documentoCargado.nroDocumento = data[i][0] || "";
-                                documentoCargado.razonSocialDestino = data[i][1] || "";
-                                documentoCargado.contactoDestino = data[i][2] || "";
-                                documentoCargado.distrito = distrito;
-                                documentoCargado.telefono = data[i][6] || "";
-                                documentoCargado.direccion = data[i][7] || "";
-                                documentoCargado.referencia = data[i][8] || "";
-                                registrosCorrectos.push(documentoCargado);
-                            }
+                            documentoCorrecto.distrito = distrito;
                         }
                     }
                 }
+                
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][7])) {
+                    documentoIncorrecto.resumen += "Ingrese la dirección. "                    
+                    todoCorrecto = false;
+                } else {
+                    let patron = /^(?:\D*\d){2}\D*$/;
+                    if (!patron.test(data[i][7])) {
+                        documentoIncorrecto.resumen += "Ingrese por lo menos 2 dígitos en la dirección. "
+                        documentoIncorrecto.direccion = data[i][7] || "";
+                        todoCorrecto = false;
+                    }
+                }
+
+                if (!todoCorrecto) {
+                    documentoIncorrecto.numeroDocumento = data[i][0] || "";
+                    documentoIncorrecto.razonSocial = data[i][1] || "";
+                    documentoIncorrecto.contacto = data[i][2] || "";
+                    documentoIncorrecto.departamento = data[i][3] || "";
+                    documentoIncorrecto.provincia = data[i][4] || "";
+                    documentoIncorrecto.distrito = data[i][5] || "";
+                    documentoIncorrecto.telefono = data[i][6] || "";
+                    documentoIncorrecto.direccion = data[i][7] || "";
+                    documentoIncorrecto.referencia = data[i][8] || "";
+                    registrosIncorrectos.push(documentoIncorrecto);
+                } else {
+                    documentoCorrecto.nroDocumento = data[i][0] || "";
+                    documentoCorrecto.razonSocialDestino = data[i][1] || "";
+                    documentoCorrecto.contactoDestino = data[i][2] || "";
+                    documentoCorrecto.telefono = data[i][6] || "";
+                    documentoCorrecto.direccion = data[i][7] || "";
+                    documentoCorrecto.referencia = data[i][8] || "";
+                    registrosCorrectos.push(documentoCorrecto);
+                }
+
                 i++;
             }
-
             envio.documentos = registrosCorrectos
             envio.inconsistencias = registrosIncorrectos;
             callback(envio);
-            console.log("ESTE ES EL ENVIO RESPUESTA : " + envio);
+
         });
     }
+
 
     getFechaCreacion(documento: Documento): Date | string {
         return documento.seguimientosDocumento.find(seguimientoDocumento =>
