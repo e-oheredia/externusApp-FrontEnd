@@ -105,7 +105,7 @@ export class ReporteEficaciaComponent implements OnInit {
                 error => {
                     if (error.status === 400) {
                         this.documentos = [];
-                        this.notifier.notify('error', 'Rango de fechas no válido');
+                        this.notifier.notify('error', error.message);
                     }
                 }
             );
