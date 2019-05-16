@@ -113,11 +113,11 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="dataDocumentosCargados.data.length !== 0">
+          <!-- <div class="row" *ngIf="dataDocumentosCargados.data.length !== 0">
             <div class="col">
               <ng2-smart-table [settings]="tableSettings" [source]="dataDocumentosCargados"></ng2-smart-table>
             </div>
-          </div>
+          </div> -->
           <div class="form-group"
             *ngIf="masivoForm.get('plazoDistribucion').value && masivoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
             <label for="autorizacion">
@@ -129,7 +129,7 @@
           <div class="row">
             <div class="button-group col text-right mb-4 mt-4">
               <button class="btn btn-outline-success"
-                [disabled]="!masivoForm.valid && documentosCargados.length   === 0" type="submit">
+                 type="submit">
                 Registrar
               </button>
             </div>
@@ -141,3 +141,4 @@
     </div>
   </div>
 </div>
+<!-- [disabled]="!masivoForm.valid && documentosCargados.length   === 0" -->
