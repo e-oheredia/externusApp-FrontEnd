@@ -25,13 +25,13 @@ export class ReporteInconsistenciaComponent implements OnInit {
     private tituloService: TituloService
   ) { }
 
-  dataEnvios: LocalDataSource = new LocalDataSource();
+  dataEnviosConIncidencias: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
 
   envio: Envio;
   envios: Envio[] = [];
 
-  envioSubscription: Subscription;
+  enviosSubscription: Subscription;
   envioForm: FormGroup;
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class ReporteInconsistenciaComponent implements OnInit {
     })
     this.tituloService.setTitulo("Reporte de inconsistencias");
     this.generarColumnas();
-    // this.listarEnvios();
+    this.listarEnviosConInconsistencias();
   }
 
   generarColumnas(){
@@ -49,7 +49,7 @@ export class ReporteInconsistenciaComponent implements OnInit {
       remitente: {
         title: 'Remitente'
       },
-      area: {
+      areaRemitente: {
         title: 'Área remitente'
       },
       tipoUsuario: {
@@ -78,11 +78,47 @@ export class ReporteInconsistenciaComponent implements OnInit {
   // descargar(row){
   //   let envio = this.envios.find(envio => envio.id === row.id)
   //   this.envioService.listarEnviosConInconsistencias().subscribe(
-  //     envios => {
-  //       this.envioService.exportarInconsistenciasEnvio(envios.id)
-  //       if()
+  //     inconsistencias => {
+  //       this.envioService.descargarInconsistenciasEnvio(inconsistencias, envio)
   //     }
   //   )
   // }
+
+  listarEnviosConInconsistencias(){
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaFin'].value)) {
+      this.enviosSubscription = this.envioService.listarEnviosConInconsistenciasPorFechas(this.envioForm.controls['fechaIni'].value, this.envioForm.controls['fechaFin'].value).subscribe(
+        envios => {
+          this.envios = envios;
+          this.dataEnviosConIncidencias.reset();
+          this.envioService.listarEnviosConInconsistenciasPorFechas(this.envioForm.controls['fechaIni'].value, this.envioForm.controls['fechaFin'].value).subscribe(
+            envios => {
+              this.envios = envios;
+              let dataEnviosConIncidencias = [];
+              envios.forEach(
+                envio => {
+                  dataEnviosConIncidencias.push({
+                    remitente: envio.buzon.nombre,
+                    areaRemitente: envio.buzon.area.nombre,
+                    tipoUsuario: envio.tipoEnvio.nombre,
+                    plazo: envio.plazoDistribucion.nombre,
+                    // fechaCreacion: envio.
+                  })
+                }
+              )
+              this.dataEnviosConIncidencias.load(dataEnviosConIncidencias);
+            }
+          )
+        },
+        error => {
+          if (error.status === 400){
+            this.envios = [];
+            this.notifier.notify('error', 'no hay resultados');
+          }
+        }
+      );
+    }
+  }
+
+
 
 }
