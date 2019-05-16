@@ -126,5 +126,26 @@ export class EnvioService {
     
     }
 
+    listarEnviosConInconsistenciasPorFechas(fechaini: Date, fechafin: Date): Observable<Envio[]> {
+        return this.requester.get<Envio[]>(this.REQUEST_URL + "enviosinconsistencias", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString())});
+    }
+
+    descargarInconsistenciasEnvio(inconsistencias, envio){
+        let objects = [];
+        inconsistencias.forEach(inconsistencia => {
+            objects.push({
+                "Número de envío" : envio.id,
+                "Número de documento" : inconsistencia.numeroDocumento,
+                "Razón social" : inconsistencia.razonSocial,
+                "Contacto" : inconsistencia.contacto,
+                "Departamento" : inconsistencia.departamento.nombre,
+                "Provincia" : inconsistencia.provincia.nombre,
+                "Distrito" : inconsistencia.distrito.nombre,
+                "Teléfono" : inconsistencia.telefono,
+                "Dirección" : inconsistencia.direccion,
+                "Referencia" : inconsistencia.referencia,
+            })
+        })
+    }
 
 }

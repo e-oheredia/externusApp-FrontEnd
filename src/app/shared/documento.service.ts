@@ -71,7 +71,7 @@ export class DocumentoService {
     provinciasSubscription: Subscription;
     distritosSubscription: Subscription;
 
-    
+
     mostrarDocumentosCargados(file: File, sheet: number, callback: Function) {
         this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
             let i = 1
@@ -105,57 +105,72 @@ export class DocumentoService {
                     this.utilsService.isUndefinedOrNullOrEmpty(data[i][4]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][5]) ||
                     this.utilsService.isUndefinedOrNullOrEmpty(data[i][6]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][7]) ||
                     this.utilsService.isUndefinedOrNullOrEmpty(data[i][8])) {
-                        
-                    // numero de documento
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][0])) {
-                        registroIncorrecto.numeroDocumento = data[i][0] || "";
-                    }
-                    // razon social
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
-                        registroIncorrecto.razonSocial = data[i][1] || "";
-                    }
-                    // contacto
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
-                        registroIncorrecto.contacto = data[i][2] || "";
-                    }
+
+                    registroIncorrecto.numeroDocumento = data[i][0];
+                    registroIncorrecto.razonSocial = data[i][1];
+                    registroIncorrecto.contacto = data[i][2];
+                    registroIncorrecto.departamento = data[i][3];
+                    registroIncorrecto.provincia = data[i][4];
+                    registroIncorrecto.distrito = data[i][5];
+                    registroIncorrecto.telefono = data[i][6];
+                    registroIncorrecto.direccion = data[i][7];
+                    registroIncorrecto.referencia = data[i][8];
+                    registrosIncorrectos.push(registroIncorrecto);
+
+                } else {
                     //departamento
                     if (this.departamentoService.listarDepartamentoByNombre(data[i][3]) === null) {
-                        registroIncorrecto.departamento = data[i][3] || "";
+                        registroIncorrecto.numeroDocumento = data[i][0];
+                        registroIncorrecto.razonSocial = data[i][1];
+                        registroIncorrecto.contacto = data[i][2];
+                        registroIncorrecto.departamento = data[i][3];
+                        registroIncorrecto.provincia = data[i][4];
+                        registroIncorrecto.distrito = data[i][5];
+                        registroIncorrecto.telefono = data[i][6];
+                        registroIncorrecto.direccion = data[i][7];
+                        registroIncorrecto.referencia = data[i][8];
+                        registrosIncorrectos.push(registroIncorrecto);
+                    } else {
+                        //provincia
+                        if (this.provinciaService.listarProvinciaByNombreProvinciaAndNombreDepartamento(data[i][4], data[i][3]) === null) {
+                            registroIncorrecto.numeroDocumento = data[i][0];
+                            registroIncorrecto.razonSocial = data[i][1];
+                            registroIncorrecto.contacto = data[i][2];
+                            registroIncorrecto.departamento = data[i][3];
+                            registroIncorrecto.provincia = data[i][4];
+                            registroIncorrecto.distrito = data[i][5];
+                            registroIncorrecto.telefono = data[i][6];
+                            registroIncorrecto.direccion = data[i][7];
+                            registroIncorrecto.referencia = data[i][8];
+                            registrosIncorrectos.push(registroIncorrecto);
+                        } else {
+                            //distrito
+                            let distrito = this.distritoService.listarDistritoByNombreDistritoAndNombreProvincia(data[i][5], data[i][4])
+                            if (distrito === null) {
+                                registroIncorrecto.numeroDocumento = data[i][0];
+                                registroIncorrecto.razonSocial = data[i][1];
+                                registroIncorrecto.contacto = data[i][2];
+                                registroIncorrecto.departamento = data[i][3];
+                                registroIncorrecto.provincia = data[i][4];
+                                registroIncorrecto.distrito = data[i][5];
+                                registroIncorrecto.telefono = data[i][6];
+                                registroIncorrecto.direccion = data[i][7];
+                                registroIncorrecto.referencia = data[i][8];
+                                registrosIncorrectos.push(registroIncorrecto);
+                            }
+                            else {
+                                documentoCargado.nroDocumento = data[i][0] || "";
+                                documentoCargado.razonSocialDestino = data[i][1] || "";
+                                documentoCargado.contactoDestino = data[i][2] || "";
+                                documentoCargado.distrito = distrito;
+                                documentoCargado.telefono = data[i][6] || "";
+                                documentoCargado.direccion = data[i][7] || "";
+                                documentoCargado.referencia = data[i][8] || "";
+                                registrosCorrectos.push(documentoCargado);
+                            }
+                        }
                     }
-                    //provincia
-                    if (this.provinciaService.listarProvinciaByNombreProvinciaAndNombreDepartamento(data[i][4], data[i][3]) === null) {
-                        registroIncorrecto.provincia = data[i][4] || "";
-                    }
-                    //distrito
-                    let distrito = this.distritoService.listarDistritoByNombreDistritoAndNombreProvincia(data[i][5], data[i][4])
-                    if (distrito === null) {
-                        registroIncorrecto.distrito = data[i][5] || "";
-                    } 
-                    distritocorrecto = distrito
-                    // telefono
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][6]) === null) {
-                        registroIncorrecto.telefono = data[i][6] || "";
-                    }
-                    // direccion
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][7]) === null) {
-                        registroIncorrecto.direccion = data[i][7] || "";
-                    }
-                    // referencia
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][8]) === null) {
-                        registroIncorrecto.referencia = data[i][8] || "";
-                    }
-                } else {
-                    documentoCargado.nroDocumento = data[i][0] || "";
-                    documentoCargado.razonSocialDestino = data[i][1] || "";
-                    documentoCargado.contactoDestino = data[i][2] || "";
-                    documentoCargado.distrito = distritocorrecto;
-                    documentoCargado.telefono = data[i][6] || "";
-                    documentoCargado.direccion = data[i][7] || "";
-                    documentoCargado.referencia = data[i][8] || "";
                 }
-
-                registrosCorrectos.push(documentoCargado);
-                registrosIncorrectos.push(registroIncorrecto);
                 i++;
             }
 

@@ -28,6 +28,7 @@ import { ProductoService } from 'src/app/shared/producto.service';
 import { Producto } from 'src/model/producto.model';
 import { ClasificacionService } from 'src/app/shared/clasificacion.service';
 import { Clasificacion } from 'src/model/clasificacion.model';
+import { Inconsistencia } from 'src/model/inconsistencia.model';
 
 
 @Component({
@@ -64,7 +65,8 @@ export class GenerarMasivoComponent implements OnInit {
   buzon: Buzon; 
   excelFile: File;
   autorizacionFile: File;
-  documentosCargados: Documento[] = [];
+  documentosCorrectos: Documento[] = [];
+  documentosIncorrectos: Inconsistencia[] = [];
   envioMasivo: EnvioMasivo = new EnvioMasivo(); 
   columnsDocumentosCargados = {
     nroDocumento: {
@@ -180,7 +182,8 @@ export class GenerarMasivoComponent implements OnInit {
     importarExcel(){
     if (this.excelFile == null) {
       this.dataDocumentosCargados = new LocalDataSource();
-      this.documentosCargados = [];
+      this.documentosCorrectos = [];
+      this.documentosIncorrectos = [];
       return null;
     }
     this.mostrarDocumentosCargados(this.excelFile);
@@ -189,7 +192,8 @@ export class GenerarMasivoComponent implements OnInit {
   mostrarDocumentosCargados(file: File){
     this.documentoService.mostrarDocumentosCargados(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        // this.documentosCargados = data;
+        this.documentosCorrectos = data.documentos;
+        this.documentosIncorrectos = data.inconsistencias;
         // let dataDocumentosCargados = [];
         // data.forEach(element => {
         //   dataDocumentosCargados.push({
@@ -216,7 +220,8 @@ export class GenerarMasivoComponent implements OnInit {
     if (file == null) {
       this.excelFile = null;
       this.dataDocumentosCargados = new LocalDataSource();
-      this.documentosCargados = [];
+      this.documentosCorrectos = [];
+      this.documentosIncorrectos = [];
       return null;
     }
     this.excelFile = file;
@@ -238,12 +243,14 @@ export class GenerarMasivoComponent implements OnInit {
     this.envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
     this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
     this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
-    this.envioMasivo.documentos = this.documentosCargados;    
+    this.envioMasivo.documentos = this.documentosCorrectos;
+    this.envioMasivo.inconsistencias = this.documentosIncorrectos;
     this.envioMasivo.producto = datosMasivo.get("producto").value;
     this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {        
-        this.documentosCargados = [];
-        this.dataDocumentosCargados = new LocalDataSource();
+        this.documentosCorrectos = [];
+        this.documentosIncorrectos = [];
+        // this.dataDocumentosCargados = new LocalDataSource();
         this.autogeneradoCreado = envioMasivo.masivoAutogenerado;        
         setTimeout(() =>{
           this.cargoPdfService.generarPdfMasivo(envioMasivo, document.getElementById("codebarMasivo").children[0].children[0]);
@@ -262,7 +269,7 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   noDocumentsLoaded(form: FormGroup): { [key: string]: boolean } | null {
-    if (this.documentosCargados.length == 0) {
+    if (this.documentosCorrectos.length == 0) {
       return { 'noDocumentsLoaded': true }  
     }    
     return null;
