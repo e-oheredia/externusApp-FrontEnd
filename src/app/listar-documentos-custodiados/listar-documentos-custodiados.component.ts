@@ -4,6 +4,7 @@ import { Documento } from '../../model/documento.model';
 import { DocumentoService } from '../shared/documento.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { EnvioService } from '../shared/envio.service';
 
 @Component({
   selector: 'app-listar-documentos-custodiados',
@@ -13,7 +14,8 @@ import { Subscription } from 'rxjs';
 export class ListarDocumentosCustodiadosComponent implements OnInit {
 
   constructor(
-    private documentoService: DocumentoService
+    private documentoService: DocumentoService,
+    private envioService: EnvioService
   ) { }
 
   documentosCustodiados: Documento[] = [];
@@ -86,7 +88,7 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
               razonSocial: documentoCustodiado.razonSocialDestino,
               contacto: documentoCustodiado.contactoDestino,
               direccion: documentoCustodiado.direccion,
-              autorizado: documentoCustodiado.envio.autorizado ? 'Sí' : 'No',
+              autorizado:  this.envioService.getUltimoSeguimientoAutorizacion(documentoCustodiado.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documentoCustodiado.envio).estadoAutorizado.nombre : "APROBADA",
               fechaCreacion: this.documentoService.getFechaCreacion(documentoCustodiado)
             })
         })

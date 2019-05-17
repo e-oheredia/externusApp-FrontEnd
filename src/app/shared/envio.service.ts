@@ -49,13 +49,13 @@ export class EnvioService {
         return autorizacion;
     }
 
-    getUltimoEstadoAutorizacion(envio: Envio): EstadoAutorizacion {
-        let estadoAutorizado = envio.seguimientosAutorizado.reduce(
+    getUltimoSeguimientoAutorizacion(envio: Envio): SeguimientoAutorizacion {
+        return envio.seguimientosAutorizado.reduce(
             (max, seguimentoAutorizado) =>
                 moment(seguimentoAutorizado.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoAutorizado : max, envio.seguimientosAutorizado[0]
-        ).estadoAutorizado;
+        );
 
-        return estadoAutorizado;
+        
     }
 
     getUltimaFechaEstadoAutorizacion(envio: Envio): Date | string {
@@ -117,7 +117,7 @@ export class EnvioService {
                 "Producto" : envio.producto.nombre,
                 "Plazo Distribución" : envio.plazoDistribucion.nombre,
                 "Cantidad Documentos" : envio.documentos.length,
-                "Autorización" : this.getUltimoEstadoAutorizacion(envio).nombre,
+                "Autorización" : this.getUltimoSeguimientoAutorizacion(envio).estadoAutorizado.nombre,
                 "Usuario Autorizador" : this.getAutorizador(envio),
                 "Fecha Autorización" : this.getUltimaFechaEstadoAutorizacion(envio)
             })

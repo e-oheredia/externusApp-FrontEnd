@@ -15,7 +15,7 @@ import { Envio } from '../../model/envio.model';
 export class CustodiarDocumentosIndividualesComponent implements OnInit {
 
   constructor(
-    private envioService: EnvioService,
+    public envioService: EnvioService,
     public documentoService: DocumentoService,
     private utilsService: UtilsService,
     private notifier: NotifierService,
