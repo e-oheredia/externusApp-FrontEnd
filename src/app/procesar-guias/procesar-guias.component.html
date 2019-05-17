@@ -23,6 +23,17 @@
 
       <div class="card-body">
 
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <!-- <label for="cantidadDocumentos">Elegir archivo de Datos : </label> -->
+              <input type="file" class="form-control-file" placeholder="Elegir archivo de Datos : "
+                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+                formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
+            </div>
+          </div>
+        </div>
+
         <div *ngIf="guias.length !== 0; else mensaje">
           <ng2-smart-table [settings]="settings" [source]="dataGuiasPorProcesar"></ng2-smart-table>
         </div>

@@ -96,17 +96,17 @@ export class ProcesarGuiasComponent implements OnInit {
       pendientesResultado: {
         title: 'Pendientes de resultado'
       },
-      subirBase: {
-        title: 'Subir Resultado',
-        type: 'custom',
-        renderComponent: ButtonViewComponent,
-        onComponentInitFunction: (instance: any) => {
-          instance.claseIcono = "fas fa-upload";
-          instance.pressed.subscribe(row => {
-            this.subirGuia(row);
-          });
-        }
-      }
+      // subirBase: {
+      //   title: 'Subir Resultado',
+      //   type: 'custom',
+      //   renderComponent: ButtonViewComponent,
+      //   onComponentInitFunction: (instance: any) => {
+      //     instance.claseIcono = "fas fa-upload";
+      //     instance.pressed.subscribe(row => {
+      //       this.subirGuia(row);
+      //     });
+      //   }
+      // }
 
     }
   }
@@ -162,7 +162,7 @@ export class ProcesarGuiasComponent implements OnInit {
     )
   }
 
-
+/*
   subirGuia(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
     let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
@@ -184,7 +184,7 @@ export class ProcesarGuiasComponent implements OnInit {
       }
     )
   }
-
+*/
 
 
 

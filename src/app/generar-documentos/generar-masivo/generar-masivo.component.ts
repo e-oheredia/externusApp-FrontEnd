@@ -115,7 +115,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.tableSettings.columns = this.columnsDocumentosCargados;
     this.cargarDatosVista();
     this.masivoForm = new FormGroup({
-      'cantidadDocumentos' : new FormControl(""),
+      'cantidadDocumentos': new FormControl(""),
       'cantidadCorrectos': new FormControl(""),
       'cantidadIncorrectos': new FormControl(""),
       'sedeDespacho': new FormControl(null, Validators.required),
@@ -125,9 +125,9 @@ export class GenerarMasivoComponent implements OnInit {
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
       'excel': new FormControl(null, Validators.required),
-      'excel2': new FormControl(null, Validators.required),
+      'excel2': new FormControl(null),
       'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)])
-    }, this.noDocumentsLoaded.bind(this));
+    });
   }
 
   cargarDatosVista() {
@@ -249,47 +249,53 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   onSubmit(datosMasivo: FormGroup) {
+    if (this.documentosIncorrectos.length > 0) {
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          titulo: "Confirmación de registros",
+          mensaje: "Solo se subirán " + this.documentosCorrectos.length + " registros correctos"
+        }
+      });
+  
+      bsModalRef.content.confirmarEvent.subscribe(
+        () => {
+          this.registrarMasivo(datosMasivo);
+        }
+      )
+    } else {
+      this.registrarMasivo(datosMasivo);
+    }
+  }
 
-    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
-      initialState: {
-        titulo: "Confirmación de registros",
-        mensaje: "Solo se subirán " + this.documentosCorrectos.length + " registros correctos"
-      }
-    });
-
-    bsModalRef.content.confirmarEvent.subscribe(
-      () => {
-        this.envioMasivo.buzon = this.buzon;
-        this.envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
-        this.envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
-        this.envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
-        this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
-        this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
-        this.envioMasivo.documentos = this.documentosCorrectos;
-        this.envioMasivo.inconsistencias = this.documentosIncorrectos;
-        this.envioMasivo.producto = datosMasivo.get("producto").value;
-        this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
-          envioMasivo => {
-            this.documentosCorrectos = [];
-            this.documentosIncorrectos = [];
-            this.autogeneradoCreado = envioMasivo.masivoAutogenerado;
-            setTimeout(() => {
-              this.cargoPdfService.generarPdfMasivo(envioMasivo, document.getElementById("codebarMasivo").children[0].children[0]);
-            }, 200);
-            let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
-              initialState: {
-                autogenerado: envioMasivo.masivoAutogenerado
-              }
-            });
-            this.masivoForm.reset();
-          },
-          error => {
-            console.log(error);
+  registrarMasivo(datosMasivo: FormGroup) {
+    this.envioMasivo.buzon = this.buzon;
+    this.envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
+    this.envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
+    this.envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
+    this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
+    this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
+    this.envioMasivo.documentos = this.documentosCorrectos;
+    this.envioMasivo.inconsistencias = this.documentosIncorrectos;
+    this.envioMasivo.producto = datosMasivo.get("producto").value;
+    this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
+      envioMasivo => {
+        this.documentosCorrectos = [];
+        this.documentosIncorrectos = [];
+        this.autogeneradoCreado = envioMasivo.masivoAutogenerado;
+        setTimeout(() => {
+          this.cargoPdfService.generarPdfMasivo(envioMasivo, document.getElementById("codebarMasivo").children[0].children[0]);
+        }, 200);
+        let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
+          initialState: {
+            autogenerado: envioMasivo.masivoAutogenerado
           }
-        )
+        });
+        this.masivoForm.reset();
+      },
+      error => {
+        console.log(error);
       }
     )
-
   }
 
   noDocumentsLoaded(form: FormGroup): { [key: string]: boolean } | null {

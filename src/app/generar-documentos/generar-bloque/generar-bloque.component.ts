@@ -95,7 +95,7 @@ export class GenerarBloqueComponent implements OnInit {
       'proveedor': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'excel': new FormControl(null, Validators.required),
-      'excel2': new FormControl(null, Validators.required),
+      'excel2': new FormControl(null),
       'codigoGuia': new FormControl(null, Validators.required)
     })
   }
@@ -209,46 +209,52 @@ export class GenerarBloqueComponent implements OnInit {
 
 
   onSubmit(datosBloque: FormGroup) {
+    if (this.documentosIncorrectos.length > 0) {
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          titulo: "Confirmación de registros",
+          mensaje: "Solo se subirán " + this.documentosCorrectos.length + " registros correctos"
+        }
+      });
 
-    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
-      initialState: {
-        titulo: "Confirmación de registros",
-        mensaje: "Solo se subirán " + this.documentosCorrectos.length + " registros correctos"
-      }
-    });
+      bsModalRef.content.confirmarEvent.subscribe(
+        () => {
+          this.registrarBloque(datosBloque);
+        }
+      )
+    } else {
+      this.registrarBloque(datosBloque);
+    }
+  }
 
-    bsModalRef.content.confirmarEvent.subscribe(
-      () => {
-
-        this.envioBloque.buzon = this.buzon;
-        this.envioBloque.plazoDistribucion = datosBloque.get('plazoDistribucion').value;
-        this.envioBloque.producto = datosBloque.get('producto').value;
-        this.envioBloque.clasificacion = datosBloque.get('clasificacion').value;
-        this.envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
-        this.envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
-        this.envioBloque.documentos = this.documentosCorrectos;
-        this.envioBloque.inconsistencias = this.documentosIncorrectos;
-        this.codigoGuia = datosBloque.get('codigoGuia').value;
-        this.proveedor = datosBloque.get('proveedor').value;
-        this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
-          envioBloque => {
-            this.documentosCorrectos = [];
-            this.documentosIncorrectos = [];
-            this.autogeneradoCreado = envioBloque.masivoAutogenerado
-            // setTimeout(() =>{
-            //   this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
-            // }, 200);
-            let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
-              initialState: {
-                autogenerado: envioBloque.masivoAutogenerado
-              }
-            });
-            this.bloqueForm.reset();
-          },
-          error => {
-            console.log(error);
+  registrarBloque(datosBloque: FormGroup) {
+    this.envioBloque.buzon = this.buzon;
+    this.envioBloque.plazoDistribucion = datosBloque.get('plazoDistribucion').value;
+    this.envioBloque.producto = datosBloque.get('producto').value;
+    this.envioBloque.clasificacion = datosBloque.get('clasificacion').value;
+    this.envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
+    this.envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
+    this.envioBloque.documentos = this.documentosCorrectos;
+    this.envioBloque.inconsistencias = this.documentosIncorrectos;
+    this.codigoGuia = datosBloque.get('codigoGuia').value;
+    this.proveedor = datosBloque.get('proveedor').value;
+    this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
+      envioBloque => {
+        this.documentosCorrectos = [];
+        this.documentosIncorrectos = [];
+        this.autogeneradoCreado = envioBloque.masivoAutogenerado
+        // setTimeout(() =>{
+        //   this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
+        // }, 200);
+        let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
+          initialState: {
+            autogenerado: envioBloque.masivoAutogenerado
           }
-        )
+        });
+        this.bloqueForm.reset();
+      },
+      error => {
+        console.log(error);
       }
     )
   }
