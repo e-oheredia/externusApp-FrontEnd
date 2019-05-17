@@ -579,6 +579,25 @@ export class DocumentoService {
         this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");
     }
 
+    exportarInconsistencias(inconsistencias){
+        let objects = [];
+        inconsistencias.forEach(inconsistencia => {
+            objects.push({
+                "Nro Documento": inconsistencia.numeroDocumento,
+                "Razón Social": inconsistencia.razonSocial,
+                "Contacto": inconsistencia.contacto,
+                "Departamento": inconsistencia.departamento,
+                "Provincia": inconsistencia.provincia,
+                "Distrito": inconsistencia.distrito,
+                "Teléfono": inconsistencia.telefono,
+                "Dirección": inconsistencia.direccion,
+                "Referencia": inconsistencia.referencia,
+                "Resúmen de inconsistencias": inconsistencia.resumen
+            })
+        });
+        this.writeExcelService.jsonToExcel(objects, "Inconsistencias: ");
+    }
+
 
 
 
