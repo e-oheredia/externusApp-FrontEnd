@@ -122,13 +122,15 @@
             <div class="col">
               <div class="form-group">
                 <label for="codigoGuia">Número de guía *</label>
-                <input class="form-control" type="text" name="codigoGuia" formControlName="codigoGuia" id="codigoGuia" minlength="5">
+                <input class="form-control" type="text" name="codigoGuia" formControlName="codigoGuia" id="codigoGuia"
+                  minlength="5">
               </div>
             </div>
           </div>
 
           <br>
 
+          <div class="row" *ngIf="documentosIncorrectos.length === 0">
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -139,11 +141,27 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="form-row">
-            <div class="col-2">
-              <div class="form-group">
-                <label for="cantidadDocumentos">Cantidad de documentos : {{documentosEnBloque.length}}</label>
+          <br>
+          <div class="row" *ngIf="documentosIncorrectos.length !== 0">
+            <div class="col">
+              <h5>Subir Correcciones</h5>
+              <div class="cantidadCorrectos">
+                <label for="cantidadCorrectos">Cantidad de documentos correctos : {{documentosCorrectos.length}}</label>
+              </div>
+              <div class="cantidadIncorrectos">
+                <label for="cantidadIncorrectos">Cantidad de documentos incorrectos :
+                  {{documentosIncorrectos.length}}</label>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <input type="file" class="form-control-file"
+                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+                      formControlName="excel2" (change)="onChangeExcelFile($event.srcElement.files[0])">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -155,10 +173,9 @@
               </button>
             </div>
           </div>
-          
+
           <ngx-barcode id="codebarBloque" [bc-value]="autogeneradoCreado" [bc-display-value]="true" hidden>
           </ngx-barcode>
-
         </form>
 
 
@@ -166,3 +183,4 @@
     </div>
   </div>
 </div>
+<!-- [disabled]="!bloqueForm.valid"  -->

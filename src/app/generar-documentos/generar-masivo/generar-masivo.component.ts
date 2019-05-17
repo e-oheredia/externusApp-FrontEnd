@@ -29,6 +29,7 @@ import { Producto } from 'src/model/producto.model';
 import { ClasificacionService } from 'src/app/shared/clasificacion.service';
 import { Clasificacion } from 'src/model/clasificacion.model';
 import { Inconsistencia } from 'src/model/inconsistencia.model';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 
 @Component({
@@ -38,16 +39,16 @@ import { Inconsistencia } from 'src/model/inconsistencia.model';
 })
 export class GenerarMasivoComponent implements OnInit {
 
-  constructor(private documentoService: DocumentoService, 
-    private buzonService: BuzonService, 
-    private plazoDistribucionService: PlazoDistribucionService, 
-    private tipoSeguridadService: TipoSeguridadService, 
+  constructor(private documentoService: DocumentoService,
+    private buzonService: BuzonService,
+    private plazoDistribucionService: PlazoDistribucionService,
+    private tipoSeguridadService: TipoSeguridadService,
     private clasificacionService: ClasificacionService,
-    private tipoServicioService: TipoServicioService, 
-    private utilsService: UtilsService, 
-    private envioMasivoService: EnvioMasivoService, 
-    private notifier: NotifierService, 
-    private cargoPdfService: CargoPdfService, 
+    private tipoServicioService: TipoServicioService,
+    private utilsService: UtilsService,
+    private envioMasivoService: EnvioMasivoService,
+    private notifier: NotifierService,
+    private cargoPdfService: CargoPdfService,
     private modalService: BsModalService,
     private sedeDespachoService: SedeDespachoService,
     private productoService: ProductoService
@@ -61,13 +62,13 @@ export class GenerarMasivoComponent implements OnInit {
   tiposServicio: TipoServicio[];
   clasificaciones: Clasificacion[];
   sedesDespacho: Sede[];
-  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0,""), 0, true);
-  buzon: Buzon; 
+  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), 0, true);
+  buzon: Buzon;
   excelFile: File;
   autorizacionFile: File;
   documentosCorrectos: Documento[] = [];
   documentosIncorrectos: Inconsistencia[] = [];
-  envioMasivo: EnvioMasivo = new EnvioMasivo(); 
+  envioMasivo: EnvioMasivo = new EnvioMasivo();
   columnsDocumentosCargados = {
     nroDocumento: {
       title: 'Nro Documento'
@@ -90,15 +91,13 @@ export class GenerarMasivoComponent implements OnInit {
     direccion: {
       title: 'Dirección'
     },
-    referencia : {
+    referencia: {
       title: 'Referencia'
     },
     telefono: {
       title: 'Teléfono'
     }
   };
-
-  dataDocumentosCargados: LocalDataSource = new LocalDataSource();
 
   tableSettings = AppSettings.tableSettings;
 
@@ -113,16 +112,20 @@ export class GenerarMasivoComponent implements OnInit {
   autogeneradoCreado: string;
 
   ngOnInit() {
-    this.tableSettings.columns = this.columnsDocumentosCargados; 
+    this.tableSettings.columns = this.columnsDocumentosCargados;
     this.cargarDatosVista();
     this.masivoForm = new FormGroup({
+      'cantidadDocumentos' : new FormControl(""),
+      'cantidadCorrectos': new FormControl(""),
+      'cantidadIncorrectos': new FormControl(""),
       'sedeDespacho': new FormControl(null, Validators.required),
       'clasificacion': new FormControl(null, Validators.required),
-      'plazoDistribucion': new FormControl(null, Validators.required), 
-      'producto': new FormControl(null, Validators.required), 
-      'tipoSeguridad': new FormControl(null, Validators.required), 
-      'tipoServicio': new FormControl(null, Validators.required), 
-      'excel': new FormControl(null, Validators.required), 
+      'plazoDistribucion': new FormControl(null, Validators.required),
+      'producto': new FormControl(null, Validators.required),
+      'tipoSeguridad': new FormControl(null, Validators.required),
+      'tipoServicio': new FormControl(null, Validators.required),
+      'excel': new FormControl(null, Validators.required),
+      'excel2': new FormControl(null, Validators.required),
       'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)])
     }, this.noDocumentsLoaded.bind(this));
   }
@@ -168,7 +171,7 @@ export class GenerarMasivoComponent implements OnInit {
       }
     )
     this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(
-      buzon =>{
+      buzon => {
         this.buzon = buzon;
       }
     )
@@ -177,58 +180,67 @@ export class GenerarMasivoComponent implements OnInit {
         this.sedesDespacho = sedesDespacho;
       }
     )
-  }  
-
-    importarExcel(){
-    if (this.excelFile == null) {
-      this.dataDocumentosCargados = new LocalDataSource();
-      this.documentosCorrectos = [];
-      this.documentosIncorrectos = [];
-      return null;
-    }
-    this.mostrarDocumentosCargados(this.excelFile);
   }
 
-  mostrarDocumentosCargados(file: File){
-    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
-      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        this.documentosCorrectos = data.documentos;
-        this.documentosIncorrectos = data.inconsistencias;
-        // let dataDocumentosCargados = [];
-        // data.forEach(element => {
-        //   dataDocumentosCargados.push({
-        //     nroDocumento: element.nroDocumento,
-        //     razonSocialDestino: element.razonSocialDestino,
-        //     contactoDestino: element.contactoDestino,
-        //     departamentoNombre: element.distrito.provincia.departamento.nombre,
-        //     provinciaNombre: element.distrito.provincia.nombre,
-        //     distritoNombre: element.distrito.nombre,
-        //     direccion: element.direccion,
-        //     referencia: element.referencia,
-        //     telefono: element.telefono
-        //   })
-        // });
-        // this.dataDocumentosCargados.load(dataDocumentosCargados);
-        return;
-      }
-      this.notifier.notify('error', data.mensaje);
-      // this.dataDocumentosCargados = new LocalDataSource();
-    });
-  }
 
-  onChangeExcelFile(file: File){
+  onChangeExcelFile(file: File) {
     if (file == null) {
       this.excelFile = null;
-      this.dataDocumentosCargados = new LocalDataSource();
-      this.documentosCorrectos = [];
-      this.documentosIncorrectos = [];
       return null;
     }
     this.excelFile = file;
     this.importarExcel();
   }
 
-  onChangeAutorizacionFile(file: File){
+
+  importarExcel() {
+    if (this.excelFile == null) {
+      return null;
+    }
+    if (this.documentosIncorrectos.length > 0) {
+      this.mostrarDocumentosCargados2(this.excelFile);
+      return;
+    }
+    this.mostrarDocumentosCargados(this.excelFile);
+  }
+
+  mostrarDocumentosCargados(file: File) {
+    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        this.documentosCorrectos = data.documentos;
+        this.documentosIncorrectos = data.inconsistencias;
+        // descargar inconsistencias
+        if (this.documentosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.documentosIncorrectos);
+        }
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    });
+  }
+
+  mostrarDocumentosCargados2(file: File) {
+    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        console.log("primeros correctos: " + this.documentosCorrectos.length)
+        console.log("nuevos correctos: " + data.documentos.length)
+        this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
+        this.documentosIncorrectos = data.inconsistencias;
+        // descargar inconsistencias
+        if (this.documentosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.documentosIncorrectos);
+        }
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    });
+  }
+
+  descargarInconsistencias(inconsistencias: Inconsistencia[]) {
+    this.documentoService.exportarInconsistencias(inconsistencias);
+  }
+
+  onChangeAutorizacionFile(file: File) {
     if (file == undefined || file == null) {
       this.autorizacionFile = null;
       return;
@@ -236,54 +248,66 @@ export class GenerarMasivoComponent implements OnInit {
     this.autorizacionFile = file;
   }
 
-  onSubmit(datosMasivo : FormGroup){
-    this.envioMasivo.buzon = this.buzon;
-    this.envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
-    this.envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
-    this.envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
-    this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
-    this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
-    this.envioMasivo.documentos = this.documentosCorrectos;
-    this.envioMasivo.inconsistencias = this.documentosIncorrectos;
-    this.envioMasivo.producto = datosMasivo.get("producto").value;
-    this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
-      envioMasivo => {        
-        this.documentosCorrectos = [];
-        this.documentosIncorrectos = [];
-        // this.dataDocumentosCargados = new LocalDataSource();
-        this.autogeneradoCreado = envioMasivo.masivoAutogenerado;        
-        setTimeout(() =>{
-          this.cargoPdfService.generarPdfMasivo(envioMasivo, document.getElementById("codebarMasivo").children[0].children[0]);
-        }, 200);
-        let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
-          initialState : {
-            autogenerado: envioMasivo.masivoAutogenerado
+  onSubmit(datosMasivo: FormGroup) {
+
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+      initialState: {
+        titulo: "Confirmación de registros",
+        mensaje: "Solo se subirán " + this.documentosCorrectos.length + " registros correctos"
+      }
+    });
+
+    bsModalRef.content.confirmarEvent.subscribe(
+      () => {
+        this.envioMasivo.buzon = this.buzon;
+        this.envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
+        this.envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
+        this.envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
+        this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
+        this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
+        this.envioMasivo.documentos = this.documentosCorrectos;
+        this.envioMasivo.inconsistencias = this.documentosIncorrectos;
+        this.envioMasivo.producto = datosMasivo.get("producto").value;
+        this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
+          envioMasivo => {
+            this.documentosCorrectos = [];
+            this.documentosIncorrectos = [];
+            this.autogeneradoCreado = envioMasivo.masivoAutogenerado;
+            setTimeout(() => {
+              this.cargoPdfService.generarPdfMasivo(envioMasivo, document.getElementById("codebarMasivo").children[0].children[0]);
+            }, 200);
+            let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
+              initialState: {
+                autogenerado: envioMasivo.masivoAutogenerado
+              }
+            });
+            this.masivoForm.reset();
+          },
+          error => {
+            console.log(error);
           }
-        });
-        this.masivoForm.reset();
-      },
-      error => {
-        console.log(error);
+        )
       }
     )
+
   }
 
   noDocumentsLoaded(form: FormGroup): { [key: string]: boolean } | null {
     if (this.documentosCorrectos.length == 0) {
-      return { 'noDocumentsLoaded': true }  
-    }    
+      return { 'noDocumentsLoaded': true }
+    }
     return null;
   }
 
   requiredIfNoAutorizado(control: FormControl): { [key: string]: boolean } | null {
     if (this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm) || this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm.get("plazoDistribucion")) && this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm.get("plazoDistribucion").value)) {
-      return {'requiredIfNoAutorizado': true}
+      return { 'requiredIfNoAutorizado': true }
     }
 
-    if ( !this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm) && !this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm.get("plazoDistribucion")) && !this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm.get("plazoDistribucion").value) && this.masivoForm.get("plazoDistribucion").value.id > this.plazoDistribucionPermitido.id 
-    && (this.masivoForm.get("autorizacion") === null || this.masivoForm.get("autorizacion").value === "" || this.masivoForm.get("autorizacion").value === null)) {
-      return {'requiredIfNoAutorizado': true}
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm) && !this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm.get("plazoDistribucion")) && !this.utilsService.isUndefinedOrNullOrEmpty(this.masivoForm.get("plazoDistribucion").value) && this.masivoForm.get("plazoDistribucion").value.id > this.plazoDistribucionPermitido.id
+      && (this.masivoForm.get("autorizacion") === null || this.masivoForm.get("autorizacion").value === "" || this.masivoForm.get("autorizacion").value === null)) {
+      return { 'requiredIfNoAutorizado': true }
     }
-    return null;   
+    return null;
   }
 }
