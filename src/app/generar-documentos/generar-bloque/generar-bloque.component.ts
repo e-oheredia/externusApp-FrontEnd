@@ -26,6 +26,8 @@ import { Documento } from 'src/model/documento.model';
 import { DocumentoService } from 'src/app/shared/documento.service';
 import { UtilsService } from 'src/app/shared/utils.service';
 import { NotifierService } from 'angular-notifier';
+import { Inconsistencia } from 'src/model/inconsistencia.model';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-generar-bloque',
@@ -52,20 +54,23 @@ export class GenerarBloqueComponent implements OnInit {
   ) { }
 
   rutaPlantilla: string = AppSettings.PLANTILLA_MASIVO;
-  
+
   bloqueForm: FormGroup;
   envioBloque: EnvioBloque = new EnvioBloque();
   buzon: Buzon;
   autogeneradoCreado: string;
   proveedor: Proveedor;
   codigoGuia: string;
-  
+
   plazosDistribucion: PlazoDistribucion[];
   productos: Producto[];
   clasificaciones: Clasificacion[];
   tiposServicio: TipoServicio[];
   proveedores: Proveedor[];
   tiposSeguridad: TipoSeguridad[];
+  excelFile: File;
+  documentosCorrectos: Documento[] = [];
+  documentosIncorrectos: Inconsistencia[] = [];
 
   documentosEnBloque: Documento[] = [];
 
@@ -76,23 +81,26 @@ export class GenerarBloqueComponent implements OnInit {
   proveedoresSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
   buzonSubscription: Subscription;
-  
+
   ngOnInit() {
     this.cargarDatosVista();
     this.bloqueForm = new FormGroup({
-      'cantidadDocumentos' : new FormControl(""),
-      'plazoDistribucion' : new FormControl(null, Validators.required),
-      'producto' : new FormControl(null, Validators.required),
-      'clasificacion' : new FormControl(null, Validators.required),
-      'tipoServicio' : new FormControl(null, Validators.required),
-      'proveedor' : new FormControl(null, Validators.required),
-      'tipoSeguridad' : new FormControl(null, Validators.required),
+      'cantidadDocumentos': new FormControl(""),
+      'cantidadCorrectos': new FormControl(""),
+      'cantidadIncorrectos': new FormControl(""),
+      'plazoDistribucion': new FormControl(null, Validators.required),
+      'producto': new FormControl(null, Validators.required),
+      'clasificacion': new FormControl(null, Validators.required),
+      'tipoServicio': new FormControl(null, Validators.required),
+      'proveedor': new FormControl(null, Validators.required),
+      'tipoSeguridad': new FormControl(null, Validators.required),
       'excel': new FormControl(null, Validators.required),
-      'codigoGuia' : new FormControl(null, Validators.required)
+      'excel2': new FormControl(null, Validators.required),
+      'codigoGuia': new FormControl(null, Validators.required)
     })
   }
 
-  cargarDatosVista(){
+  cargarDatosVista() {
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.productos = this.productoService.getProductos();
     this.clasificaciones = this.clasificacionService.getClasificaciones();
@@ -138,53 +146,111 @@ export class GenerarBloqueComponent implements OnInit {
     )
   }
 
-  mostrarDocumentosCargados(file: File){
+
+  onChangeExcelFile(file: File) {
+    if (file == null) {
+      this.excelFile = null;
+      return null;
+    }
+    this.excelFile = file;
+    this.importarExcel();
+  }
+
+  importarExcel() {
+    if (this.excelFile == null) {
+      return null;
+    }
+    if (this.documentosIncorrectos.length > 0) {
+      this.mostrarDocumentosCargados2(this.excelFile);
+      return;
+    }
+    this.mostrarDocumentosCargados(this.excelFile);
+  }
+
+
+  mostrarDocumentosCargados(file: File) {
     this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        this.documentosEnBloque = data;        
+        this.documentosCorrectos = data.documentos;
+        this.documentosIncorrectos = data.inconsistencias;
+        // descargar inconsistencias
+        if (this.documentosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.documentosIncorrectos);
+        }
         return;
       }
       this.notifier.notify('error', data.mensaje);
     });
   }
 
-  onChangeExcelFile(file: File){
-    if (file == null) {
-      this.documentosEnBloque = [];
-      return null;
-    }
-    this.mostrarDocumentosCargados(file);
+
+  mostrarDocumentosCargados2(file: File) {
+    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        console.log("primeros correctos: " + this.documentosCorrectos.length)
+        console.log("nuevos correctos: " + data.documentos.length)
+        this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
+        this.documentosIncorrectos = data.inconsistencias;
+        // descargar inconsistencias
+        if (this.documentosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.documentosIncorrectos);
+        }
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    });
   }
 
-  onSubmit(datosBloque: FormGroup){
 
-    this.envioBloque.buzon = this.buzon;
-    this.envioBloque.plazoDistribucion = datosBloque.get('plazoDistribucion').value;
-    this.envioBloque.producto = datosBloque.get('producto').value;
-    this.envioBloque.clasificacion = datosBloque.get('clasificacion').value;
-    this.envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
-    this.envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
-    this.envioBloque.documentos = this.documentosEnBloque;  
-    this.codigoGuia = datosBloque.get('codigoGuia').value;
-    this.proveedor = datosBloque.get('proveedor').value;
-    this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
-      envioBloque => {
-        this.documentosEnBloque = [];
-        this.autogeneradoCreado = envioBloque.masivoAutogenerado
-        // setTimeout(() =>{
-        //   this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
-        // }, 200);
-        let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
-          initialState : {
-            autogenerado: envioBloque.masivoAutogenerado
+  descargarInconsistencias(inconsistencias: Inconsistencia[]) {
+    this.documentoService.exportarInconsistencias(inconsistencias);
+  }
+
+
+
+  onSubmit(datosBloque: FormGroup) {
+
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+      initialState: {
+        titulo: "Confirmación de registros",
+        mensaje: "Solo se subirán " + this.documentosCorrectos.length + " registros correctos"
+      }
+    });
+
+    bsModalRef.content.confirmarEvent.subscribe(
+      () => {
+
+        this.envioBloque.buzon = this.buzon;
+        this.envioBloque.plazoDistribucion = datosBloque.get('plazoDistribucion').value;
+        this.envioBloque.producto = datosBloque.get('producto').value;
+        this.envioBloque.clasificacion = datosBloque.get('clasificacion').value;
+        this.envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
+        this.envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
+        this.envioBloque.documentos = this.documentosCorrectos;
+        this.envioBloque.inconsistencias = this.documentosIncorrectos;
+        this.codigoGuia = datosBloque.get('codigoGuia').value;
+        this.proveedor = datosBloque.get('proveedor').value;
+        this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
+          envioBloque => {
+            this.documentosCorrectos = [];
+            this.documentosIncorrectos = [];
+            this.autogeneradoCreado = envioBloque.masivoAutogenerado
+            // setTimeout(() =>{
+            //   this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
+            // }, 200);
+            let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
+              initialState: {
+                autogenerado: envioBloque.masivoAutogenerado
+              }
+            });
+            this.bloqueForm.reset();
+          },
+          error => {
+            console.log(error);
           }
-        });
-        this.bloqueForm.reset();
+        )
       }
     )
-    console.log(this.envioBloque)
-    console.log(this.codigoGuia)
-    console.log(this.proveedor)
   }
 
 
