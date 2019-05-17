@@ -46,7 +46,7 @@
           <td scope="col">{{envioMasivoCreado.tipoServicio.nombre}}</td>
           <td scope="col">{{envioMasivoCreado.tipoSeguridad.nombre}}</td>
           <td scope="col">{{envioMasivoCreado.plazoDistribucion.nombre}}</td>
-          <td scope="col">{{envioService.getUltimoSeguimientoAutorizacion(envioMasivoCreado) ? envioService.getUltimoSeguimientoAutorizacion(envioMasivoCreado).estadoAutorizado.nombre : "APROBADA" }}</td>
+          <td scope="col">{{envioMasivoService.getUltimoSeguimientoAutorizacion(envioMasivoCreado) ? envioMasivoService.getUltimoSeguimientoAutorizacion(envioMasivoCreado).estadoAutorizado.nombre : "APROBADA" }}</td>
           <td scope="col">{{documentoService.getFechaCreacion(envioMasivoCreado.documentos[0])}}</td>
           <td scope="col">{{envioMasivoCreado.documentos.length}}</td>
         </tr>

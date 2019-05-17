@@ -4,6 +4,8 @@ import { Envio } from '../../model/envio.model';
 import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { Observable } from 'rxjs';
+import * as moment from 'moment-timezone';
+import { SeguimientoAutorizacion } from 'src/model/seguimientoautorizacion.model';
 
 
 @Injectable()
@@ -26,6 +28,14 @@ export class EnvioMasivoService {
         return this.requester.get<Envio[]>(this.REQUEST_URL + "creados", {});
     }
     
+    getUltimoSeguimientoAutorizacion(envio: EnvioMasivo): SeguimientoAutorizacion {
+        return envio.seguimientosAutorizado.reduce(
+            (max, seguimentoAutorizado) =>
+                moment(seguimentoAutorizado.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoAutorizado : max, envio.seguimientosAutorizado[0]
+        );
+
+        
+    }
 
 
 }
