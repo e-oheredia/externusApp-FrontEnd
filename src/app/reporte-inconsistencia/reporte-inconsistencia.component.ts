@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 import { DocumentoService } from '../shared/documento.service';
-import { Inconsistencia } from 'src/model/inconsistencia.model';
+import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 
 @Component({
   selector: 'app-reporte-inconsistencia',
@@ -33,7 +33,7 @@ export class ReporteInconsistenciaComponent implements OnInit {
 
   envio: Envio;
   envios: Envio[] = [];
-  inconsistencias : Inconsistencia [] = [];
+  inconsistencias : InconsistenciaDocumento [] = [];
   enviosSubscription: Subscription;
   envioForm: FormGroup;
 

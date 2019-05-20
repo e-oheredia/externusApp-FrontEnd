@@ -14,7 +14,7 @@ import { SeguimientoAutorizacion } from 'src/model/seguimientoautorizacion.model
 import { WriteExcelService } from './write-excel.service';
 import { UtilsService } from './utils.service';
 import { EnvioMasivo } from 'src/model/enviomasivo.model';
-import { Inconsistencia } from 'src/model/inconsistencia.model';
+import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 
 
 @Injectable()
@@ -151,8 +151,8 @@ export class EnvioService {
         this.writeExcelService.jsonToExcel(objects, "Inconsistencias ");
     }
 
-    listarEnviosConInconsistenciasPorEnvioId(id: number): Observable<Inconsistencia[]> {
-        return this.requester.get<Inconsistencia[]>(this.REQUEST_URL + id.toString() + "/inconsistencia", {});
+    listarEnviosConInconsistenciasPorEnvioId(id: number): Observable<InconsistenciaDocumento[]> {
+        return this.requester.get<InconsistenciaDocumento[]>(this.REQUEST_URL + id.toString() + "/inconsistencia", {});
     }
 
 }

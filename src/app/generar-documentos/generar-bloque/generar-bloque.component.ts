@@ -26,7 +26,7 @@ import { Documento } from 'src/model/documento.model';
 import { DocumentoService } from 'src/app/shared/documento.service';
 import { UtilsService } from 'src/app/shared/utils.service';
 import { NotifierService } from 'angular-notifier';
-import { Inconsistencia } from 'src/model/inconsistencia.model';
+import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
@@ -70,7 +70,7 @@ export class GenerarBloqueComponent implements OnInit {
   tiposSeguridad: TipoSeguridad[];
   excelFile: File;
   documentosCorrectos: Documento[] = [];
-  documentosIncorrectos: Inconsistencia[] = [];
+  documentosIncorrectos: InconsistenciaDocumento[] = [];
 
   documentosEnBloque: Documento[] = [];
 
@@ -169,7 +169,7 @@ export class GenerarBloqueComponent implements OnInit {
 
 
   mostrarDocumentosCargados(file: File) {
-    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
+    this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosCorrectos = data.documentos;
         this.documentosIncorrectos = data.inconsistencias;
@@ -185,7 +185,7 @@ export class GenerarBloqueComponent implements OnInit {
 
 
   mostrarDocumentosCargados2(file: File) {
-    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
+    this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         console.log("primeros correctos: " + this.documentosCorrectos.length)
         console.log("nuevos correctos: " + data.documentos.length)
@@ -202,8 +202,8 @@ export class GenerarBloqueComponent implements OnInit {
   }
 
 
-  descargarInconsistencias(inconsistencias: Inconsistencia[]) {
-    this.documentoService.exportarInconsistencias(inconsistencias);
+  descargarInconsistencias(inconsistencias: InconsistenciaDocumento[]) {
+    this.documentoService.exportarInconsistenciasMasivoyBloque(inconsistencias);
   }
 
 
@@ -235,7 +235,7 @@ export class GenerarBloqueComponent implements OnInit {
     this.envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
     this.envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
     this.envioBloque.documentos = this.documentosCorrectos;
-    this.envioBloque.inconsistencias = this.documentosIncorrectos;
+    this.envioBloque.inconsistenciasDocumentos = this.documentosIncorrectos;
     this.codigoGuia = datosBloque.get('codigoGuia').value;
     this.proveedor = datosBloque.get('proveedor').value;
     this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
