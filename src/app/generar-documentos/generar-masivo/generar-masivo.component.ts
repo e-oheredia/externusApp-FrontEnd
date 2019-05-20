@@ -28,7 +28,7 @@ import { ProductoService } from 'src/app/shared/producto.service';
 import { Producto } from 'src/model/producto.model';
 import { ClasificacionService } from 'src/app/shared/clasificacion.service';
 import { Clasificacion } from 'src/model/clasificacion.model';
-import { Inconsistencia } from 'src/model/inconsistencia.model';
+import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 
@@ -67,7 +67,7 @@ export class GenerarMasivoComponent implements OnInit {
   excelFile: File;
   autorizacionFile: File;
   documentosCorrectos: Documento[] = [];
-  documentosIncorrectos: Inconsistencia[] = [];
+  documentosIncorrectos: InconsistenciaDocumento[] = [];
   envioMasivo: EnvioMasivo = new EnvioMasivo();
   columnsDocumentosCargados = {
     nroDocumento: {
@@ -205,7 +205,7 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   mostrarDocumentosCargados(file: File) {
-    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
+    this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosCorrectos = data.documentos;
         this.documentosIncorrectos = data.inconsistencias;
@@ -220,7 +220,7 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   mostrarDocumentosCargados2(file: File) {
-    this.documentoService.validarDocumentosMasivos(file, 0, (data) => {
+    this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         console.log("primeros correctos: " + this.documentosCorrectos.length)
         console.log("nuevos correctos: " + data.documentos.length)
@@ -236,8 +236,8 @@ export class GenerarMasivoComponent implements OnInit {
     });
   }
 
-  descargarInconsistencias(inconsistencias: Inconsistencia[]) {
-    this.documentoService.exportarInconsistencias(inconsistencias);
+  descargarInconsistencias(inconsistencias: InconsistenciaDocumento[]) {
+    this.documentoService.exportarInconsistenciasMasivoyBloque(inconsistencias);
   }
 
   onChangeAutorizacionFile(file: File) {
@@ -275,7 +275,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
     this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
     this.envioMasivo.documentos = this.documentosCorrectos;
-    this.envioMasivo.inconsistencias = this.documentosIncorrectos;
+    this.envioMasivo.inconsistenciasDocumentos = this.documentosIncorrectos;
     this.envioMasivo.producto = datosMasivo.get("producto").value;
     this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {

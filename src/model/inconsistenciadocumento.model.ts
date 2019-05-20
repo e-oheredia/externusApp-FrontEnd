@@ -1,6 +1,6 @@
 import { Envio } from "./envio.model";
 
-export class Inconsistencia {
+export class InconsistenciaDocumento {
 
 
     constructor(){

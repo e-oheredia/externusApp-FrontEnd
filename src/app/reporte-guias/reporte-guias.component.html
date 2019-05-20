@@ -27,7 +27,7 @@
 
             <div class="col-4">
               <div class="form-group">
-                <label for="codigo">Código de guía</label>
+                <label for="codigo">Número de guía</label>
                 <input class="form-control" type="text" formControlName="codigo"  
                 (input) = "guiaForm.controls['codigo'].setValue(guiaForm.get('codigo').value.toUpperCase())" 
                 (change)="desactivarFechas(guiaForm.get('codigo').value)">

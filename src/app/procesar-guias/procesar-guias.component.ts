@@ -11,6 +11,10 @@ import { ButtonViewComponent } from '../table-management/button-view/button-view
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
 import { Documento } from 'src/model/documento.model';
+import { UtilsService } from '../shared/utils.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { InconsistenciaResultado } from 'src/model/inconsistenciaresultado.model';
 
 @Component({
   selector: 'app-procesar-guias',
@@ -23,12 +27,18 @@ export class ProcesarGuiasComponent implements OnInit {
     public guiaService: GuiaService,
     public documentoService: DocumentoService,
     private notifier: NotifierService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private utilsService: UtilsService,
   ) { }
 
   dataGuiasPorProcesar: LocalDataSource = new LocalDataSource();
   rutaPlantillaResultados: string = AppSettings.PLANTILLA_RESULTADOS;
   settings = AppSettings.tableSettings;
+
+  procesarForm: FormGroup;
+  excelFile: File;
+  resultadosCorrectos: Documento[] = [];
+  resultadosIncorrectos: InconsistenciaResultado[] = [];
 
   guias: Guia[] = [];
   documento: Documento;
@@ -40,6 +50,13 @@ export class ProcesarGuiasComponent implements OnInit {
   ngOnInit() {
     this.generarColumnas();
     this.listarGuiasPorProcesar();
+    this.procesarForm = new FormGroup({
+      'cantidadDocumentos' : new FormControl(""),
+      'cantidadCorrectos': new FormControl(""),
+      'cantidadIncorrectos': new FormControl(""),
+      'excel': new FormControl(null, Validators.required),
+      'excel2': new FormControl(null),
+    })
     this.settings.hideSubHeader = false;
     console.log(this.guias)
   }
@@ -95,19 +112,7 @@ export class ProcesarGuiasComponent implements OnInit {
       },
       pendientesResultado: {
         title: 'Pendientes de resultado'
-      },
-      // subirBase: {
-      //   title: 'Subir Resultado',
-      //   type: 'custom',
-      //   renderComponent: ButtonViewComponent,
-      //   onComponentInitFunction: (instance: any) => {
-      //     instance.claseIcono = "fas fa-upload";
-      //     instance.pressed.subscribe(row => {
-      //       this.subirGuia(row);
-      //     });
-      //   }
-      // }
-
+      }
     }
   }
 
@@ -144,7 +149,6 @@ export class ProcesarGuiasComponent implements OnInit {
     )
   }
 
-
   descargarGuia(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
 
@@ -162,7 +166,95 @@ export class ProcesarGuiasComponent implements OnInit {
     )
   }
 
-/*
+  onChangeExcelFile(file: File) {
+    if (file == null) {
+      this.excelFile = null;
+      return null;
+    }
+    this.excelFile = file;
+    this.importarExcel();
+  }
+
+  importarExcel() {
+    if (this.excelFile == null) {
+      return null;
+    }
+    if (this.resultadosIncorrectos.length > 0) {
+      this.mostrarResultadosCargados2(this.excelFile);
+      return;
+    }
+    this.mostrarResultadosCargados(this.excelFile);
+  }
+
+  mostrarResultadosCargados(file: File) {
+    this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        this.resultadosCorrectos = data.documentos;
+        this.resultadosIncorrectos = data.inconsistenciasResultados;
+        // descargar inconsistencias
+        if (this.resultadosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.resultadosIncorrectos);
+        }
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    });
+  }
+
+  mostrarResultadosCargados2(file: File) {
+    this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        console.log("primeros correctos: " + this.resultadosCorrectos.length)
+        console.log("nuevos correctos: " + data.documentos.length)
+        this.resultadosCorrectos = this.resultadosCorrectos.concat(data.documentos);
+        this.resultadosIncorrectos = data.inconsistencias;
+        // descargar inconsistencias
+        if (this.resultadosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.resultadosIncorrectos);
+        }
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    });
+  }
+
+  descargarInconsistencias(inconsistencias: InconsistenciaResultado[]) {
+    this.documentoService.exportarInconsistenciasResultadosProveedor(inconsistencias);
+  }
+
+  onSubmit(procesarForm: FormGroup) {
+    if (this.resultadosIncorrectos.length > 0) {
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          titulo: "Confirmación de registros",
+          mensaje: "Solo se subirán " + this.resultadosCorrectos.length + " registros correctos"
+        }
+      });
+
+      bsModalRef.content.confirmarEvent.subscribe(
+        () => {
+          this.registrarResultado(procesarForm);
+        }
+      )
+    } else {
+      this.registrarResultado(procesarForm);
+    }
+  }
+
+  registrarResultado(procesarForm : FormGroup){
+
+  }
+
+
+
+
+
+
+
+
+
+
+
   subirGuia(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
     let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
@@ -184,7 +276,7 @@ export class ProcesarGuiasComponent implements OnInit {
       }
     )
   }
-*/
+
 
 
 

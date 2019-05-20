@@ -16,38 +16,77 @@
 <div class="row justify-content-center">
   <div class="col">
     <div class="card mb-2">
-
       <div class="card-header">
         <h5>Descarga de bases y subida de resultados</h5>
       </div>
-
       <div class="card-body">
+        <form [formGroup]="procesarForm" (ngSubmit)="onSubmit(procesarForm)">
 
-        <div class="form-row">
-          <div class="col">
-            <div class="form-group">
-              <!-- <label for="cantidadDocumentos">Elegir archivo de Datos : </label> -->
-              <input type="file" class="form-control-file" placeholder="Elegir archivo de Datos : "
-                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
-                formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
-            </div>
-          </div>
-        </div>
 
-        <div *ngIf="guias.length !== 0; else mensaje">
-          <ng2-smart-table [settings]="settings" [source]="dataGuiasPorProcesar"></ng2-smart-table>
-        </div>
-
-        <ng-template #mensaje>
-          <div class="row">
-            <div class="col">
-              <div class="alert alert-info" role="alert">
-                No existen guias por consultar.
+          <div class="row" *ngIf="resultadosIncorrectos.length === 0">
+            <div class="form-row">
+              <div class="col">
+                <div class="ml-3">
+                  <div class="form-group">
+                    <label for="cantidadDocumentos">Elegir archivo de Datos : </label>
+                    <input type="file" class="form-control-file"
+                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+                      formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </ng-template>
 
+
+          <div *ngIf="guias.length !== 0; else mensaje">
+            <ng2-smart-table [settings]="settings" [source]="dataGuiasPorProcesar"></ng2-smart-table>
+          </div>
+
+
+          <div class="row" *ngIf="resultadosIncorrectos.length !== 0">
+            <div class="col">
+              <h5>Subir Correcciones</h5>
+              <div class="cantidadCorrectos">
+                <label for="cantidadCorrectos">Cantidad de documentos correctos : {{resultadosCorrectos.length}}</label>
+              </div>
+              <div class="cantidadIncorrectos">
+                <label for="cantidadIncorrectos">Cantidad de documentos incorrectos :
+                  {{resultadosIncorrectos.length}}</label>
+              </div>
+              <div class="form-row">
+                <div class="col">
+                  <div class="form-group">
+                    <input type="file" class="form-control-file"
+                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+                      formControlName="excel2" (change)="onChangeExcelFile($event.srcElement.files[0])">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="button-group col text-right mb-4 mt-4">
+              <button class="btn btn-outline-success"
+                [disabled]="!procesarForm.valid || resultadosCorrectos.length === 0" type="submit">
+                Registrar
+              </button>
+            </div>
+          </div>
+
+
+          <ng-template #mensaje>
+            <div class="row">
+              <div class="col">
+                <div class="alert alert-info" role="alert">
+                  No existen guias por consultar.
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </form>
       </div>
 
 
