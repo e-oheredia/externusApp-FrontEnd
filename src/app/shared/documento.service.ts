@@ -162,7 +162,7 @@ export class DocumentoService {
                 i++;
             }
             envio.documentos = registrosCorrectos
-            envio.inconsistenciasDocumentos = registrosIncorrectos;
+            envio.inconsistenciasDocumento = registrosIncorrectos;
             callback(envio);
 
         });
@@ -370,8 +370,6 @@ export class DocumentoService {
                     }
                 }
 
-
-
                 // if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO ||
                 //     estadoDocumento.id === EstadoDocumentoEnum.REZAGADO ||
                 //     estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
@@ -416,7 +414,7 @@ export class DocumentoService {
             }
 
             envio.documentos = resultadosCorrectos;
-            envio.inconsistenciasResultados = resultadosIncorrectos;
+            envio.inconsistenciasResultado = resultadosIncorrectos;
 
             callback(envio);
 

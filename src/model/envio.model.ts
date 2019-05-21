@@ -33,8 +33,8 @@ export class Envio {
     public autogenerado: string;
     public tipoEnvio: TipoEnvio;
     public seguimientosAutorizado: SeguimientoAutorizacion[] = [];
-    public inconsistenciasDocumentos: InconsistenciaDocumento[] = [];
-    public inconsistenciasResultados: InconsistenciaResultado[] = [];
+    public inconsistenciasDocumento: InconsistenciaDocumento[] = [];
+    public inconsistenciasResultado: InconsistenciaResultado[] = [];
     
     public addDocumento(documento: Documento){
         this.documentos.push(documento);

@@ -56,7 +56,6 @@ export class GenerarBloqueComponent implements OnInit {
   rutaPlantilla: string = AppSettings.PLANTILLA_MASIVO;
 
   bloqueForm: FormGroup;
-  envioBloque: EnvioBloque = new EnvioBloque();
   buzon: Buzon;
   autogeneradoCreado: string;
   proveedor: Proveedor;
@@ -163,8 +162,10 @@ export class GenerarBloqueComponent implements OnInit {
     if (this.documentosIncorrectos.length > 0) {
       this.mostrarDocumentosCargados2(this.excelFile);
       return;
-    }
-    this.mostrarDocumentosCargados(this.excelFile);
+    } 
+      this.mostrarDocumentosCargados(this.excelFile);
+
+
   }
 
 
@@ -172,7 +173,7 @@ export class GenerarBloqueComponent implements OnInit {
     this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosCorrectos = data.documentos;
-        this.documentosIncorrectos = data.inconsistencias;
+        this.documentosIncorrectos = data.inconsistenciasDocumento;
         // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
@@ -190,7 +191,7 @@ export class GenerarBloqueComponent implements OnInit {
         console.log("primeros correctos: " + this.documentosCorrectos.length)
         console.log("nuevos correctos: " + data.documentos.length)
         this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
-        this.documentosIncorrectos = data.inconsistencias;
+        this.documentosIncorrectos = data.inconsistenciasDocumentos;
         // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
@@ -228,17 +229,19 @@ export class GenerarBloqueComponent implements OnInit {
   }
 
   registrarBloque(datosBloque: FormGroup) {
-    this.envioBloque.buzon = this.buzon;
-    this.envioBloque.plazoDistribucion = datosBloque.get('plazoDistribucion').value;
-    this.envioBloque.producto = datosBloque.get('producto').value;
-    this.envioBloque.clasificacion = datosBloque.get('clasificacion').value;
-    this.envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
-    this.envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
-    this.envioBloque.documentos = this.documentosCorrectos;
-    this.envioBloque.inconsistenciasDocumentos = this.documentosIncorrectos;
+    let envioBloque: EnvioBloque = new EnvioBloque();
+    delete envioBloque.inconsistenciasResultado;
+    envioBloque.buzon = this.buzon;
+    envioBloque.plazoDistribucion = datosBloque.get('plazoDistribucion').value;
+    envioBloque.producto = datosBloque.get('producto').value;
+    envioBloque.clasificacion = datosBloque.get('clasificacion').value;
+    envioBloque.tipoServicio = datosBloque.get('tipoServicio').value;
+    envioBloque.tipoSeguridad = datosBloque.get('tipoSeguridad').value;
+    envioBloque.documentos = this.documentosCorrectos;
+    envioBloque.inconsistenciasDocumento = this.documentosIncorrectos;
     this.codigoGuia = datosBloque.get('codigoGuia').value;
     this.proveedor = datosBloque.get('proveedor').value;
-    this.envioBloqueService.registrarEnvioBloque(this.envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
+    this.envioBloqueService.registrarEnvioBloque(envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
       envioBloque => {
         this.documentosCorrectos = [];
         this.documentosIncorrectos = [];

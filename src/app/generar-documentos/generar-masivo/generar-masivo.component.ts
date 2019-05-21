@@ -275,7 +275,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
     this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
     this.envioMasivo.documentos = this.documentosCorrectos;
-    this.envioMasivo.inconsistenciasDocumentos = this.documentosIncorrectos;
+    this.envioMasivo.inconsistenciasDocumento = this.documentosIncorrectos;
     this.envioMasivo.producto = datosMasivo.get("producto").value;
     this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {
