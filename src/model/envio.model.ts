@@ -8,7 +8,8 @@ import { Producto } from './producto.model';
 import { Clasificacion } from './clasificacion.model';
 import { TipoEnvio } from './tipoenvio.model';
 import { SeguimientoAutorizacion } from './seguimientoautorizacion.model';
-import { Inconsistencia } from './inconsistencia.model';
+import { InconsistenciaDocumento } from './inconsistenciadocumento.model';
+import { InconsistenciaResultado } from './inconsistenciaresultado.model';
 
 export class Envio {
 
@@ -32,7 +33,8 @@ export class Envio {
     public autogenerado: string;
     public tipoEnvio: TipoEnvio;
     public seguimientosAutorizado: SeguimientoAutorizacion[] = [];
-    public inconsistencias: Inconsistencia[] = [];
+    public inconsistenciasDocumento: InconsistenciaDocumento[] = [];
+    public inconsistenciasResultado: InconsistenciaResultado[] = [];
     
     public addDocumento(documento: Documento){
         this.documentos.push(documento);

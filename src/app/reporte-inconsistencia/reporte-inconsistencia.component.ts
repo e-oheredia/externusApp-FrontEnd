@@ -10,6 +10,8 @@ import { Envio } from 'src/model/envio.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
+import { DocumentoService } from '../shared/documento.service';
+import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 
 @Component({
   selector: 'app-reporte-inconsistencia',
@@ -22,7 +24,8 @@ export class ReporteInconsistenciaComponent implements OnInit {
     public envioService: EnvioService,
     private utilsService: UtilsService,
     private notifier: NotifierService,
-    private tituloService: TituloService
+    private tituloService: TituloService,
+    public documentoService: DocumentoService
   ) { }
 
   dataEnviosConIncidencias: LocalDataSource = new LocalDataSource();
@@ -30,7 +33,7 @@ export class ReporteInconsistenciaComponent implements OnInit {
 
   envio: Envio;
   envios: Envio[] = [];
-
+  inconsistencias : InconsistenciaDocumento [] = [];
   enviosSubscription: Subscription;
   envioForm: FormGroup;
 
@@ -68,21 +71,22 @@ export class ReporteInconsistenciaComponent implements OnInit {
         onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-download";
           instance.pressed.subscribe(row => {
-            // this.descargar(row);
+             this.descargar(row);
           });
         }
       }
     }
   }
 
-  // descargar(row){
-  //   let envio = this.envios.find(envio => envio.id === row.id)
-  //   this.envioService.listarEnviosConInconsistencias().subscribe(
-  //     inconsistencias => {
-  //       this.envioService.descargarInconsistenciasEnvio(inconsistencias, envio)
-  //     }
-  //   )
-  // }
+   descargar(row){
+     let envio = this.envios.find(envio => envio.id === row.id)
+     this.envioService.listarEnviosConInconsistenciasPorEnvioId(envio.id).subscribe(
+       inconsistencias => {
+         this.inconsistencias = inconsistencias;
+         this.envioService.descargarInconsistenciasEnvio(inconsistencias, envio)
+       }
+     )
+   }
 
   listarEnviosConInconsistencias(){
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaFin'].value)) {
@@ -97,11 +101,12 @@ export class ReporteInconsistenciaComponent implements OnInit {
               envios.forEach(
                 envio => {
                   dataEnviosConIncidencias.push({
+                    id: envio.id,
                     remitente: envio.buzon.nombre,
                     areaRemitente: envio.buzon.area.nombre,
                     tipoUsuario: envio.tipoEnvio.nombre,
                     plazo: envio.plazoDistribucion.nombre,
-                    // fechaCreacion: envio.
+                    fechaCreacion: this.documentoService.getFechaCreacion(envio.documentos[0])
                   })
                 }
               )
@@ -112,10 +117,13 @@ export class ReporteInconsistenciaComponent implements OnInit {
         error => {
           if (error.status === 400){
             this.envios = [];
-            this.notifier.notify('error', 'no hay resultados');
+            this.notifier.notify('error', 'El rango de fechas es incorrecto');
           }
         }
       );
+    }
+    else {
+      this.notifier.notify('error', 'Debe ingresar el código o un rango de fechas');
     }
   }
 

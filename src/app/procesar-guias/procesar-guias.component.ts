@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { GuiaService } from '../shared/guia.service';
 import { NotifierService } from 'angular-notifier';
 import { Guia } from 'src/model/guia.model';
@@ -11,6 +11,10 @@ import { ButtonViewComponent } from '../table-management/button-view/button-view
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
 import { Documento } from 'src/model/documento.model';
+import { UtilsService } from '../shared/utils.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { InconsistenciaResultado } from 'src/model/inconsistenciaresultado.model';
 
 @Component({
   selector: 'app-procesar-guias',
@@ -20,18 +24,26 @@ import { Documento } from 'src/model/documento.model';
 export class ProcesarGuiasComponent implements OnInit {
 
   constructor(
+    public bsModalRef: BsModalRef,
     public guiaService: GuiaService,
     public documentoService: DocumentoService,
     private notifier: NotifierService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private utilsService: UtilsService,
   ) { }
+
+  @Output() confirmarEvent = new EventEmitter<File>();
 
   dataGuiasPorProcesar: LocalDataSource = new LocalDataSource();
   rutaPlantillaResultados: string = AppSettings.PLANTILLA_RESULTADOS;
   settings = AppSettings.tableSettings;
 
+  procesarForm: FormGroup;
+  excelFile: File;
+  resultadosCorrectos: Documento[] = [];
+  resultadosIncorrectos: InconsistenciaResultado[] = [];
+
   guias: Guia[] = [];
-  documento: Documento;
   documentos: Documento[] = [];
 
   guiasSubscription: Subscription;
@@ -40,6 +52,13 @@ export class ProcesarGuiasComponent implements OnInit {
   ngOnInit() {
     this.generarColumnas();
     this.listarGuiasPorProcesar();
+    this.procesarForm = new FormGroup({
+      'cantidadDocumentos': new FormControl(""),
+      'cantidadCorrectos': new FormControl(""),
+      'cantidadIncorrectos': new FormControl(""),
+      'excel': new FormControl(null, Validators.required),
+      'excel2': new FormControl(null),
+    })
     this.settings.hideSubHeader = false;
     console.log(this.guias)
   }
@@ -95,19 +114,7 @@ export class ProcesarGuiasComponent implements OnInit {
       },
       pendientesResultado: {
         title: 'Pendientes de resultado'
-      },
-      subirBase: {
-        title: 'Subir Resultado',
-        type: 'custom',
-        renderComponent: ButtonViewComponent,
-        onComponentInitFunction: (instance: any) => {
-          instance.claseIcono = "fas fa-upload";
-          instance.pressed.subscribe(row => {
-            this.subirGuia(row);
-          });
-        }
       }
-
     }
   }
 
@@ -144,7 +151,6 @@ export class ProcesarGuiasComponent implements OnInit {
     )
   }
 
-
   descargarGuia(row) {
     let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
 
@@ -162,28 +168,129 @@ export class ProcesarGuiasComponent implements OnInit {
     )
   }
 
+  onChangeExcelFile(file: File) {
+    if (file == null) {
+      this.excelFile = null;
+      return null;
+    }
+    this.excelFile = file;
+    this.importarExcel();
+  }
 
-  subirGuia(row) {
-    let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
-    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
-      initialState: {
-        condicion: "procesar",
-        documento: this.documento,
-        guia: guia,
-        titulo: 'Subir reporte de Guía.',
-        mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
-      },
-      class: 'modal-lg',
-      keyboard: false,
-      backdrop: "static"
+  importarExcel() {
+    if (this.excelFile == null) {
+      return null;
+    }
+    if (this.resultadosIncorrectos.length > 0) {
+      this.mostrarResultadosCargados2(this.excelFile);
+      return;
+    }
+    this.mostrarResultadosCargados(this.excelFile);
+  }
+
+  mostrarResultadosCargados(file: File) {
+    this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        this.resultadosCorrectos = data.documentos;
+        this.resultadosIncorrectos = data.inconsistenciasResultado;
+        // descargar inconsistencias
+        if (this.resultadosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.resultadosIncorrectos);
+        }
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
     });
+  }
 
-    this.modalService.onHide.subscribe(
-      () => {
+  mostrarResultadosCargados2(file: File) {
+    this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        console.log("primeros correctos: " + this.resultadosCorrectos.length)
+        console.log("nuevos correctos: " + data.documentos.length)
+        this.resultadosCorrectos = this.resultadosCorrectos.concat(data.documentos);
+        this.resultadosIncorrectos = data.inconsistenciasResultado;
+        // descargar inconsistencias
+        if (this.resultadosIncorrectos.length > 0) {
+          this.descargarInconsistencias(this.resultadosIncorrectos);
+        }
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    });
+  }
+
+  descargarInconsistencias(inconsistencias: InconsistenciaResultado[]) {
+    this.documentoService.exportarInconsistenciasResultadosProveedor(inconsistencias);
+  }
+
+  onSubmit(procesarForm: FormGroup) {
+    if (this.resultadosIncorrectos.length > 0) {
+      let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+        initialState: {
+          titulo: "Confirmación de registros",
+          mensaje: "Solo se subirán " + this.resultadosCorrectos.length + " registros correctos"
+        }
+      });
+
+      bsModalRef.content.confirmarEvent.subscribe(
+        () => {
+          this.registrarResultado();
+        }
+      )
+    } else {
+      this.registrarResultado();
+    }
+  }
+
+  registrarResultado() {
+    
+    this.resultadosCorrectos.push()
+    this.documentoService.subirReporte(this.resultadosCorrectos).subscribe(
+      respuesta => {
+        this.notifier.notify('success', respuesta.mensaje);
+        this.procesarForm.reset();
+        this.bsModalRef.hide();
         this.listarGuiasPorProcesar();
+        // this.confirmarEvent.emit();
+      },
+      error => {
+        this.notifier.notify('error', error.error.mensaje);
       }
     )
   }
+
+
+
+
+
+
+
+
+
+
+
+  // subirGuia(row) {
+  //   let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
+  //   let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
+  //     initialState: {
+  //       condicion: "procesar",
+  //       documento: this.documento,
+  //       guia: guia,
+  //       titulo: 'Subir reporte de Guía.',
+  //       mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
+  //     },
+  //     class: 'modal-lg',
+  //     keyboard: false,
+  //     backdrop: "static"
+  //   });
+
+  //   this.modalService.onHide.subscribe(
+  //     () => {
+  //       this.listarGuiasPorProcesar();
+  //     }
+  //   )
+  // }
 
 
 

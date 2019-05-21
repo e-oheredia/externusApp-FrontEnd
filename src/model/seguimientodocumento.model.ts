@@ -9,5 +9,5 @@ export class SeguimientoDocumento {
     public linkImagen: string; 
     public fecha: Date | string; 
     public estadoDocumento: EstadoDocumento;
-    public motivoEstado: MotivoEstado
+    public motivoEstado: MotivoEstado;
 }
