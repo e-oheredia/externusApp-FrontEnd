@@ -44,7 +44,6 @@ export class ProcesarGuiasComponent implements OnInit {
   resultadosIncorrectos: InconsistenciaResultado[] = [];
 
   guias: Guia[] = [];
-  documento: Documento;
   documentos: Documento[] = [];
 
   guiasSubscription: Subscription;
@@ -210,7 +209,7 @@ export class ProcesarGuiasComponent implements OnInit {
         console.log("primeros correctos: " + this.resultadosCorrectos.length)
         console.log("nuevos correctos: " + data.documentos.length)
         this.resultadosCorrectos = this.resultadosCorrectos.concat(data.documentos);
-        this.resultadosIncorrectos = data.inconsistenciasResultados;
+        this.resultadosIncorrectos = data.inconsistenciasResultado;
         // descargar inconsistencias
         if (this.resultadosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.resultadosIncorrectos);
@@ -245,6 +244,8 @@ export class ProcesarGuiasComponent implements OnInit {
   }
 
   registrarResultado() {
+    
+    this.resultadosCorrectos.push()
     this.documentoService.subirReporte(this.resultadosCorrectos).subscribe(
       respuesta => {
         this.notifier.notify('success', respuesta.mensaje);
@@ -269,27 +270,27 @@ export class ProcesarGuiasComponent implements OnInit {
 
 
 
-  subirGuia(row) {
-    let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
-    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
-      initialState: {
-        condicion: "procesar",
-        documento: this.documento,
-        guia: guia,
-        titulo: 'Subir reporte de Guía.',
-        mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
-      },
-      class: 'modal-lg',
-      keyboard: false,
-      backdrop: "static"
-    });
+  // subirGuia(row) {
+  //   let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
+  //   let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
+  //     initialState: {
+  //       condicion: "procesar",
+  //       documento: this.documento,
+  //       guia: guia,
+  //       titulo: 'Subir reporte de Guía.',
+  //       mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
+  //     },
+  //     class: 'modal-lg',
+  //     keyboard: false,
+  //     backdrop: "static"
+  //   });
 
-    this.modalService.onHide.subscribe(
-      () => {
-        this.listarGuiasPorProcesar();
-      }
-    )
-  }
+  //   this.modalService.onHide.subscribe(
+  //     () => {
+  //       this.listarGuiasPorProcesar();
+  //     }
+  //   )
+  // }
 
 
 

@@ -68,7 +68,6 @@ export class GenerarMasivoComponent implements OnInit {
   autorizacionFile: File;
   documentosCorrectos: Documento[] = [];
   documentosIncorrectos: InconsistenciaDocumento[] = [];
-  envioMasivo: EnvioMasivo = new EnvioMasivo();
   columnsDocumentosCargados = {
     nroDocumento: {
       title: 'Nro Documento'
@@ -208,7 +207,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosCorrectos = data.documentos;
-        this.documentosIncorrectos = data.inconsistencias;
+        this.documentosIncorrectos = data.inconsistenciasDocumento;
         // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
@@ -225,7 +224,7 @@ export class GenerarMasivoComponent implements OnInit {
         console.log("primeros correctos: " + this.documentosCorrectos.length)
         console.log("nuevos correctos: " + data.documentos.length)
         this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
-        this.documentosIncorrectos = data.inconsistencias;
+        this.documentosIncorrectos = data.inconsistenciasDocumento;
         // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
@@ -268,16 +267,18 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   registrarMasivo(datosMasivo: FormGroup) {
-    this.envioMasivo.buzon = this.buzon;
-    this.envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
-    this.envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
-    this.envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
-    this.envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
-    this.envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
-    this.envioMasivo.documentos = this.documentosCorrectos;
-    this.envioMasivo.inconsistenciasDocumento = this.documentosIncorrectos;
-    this.envioMasivo.producto = datosMasivo.get("producto").value;
-    this.envioMasivoService.registrarEnvioMasivo(this.envioMasivo, this.autorizacionFile).subscribe(
+    let envioMasivo: EnvioMasivo = new EnvioMasivo();
+    delete envioMasivo.inconsistenciasResultado;
+    envioMasivo.buzon = this.buzon;
+    envioMasivo.sede = datosMasivo.get('sedeDespacho').value;
+    envioMasivo.plazoDistribucion = datosMasivo.get('plazoDistribucion').value;
+    envioMasivo.clasificacion = datosMasivo.get("clasificacion").value;
+    envioMasivo.tipoSeguridad = datosMasivo.get("tipoSeguridad").value;
+    envioMasivo.tipoServicio = datosMasivo.get("tipoServicio").value;
+    envioMasivo.documentos = this.documentosCorrectos;
+    envioMasivo.inconsistenciasDocumento = this.documentosIncorrectos;
+    envioMasivo.producto = datosMasivo.get("producto").value;
+    this.envioMasivoService.registrarEnvioMasivo(envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {
         this.documentosCorrectos = [];
         this.documentosIncorrectos = [];
