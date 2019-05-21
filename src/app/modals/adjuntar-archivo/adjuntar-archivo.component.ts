@@ -56,26 +56,6 @@ export class AdjuntarArchivoComponent implements OnInit {
   }
 
   subirResutados(file: File) {
-    if (this.condicion == "procesar") {
-      this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
-        if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-          this.documentoService.subirReporte(data).subscribe(
-            respuesta => {
-              this.notifier.notify('success', respuesta.mensaje);
-              this.guiaForm.reset();
-              this.confirmarEvent.emit();
-              this.bsModalRef.hide();
-            },
-            error => {
-              this.notifier.notify('error', error.error.mensaje);
-            }
-          )
-          return;
-        }
-        this.notifier.notify('error', data.mensaje);
-      })
-    }
-    else {
       this.documentoService.validarDevolucionesDelProveedor(file, 0, (data) => {
         if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
           this.guiaService.subirDocumentosDevolucion(data).subscribe(
@@ -94,7 +74,6 @@ export class AdjuntarArchivoComponent implements OnInit {
         this.notifier.notify('error', data.mensaje);
       })
     }
-  }
 
   
 

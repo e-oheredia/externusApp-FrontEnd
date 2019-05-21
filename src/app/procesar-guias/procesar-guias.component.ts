@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { GuiaService } from '../shared/guia.service';
 import { NotifierService } from 'angular-notifier';
 import { Guia } from 'src/model/guia.model';
@@ -24,12 +24,15 @@ import { InconsistenciaResultado } from 'src/model/inconsistenciaresultado.model
 export class ProcesarGuiasComponent implements OnInit {
 
   constructor(
+    public bsModalRef: BsModalRef,
     public guiaService: GuiaService,
     public documentoService: DocumentoService,
     private notifier: NotifierService,
     private modalService: BsModalService,
     private utilsService: UtilsService,
   ) { }
+
+  @Output() confirmarEvent = new EventEmitter<File>();
 
   dataGuiasPorProcesar: LocalDataSource = new LocalDataSource();
   rutaPlantillaResultados: string = AppSettings.PLANTILLA_RESULTADOS;
@@ -51,7 +54,7 @@ export class ProcesarGuiasComponent implements OnInit {
     this.generarColumnas();
     this.listarGuiasPorProcesar();
     this.procesarForm = new FormGroup({
-      'cantidadDocumentos' : new FormControl(""),
+      'cantidadDocumentos': new FormControl(""),
       'cantidadCorrectos': new FormControl(""),
       'cantidadIncorrectos': new FormControl(""),
       'excel': new FormControl(null, Validators.required),
@@ -190,7 +193,7 @@ export class ProcesarGuiasComponent implements OnInit {
     this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.resultadosCorrectos = data.documentos;
-        this.resultadosIncorrectos = data.inconsistenciasResultados;
+        this.resultadosIncorrectos = data.inconsistenciasResultado;
         // descargar inconsistencias
         if (this.resultadosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.resultadosIncorrectos);
@@ -207,7 +210,7 @@ export class ProcesarGuiasComponent implements OnInit {
         console.log("primeros correctos: " + this.resultadosCorrectos.length)
         console.log("nuevos correctos: " + data.documentos.length)
         this.resultadosCorrectos = this.resultadosCorrectos.concat(data.documentos);
-        this.resultadosIncorrectos = data.inconsistencias;
+        this.resultadosIncorrectos = data.inconsistenciasResultados;
         // descargar inconsistencias
         if (this.resultadosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.resultadosIncorrectos);
@@ -233,16 +236,27 @@ export class ProcesarGuiasComponent implements OnInit {
 
       bsModalRef.content.confirmarEvent.subscribe(
         () => {
-          this.registrarResultado(procesarForm);
+          this.registrarResultado();
         }
       )
     } else {
-      this.registrarResultado(procesarForm);
+      this.registrarResultado();
     }
   }
 
-  registrarResultado(procesarForm : FormGroup){
-
+  registrarResultado() {
+    this.documentoService.subirReporte(this.resultadosCorrectos).subscribe(
+      respuesta => {
+        this.notifier.notify('success', respuesta.mensaje);
+        this.procesarForm.reset();
+        this.bsModalRef.hide();
+        this.listarGuiasPorProcesar();
+        // this.confirmarEvent.emit();
+      },
+      error => {
+        this.notifier.notify('error', error.error.mensaje);
+      }
+    )
   }
 
 
