@@ -1,3 +1,7 @@
 div.card-body {
     overflow-x: auto;
 }
+
+.cantidadIncorrectos{
+    color: red;
+}

@@ -77,6 +77,7 @@
               </div>
             </div>
           </div>
+          
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -106,38 +107,64 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="documentosIncorrectos.length === 0">
+          <div class="form-row">
+            <div class="col">
+              <div class="form-group">
+                <h5>Elegir archivo de Datos :</h5>
+                <input type="file" class="form-control-file"
+                  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+                  formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="documentosIncorrectos.length === 0 && documentosCorrectos.length > 0">
             <div class="form-row">
               <div class="col">
                 <div class="ml-3">
                   <div class="form-group">
-                    <label for="cantidadDocumentos">Elegir archivo de Datos : </label>
-                    <input type="file" class="form-control-file"
-                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
-                      formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
+                    <div class="cantidadCorrectos">
+                      <label for="cantidadCorrectos">Cantidad de documentos correctos :
+                        {{documentosCorrectos.length}}</label>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="row" *ngIf="documentosIncorrectos.length !== 0">
-            <div class="col">
-              <h5>Subir Correcciones</h5>
-              <div class="cantidadCorrectos">
-                <label for="cantidadCorrectos">Cantidad de documentos correctos :
-                  {{documentosCorrectos.length}}</label>
-              </div>
-              <div class="cantidadIncorrectos">
-                <label for="cantidadIncorrectos">Cantidad de documentos incorrectos :
-                  {{documentosIncorrectos.length}}</label>
-              </div>
-              <div class="form-row">
-                <div class="col">
+          <div class="row" *ngIf="documentosIncorrectos.length > 0 && documentosCorrectos.length === 0">
+            <div class="form-row">
+              <div class="col">
+                <div class="ml-3">
                   <div class="form-group">
-                    <input type="file" class="form-control-file"
-                      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
-                      formControlName="excel2" (change)="onChangeExcelFile($event.srcElement.files[0])">
+                    <div class="cantidadCorrectos">
+                      <label for="cantidadCorrectos">Cantidad de documentos correctos :
+                        {{documentosCorrectos.length}}</label>
+                    </div>
+                    <div class="cantidadIncorrectos">
+                      <label for="cantidadIncorrectos">Cantidad de documentos incorrectos :
+                        {{documentosIncorrectos.length}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="documentosIncorrectos.length !== 0 && documentosCorrectos.length !== 0">
+            <div class="form-row">
+              <div class="col">
+                <div class="ml-3">
+                  <div class="form-group">
+                    <div class="cantidadCorrectos">
+                      <label for="cantidadCorrectos">Cantidad de documentos correctos :
+                        {{documentosCorrectos.length}}</label>
+                    </div>
+                    <div class="cantidadIncorrectos">
+                      <label for="cantidadIncorrectos">Cantidad de documentos incorrectos :
+                        {{documentosIncorrectos.length}}</label>
+                    </div>
                   </div>
                 </div>
               </div>

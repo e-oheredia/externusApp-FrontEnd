@@ -172,6 +172,8 @@ export class ProcesarGuiasComponent implements OnInit {
   onChangeExcelFile(file: File) {
     if (file == null) {
       this.excelFile = null;
+      this.resultadosCorrectos = [];
+      this.resultadosIncorrectos = [];
       return null;
     }
     this.excelFile = file;
@@ -240,21 +242,21 @@ export class ProcesarGuiasComponent implements OnInit {
       bsModalRef.content.confirmarEvent.subscribe(
         () => {
           this.registrarResultado();
-          this.listarGuiasPorProcesar();
         }
       )
     } else {
       this.registrarResultado();
-      this.listarGuiasPorProcesar();
     }
   }
 
   registrarResultado() {
-    
+
     this.documentoService.subirReporte(this.resultadosCorrectos).subscribe(
       respuesta => {
         this.notifier.notify('success', respuesta.mensaje);
         this.procesarForm.reset();
+        this.resultadosCorrectos = [];
+        this.resultadosIncorrectos = [];
         // this.bsModalRef.hide();
         this.listarGuiasPorProcesar();
         // this.confirmarEvent.emit();
