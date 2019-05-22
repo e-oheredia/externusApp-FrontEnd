@@ -15,6 +15,7 @@ import { UtilsService } from '../shared/utils.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
 import { InconsistenciaResultado } from 'src/model/inconsistenciaresultado.model';
+import { utils } from 'xlsx/types';
 
 @Component({
   selector: 'app-procesar-guias',
@@ -193,6 +194,9 @@ export class ProcesarGuiasComponent implements OnInit {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.resultadosCorrectos = data.documentos;
         this.resultadosIncorrectos = data.inconsistenciasResultado;
+        // if(this.utilsService.isUndefinedOrNullOrEmpty(this.resultadosIncorrectos)){
+        //   this.resultadosIncorrectos = [];
+        // }
         // descargar inconsistencias
         if (this.resultadosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.resultadosIncorrectos);
@@ -236,21 +240,22 @@ export class ProcesarGuiasComponent implements OnInit {
       bsModalRef.content.confirmarEvent.subscribe(
         () => {
           this.registrarResultado();
+          this.listarGuiasPorProcesar();
         }
       )
     } else {
       this.registrarResultado();
+      this.listarGuiasPorProcesar();
     }
   }
 
   registrarResultado() {
     
-    this.resultadosCorrectos.push()
     this.documentoService.subirReporte(this.resultadosCorrectos).subscribe(
       respuesta => {
         this.notifier.notify('success', respuesta.mensaje);
         this.procesarForm.reset();
-        this.bsModalRef.hide();
+        // this.bsModalRef.hide();
         this.listarGuiasPorProcesar();
         // this.confirmarEvent.emit();
       },

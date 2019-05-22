@@ -403,9 +403,9 @@ export class DocumentoService {
                     resultadosIncorrectos.push(resultadoIncorrecto);
                 } else {
                     resultadoCorrecto.documentoAutogenerado = data[i][1];
-                    seguimientoDocumento.estadoDocumento = data[i][17] || "";
-                    seguimientoDocumento.motivoEstado = data[i][18] || "";
-                    seguimientoDocumento.linkImagen = data[i][19] || "";
+                    seguimientoDocumento.estadoDocumento = data[i][17];
+                    seguimientoDocumento.motivoEstado = data[i][18];
+                    seguimientoDocumento.linkImagen = data[i][19];
                     seguimientoDocumento.fecha = moment(this.utilsService.getJsDateFromExcel(data[i][20])).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
                     resultadoCorrecto.seguimientosDocumento.push(seguimientoDocumento);
                     resultadosCorrectos.push(resultadoCorrecto);
