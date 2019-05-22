@@ -131,7 +131,11 @@
               <div class="col">
                 <div class="ml-3">
                   <div class="form-group">
-                    <label for="cantidadDocumentos">Elegir archivo de Datos : </label>
+                    <h5>Elegir archivo de Datos :</h5>
+                    <div class="cantidadCorrectos">
+                      <label for="cantidadCorrectos">Cantidad de documentos correctos :
+                        {{documentosCorrectos.length}}</label>
+                    </div>
                     <input type="file" class="form-control-file"
                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
                       formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
@@ -142,18 +146,19 @@
           </div>
 
           <div class="row" *ngIf="documentosIncorrectos.length !== 0">
-            <div class="col">
-              <h5>Subir Correcciones</h5>
-              <div class="cantidadCorrectos">
-                <label for="cantidadCorrectos">Cantidad de documentos correctos : {{documentosCorrectos.length}}</label>
-              </div>
-              <div class="cantidadIncorrectos">
-                <label for="cantidadIncorrectos">Cantidad de documentos incorrectos :
-                  {{documentosIncorrectos.length}}</label>
-              </div>
-              <div class="form-row">
-                <div class="col">
+            <div class="form-row">
+              <div class="col">
+                <div class="ml-3">
                   <div class="form-group">
+                    <h5>Subir Correcciones</h5>
+                    <div class="cantidadCorrectos">
+                      <label for="cantidadCorrectos">Cantidad de documentos correctos :
+                        {{documentosCorrectos.length}}</label>
+                    </div>
+                    <div class="cantidadIncorrectos">
+                      <label for="cantidadIncorrectos">Cantidad de documentos incorrectos :
+                        {{documentosIncorrectos.length}}</label>
+                    </div>
                     <input type="file" class="form-control-file"
                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
                       formControlName="excel2" (change)="onChangeExcelFile($event.srcElement.files[0])">
@@ -165,7 +170,8 @@
 
           <div class="row">
             <div class="button-group col text-right mb-4 mt-4">
-              <button class="btn btn-outline-success" [disabled]="!bloqueForm.valid || documentosCorrectos.length === 0" type="submit">
+              <button class="btn btn-outline-success" [disabled]="!bloqueForm.valid || documentosCorrectos.length === 0"
+                type="submit">
                 Registrar
               </button>
             </div>
