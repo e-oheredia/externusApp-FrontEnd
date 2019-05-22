@@ -84,7 +84,7 @@ export class GenerarBloqueComponent implements OnInit {
   ngOnInit() {
     this.cargarDatosVista();
     this.bloqueForm = new FormGroup({
-      'cantidadDocumentos': new FormControl(""),
+      // 'cantidadDocumentos': new FormControl(""),
       'cantidadCorrectos': new FormControl(""),
       'cantidadIncorrectos': new FormControl(""),
       'plazoDistribucion': new FormControl(null, Validators.required),
@@ -192,6 +192,9 @@ export class GenerarBloqueComponent implements OnInit {
         console.log("nuevos correctos: " + data.documentos.length)
         this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
         this.documentosIncorrectos = data.inconsistenciasDocumentos;
+        if(this.utilsService.isUndefinedOrNullOrEmpty(this.documentosIncorrectos)){
+          this.documentosIncorrectos = [];
+        }
         // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
