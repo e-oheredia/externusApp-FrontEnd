@@ -49,15 +49,14 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     private distritoService: DistritoService,
     private buzonService: BuzonService,
     private envioService: EnvioService,
-    private utilsService: UtilsService, 
-    private cargoPdfService: CargoPdfService, 
+    private utilsService: UtilsService,
+    private cargoPdfService: CargoPdfService,
     private modalService: BsModalService,
     private sedeDespachoService: SedeDespachoService,
     private clasificacionService: ClasificacionService
   ) { }
 
   documentoForm: FormGroup;
-  envio: Envio = new Envio();
   documento: Documento = new Documento;
   autorizationFile: File; //-----------------------------------------------------
   buzon: Buzon;
@@ -193,41 +192,43 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.envio.buzon = this.buzon;
-    this.envio.sede = this.documentoForm.get("sedeDespacho").value
+    let envio: Envio = new Envio();
+    delete envio.inconsistenciasResultado;
+    envio.buzon = this.buzon;
+    envio.sede = this.documentoForm.get("sedeDespacho").value
     this.documento.contactoDestino = this.documentoForm.get("comunicacionDestino.contacto").value;
     this.documento.direccion = this.documentoForm.get("direccion").value;
     this.documento.distrito = this.documentoForm.get("distrito").value;
     this.documento.nroDocumento = this.documentoForm.get("nroDocumento").value;
-    this.envio.clasificacion = this.documentoForm.get("clasificacion").value;
-    this.envio.plazoDistribucion = this.documentoForm.get("plazoDistribucion").value;
+    envio.clasificacion = this.documentoForm.get("clasificacion").value;
+    envio.plazoDistribucion = this.documentoForm.get("plazoDistribucion").value;
     this.documento.razonSocialDestino = this.documentoForm.get("comunicacionDestino.razonSocial").value;
     this.documento.referencia = this.documentoForm.get("referencia").value;
     this.documento.telefono = this.documentoForm.get("telefono").value;
-    this.envio.tipoSeguridad = this.documentoForm.get("tipoSeguridad").value;
-    this.envio.tipoServicio = this.documentoForm.get("tipoServicio").value;
-    this.envio.producto = this.documentoForm.get("producto").value;
-    this.envio.addDocumento(this.documento);
+    envio.tipoSeguridad = this.documentoForm.get("tipoSeguridad").value;
+    envio.tipoServicio = this.documentoForm.get("tipoServicio").value;
+    envio.producto = this.documentoForm.get("producto").value;
+    envio.addDocumento(this.documento);
 
-    this.envioService.registrarEnvio(this.envio, this.autorizationFile, null, null).subscribe(
+    this.envioService.registrarEnvio(envio, this.autorizationFile, null, null).subscribe(
       envio => {
 
         this.autogeneradoCreado = envio.documentos[0].documentoAutogenerado;
         this.departamento = {};
         this.provincia = {};
-        
+
         envio.documentos[0].distrito = this.documento.distrito;
-        
+
         if (this.documentoForm.get("cargoPropio").value !== '1') {
           setTimeout(() => {
             this.cargoPdfService.generarPdfIndividual(envio, document.getElementById("codebar").children[0].children[0]);
           }, 200);
-        }       
-        this.envio = new Envio();   
-        this.documentoForm.reset();    
+        }
+        envio = new Envio();
+        this.documentoForm.reset();
 
         let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
-          initialState : {
+          initialState: {
             autogenerado: envio.documentos[0].documentoAutogenerado
           }
         });

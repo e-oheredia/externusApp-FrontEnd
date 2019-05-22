@@ -185,6 +185,8 @@ export class GenerarMasivoComponent implements OnInit {
   onChangeExcelFile(file: File) {
     if (file == null) {
       this.excelFile = null;
+      this.documentosCorrectos = [];
+      this.documentosIncorrectos = [];
       return null;
     }
     this.excelFile = file;
