@@ -319,6 +319,8 @@ export class DocumentoService {
 
                 let resultadoCorrecto: Documento = new Documento();
                 let resultadoIncorrecto: InconsistenciaResultado = new InconsistenciaResultado();
+                let estadoDocumentoValido : EstadoDocumento;
+                let motivoEstadoValido : MotivoEstado;
 
                 // let documentoCargado = new Documento();
 
@@ -336,11 +338,12 @@ export class DocumentoService {
                     let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
                         estadoDocumento => estadoDocumento.nombre === data[i][17]
                     )
-
+                        
                     if (this.utilsService.isUndefinedOrNullOrEmpty(estadoDocumento)) {
                         resultadoIncorrecto.resumen += "El estado ingresado no existe (Es posible que el motivo y el link estén incorrectos). "
                         todoCorrecto = false;
                     } else {
+                        estadoDocumentoValido=estadoDocumento
                         if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
                             resultadoIncorrecto.resumen += "Ingrese un motivo válido (Es posible que el link esté incorrecto). "
                             todoCorrecto = false;
@@ -350,6 +353,7 @@ export class DocumentoService {
                                 resultadoIncorrecto.resumen += "El motivo ingresado no existe (Es posible que el link esté incorrecto). "
                                 todoCorrecto = false;
                             }
+                            motivoEstadoValido=motivoEstado;
                         }
                         //
                         if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {
@@ -403,9 +407,9 @@ export class DocumentoService {
                     resultadosIncorrectos.push(resultadoIncorrecto);
                 } else {
                     resultadoCorrecto.documentoAutogenerado = data[i][1];
-                    seguimientoDocumento.estadoDocumento = data[i][17];
-                    seguimientoDocumento.motivoEstado = data[i][18];
-                    seguimientoDocumento.linkImagen = data[i][19];
+                    seguimientoDocumento.estadoDocumento = estadoDocumentoValido;
+                    seguimientoDocumento.motivoEstado = motivoEstadoValido;
+                    seguimientoDocumento.linkImagen = data[i][19] || "";
                     seguimientoDocumento.fecha = moment(this.utilsService.getJsDateFromExcel(data[i][20])).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
                     resultadoCorrecto.seguimientosDocumento.push(seguimientoDocumento);
                     resultadosCorrectos.push(resultadoCorrecto);
