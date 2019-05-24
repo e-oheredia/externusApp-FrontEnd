@@ -105,6 +105,13 @@ export class DocumentoService {
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
                     documentoIncorrecto.resumen += "Ingrese la razón social o el contacto. "
                     todoCorrecto = false;
+                } else {
+                    let razonsocial = data[i][1];
+                    let contacto = data[i][2];
+                    if (razonsocial.length < 4 || contacto.length < 4) {
+                        documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
+                        todoCorrecto = false;
+                    }
                 }
 
                 if (this.departamentoService.listarDepartamentoByNombre(data[i][3]) === null) {
@@ -125,6 +132,23 @@ export class DocumentoService {
                         }
                     }
                 }
+
+                if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][6])) {
+                    let numeros = /^[0-9]$/;
+                    let telefono = data[i][6];
+                    if (numeros.test(data[i][6])) {
+                        documentoIncorrecto.resumen += "Ingrese el teléfono solo con números. "
+                        todoCorrecto = false;
+                        return;
+                    } 
+                    if (telefono.length < 4) {
+                        documentoIncorrecto.resumen += "Ingrese el teléfono con más de 3 números. "
+                        todoCorrecto = false;
+
+                    }
+                }
+
+
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][7])) {
                     documentoIncorrecto.resumen += "Ingrese la dirección. "
@@ -319,8 +343,8 @@ export class DocumentoService {
 
                 let resultadoCorrecto: Documento = new Documento();
                 let resultadoIncorrecto: InconsistenciaResultado = new InconsistenciaResultado();
-                let estadoDocumentoValido : EstadoDocumento;
-                let motivoEstadoValido : MotivoEstado;
+                let estadoDocumentoValido: EstadoDocumento;
+                let motivoEstadoValido: MotivoEstado;
 
                 // let documentoCargado = new Documento();
 
@@ -338,12 +362,12 @@ export class DocumentoService {
                     let estadoDocumento = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor().find(
                         estadoDocumento => estadoDocumento.nombre === data[i][17]
                     )
-                        
+
                     if (this.utilsService.isUndefinedOrNullOrEmpty(estadoDocumento)) {
                         resultadoIncorrecto.resumen += "El estado ingresado no existe (Es posible que el motivo y el link estén incorrectos). "
                         todoCorrecto = false;
                     } else {
-                        estadoDocumentoValido=estadoDocumento
+                        estadoDocumentoValido = estadoDocumento
                         if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
                             resultadoIncorrecto.resumen += "Ingrese un motivo válido (Es posible que el link esté incorrecto). "
                             todoCorrecto = false;
@@ -353,7 +377,7 @@ export class DocumentoService {
                                 resultadoIncorrecto.resumen += "El motivo ingresado no existe (Es posible que el link esté incorrecto). "
                                 todoCorrecto = false;
                             }
-                            motivoEstadoValido=motivoEstado;
+                            motivoEstadoValido = motivoEstado;
                         }
                         //
                         if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO || estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {

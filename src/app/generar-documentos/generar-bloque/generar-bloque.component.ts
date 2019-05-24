@@ -193,7 +193,7 @@ export class GenerarBloqueComponent implements OnInit {
         console.log("primeros correctos: " + this.documentosCorrectos.length)
         console.log("nuevos correctos: " + data.documentos.length)
         this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
-        this.documentosIncorrectos = data.inconsistenciasDocumentos;
+        this.documentosIncorrectos = data.inconsistenciasDocumento;
         if(this.utilsService.isUndefinedOrNullOrEmpty(this.documentosIncorrectos)){
           this.documentosIncorrectos = [];
         }
