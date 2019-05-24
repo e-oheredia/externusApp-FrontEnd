@@ -105,7 +105,7 @@ export class ReporteEficaciaComponent implements OnInit {
                 error => {
                     if (error.status === 400) {
                         this.documentos = [];
-                        this.notifier.notify('error', 'Rango de fechas no válido');
+                        this.notifier.notify('error', error.error);
                     }
                 }
             );
@@ -120,6 +120,9 @@ export class ReporteEficaciaComponent implements OnInit {
 
         var porcentaje = 100;
         var total = this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
+        if (total==0) {
+            return '0.0%';
+        }
         var cantestadocourier = this.documentos.filter(documento =>
             documento.documentosGuia[0].guia.proveedor.id === proveedor.id
             && this.documentoService.getUltimoEstado(documento).id === estado.id

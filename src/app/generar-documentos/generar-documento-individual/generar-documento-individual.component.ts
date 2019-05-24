@@ -224,7 +224,11 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
             this.cargoPdfService.generarPdfIndividual(envio, document.getElementById("codebar").children[0].children[0]);
           }, 200);
         }
+<<<<<<< HEAD
+
+=======
         
+>>>>>>> 5982a6551e898a725094ae3cb16b5eed4819edad
         this.documentoForm.reset();
 
         let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {

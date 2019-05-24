@@ -57,7 +57,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         },
         error => {
           if (error.status === 400) {
-            this.notifier.notify('error', 'Rango de fecha no válido');
+            this.notifier.notify('error', error.error);
           }
         }
       );
@@ -69,22 +69,22 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
 
   getPorcentajeDentroPlazoPorProveedor(proveedor = { id: 0 }) {
     if (proveedor.id === 0) {
-      return this.documentos.filter(documento => documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
+      return this.documentos.filter(documento => moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") ).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
     } else {
       return this.documentos.filter(documento =>
         documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-        documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+        moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
       ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length) * 100;
     }
   }
 
   getPorcentajeFueraPlazoPorProveedor(proveedor = { id: 0 }) {
     if (proveedor.id === 0) {
-      return this.documentos.filter(documento => documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
+      return this.documentos.filter(documento => moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") < moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") ).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
     } else {
       return this.documentos.filter(documento =>
         documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-        documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+        moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
       ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length) * 100;
     }
   }
@@ -98,13 +98,14 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
           dentroPlazo: 0,
           fueraPlazo: 0
         };
-        eficienciaPorProveedorObjeto.proveedor = proveedor.nombre;
-        eficienciaPorProveedorObjeto.dentroPlazo = documentos.filter(documento =>
+        eficienciaPorProveedorObjeto.proveedor = proveedor.nombre;        
+        eficienciaPorProveedorObjeto.dentroPlazo = documentos.filter(documento =>          
           documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-          documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+          moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
         ).length;
         eficienciaPorProveedorObjeto.fueraPlazo = documentos.filter(documento => {
-          return documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours();
+          return documento.documentosGuia[0].guia.proveedor.id === proveedor.id && 
+            moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
         }).length;
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       }
@@ -121,12 +122,12 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
             dentroPlazo: documentos.filter(documento =>
               documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
               documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-              documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+              moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
             ).length,
             fueraPlazo: documentos.filter(documento =>
               documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
               documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-              documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+              moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
             ).length,
           }
           eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
@@ -137,17 +138,17 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
   }
 
   getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) {
-    return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && documento.envio.plazoDistribucion.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+    return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
     ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length) * 100;
   }
   getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) {
-    return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && documento.envio.plazoDistribucion.tiempoEnvio <= moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+    return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
     ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id).length) * 100;
   }
 
 
-  llenarDetalleEficiencia(documentos: Documento[]) {
-    this.reportesDetalleEficiencia = {};
+    llenarDetalleEficiencia(documentos: Documento[]) {
+      this.reportesDetalleEficiencia = {};
     let documentosAux: Documento[] = [];
     this.proveedores.forEach(
       proveedor => {
@@ -159,7 +160,8 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
               dentroPlazo: documentos.filter(documento => {
                 if (documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                   documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                  plazoDistribucion2.tiempoEnvio > moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()) {
+                  moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
+                ) {
                   return true;
                 }
                 documentosAux.push(documento);
@@ -174,7 +176,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
             dentroPlazo: documentos.filter(documento =>
               documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
               documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-              plazoDistribucion.tiempoEnvio < moment.duration(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD-MM-YYYY HH:mm:ss").diff(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss"))).asHours()
+              moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
             ).length
           });
           this.reportesDetalleEficiencia[proveedor.nombre + '-' + plazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
