@@ -224,7 +224,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
             this.cargoPdfService.generarPdfIndividual(envio, document.getElementById("codebar").children[0].children[0]);
           }, 200);
         }
-        envio = new Envio();
+        
         this.documentoForm.reset();
 
         let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
