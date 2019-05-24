@@ -14,7 +14,7 @@ export class InconsistenciaDocumento {
     public departamento: string;
     public provincia: string;
     public distrito: string;
-    public telefono: string;
+    public telefono: Date;
     public direccion: string;
     public referencia: string;
     public envio: Envio;

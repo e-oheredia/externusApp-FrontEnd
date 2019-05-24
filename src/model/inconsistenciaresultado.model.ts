@@ -27,7 +27,7 @@ export class InconsistenciaResultado {
     public estado: string;
     public motivo: string;
     public link: string;
-    public fecharesultado: string;
+    public fecharesultado: Date;
     public envio: Envio;
     public resumen: string;
     
