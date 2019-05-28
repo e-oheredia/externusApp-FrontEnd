@@ -102,16 +102,36 @@ export class DocumentoService {
                 let documentoIncorrecto: InconsistenciaDocumento = new InconsistenciaDocumento();
 
 
-                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {                                            
                     documentoIncorrecto.resumen += "Ingrese la razón social o el contacto. "
                     todoCorrecto = false;
                 } else {
                     let razonsocial = data[i][1];
                     let contacto = data[i][2];
-                    if (razonsocial.length < 4 || contacto.length < 4) {
-                        documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
-                        todoCorrecto = false;
+                    if(!this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])){
+                        if(!this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])){
+                            if(contacto.length < 4 || razonsocial.length < 4){
+                                documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
+                                todoCorrecto = false;                           
+                            }                              
+
+                        }
                     }
+
+                    if(this.utilsService.isUndefinedOrNullOrEmpty(razonsocial)){
+                        if(contacto.length < 4){
+                            documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
+                            todoCorrecto = false;                           
+                        }     
+                    }    
+
+                    if(this.utilsService.isUndefinedOrNullOrEmpty(contacto)){
+                        if(razonsocial.length < 4){
+                            documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
+                            todoCorrecto = false;                           
+                        }     
+                    }
+                    
                 }
 
                 if (this.departamentoService.listarDepartamentoByNombre(data[i][3]) === null) {

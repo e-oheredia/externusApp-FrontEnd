@@ -29,7 +29,9 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    
     this.listarGuiasCreadas();
+    
   }
 
   crearGuia() {

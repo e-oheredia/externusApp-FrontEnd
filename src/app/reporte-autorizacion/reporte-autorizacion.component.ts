@@ -30,7 +30,6 @@ export class ReporteAutorizacionComponent implements OnInit {
   rutaManual: string = AppSettings.MANUAL_REGISTRO;
 
   envios: Envio[] = [];
-  envio: Envio;
 
   envioSubscription: Subscription;
   envioForm: FormGroup;
@@ -106,14 +105,14 @@ export class ReporteAutorizacionComponent implements OnInit {
             )
           }
           this.dataEnvios.load(dataEnvios);
-        }
-      ),
+        },
         error => {
           if (error.status === 400) {
             this.envios = [];
             this.notifier.notify('error', 'El rango de fechas es incorrecto');
           }
         }
+      )
     }
     else {
       this.notifier.notify('error', 'Debe ingresar un rango de fechas');

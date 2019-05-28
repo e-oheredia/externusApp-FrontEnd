@@ -41,6 +41,8 @@ export class ProveedorComponent implements OnInit {
     this.tituloService.setTitulo("Mantenimiento de proveedores");
     this.generarColumnas();
     this.listarProveedores();
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas(){

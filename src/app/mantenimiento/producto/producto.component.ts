@@ -37,6 +37,7 @@ export class ProductoComponent implements OnInit {
     this.tituloService.setTitulo("Mantenimiento de Producto");
     this.generarColumnas();
     this.listarProductos();
+    this.settings.hideSubHeader = false;
   }
 
   generarColumnas(){

@@ -31,9 +31,8 @@ export class ReporteInconsistenciaComponent implements OnInit {
   dataEnviosConIncidencias: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
 
-  envio: Envio;
   envios: Envio[] = [];
-  inconsistencias : InconsistenciaDocumento [] = [];
+  inconsistencias: InconsistenciaDocumento[] = [];
   enviosSubscription: Subscription;
   envioForm: FormGroup;
 
@@ -42,12 +41,14 @@ export class ReporteInconsistenciaComponent implements OnInit {
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
       "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required)
     })
+    this.settings.hideSubHeader = false;
     this.tituloService.setTitulo("Reporte de inconsistencias");
     this.generarColumnas();
     this.listarEnviosConInconsistencias();
+
   }
 
-  generarColumnas(){
+  generarColumnas() {
     this.settings.columns = {
       remitente: {
         title: 'Remitente'
@@ -55,8 +56,8 @@ export class ReporteInconsistenciaComponent implements OnInit {
       areaRemitente: {
         title: 'Área remitente'
       },
-      tipoUsuario: {
-        title: 'Tipo de usuario'
+      tipoEnvio: {
+        title: 'Tipo de envío'
       },
       plazo: {
         title: 'Plazo de distribución'
@@ -71,53 +72,51 @@ export class ReporteInconsistenciaComponent implements OnInit {
         onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-download";
           instance.pressed.subscribe(row => {
-             this.descargar(row);
+            this.descargar(row);
           });
         }
       }
     }
   }
 
-   descargar(row){
-     let envio = this.envios.find(envio => envio.id === row.id)
-     this.envioService.listarEnviosConInconsistenciasPorEnvioId(envio.id).subscribe(
-       inconsistencias => {
-         this.inconsistencias = inconsistencias;
-         this.envioService.descargarInconsistenciasEnvio(inconsistencias, envio)
-       }
-     )
-   }
+  descargar(row) {
+    let envio = this.envios.find(envio => envio.id === row.id)
+    this.envioService.listarEnviosConInconsistenciasPorEnvioId(envio.id).subscribe(
+      inconsistencias => {
+        this.inconsistencias = inconsistencias;
+        this.envioService.descargarInconsistenciasEnvio(inconsistencias, envio)
+      }
+    )
+  }
 
-  listarEnviosConInconsistencias(){
+  listarEnviosConInconsistencias() {
+    this.envios = [];
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaFin'].value)) {
       this.enviosSubscription = this.envioService.listarEnviosConInconsistenciasPorFechas(this.envioForm.controls['fechaIni'].value, this.envioForm.controls['fechaFin'].value).subscribe(
         envios => {
-          this.envios = envios;
           this.dataEnviosConIncidencias.reset();
-          this.envioService.listarEnviosConInconsistenciasPorFechas(this.envioForm.controls['fechaIni'].value, this.envioForm.controls['fechaFin'].value).subscribe(
-            envios => {
-              this.envios = envios;
-              let dataEnviosConIncidencias = [];
-              envios.forEach(
-                envio => {
-                  dataEnviosConIncidencias.push({
-                    id: envio.id,
-                    remitente: envio.buzon.nombre,
-                    areaRemitente: envio.buzon.area.nombre,
-                    tipoUsuario: envio.tipoEnvio.nombre,
-                    plazo: envio.plazoDistribucion.nombre,
-                    fechaCreacion: this.documentoService.getFechaCreacion(envio.documentos[0])
-                  })
-                }
-              )
-              this.dataEnviosConIncidencias.load(dataEnviosConIncidencias);
-            }
-          )
+          let dataEnviosConIncidencias = [];
+          if (!this.utilsService.isUndefinedOrNullOrEmpty(envios)) {
+            this.envios = envios;
+            envios.forEach(
+              envio => {
+                dataEnviosConIncidencias.push({
+                  id: envio.id,
+                  remitente: envio.buzon.nombre,
+                  areaRemitente: envio.buzon.area.nombre,
+                  tipoEnvio: envio.tipoEnvio.nombre,
+                  plazo: envio.plazoDistribucion.nombre,
+                  fechaCreacion: this.documentoService.getFechaCreacion(envio.documentos[0])
+                })
+              }
+            )
+          }
+          this.dataEnviosConIncidencias.load(dataEnviosConIncidencias);
         },
         error => {
-          if (error.status === 400){
+          if (error.status === 400) {
             this.envios = [];
-            this.notifier.notify('error', 'El rango de fechas es incorrecto');
+            this.notifier.notify('error', error.error);
           }
         }
       );

@@ -37,6 +37,8 @@ export class ClasificacionComponent implements OnInit {
   ngOnInit() {
     this.generarColumnas();
     this.listarClasificaciones();
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas() {

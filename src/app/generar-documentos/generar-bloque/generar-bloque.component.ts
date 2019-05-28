@@ -219,7 +219,9 @@ export class GenerarBloqueComponent implements OnInit {
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
           titulo: "Confirmación de registros",
-          mensaje: "Solo se subirán " + this.documentosCorrectos.length + " registros correctos"
+          mensaje: "Cantidad de documentos correctos : " + this.documentosCorrectos.length,
+          mensaje2: "Cantidad de documentos incorrectos : "+this.documentosIncorrectos.length, 
+          mensaje3: "Solo se subirán los documentos correctos. ¿Desea Continuar?" 
         }
       });
 
