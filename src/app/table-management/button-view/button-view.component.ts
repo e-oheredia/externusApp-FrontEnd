@@ -24,6 +24,7 @@ export class ButtonViewComponent implements ViewCell, OnInit {
     this.mostrarData.emit(this.rowData);
   }
 
+
   onClick() {
     this.pressed.emit(this.rowData);
   }

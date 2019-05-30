@@ -10,49 +10,8 @@
     <button type="button" class="btn btn-primary mb-4" (click)="crearGuia()">Nueva Guía</button>
   </div>
 </div>
-<div class="row" *ngIf="guiasCreadas.length !== 0; else mensaje">
-  <div class="col">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Número de Guía</th>
-          <th scope="col">Proveedor</th>
-          <th scope="col">Plazo de Distribución</th>
-          <th scope="col">Tipo de Servicio</th>
-          <th scope="col">Tipo de Seguridad</th>
-          <th scope="col">Total de Documentos</th>
-          <th scope="col">Validados</th>
-          <th scope="col">Enviar</th>
-          <th scope="col">Modificar</th>
-          <th scope="col">Eliminar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let guiaCreada of guiasCreadas">
-          <td scope="col">
-            <span class="pointable text-info" (click)="abrirGuia(guiaCreada)">
-              <strong>{{guiaCreada.numeroGuia}}</strong>
-            </span>
-          </td>
-          <td scope="col">{{guiaCreada.proveedor.nombre}}</td>
-          <td scope="col">{{guiaCreada.plazoDistribucion.nombre}}</td>
-          <td scope="col">{{guiaCreada.tipoServicio.nombre}}</td>
-          <td scope="col">{{guiaCreada.tipoSeguridad.nombre}}</td>
-          <td scope="col">{{guiaCreada.cantidadDocumentos}}</td>
-          <td scope="col">{{guiaCreada.cantidadValidados}}</td>
-          <td scope="col" class="text-center">
-            <span class="oi oi-location text-success pointable" (click)="enviar(guiaCreada)"></span>
-          </td>
-          <td scope="col" class="text-center">
-            <span class="oi oi-pencil text-warning pointable" (click)="modificar(guiaCreada)"></span>
-          </td>
-          <td scope="col" class="text-center">
-            <span class="oi oi-x text-danger pointable" (click)="eliminar(guiaCreada.id)"></span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div  *ngIf="guias.length !== 0; else mensaje" class="center">
+  <ng2-smart-table [settings]="settings" [source]="dataEnvios"></ng2-smart-table>
 </div>
 <ng-template #mensaje>
   <div class="row">

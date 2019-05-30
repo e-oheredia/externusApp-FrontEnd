@@ -10,6 +10,9 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { NotifierService } from 'angular-notifier';
 import { ModificarGuiaModalComponent } from './modificar-guia-modal/modificar-guia-modal.component';
 import { ConfirmModalComponent } from '../modals/confirm-modal/confirm-modal.component';
+import { AppSettings } from '../shared/app.settings';
+import { LocalDataSource } from 'ng2-smart-table';
+import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
 
 @Component({
   selector: 'app-listar-guias-creadas',
@@ -24,61 +27,167 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
     private notifier: NotifierService
   ) { }
 
+  dataEnvios: LocalDataSource = new LocalDataSource();
   guiasCreadas = [];
   guiasCreadasSubscription: Subscription;
-
-
+  settings = AppSettings.tableSettings;
+  guias: Guia[] = [];
+  guia: Guia;
   ngOnInit() {
-    
-    this.listarGuiasCreadas();
-    
+    this.generarColumnas();
+    //this.listarGuiasCreadas();
+    this.listarSinCustodiar();
+    this.settings.hideSubHeader = false;
+
   }
+
+
+  generarColumnas() {
+    this.settings.columns = {
+      buttonValidar: {
+        title: 'Validar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-vote-yea text-primary  pointable";
+          instance.pressed.subscribe(row => {
+            this.abrirGuia(row);
+          });
+        }
+      }, 
+      numero: {
+        title: 'Número de Guía'
+      }, 
+      proveedor: {
+        title: 'Proveedor'
+      },
+      plazo: {  
+        title: 'Plazo de Distribución'
+      },
+      servicio: {
+        title: 'Tipo de Servicio'
+      },
+      seguridad: {
+        title: 'Tipo de Seguridad'
+      },       
+      total: {
+        title: 'Total de Documentos'
+      },     
+      validados: {
+        title: 'Validados'
+      },                            
+      buttonEnviar: {
+        title: 'Enviar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "oi oi-location text-success pointable";
+          instance.pressed.subscribe(row => {
+            this.enviar(row);
+          });
+        }
+      }, 
+      buttonModificar: {
+        title: 'Modificar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "oi oi-pencil text-warning pointable";
+          instance.pressed.subscribe(row => {
+            this.modificar(row);
+          });
+        }
+      },  
+      buttonEliminar: {
+        title: 'Eliminar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "oi oi-x text-danger pointable";
+          instance.pressed.subscribe(row => {
+            this.eliminar(row);
+          });
+        }
+      }         
+    }
+  }
+
+
+    listarSinCustodiar(){
+    this.dataEnvios.reset();
+    this.guiaService.listarGuiasCreadas().subscribe(
+      guias => {
+        this.guias = guias;
+        let dataEnvios = [];
+        guias.forEach(
+          guia => {
+            dataEnvios.push({
+              id:guia.id,
+              numero: guia.numeroGuia , 
+              proveedor: guia.proveedor.nombre ,
+              plazo: guia.plazoDistribucion.nombre  ,
+              servicio:guia.clasificacion.nombre ,
+              seguridad: guia.tipoSeguridad.nombre,
+              total: guia.cantidadDocumentos ,
+              validados: guia.cantidadValidados
+            })
+          }
+        )
+        this.dataEnvios.load(dataEnvios);
+      }
+    )
+  }
+
+
 
   crearGuia() {
     let bsModalRef: BsModalRef = this.modalService.show(CrearGuiaModalComponent);
     bsModalRef.content.guiaCreadaEvent.subscribe(
       guiaCreada => {
-        this.listarGuiasCreadas();
-        this.abrirGuia(guiaCreada);
+        this.listarSinCustodiar();
+        //this.listarGuiasCreadas();
+        this.abrirGuiaalcrear(guiaCreada);
       }
     )
   }
 
-  modificar(guia: Guia) {
+  modificar(row) {
+    this.guia = this.guias.find(guia => guia.id == row.id)
     let bsModalRef: BsModalRef = this.modalService.show(ModificarGuiaModalComponent, {
       initialState: {
-        guia: guia
+        guia: this.guia
       }
     });
 
 
     bsModalRef.content.guiaModificadaEvent.subscribe(
       () => {
-        this.listarGuiasCreadas();
+        this.listarSinCustodiar();
       }
     )
   }
 
-  eliminar(guiaId: number) {
-    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
+  eliminar(row) {
+      this.guia = this.guias.find(guia => guia.id == row.id)
+     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {  
       initialState: {
+        id:this.guia.id,
         mensaje: "Se eliminará la guía ¿Desea continuar?"
       }
     });
 
     bsModalRef.content.confirmarEvent.subscribe(
       () => {
-        this.guiaService.eliminarGuia(guiaId).subscribe(
+        this.guiaService.eliminarGuia(this.guia.id).subscribe(
           () => {
             this.notifier.notify('success', 'Se ha eliminado correctamente la guía');
-            this.listarGuiasCreadas();
+            this.listarSinCustodiar();
           },
           error => {
             console.log(error);
           }
         )
-      }
-    )
+      });
 
   }
 
@@ -88,7 +197,24 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
     );
   }
 
-  abrirGuia(guia: Guia) {
+  abrirGuia(row) {
+    this.guia = this.guias.find(guia => guia.id == row.id)
+    let bsModalRef: BsModalRef = this.modalService.show(ValidarDocumentosGuiaModalComponent, {
+      initialState: {
+        guia: this.guia
+      },
+      class: 'modal-lg'
+    });
+
+    this.modalService.onHidden.subscribe(
+      () => {
+        this.listarSinCustodiar();
+      }
+    );
+  }
+
+
+  abrirGuiaalcrear(guia: Guia) {
     let bsModalRef: BsModalRef = this.modalService.show(ValidarDocumentosGuiaModalComponent, {
       initialState: {
         guia: guia
@@ -103,8 +229,9 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
     );
   }
 
-  enviar(guia: Guia) {
-    if (guia.cantidadDocumentos - guia.cantidadValidados !== 0) {
+  enviar(row) {
+    this.guia = this.guias.find(guia => guia.id == row.id)
+    if (this.guia.cantidadDocumentos - this.guia.cantidadValidados !== 0) {
       this.notifier.notify('error', 'Valide todos los documentos de la guía antes de enviar');
       return;
     }
@@ -118,10 +245,10 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
 
     bsModalRef.content.confirmarEvent.subscribe(
       () => {
-        this.guiaService.enviarGuia(guia.id).subscribe(
+        this.guiaService.enviarGuia(this.guia.id).subscribe(
           guia => {
             this.notifier.notify('success', 'Se ha enviado correctamente la guía');
-            this.listarGuiasCreadas();
+            this.listarSinCustodiar();
           },
           error => {
             console.log(error);

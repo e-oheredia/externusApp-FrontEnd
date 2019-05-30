@@ -30,7 +30,6 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
   documentoAutogenerado = '';
   guia: Guia;
   documentos: Documento[] = [];
-
   validarDocumentoGuiaSubscription: Subscription;
   retirarNoValidadosSubscription: Subscription;
 
