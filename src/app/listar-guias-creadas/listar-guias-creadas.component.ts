@@ -224,7 +224,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
 
     this.modalService.onHidden.subscribe(
       () => {
-        this.listarGuiasCreadas();
+        this.listarSinCustodiar();
       }
     );
   }
