@@ -52,7 +52,8 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
       id: 3,
       nombre: 'PENDIENTE DE ENTREGA', 
       estadosDocumentoPermitidos: [],
-      motivos: []
+      motivos: [],
+      tiposDevolucion: []
     });
     this.estadoDocumentoService.estadosDocumentoResultadosProveedorChanged.subscribe(estadosDocumento => {
       this.estadosDocumento = estadosDocumento;
@@ -60,7 +61,8 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
         id: 3,
         nombre: 'PENDIENTE DE ENTREGA',
         estadosDocumentoPermitidos: [],
-        motivos: []
+        motivos: [],
+        tiposDevolucion: []
       });
     });
   }

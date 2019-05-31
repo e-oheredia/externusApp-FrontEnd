@@ -6,5 +6,7 @@ export enum EstadoDocumentoEnum {
     REZAGADO = 5, 
     NO_DISTRIBUIBLE = 6,
     DENEGADO = 7,
-    ELIMINADO = 8
+    ELIMINADO = 8,
+    RECEPCIONADO = 9,
+    CERRADO = 10
 }

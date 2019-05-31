@@ -52,7 +52,8 @@ export class ReporteEficaciaComponent implements OnInit {
             id: EstadoDocumentoEnum.ENVIADO,
             nombre: "PENDIENTE DE ENTREGA",
             estadosDocumentoPermitidos: [],
-            motivos: []
+            motivos: [],
+            tiposDevolucion: []
         })
         
         this.estadoDocumentoService.estadosDocumentoResultadosProveedorChanged.subscribe(
@@ -62,7 +63,8 @@ export class ReporteEficaciaComponent implements OnInit {
                     id: EstadoDocumentoEnum.ENVIADO,
                     nombre: "PENDIENTE DE ENTREGA",
                     estadosDocumentoPermitidos: [],
-                    motivos: []
+                    motivos: [],
+                    tiposDevolucion: []
                 })
             }
         )

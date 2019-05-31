@@ -11,32 +11,33 @@ import { Subscription } from 'rxjs';
   templateUrl: './asignar-codigo.component.html',
   styleUrls: ['./asignar-codigo.component.css']
 })
-export class AsignarCodigoCargoComponent implements OnInit {
+export class AsignarCodigoDevolucionComponent implements OnInit {
 
   constructor(
     private bsModalRef: BsModalRef,
     private notifier: NotifierService,
-    private documentoService: DocumentoService) { }
+    private documentoService: DocumentoService
+  ) { }
 
   @Output() codigoAsignadoEvent = new EventEmitter<Documento>();
 
   documento: Documento;
   documentos: Documento[] = [];
   AsignarForm: FormGroup;
-  AsignarCodigoCargoSubscription: Subscription;
+  AsignarCodigoDevueltoSubscription: Subscription;
 
   ngOnInit() {
     this.AsignarForm = new FormGroup({
-      'codigoDevCargo' : new FormControl('', Validators.required)
+      'codigoDevolucion' : new FormControl('', Validators.required)
     });
   }
 
   onSubmit(codigoFormValue){
-    if (this.AsignarForm.controls['codigoDevCargo'].value.length !== 0){
+    if (this.AsignarForm.controls['codigoDevolucion'].value.length !== 0){
       let documento: Documento = new Documento();
       documento.id = this.documento.id;
-      documento.codigoDevolucion = codigoFormValue.codigoDevCargo;
-      this.AsignarCodigoCargoSubscription = this.documentoService.asignarCodigoDevolucionCargo(documento.id, documento.codigoDevolucion).subscribe(
+      documento.codigoDevolucion = codigoFormValue.codigoDevolucion;
+      this.AsignarCodigoDevueltoSubscription = this.documentoService.asignarCodigoDevolucionCargo(documento.id, documento.codigoDevolucion).subscribe(
         documento => {
           this.notifier.notify('success', 'Se asigno el código correctamente');
           this.bsModalRef.hide();
@@ -51,6 +52,7 @@ export class AsignarCodigoCargoComponent implements OnInit {
       this.notifier.notify('error', 'Debe ingresar el código de devolución');
     }
   }
+
 
 
 

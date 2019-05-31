@@ -7,8 +7,6 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from '@angular/router';
 import { ListarDocumentosCustodiadosComponent } from './listar-documentos-custodiados/listar-documentos-custodiados.component';
 import { ConsultarDocumentosUBCPComponent } from './consultar-documentos-u-bcp/consultar-documentos-u-bcp.component';
-import { RecepcionarCargosComponent } from './recepcionar-cargos/recepcionar-cargos.component';
-import { RecepcionarDocumentosComponent } from './recepcionar-documentos/recepcionar-documentos.component';
 import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.component';
 import { ReporteDevolucionCargoComponent } from './reporte-devolucion-cargo/reporte-devolucion-cargo.component';
 import { ReporteIndicadorVolumenComponent } from './reporte-indicador-volumen/reporte-indicador-volumen.component';
@@ -24,6 +22,7 @@ import { ListarGuiasbloqueCreadasComponent } from './listar-guiasbloque-creadas/
 import { RecepcionarBloqueComponent } from './recepcionar-bloque/recepcionar-bloque.component';
 import { ReporteAutorizacionComponent } from './reporte-autorizacion/reporte-autorizacion.component';
 import { ReporteInconsistenciaComponent } from './reporte-inconsistencia/reporte-inconsistencia.component';
+import { RecepcionarDevueltosComponent } from './recepcionar-devueltos/recepcionar-devueltos.component';
 
 
 
@@ -67,14 +66,6 @@ const appRoutes: Routes = [
     {
         path: 'consultar-documentos-utd-bcp',
         component: ConsultarDocumentosUtdBcpComponent
-    },
-    {
-        path: 'recepcionar-cargos',
-        component: RecepcionarCargosComponent
-    },
-    {
-        path: 'recepcionar-documentos',
-        component: RecepcionarDocumentosComponent
     },
     {
         path: 'reporte-devolucion-cargo',
@@ -131,6 +122,10 @@ const appRoutes: Routes = [
     {
         path: 'reporte-inconsistencia',
         component: ReporteInconsistenciaComponent
+    },
+    {
+        path: 'recepcionar-devueltos',
+        component: RecepcionarDevueltosComponent
     }
 
 ]
