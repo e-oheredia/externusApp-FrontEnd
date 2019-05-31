@@ -74,6 +74,7 @@ import { TipoPeriodoService } from '../shared/tipoperiodo.service';
 import { ModificarAmbitoComponent } from '../mantenimiento/ambito/modificar-ambito/modificar-ambito.component';
 import { RecepcionarDocumentoComponent } from '../recepcionar-devueltos/recepcionar-documento/recepcionar-documento.component';
 import { TipoDevolucionService } from '../shared/tipodevolucion.service';
+import { AdjuntarCorreoComponent } from '../mantenimiento/permiso-plazo-distribucion/adjuntar-correo/adjuntar-correo.component';
 
 
 @NgModule({
@@ -106,7 +107,8 @@ import { TipoDevolucionService } from '../shared/tipodevolucion.service';
     AgregarFeriadoComponent,
     ModificarEnvioComponent,
     ModificarAmbitoComponent,
-    RecepcionarDocumentoComponent
+    RecepcionarDocumentoComponent,
+    AdjuntarCorreoComponent
   ],
   imports: [
     HttpClientModule,
@@ -197,7 +199,8 @@ import { TipoDevolucionService } from '../shared/tipodevolucion.service';
     ModificarEnvioComponent,
     ModificarAmbitoComponent,
     ModificarRegionComponent,
-    RecepcionarDocumentoComponent
+    RecepcionarDocumentoComponent,
+    AdjuntarCorreoComponent
   ],
 })
 export class LayoutModule { }

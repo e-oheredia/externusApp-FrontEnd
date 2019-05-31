@@ -9,6 +9,8 @@ import { Observable, Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { WriteExcelService } from 'src/app/shared/write-excel.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AdjuntarCorreoComponent } from './adjuntar-correo/adjuntar-correo.component';
 
 @Component({
   selector: 'app-permiso-plazo-distribucion',
@@ -22,7 +24,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     private areaService: AreaService,
     private plazoDistribucionService: PlazoDistribucionService, 
     private notifier: NotifierService,
-    private writeExcelService: WriteExcelService
+    private modalService: BsModalService,
   ) { }
 
   buzonForm: FormGroup;
@@ -74,11 +76,18 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
   }
 
   onBuzonFormSubmit(buzonForm){
-    this.buzonService.actualizarPlazoDistribucionPermitido(buzonForm.buzon.id, buzonForm.plazoDistribucion).subscribe(
-      plazoDistribucion => {
-        this.notifier.notify('success', 'Se ha asignado correctamente el plazo de distribución');
-        this.buzonForm.reset();
-        this.cargarDatosVista();
+    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarCorreoComponent, {
+      initialState: {
+        titulo: "Adjuntar correo",
+        buzon: buzonForm.buzon,
+        plazoDistribucion: buzonForm.plazoDistribucion
+      },
+      class: 'modal-md',
+      keyboard: false,
+      backdrop: "static"
+    });
+    this.modalService.onHide.subscribe(
+      () => {
       }
     )
   }
