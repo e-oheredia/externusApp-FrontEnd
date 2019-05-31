@@ -35,6 +35,8 @@ export class AmbitoComponent implements OnInit {
   ngOnInit() {
     this.generarColumnas();
     this.listarAmbitos();
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas() {

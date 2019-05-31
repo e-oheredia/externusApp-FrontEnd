@@ -37,6 +37,8 @@ export class PlazoDistribucionComponent implements OnInit {
     this.tituloService.setTitulo("Mantenimiento de plazos de distribución");
     this.generarColumnas();
     this.listarPlazosDistribucion();
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas(){

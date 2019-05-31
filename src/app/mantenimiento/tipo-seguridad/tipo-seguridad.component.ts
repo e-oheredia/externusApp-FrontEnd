@@ -37,6 +37,8 @@ export class TipoSeguridadComponent implements OnInit {
     this.tituloService.setTitulo("Mantenimiento de tipo de seguridad");
     this.generarColumnas();
     this.listarTiposSeguridad();
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas() {

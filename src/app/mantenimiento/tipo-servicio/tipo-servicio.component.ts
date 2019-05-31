@@ -37,6 +37,8 @@ export class TipoServicioComponent implements OnInit {
     this.tituloService.setTitulo("Mantenimiento de Tipo de Servicio");
     this.generarColumnas();
     this.listarTiposDeServicio();
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas() {

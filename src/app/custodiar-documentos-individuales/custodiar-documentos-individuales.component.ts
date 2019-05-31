@@ -6,6 +6,8 @@ import { DocumentoService } from '../shared/documento.service';
 import { Component, OnInit } from '@angular/core';
 import { EnvioService } from '../shared/envio.service';
 import { Envio } from '../../model/envio.model';
+import { AppSettings } from '../shared/app.settings';
+
 
 @Component({
   selector: 'app-custodiar-documentos',
@@ -24,11 +26,17 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
 
   enviosCreados: Envio[] = [];
   documentoAutogenerado: string = "";
+  settings = AppSettings.tableSettings;
 
   ngOnInit() {
 
     this.listarDocumentosIndividualesPorCustodiar();
+    
   }
+
+
+
+
 
   listarDocumentosIndividualesPorCustodiar() {
     this.envioService.listarEnviosIndividualesCreados().subscribe(

@@ -20,45 +20,17 @@
     </form>
   </div>
 </div>
-<div class="row" *ngIf="enviosMasivosCreados.length !== 0; else mensaje">
-  <div class="col">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Código</th>
-          <th scope="col">Remitente</th>
-          <th scope="col">Área</th>
-          <th scope="col">Clasificación</th>
-          <th scope="col">Tipo de Servicio</th>
-          <th scope="col">Tipo de Seguridad</th>
-          <th scope="col">Plazo de Distribución</th>
-          <th scope="col">Autorizado</th>
-          <th scope="col">Fecha de Creación</th>
-          <th scope="col">Cantidad de Documentos</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let envioMasivoCreado of enviosMasivosCreados">
-          <td scope="col">{{envioMasivoCreado.masivoAutogenerado }}</td>
-          <td scope="col">{{envioMasivoCreado.buzon.nombre}}</td>
-          <td scope="col">{{envioMasivoCreado.buzon.area.nombre}}</td>
-          <td scope="col">{{envioMasivoCreado.clasificacion.nombre}}</td>
-          <td scope="col">{{envioMasivoCreado.tipoServicio.nombre}}</td>
-          <td scope="col">{{envioMasivoCreado.tipoSeguridad.nombre}}</td>
-          <td scope="col">{{envioMasivoCreado.plazoDistribucion.nombre}}</td>
-          <td scope="col">{{envioMasivoService.getUltimoSeguimientoAutorizacion(envioMasivoCreado) ? envioMasivoService.getUltimoSeguimientoAutorizacion(envioMasivoCreado).estadoAutorizado.nombre : "APROBADA" }}</td>
-          <td scope="col">{{documentoService.getFechaCreacion(envioMasivoCreado.documentos[0])}}</td>
-          <td scope="col">{{envioMasivoCreado.documentos.length}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<br>
+
+<div *ngIf="enviosmasivo.length !== 0; else mensaje" class="center">
+  <ng2-smart-table [settings]="settings" [source]="dataEnvios"></ng2-smart-table>
 </div>
+
 <ng-template #mensaje>
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert">
-        No tienes envíos masivos a custodiar
+        No tienes envios masivos a custodiar
       </div>
     </div>
   </div>

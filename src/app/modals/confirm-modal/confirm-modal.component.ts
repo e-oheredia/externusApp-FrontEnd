@@ -13,6 +13,8 @@ export class ConfirmModalComponent implements OnInit {
   @Output() confirmarEvent = new EventEmitter();
   titulo: string;
   mensaje: string;
+  mensaje2: string;
+  mensaje3: string;
 
   ngOnInit() {
   }

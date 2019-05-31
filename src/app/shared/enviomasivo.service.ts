@@ -25,7 +25,7 @@ export class EnvioMasivoService {
     }
 
     listarEnviosMasivosCreados(){
-        return this.requester.get<Envio[]>(this.REQUEST_URL + "creados", {});
+        return this.requester.get<EnvioMasivo[]>(this.REQUEST_URL + "creados", {});
     }
     
     getUltimoSeguimientoAutorizacion(envio: EnvioMasivo): SeguimientoAutorizacion {

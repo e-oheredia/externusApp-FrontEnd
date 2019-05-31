@@ -6,6 +6,9 @@ import { DocumentoService } from '../shared/documento.service';
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from '../shared/utils.service';
 import { NotifierService } from 'angular-notifier';
+import { AppSettings } from '../shared/app.settings';
+import { LocalDataSource } from 'ng2-smart-table';
+import { EnvioMasivo } from '../../model/enviomasivo.model';
 
 @Component({
   selector: 'app-custodiar-envios-masivos',
@@ -24,13 +27,84 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
     private utilsService: UtilsService,
     private notifier: NotifierService
   ) { }
-
+  dataEnvios: LocalDataSource = new LocalDataSource();
   enviosMasivosCreados = [];
   masivoAutogenerado = "";
-
+  settings = AppSettings.tableSettings;
+  enviosmasivo: EnvioMasivo[] = [];
+  envio:EnvioMasivo;
   ngOnInit() {
-    this.listarEnviosMasivosPorCustodiar();
+    this.generarColumnas(),
+    this.listarSinCustodiar(),
+    this.listarEnviosMasivosPorCustodiar(),
+    this.settings.hideSubHeader = false  
   }
+
+
+  generarColumnas() {
+    this.settings.columns = {
+      codigo: {
+        title: 'Código'
+      },
+      remitente: {
+        title: 'Remitente'
+      },
+      area: {
+        title: 'Área'
+      },
+      clasificación: {
+        title: 'Clasificación'
+      },
+      servicio: {
+        title: 'Tipo de Servicio'
+      },
+      seguridad: {
+        title: 'Tipo de Seguridad'
+      },
+      distribucion: {
+        title: 'Plazo de Distribución'
+      },          
+      autorizado: {
+        title: 'Autorizado'
+      },  
+      fecha: {
+        title: 'Fecha de creación'
+      },
+      cantidad:{
+        title: 'Cantidad de Documentos'
+      }          
+    }
+  }
+
+
+  listarSinCustodiar(){
+    this.dataEnvios.reset();
+    this.envioMasivoService.listarEnviosMasivosCreados().subscribe(
+      enviosmasivo => {
+        this.enviosmasivo = enviosmasivo;
+        let dataEnvios = [];
+        enviosmasivo.forEach(
+          envio => {
+            dataEnvios.push({
+              codigo: envio.masivoAutogenerado, 
+              remitente: envio.buzon.nombre ,
+              area: envio.buzon.area.nombre ,
+              clasificación:envio.clasificacion.nombre ,
+              servicio: envio.tipoServicio.nombre ,
+              seguridad: envio.tipoSeguridad.nombre,
+              distribucion: envio.plazoDistribucion.nombre ,
+              autorizado: this.envioMasivoService.getUltimoSeguimientoAutorizacion(envio) ? this.envioMasivoService.getUltimoSeguimientoAutorizacion(envio).estadoAutorizado.nombre : "APROBADA",
+              fecha: this.documentoService.getFechaCreacion(envio.documentos[0]),
+              cantidad:envio.documentos.length
+            })
+          }
+        )
+        this.dataEnvios.load(dataEnvios);
+      }
+    )
+  }
+
+
 
   listarEnviosMasivosPorCustodiar() {
     this.envioMasivoService.listarEnviosMasivosCreados().subscribe(
@@ -61,7 +135,7 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
 
     bsModalRef.content.todosDocumentosCustodiadosEvent.subscribe(
       () => {
-        this.listarEnviosMasivosPorCustodiar();
+        this.listarSinCustodiar();
       }
     );
   }

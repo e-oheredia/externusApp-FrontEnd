@@ -48,7 +48,7 @@
 
           </div>
 
-          <div *ngIf="envios == null || envios.length !== 0  ; else mensaje">
+          <div *ngIf="envios.length !== 0  ; else mensaje">
             <ng2-smart-table [settings]="settings" [source]="dataEnvios"></ng2-smart-table>
           </div>
           

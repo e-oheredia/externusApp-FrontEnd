@@ -64,20 +64,20 @@
                 <thead>
                   <tr>
                     <th scope="col">Indicador</th>
-                    <th scope="col">General</th>
                     <th scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
+                    <th scope="col">General</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td scope="col">Dentro de Plazo</td>
-                    <td scope="col">{{getPorcentajeDentroPlazoPorProveedor() | number: '1.1-1'}}%</td>
                     <td scope="col" *ngFor="let proveedor of proveedores">{{getPorcentajeDentroPlazoPorProveedor(proveedor) | number: '1.1-1'}}%</td>
+                    <td scope="col">{{getPorcentajeDentroPlazoPorProveedor() | number: '1.1-1'}}%</td>
                   </tr>
                   <tr>
                     <td scope="col">Fuera de Plazo</td>
-                    <td scope="col">{{getPorcentajeFueraPlazoPorProveedor() | number: '1.1-1'}}%</td>
                     <td scope="col" *ngFor="let proveedor of proveedores">{{getPorcentajeFueraPlazoPorProveedor(proveedor) | number: '1.1-1'}}%</td>
+                    <td scope="col">{{getPorcentajeFueraPlazoPorProveedor() | number: '1.1-1'}}%</td>
                   </tr>
                 </tbody>
               </table>
@@ -109,16 +109,20 @@
                   <tr>
                     <th scope="col">Indicador</th>
                     <th scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{plazoDistribucion.nombre}}</th>
+                    <th scope="col">General</th>
+
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td scope="col">Dentro de Plazo</td>
                     <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) | number: '1.1-1'}}%</td>
+                    
                   </tr>
                   <tr>
                     <td scope="col">Fuera de Plazo</td>
                     <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) | number: '1.1-1'}}%</td>
+                  
                   </tr>
                 </tbody>
               </table>
