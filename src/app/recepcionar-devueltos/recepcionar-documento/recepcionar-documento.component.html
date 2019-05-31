@@ -1,0 +1,69 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h4>Recepcionar documento</h4>
+  </div>
+
+  <form [formGroup]="recepcionarForm" (ngSubmit)=onSubmit(recepcionarForm.value)>
+
+    <div class="card-body">
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="autogenerado">Autogenerado</label>
+            <input class="form-control" type="text" name="autogenerado" id="autogenerado" formControlName="autogenerado" disabled>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <input class="form-control" type="text" name="estado" id="estado" formControlName="estado" disabled>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="motivo">Motivo</label>
+            <input class="form-control" type="text" name="motivo" id="motivo" formControlName="motivo" disabled>
+          </div>
+        </div>
+      </div>
+
+<!--  -->
+
+<div class="form-row">
+  <div class="col">
+    <div formArrayName="devoluciones">
+      <label for="devolucion">Devoluciones</label>
+      <div class="form-group"
+        *ngFor="let tipoDevolucionControl of recepcionarForm.get('devoluciones').controls; let i = index">
+        <div class="form-check">
+          <input name="devolucionesDocumento" type="checkbox" class="form-check-input"
+            [formControl]="tipoDevolucionControl"
+            (change)="onChangeTipoDevolucionElegida($event, tiposDevolucion[i])">
+          <label class="form-check-label">{{tiposDevolucion[i].nombre}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--  -->
+
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Asignar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

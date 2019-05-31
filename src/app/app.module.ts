@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
 import { ConsultarDocumentosUBCPModule } from './consultar-documentos-u-bcp/consultar-documentos-u-bcp.module';
-import { RecepcionarDocumentosModule } from './recepcionar-documentos/recepcionar-documentos.module';
 import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
 
 import { ReporteEficaciaModule } from './reporte-eficacia/reporte-eficacia.module';
@@ -25,13 +24,13 @@ import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-m
 import { ReporteIndicadorEfectividadModule } from './reporte-indicador-efectividad/reporte-indicador-efectividad.module';
 import { ReporteIndicadorEficienciaModule } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.module';
 import { CambiarEstadoModule } from './cambiar-estado/cambiar-estado.module';
-import { RecepcionarCargosModule } from './recepcionar-cargos/recepcionar-cargos.module';
 import { ReporteGuiasModule } from './reporte-guias/reporte-guias.module';
 import { ProcesarGuiasModule } from './procesar-guias/procesar-guias.module';
 import { ListarGuiasbloqueCreadasModule } from './listar-guiasbloque-creadas/listar-guiasbloque-creadas.module';
 import { RecepcionarBloqueModule } from './recepcionar-bloque/recepcionar-bloque.module';
 import { ReporteAutorizacionModule } from './reporte-autorizacion/reporte-autorizacion.module';
 import { ReporteInconsistenciaModule } from './reporte-inconsistencia/reporte-inconsistencia.module';
+import { RecepcionarDevueltosModule } from './recepcionar-devueltos/recepcionar-devueltos.module';
 
 
 
@@ -60,14 +59,13 @@ import { ReporteInconsistenciaModule } from './reporte-inconsistencia/reporte-in
     ReporteIndicadorEfectividadModule,
     ReporteIndicadorEficienciaModule,
     CambiarEstadoModule,
-    RecepcionarCargosModule,
-    RecepcionarDocumentosModule,
     ReporteGuiasModule,
     ProcesarGuiasModule,
     ListarGuiasbloqueCreadasModule,
     RecepcionarBloqueModule,
     ReporteAutorizacionModule,
-    ReporteInconsistenciaModule
+    ReporteInconsistenciaModule,
+    RecepcionarDevueltosModule
   ],
   providers: [],
   bootstrap: [AppComponent]

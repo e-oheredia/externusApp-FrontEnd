@@ -72,6 +72,8 @@ import { ModificarRegionComponent } from '../mantenimiento/dias-laborables/modif
 import { AgregarAmbitoComponent } from '../mantenimiento/ambito/agregar-ambito/agregar-ambito.component';
 import { TipoPeriodoService } from '../shared/tipoperiodo.service';
 import { ModificarAmbitoComponent } from '../mantenimiento/ambito/modificar-ambito/modificar-ambito.component';
+import { RecepcionarDocumentoComponent } from '../recepcionar-devueltos/recepcionar-documento/recepcionar-documento.component';
+import { TipoDevolucionService } from '../shared/tipodevolucion.service';
 
 
 @NgModule({
@@ -104,6 +106,7 @@ import { ModificarAmbitoComponent } from '../mantenimiento/ambito/modificar-ambi
     AgregarFeriadoComponent,
     ModificarEnvioComponent,
     ModificarAmbitoComponent,
+    RecepcionarDocumentoComponent
   ],
   imports: [
     HttpClientModule,
@@ -164,7 +167,8 @@ import { ModificarAmbitoComponent } from '../mantenimiento/ambito/modificar-ambi
     EnvioBloqueService,
     DiaLaborableService,
     FeriadoService,
-    TipoPeriodoService
+    TipoPeriodoService,
+    TipoDevolucionService
   ],
   entryComponents: [
     ConfirmModalComponent,
@@ -192,7 +196,8 @@ import { ModificarAmbitoComponent } from '../mantenimiento/ambito/modificar-ambi
     AgregarFeriadoComponent,
     ModificarEnvioComponent,
     ModificarAmbitoComponent,
-    ModificarRegionComponent
+    ModificarRegionComponent,
+    RecepcionarDocumentoComponent
   ],
 })
 export class LayoutModule { }

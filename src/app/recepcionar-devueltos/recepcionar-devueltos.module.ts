@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RecepcionarDevueltosComponent } from './recepcionar-devueltos.component';
 import { TableManagementModule } from '../table-management/table-management.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { RecepcionarCargosComponent } from './recepcionar-cargos.component';
-import { AsignarCodigoCargoComponent } from './asignar-codigo/asignar-codigo.component';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
+import { AsignarCodigoDevolucionComponent } from './asignar-codigo/asignar-codigo.component';
 
 @NgModule({
   imports: [
@@ -18,12 +18,12 @@ import { ButtonViewComponent } from '../table-management/button-view/button-view
     NgSelectModule
   ],
   declarations: [
-    RecepcionarCargosComponent,
-    AsignarCodigoCargoComponent
+    RecepcionarDevueltosComponent,
+    AsignarCodigoDevolucionComponent
   ],
   entryComponents: [
     ButtonViewComponent,
-    AsignarCodigoCargoComponent
+    AsignarCodigoDevolucionComponent
   ]
 })
-export class RecepcionarCargosModule { }
+export class RecepcionarDevueltosModule { }
