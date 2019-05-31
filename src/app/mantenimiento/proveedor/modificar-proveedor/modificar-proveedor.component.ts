@@ -31,7 +31,6 @@ export class ModificarProveedorComponent implements OnInit {
   @Output() confirmarEvent = new EventEmitter();
 
   proveedor: Proveedor;
-  proveedores: Proveedor[] = [];
   modificarForm: FormGroup;
   plazosDistribucion:  PlazoDistribucion[];
   plazosDistribucionElegidos: PlazoDistribucion[];

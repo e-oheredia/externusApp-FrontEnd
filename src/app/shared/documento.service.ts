@@ -271,6 +271,10 @@ export class DocumentoService {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "pordevolver", {});
     }
 
+    listarDocumentosConResultadosYRecepcionados(): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosrecepcion", {});
+    }
+
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
@@ -322,10 +326,23 @@ export class DocumentoService {
         return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcioncargo", {}, {});
     }
 
-    recepcionarDocumento(codigo: number): Observable<Documento> {
-        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/" + "recepciondevueltos", {}, {});
+
+    //actual - modal
+    eleccionDevolucionesDocumento(codigo: number): Observable<Documento[]> {
+        return this.requesterService.get<Documento[]>(this.REQUEST_URL + codigo + "/listarecepcion", {});
     }
 
+    //actual - setear
+    recepcionarDocumento(codigo: number, tiposDevolucion: TipoDevolucion[]): Observable<Documento> {
+        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcion", tiposDevolucion, {});
+    }
+
+    //luego se debe eliminar
+    recepcionarDocumentos(codigo: number): Observable<Documento> {
+        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcion", {}, {});
+    }
+
+    
     listarCargos(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentoscargos", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }

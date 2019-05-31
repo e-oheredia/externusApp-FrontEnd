@@ -1,4 +1,5 @@
 import { MotivoEstado } from "./motivoestado.model";
+import { TipoDevolucion } from "./tipodevolucion.model";
 
 export class EstadoDocumento {
 
@@ -9,4 +10,5 @@ export class EstadoDocumento {
 
     public estadosDocumentoPermitidos: EstadoDocumento[];
     public motivos: MotivoEstado[];
+    public tiposDevolucion: TipoDevolucion[];    
 }
