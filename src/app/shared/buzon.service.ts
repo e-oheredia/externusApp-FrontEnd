@@ -46,11 +46,12 @@ export class BuzonService {
 
     public actualizarPlazoDistribucionPermitido(buzonId: number, plazoDistribucionPermitido: PlazoDistribucion, file: File): Observable<PlazoDistribucion> {
         let form: FormData = new FormData;
-        form.append("plazoDistribucion", JSON.stringify(plazoDistribucionPermitido));
+        form.append("plazoDistribucion", new Blob([JSON.stringify(plazoDistribucionPermitido)], 
+                                                    {type:"application/json"}));
+
         if (file !== null && file != undefined) {
             form.append("file", file);
         }
-        console.log(form)
         return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + buzonId.toString() + "/plazosdistribucion", form, {});
     }
 
