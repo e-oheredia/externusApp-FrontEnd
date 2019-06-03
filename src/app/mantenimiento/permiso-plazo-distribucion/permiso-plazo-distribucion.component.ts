@@ -20,9 +20,9 @@ import { AdjuntarCorreoComponent } from './adjuntar-correo/adjuntar-correo.compo
 export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
 
   constructor(
-    private buzonService: BuzonService, 
+    private buzonService: BuzonService,
     private areaService: AreaService,
-    private plazoDistribucionService: PlazoDistribucionService, 
+    private plazoDistribucionService: PlazoDistribucionService,
     private notifier: NotifierService,
     private modalService: BsModalService,
   ) { }
@@ -41,8 +41,8 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
   plazoDistribucion: PlazoDistribucion;
   plazosDistribucion: PlazoDistribucion[];
 
-  plazosDistribucionSubscription: Subscription = new Subscription(); 
-  buzonPlazoDistribucionSubscripcion: Subscription = new Subscription(); 
+  plazosDistribucionSubscription: Subscription = new Subscription();
+  buzonPlazoDistribucionSubscripcion: Subscription = new Subscription();
   areaPlazoDistribucionSubscripcion: Subscription = new Subscription();
 
   ngOnInit() {
@@ -57,7 +57,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     })
   }
 
-  cargarDatosVista(){
+  cargarDatosVista() {
 
     this.areasObservable = this.areaService.listarAreasAll(); //jala de bd en la 1ra
     this.areaService.listarAreasAll().subscribe(areas => { //cuando cambia
@@ -75,10 +75,11 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     })
   }
 
-  onBuzonFormSubmit(buzonForm){
+  onBuzonFormSubmit(buzonForm) {
     let bsModalRef: BsModalRef = this.modalService.show(AdjuntarCorreoComponent, {
       initialState: {
-        titulo: "Adjuntar correo",
+        valor: "buzon",
+        titulo: "Adjuntar correo buzón",
         buzon: buzonForm.buzon,
         plazoDistribucion: buzonForm.plazoDistribucion
       },
@@ -88,39 +89,49 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     });
     this.modalService.onHide.subscribe(
       () => {
+        this.buzonForm.reset();
       }
     )
   }
 
-  onAreaFormSubmit(areaForm){
-    this.areaService.actualizarPlazoDistribucionPermitido(areaForm.area.id, areaForm.plazoDistribucion).subscribe(
-      plazoDistribucion => {
-        this.notifier.notify('success', 'Se ha asignado correctamente el plazo de distribución');
+  onAreaFormSubmit(areaForm) {
+    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarCorreoComponent, {
+      initialState: {
+        valor: "area",
+        titulo: "Adjuntar correo área",
+        area: areaForm.area,
+        plazoDistribucion: areaForm.plazoDistribucion
+      },
+      class: 'modal-md',
+      keyboard: false,
+      backdrop: "static"
+    });
+    this.modalService.onHide.subscribe(
+      () => {
         this.areaForm.reset();
-        this.cargarDatosVista();
       }
     )
   }
 
-  onBuzonChange(){
+  onBuzonChange() {
     if (this.buzonForm.get('buzon').value === null) {
       this.buzonForm.controls['plazoDistribucion'].setValue(null);
-      return;      
+      return;
     }
     this.buzonPlazoDistribucionSubscripcion = this.plazoDistribucionService.listarPlazoDistribucionPermititoByBuzonId(this.buzonForm.get('buzon').value.id).subscribe(
       buzonPlazoDistribucion =>
-      this.buzonForm.controls['plazoDistribucion'].setValue(this.plazosDistribucion.find(plazoDistribucion => plazoDistribucion.id === buzonPlazoDistribucion.plazoDistribucion.id))
+        this.buzonForm.controls['plazoDistribucion'].setValue(this.plazosDistribucion.find(plazoDistribucion => plazoDistribucion.id === buzonPlazoDistribucion.plazoDistribucion.id))
     )
   }
 
-  onAreaChange(){
+  onAreaChange() {
     if (this.areaForm.get('area').value === null) {
       this.areaForm.controls['plazoDistribucion'].setValue(null);
-      return;      
+      return;
     }
     this.areaPlazoDistribucionSubscripcion = this.plazoDistribucionService.listarPlazoDistribucionPermititoByAreaId(this.areaForm.get('area').value.id).subscribe(
       buzonPlazoDistribucion =>
-      this.areaForm.controls['plazoDistribucion'].setValue(this.plazosDistribucion.find(plazoDistribucion => plazoDistribucion.id === buzonPlazoDistribucion.plazoDistribucion.id))
+        this.areaForm.controls['plazoDistribucion'].setValue(this.plazosDistribucion.find(plazoDistribucion => plazoDistribucion.id === buzonPlazoDistribucion.plazoDistribucion.id))
     )
   }
 
@@ -132,7 +143,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
   exportarPorArea() {
     this.areaService.exportarPermisosDePlazosPorArea(this.areas)
   }
-  
+
 
   ngOnDestroy() {
     this.plazosDistribucionSubscription.unsubscribe();
@@ -140,5 +151,5 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     this.buzonPlazoDistribucionSubscripcion.unsubscribe();
   }
 
-  
+
 }
