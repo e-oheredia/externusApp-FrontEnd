@@ -744,6 +744,22 @@ export class DocumentoService {
         this.writeExcelService.jsonToExcel(objects, "Inconsistencias de Resultados: ");
     }
 
+    exportarDevoluciones(documentos) {
+        let objects = [];
+        documentos.forEach(documento => {
+            objects.push({
+                "Autogenerado": documento.documentoAutogenerado,
+                "Remitente": documento.envio.buzon.nombre,
+                "Área del remitente": documento.envio.buzon.area.nombre,
+                "Fecha de entrega":  this.getSeguimientoDocumentoByEstadoId(documento, 4) ? this.getSeguimientoDocumentoByEstadoId(documento, 4).fecha : this.getSeguimientoDocumentoByEstadoId(documento, 5) ? this.getSeguimientoDocumentoByEstadoId(documento, 5).fecha : "sin fecha",
+                "Estado": this.getUltimoEstado(documento).nombre,
+                "Motivo": this.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
+                "Físicos devueltos": documento.tiposDevolucion.sort((a,b) => a.id - b.id).map(tipoDevolucion => tipoDevolucion.nombre).join(", ")
+            })
+        });
+        this.writeExcelService.jsonToExcel(objects, "Documentos por cerrar");
+    }
+
 
 
 

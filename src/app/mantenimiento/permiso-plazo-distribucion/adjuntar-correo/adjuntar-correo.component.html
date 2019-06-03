@@ -1,0 +1,28 @@
+<div class="card">
+
+  <div class="modal-header">
+    <h4>Adjuntar correo</h4>
+  </div>
+
+  <form [formGroup]="correoForm" (ngSubmit)=onSubmit(archivoAdjunto)>
+
+    <div class="card-body">
+
+      <div class="col-md-12">
+        <label for="archivoAdjunto" style="display:inline;">Autorización: </label>
+        <p></p>
+        <input type="file" class="form-control-file" id="archivoAdjunto"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="onChangeExcelFile($event.srcElement.files[0])" formControlName="archivoAdjunto">
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success" [disabled]="!correoForm.valid">Agregar</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
+    </div>
+
+  </form>
+
+</div>

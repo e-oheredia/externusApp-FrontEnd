@@ -98,7 +98,7 @@ export class RecepcionarDevueltosComponent implements OnInit {
               autogenerado: documento.documentoAutogenerado,
               remitente: documento.envio.buzon.nombre,
               area: documento.envio.buzon.area.nombre,
-              fechaEntrega: this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5).fecha : this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 6) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 6).fecha : "sin fecha",
+              fechaEntrega: this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha : this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5).fecha : "sin fecha",
               estado: this.documentoService.getUltimoEstado(documento).nombre,
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
               fisicosDevueltos: documento.tiposDevolucion.sort((a,b) => a.id - b.id).map(tipoDevolucion => tipoDevolucion.nombre).join(", ")
@@ -165,7 +165,9 @@ export class RecepcionarDevueltosComponent implements OnInit {
   }
 
 
-
+  exportar(){
+    this.documentoService.exportarDevoluciones(this.documentos)
+  }
 
 
 
