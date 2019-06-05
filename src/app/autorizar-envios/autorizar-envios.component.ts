@@ -38,6 +38,8 @@ export class AutorizarEnviosComponent implements OnInit {
   ngOnInit() {
     this.generarColumnas();
     this.listarEnviosNoAutorizados();
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas() {
