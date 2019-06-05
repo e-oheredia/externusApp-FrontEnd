@@ -13,6 +13,7 @@ import { PlazoDistribucionService } from '../shared/plazodistribucion.service';
 import { Sede } from 'src/model/sede.model';
 import { SedeDespachoService } from '../shared/sededespacho.service';
 import { Envio } from 'src/model/envio.model';
+import * as moment from "moment-timezone";
 
 @Component({
     selector: 'app-reporte-mensual-volumen',
@@ -35,15 +36,17 @@ export class ReporteMensualVolumenComponent implements OnInit {
     plazos: PlazoDistribucion[];
     envios: Envio;
     sedesDespacho: Sede[];
-    proveedores: Proveedor[];
+    proveedores: Proveedor[]=[];
     documentos: Documento[] = [];
     // reportesEficienciaPorPlazoDistribucion: any = {};
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
+    data: any[] = [];
     dataSource: any[];
     dataSource2: any[];
     dataSource3: any[];
-
+    _postsArray: Array<any> = [];
+    private _sumagoblal: number = 0;
 
     ngOnInit() {
         this.documentoForm = new FormGroup({
@@ -54,10 +57,25 @@ export class ReporteMensualVolumenComponent implements OnInit {
         this.proveedores = this.proveedorService.getProveedores();
 
         this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
-
+        
         this.proveedorService.proveedoresChanged.subscribe(
             proveedores => {
                 this.proveedores = proveedores;
+
+                this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
+                    console.log(data);
+                    Object.keys(data).forEach(key => {
+                        var obj1 = data[key];
+                        console.log('key is ' + key);
+                        Object.keys(obj1).forEach(key1 => {
+                            console.log('key inner is ' + key1 + ' val is ' + obj1[key1]);
+                            this._postsArray.push({ k: key, l: key1, m: obj1[key1] });
+                        })
+                    });
+                    console.log('array is ' + this._postsArray.toString());
+
+                });
+
             }
         )
 
@@ -78,7 +96,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
-            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
+            /*this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
                 documentos => {
 
                     this.documentos = documentos;
@@ -86,6 +104,13 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     this.llenarDataSource2(documentos);
                     this.llenarDatasource3(documentos);
 
+                },*/
+            this.documentoService.getPosts( fechaIni,fechaFin  ).subscribe(
+                (data: any) => {
+                    this.data=data;
+                    this.llenarDataSource(data);
+                    //this.llenarDataSource2(data);
+                    //this.llenarDatasource3(data);
                 },
                 error => {
                     if (error.status === 400) {
@@ -98,13 +123,13 @@ export class ReporteMensualVolumenComponent implements OnInit {
         else {
             this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
-        
+
         console.log(this.proveedores);
         console.log(this.sedesDespacho);
     }
 
 
-    llenarDataSource(documentos: Documento[]) {
+    llenarDataSource(data) {
         this.dataSource = [];
 
         this.proveedores.forEach(
@@ -114,12 +139,18 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     cantidad: 0
                 };
                 reporteProveedor.proveedor = proveedor.nombre;
-                reporteProveedor.cantidad = documentos.filter(
-                    documento =>
-                        documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
+                Object.keys(data).forEach(key => {
+                    var obj1 = data[key];
+                    if (proveedor.id === parseInt(key)){
+                        Object.keys(obj1).forEach(key1 => {
+                            if (key1 == "porcentaje") {
+                                reporteProveedor.cantidad = obj1[key1];
+                            }
+                        });
+                    }
+                });
                 this.dataSource.push(reporteProveedor);
-            }
-        )
+            });
     }
 
     llenarDataSource2(documentos: Documento[]) {
@@ -139,17 +170,17 @@ export class ReporteMensualVolumenComponent implements OnInit {
             }
         )
 
+
+    }
         // let reporteSede = {
         //     sede: 'La Molina',
         //     cantidad: 0
         // };
         // reporteSede.cantidad = documentos.length;
         // this.dataSource2.push(reporteSede);
-    }
 
 
-
-    llenarDatasource3(documentos: Documento[]) {
+/*     llenarDatasource3(documentos: Documento[]) {
         this.dataSource3 = [];
         this.proveedores.forEach(
             proveedor => {
@@ -159,7 +190,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         let graficoPorProveedorObjeto = {
                             plazo: plazoDistribucion.tiempoEnvio + ' H',
                             cantidad: documentos.filter(documento =>
-                                documento.documentosGuia[0].guia.proveedor.id===proveedor.id &&
+                                documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
                                 documento.envio.plazoDistribucion.id === plazoDistribucion.id).length
                         }
                         graficoPorProveedor.push(graficoPorProveedorObjeto);
@@ -168,18 +199,42 @@ export class ReporteMensualVolumenComponent implements OnInit {
             }
         )
 
-    }
+    } */
 
 
     porcentajeAsignado(proveedor) {
-        var porcentaje = 100;
-        var total = this.documentos.length;
-        var courierDoc = this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
-        var numero = (courierDoc * porcentaje) / total
-        var final = numero.toFixed(1);
-        return final +'%';
+        var a = 0;
+        //this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
+            Object.keys(this.data).forEach(key => {
+            if(proveedor.id===parseInt(key)){
+                var obj1 = this.data[key];
+                Object.keys(obj1).forEach(key1 => {
+                    if (key1 == "cantidad") {
+                        a = obj1[key1];
+                    }
+                });
+            }
+            });
+        //});
+        var numero = a;
+        var final = numero;
+        return final;
     }
 
+    sumaporproveedor(){
+        var a = 0;
+        Object.keys(this.data).forEach(key => {
+                var obj1 = this.data[key];
+                Object.keys(obj1).forEach(key1 => {
+                    if (key1 == "cantidad") {
+                        a = a +obj1[key1];
+                    }
+                });
+            });
+        var numero = a;
+        var final = numero;
+        return final;
+    }
 
     ngOnDestroy() {
         this.documentosSubscription.unsubscribe();
@@ -220,8 +275,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
                             formatFunction: (value: any) => {
                                 if (isNaN(value))
                                     return value;
-                                return parseFloat(value);
-                                // return parseFloat(value) + '%';
+                                //return parseFloat(value);
+                                 return parseFloat(value) + '%';
                             },
                         }
                     ]
@@ -304,7 +359,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 series.push({
                     dataField: keys[0],
                     displayText: data[keys[0]],
-                    showLabels:true
+                    showLabels: true
                 })
             } else {
                 series.push({
@@ -316,7 +371,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         }
                         return '#55CC55';
                     },
-                    showLabels:true
+                    showLabels: true
                 })
             }
         });
@@ -329,7 +384,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 series: series,
                 columnsMinWidth: 20,
                 columnsMaxWidth: 30,
-             }
+            }
         ]
     }
 
