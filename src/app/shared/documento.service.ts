@@ -16,7 +16,7 @@ import { Subscription, Observable } from "rxjs";
 import { Provincia } from '../../model/provincia.model';
 import * as moment from 'moment-timezone';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
-import { HttpParams } from '@angular/common/http';
+import { HttpParams, HttpClient } from '@angular/common/http';
 import { BuzonService } from './buzon.service';
 import { Proveedor } from '../../model/proveedor.model';
 import { DocumentoGuia } from 'src/model/documentoguia.model';
@@ -44,7 +44,8 @@ export class DocumentoService {
         private requesterService: RequesterService,
         private estadoDocumentoService: EstadoDocumentoService,
         private buzonService: BuzonService,
-        private writeExcelService: WriteExcelService
+        private writeExcelService: WriteExcelService,
+        private http: HttpClient
     ) {
         this.departamentosPeruSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
             departamentosPeru => {
@@ -277,6 +278,10 @@ export class DocumentoService {
 
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
+    }
+
+    getPosts(fechaini: Date, fechafin: Date): any {
+        return this.requesterService.get(AppSettings.API_ENDPOINT  +'reportes/volumen/curier', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
     listarDocumentosUtdBCPCodigo(codigo: string) {
