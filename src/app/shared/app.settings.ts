@@ -31,6 +31,7 @@ export class AppSettings {
     public static MOTIVO_ESTADO_DOCUMENTO_URL = "motivosestados/";
     public static TIPO_ESTADO_DOCUMENTO_URL = "tiposestadodocumento/";
     public static MENU_URL = "menus/";
+    public static REPORTE_URL="eficiencia/"
 
     /** ARCHIVOS */
 
