@@ -75,6 +75,7 @@ import { ModificarAmbitoComponent } from '../mantenimiento/ambito/modificar-ambi
 import { RecepcionarDocumentoComponent } from '../recepcionar-devueltos/recepcionar-documento/recepcionar-documento.component';
 import { TipoDevolucionService } from '../shared/tipodevolucion.service';
 import { AdjuntarCorreoComponent } from '../mantenimiento/permiso-plazo-distribucion/adjuntar-correo/adjuntar-correo.component';
+import { ReporteService } from '../shared/reporte.service';
 
 
 @NgModule({
@@ -170,7 +171,8 @@ import { AdjuntarCorreoComponent } from '../mantenimiento/permiso-plazo-distribu
     DiaLaborableService,
     FeriadoService,
     TipoPeriodoService,
-    TipoDevolucionService
+    TipoDevolucionService,
+    ReporteService
   ],
   entryComponents: [
     ConfirmModalComponent,
