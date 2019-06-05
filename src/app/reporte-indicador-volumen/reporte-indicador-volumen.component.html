@@ -73,12 +73,10 @@
           </div>
         </div>
       </div>
-    </div>
 
 
 
 
-    <div class="card mb-4">
       <div class="card-body">
         <div class="row">
           <div class="col">
@@ -86,13 +84,13 @@
               <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                       <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td scope=col>TOTAL</td>
+                      <td scope=col>DOCUMENTOS</td>
                       <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
                     </tr>
                   </tbody>

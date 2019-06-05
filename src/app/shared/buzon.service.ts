@@ -16,7 +16,7 @@ export class BuzonService {
     constructor(
         private requester: RequesterService,
         private writeExcelService: WriteExcelService
-        ) { }
+    ) { }
 
     public buzonActualChanged = new Subject<Buzon>();
     private buzonesEmpleadoAutenticado: Buzon[];
@@ -43,12 +43,31 @@ export class BuzonService {
         return this.requester.get<Buzon[]>(this.REQUEST_URL, {});
     }
 
-    public actualizarPlazoDistribucionPermitido(buzonId: number, plazoDistribucionPermitido: PlazoDistribucion): Observable<PlazoDistribucion> {
-        return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + buzonId.toString() + "/plazosdistribucion", plazoDistribucionPermitido, {});
+
+    public actualizarPlazoDistribucionPermitido(buzonId: number, plazoDistribucionPermitido: PlazoDistribucion, file: File): Observable<PlazoDistribucion> {
+        let form: FormData = new FormData;
+        form.append("plazoDistribucion", new Blob([JSON.stringify(plazoDistribucionPermitido)],
+            { type: "application/json" }));
+
+        if (file !== null && file != undefined) {
+            form.append("file", file);
+        }
+        return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + buzonId.toString() + "/plazosdistribucion", form, {});
     }
 
-    listarPermisosPorBuzon(buzon): Observable<Buzon[]>{
-        return this.requester.get<Buzon[]>(this.REQUEST_URL + "" , {})
+
+    // actualizarPlazoDistribucionPermitido(buzonId: number, plazoDistribucionPermitido: PlazoDistribucion, file: File): Observable<PlazoDistribucion> {
+    //     let form: FormData = new FormData;
+    //     form.append("buzonId", JSON.stringify(buzonId.toString()));
+    //     form.append("plazoDistribucion", JSON.stringify(plazoDistribucionPermitido));
+    //     if(file !== null && file != undefined){
+    //         form.append("file", file);
+    //     }
+    //     return this.requester.put<PlazoDistribucion>(this.REQUEST_URL, form, {});
+    // }
+
+    listarPermisosPorBuzon(buzon): Observable<Buzon[]> {
+        return this.requester.get<Buzon[]>(this.REQUEST_URL + "", {})
     }
 
     exportarPermisosDePlazosPorBuzon(buzones) {
@@ -58,7 +77,7 @@ export class BuzonService {
                 "Usuario": buzon.nombre,
                 "Área": buzon.area.nombre,
                 "Sede": buzon.area.sede.nombre,
-                "Plazos" : buzon.plazoDistribucionPermitido ? buzon.plazoDistribucionPermitido.nombre : "-"
+                "Plazos": buzon.plazoDistribucionPermitido ? buzon.plazoDistribucionPermitido.nombre : "-"
                 // "Plazos": this.listarPermisosPorBuzon(buzon).map(permisos => permisos.nombre).join(", ")
                 // "Plazos" : this.listarBuzonesAll()
             })

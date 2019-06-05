@@ -15,14 +15,26 @@ export class AreaService {
     constructor(
         private requester: RequesterService,
         private writeExcelService: WriteExcelService
-        ) { }
+    ) { }
 
     listarAreasAll(): Observable<Area[]> {
         return this.requester.get<Area[]>(this.REQUEST_URL, {});
     }
 
-    public actualizarPlazoDistribucionPermitido(areaId: number, plazoDistribucionPermitido: PlazoDistribucion): Observable<PlazoDistribucion> {
-        return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + areaId.toString() + "/plazosdistribucion", plazoDistribucionPermitido, {});
+
+    // public actualizarPlazoDistribucionPermitido(areaId: number, plazoDistribucionPermitido: PlazoDistribucion): Observable<PlazoDistribucion> {
+    //     return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + areaId.toString() + "/plazosdistribucion", plazoDistribucionPermitido, {});
+    // }
+
+    public actualizarPlazoDistribucionPermitido(areaId: number, plazoDistribucionPermitido: PlazoDistribucion, file: File): Observable<PlazoDistribucion> {
+        let form: FormData = new FormData;
+        form.append("plazoDistribucion", new Blob([JSON.stringify(plazoDistribucionPermitido)],
+            { type: "application/json" }));
+
+        if (file !== null && file != undefined) {
+            form.append("file", file);
+        }
+        return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + areaId.toString() + "/plazosdistribucion", form, {});
     }
 
     exportarPermisosDePlazosPorArea(areas) {

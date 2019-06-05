@@ -38,12 +38,12 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creadosbloque", {});
     }
 
-    listarGuiaPorCodigo(codigo: string): Observable<Guia>{
-        return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString())});
+    listarGuiaPorCodigo(codigo: string, verificador:number): Observable<Guia>{
+        return this.requester.get<Guia>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('numeroGuia', codigo.toString()).append('verificador',verificador.toString())});
     }
 
-    listarGuiasPorFechas(fechaini: Date, fechafin: Date){
-        return this.requester.get<Guia[]>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    listarGuiasPorFechas(fechaini: Date, fechafin: Date, verificador:number){
+        return this.requester.get<Guia[]>(this.REQUEST_URL + "reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('verificador',verificador.toString()) });
     }
     
     //DEVOLUCION
