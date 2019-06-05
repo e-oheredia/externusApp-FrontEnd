@@ -39,7 +39,7 @@
         </form>
       </div>
     </div>
-    <div *ngIf="documentos.length > 0; else mensaje">
+ <!--    <div *ngIf="documentos.length > 0; else mensaje"> -->
       <div class="card mb-4">
         <div class="card-header">
           <div class="titulo">
@@ -71,13 +71,13 @@
                 <tbody>
                   <tr>
                     <td scope="col">Dentro de Plazo</td>
-                    <td scope="col" *ngFor="let proveedor of proveedores">{{getPorcentajeDentroPlazoPorProveedor(proveedor) | number: '1.1-1'}}%</td>
-                    <td scope="col">{{getPorcentajeDentroPlazoPorProveedor() | number: '1.1-1'}}%</td>
+                    <td scope="col" *ngFor="let proveedor of proveedores">{{dentroPlazoproveedor(proveedor)}}</td>
+                    <td scope="col">{{sumadentroplazo()}}</td>
                   </tr>
                   <tr>
                     <td scope="col">Fuera de Plazo</td>
-                    <td scope="col" *ngFor="let proveedor of proveedores">{{getPorcentajeFueraPlazoPorProveedor(proveedor) | number: '1.1-1'}}%</td>
-                    <td scope="col">{{getPorcentajeFueraPlazoPorProveedor() | number: '1.1-1'}}%</td>
+                    <td scope="col" *ngFor="let proveedor of proveedores">{{fueraPlazoproveedor(proveedor)}}</td>
+                    <td scope="col">{{sumafueraplazo()}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -130,7 +130,7 @@
           </div>
         </div>
       </div>
-      <div class="card mb-4">
+      <!-- <div class="card mb-4">
         <div class="card-header">
           <div class="titulo">
             <h4>Detalle de eficiencia de distribución por servicio</h4>
@@ -161,9 +161,9 @@
             </div>
           </div>
         </div>  
-      </div>
-    </div>
-    <ng-template #mensaje>
+      </div> -->
+   <!--  </div> -->
+<!--     <ng-template #mensaje>
       <div class="row">
         <div class="col">
           <div class="alert alert-info" role="alert" align=center>
@@ -171,6 +171,6 @@
           </div>
         </div>
       </div>
-    </ng-template>
+    </ng-template> -->
   </div>
 </div>

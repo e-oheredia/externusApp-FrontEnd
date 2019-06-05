@@ -6,11 +6,12 @@ import { NotifierService } from 'angular-notifier';
 import { DocumentoService } from './../shared/documento.service';
 import { Subscription } from 'rxjs';
 import { UtilsService } from './../shared/utils.service';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, AbstractControlDirective } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProveedorService } from '../shared/proveedor.service';
 import { Proveedor } from '../../model/proveedor.model';
 import * as moment from "moment-timezone";
+import { ReporteService } from '../shared/reporte.service';
 
 @Component({
   selector: 'app-reporte-distribucion-mes-eficiencia',
@@ -23,6 +24,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     private proveedorService: ProveedorService,
     private utilsService: UtilsService,
     private documentoService: DocumentoService,
+    private reporteService : ReporteService,
     private notifier: NotifierService,
     private plazoDistribucionService: PlazoDistribucionService
   ) { }
@@ -35,6 +37,9 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
   documentosSubscription: Subscription;
   proveedorElegidoDetalle: Proveedor;
   documentos: Documento[] = [];
+  data: any[] = [];
+  sumaDentroPlazoTotal : number = 0;
+  sumaFueraPlazoTotal : number = 0;
 
   ngOnInit() {
     this.busquedaForm = new FormGroup({
@@ -45,13 +50,25 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     this.proveedorService.proveedoresChanged.subscribe(proveedores => this.proveedores = proveedores);
   }
 
+  
   MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaFin'].value)) {
-      this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
+
+
+      this.documentosSubscription = this.reporteService.getReporteEficienciaPorCourier(fechaIni, fechaFin).subscribe(
+         (data:any) =>{
+           this.data = data
+           this.llenarEficienciaPorProveedor(data)
+         }
+      )
+
+      
+
+     /*  this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
         documentos => {
           this.documentos = documentos;
-          this.llenarEficienciaPorProveedor(documentos);
+          this.llenarEficienciaPorProveedor(this.data);
           this.llenarEficienciaPorPlazoDistribucion(documentos);
           this.llenarDetalleEficiencia(documentos);
         },
@@ -60,14 +77,19 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
             this.notifier.notify('error', error.error);
           }
         }
-      );
+      ); */
     }
     else {
       this.notifier.notify('error', 'Seleccione un rango de fechas');
     }
   }
 
-  getPorcentajeDentroPlazoPorProveedor(proveedor = { id: 0 }) {
+/*   getKeys(cantidadesporproveedor){
+    let abc = Array.from(cantidadesporproveedor.getKeys);
+    return abc;
+  } */
+
+/*   getPorcentajeDentroPlazoPorProveedor(proveedor = { id: 0 }) {
     if (proveedor.id === 0) {
       return this.documentos.filter(documento => moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") ).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
     } else {
@@ -87,9 +109,115 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
       ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length) * 100;
     }
+  } */
+
+  llenarEficienciaPorProveedor(data) {
+    this.eficienciaPorProveedor = [];
+    let valordentroplazo=0;
+    let valorfuerplazo=0;
+    let valortotal=0;
+    this.proveedores.forEach(
+      proveedor => {
+        let eficienciaPorProveedorObjeto = {
+          proveedor: "",
+          dentroPlazo: 0,
+          fueraPlazo: 0
+        };
+        eficienciaPorProveedorObjeto.proveedor = proveedor.nombre;
+        Object.keys(data).forEach(key => {
+          var obj = data[key];
+          if(proveedor.id === parseInt(key)){
+            Object.keys(obj).forEach(key1 => {
+              if(key1=="dentroplazo"){
+                valordentroplazo=obj[key1]
+              }else{
+                valorfuerplazo=obj[key1]
+              }
+            });
+          }
+        });
+        valortotal = valordentroplazo+valorfuerplazo;
+        let porcentajedentroplazo = (valordentroplazo/valortotal) *100;
+        let porcentajefueraplazo =(valorfuerplazo/valortotal) *100;
+        eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo;
+        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo;
+        this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
+      });
+      console.log(this.eficienciaPorProveedor)
   }
 
-  llenarEficienciaPorProveedor(documentos: Documento[]) {
+
+
+  dentroPlazoproveedor(proveedor) {
+    var a = 0;
+      Object.keys(this.data).forEach(key => {
+        if(proveedor.id===parseInt(key)){
+            var obj1 = this.data[key];
+            Object.keys(obj1).forEach(key1 => {
+                if (key1 == "dentroplazo") {
+                  a = obj1[key1];
+                }
+            });
+        }
+    });
+    
+    var numero = a;
+    return numero;
+    
+}
+
+fueraPlazoproveedor(proveedor) {
+  var a = 0;
+  
+      Object.keys(this.data).forEach(key => {
+      if(proveedor.id===parseInt(key)){
+          var obj1 = this.data[key];
+          Object.keys(obj1).forEach(key1 => {
+              if (key1 == "fueraplazo") {
+                a = obj1[key1];
+              }
+          });
+          
+      }
+      });
+  var numero = a;
+  return numero;
+  
+}
+
+sumadentroplazo() {  
+  var a = 0;
+  Object.keys(this.data).forEach(key => {
+          var obj1 = this.data[key];
+          Object.keys(obj1).forEach(key1 => {
+              if (key1 == "dentroplazo") {
+                  a = a +obj1[key1];
+              }
+          });
+      });
+  var numero = a;
+  var final = numero;
+  return final;
+ }
+
+ sumafueraplazo() {  
+  var a = 0;
+  Object.keys(this.data).forEach(key => {
+          var obj1 = this.data[key];
+          Object.keys(obj1).forEach(key1 => {
+              if (key1 == "fueraplazo") {
+                  a = a +obj1[key1];
+              }
+          });
+      });
+  var numero = a;
+  var final = numero;
+  return final;
+ }
+
+
+
+  /* llenarEficienciaPorProveedor(documentos: Documento[]) {
     this.eficienciaPorProveedor = [];
     this.proveedores.forEach(
       proveedor => {
@@ -110,7 +238,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       }
     )
-  }
+  } */
   llenarEficienciaPorPlazoDistribucion(documentos: Documento[]) {
     this.reportesEficienciaPorPlazoDistribucion = {};
     this.proveedores.forEach(
@@ -147,7 +275,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
   }
 
 
-    llenarDetalleEficiencia(documentos: Documento[]) {
+/*     llenarDetalleEficiencia(documentos: Documento[]) {
       this.reportesDetalleEficiencia = {};
     let documentosAux: Documento[] = [];
     this.proveedores.forEach(
@@ -183,7 +311,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         });
       }
     )
-  }
+  } */
 
   getAxis(dataField: string) {
     return {
