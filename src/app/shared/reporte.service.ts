@@ -14,8 +14,11 @@ constructor(private requester : RequesterService ){
     
 }
 
-    getReporte(fechaini: Date, fechafin: Date): any {
-        return this.requester.get<any>(this.REQUEST_URL , {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    getReporteEficienciaPorCourier(fechaini: Date, fechafin: Date): any {
+        return this.requester.get<any>(this.REQUEST_URL + "eficiencia/porcourier", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
+    getReporteEficienciaCourierPorPlazos(fechaini: Date, fechafin: Date): any {
+        return this.requester.get<any>(this.REQUEST_URL + "eficiencia/courierporplazo", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
 }

@@ -56,7 +56,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaFin'].value)) {
 
 
-      this.documentosSubscription = this.reporteService.getReporte(fechaIni, fechaFin).subscribe(
+      this.documentosSubscription = this.reporteService.getReporteEficienciaPorCourier(fechaIni, fechaFin).subscribe(
          (data:any) =>{
            this.data = data
            this.llenarEficienciaPorProveedor(data)
