@@ -14,6 +14,7 @@ import { Sede } from 'src/model/sede.model';
 import { SedeDespachoService } from '../shared/sededespacho.service';
 import { Envio } from 'src/model/envio.model';
 import * as moment from "moment-timezone";
+import { ReporteService } from '../shared/reporte.service';
 
 @Component({
     selector: 'app-reporte-mensual-volumen',
@@ -30,7 +31,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
         public utilsService: UtilsService,
         public proveedorService: ProveedorService,
         public sedeDespachoService: SedeDespachoService,
-        private plazoDistribucionService: PlazoDistribucionService
+        private plazoDistribucionService: PlazoDistribucionService,
+        public reporteService : ReporteService
     ) { }
 
     plazos: PlazoDistribucion[];
@@ -42,6 +44,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
     data: any[] = [];
+    data2: any[] = []; 
+    data3: any[] = [];   
     dataSource: any[];
     dataSource2: any[];
     dataSource3: any[];
@@ -61,21 +65,6 @@ export class ReporteMensualVolumenComponent implements OnInit {
         this.proveedorService.proveedoresChanged.subscribe(
             proveedores => {
                 this.proveedores = proveedores;
-
-                this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
-                    console.log(data);
-                    Object.keys(data).forEach(key => {
-                        var obj1 = data[key];
-                        console.log('key is ' + key);
-                        Object.keys(obj1).forEach(key1 => {
-                            console.log('key inner is ' + key1 + ' val is ' + obj1[key1]);
-                            this._postsArray.push({ k: key, l: key1, m: obj1[key1] });
-                        })
-                    });
-                    console.log('array is ' + this._postsArray.toString());
-
-                });
-
             }
         )
 
@@ -86,6 +75,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         )
 
         this.plazos = this.plazoDistribucionService.getPlazosDistribucion();
+        
         this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
             plazos => {
                 this.plazos = plazos;
@@ -119,6 +109,33 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     }
                 }
             );
+            this.reporteService.getReporteVolumenporSede( fechaIni,fechaFin  ).subscribe(
+                (data2: any) => {
+                    this.data2=data2;
+                    this.llenarDataSource2(data2);
+                    //this.llenarDatasource3(data);
+                },
+                error => {
+                    if (error.status === 400) {
+                        this.documentos = [];
+                        this.notifier.notify('error', 'Rango de fechas no válido');
+                    }
+                }
+            );
+
+            this.reporteService.getReporteVolumenporproveedorandplazo( fechaIni,fechaFin  ).subscribe(
+                (data3: any) => {
+                    this.data3=data3;
+                    this.llenarDatasource3(data3);
+                },
+                error => {
+                    if (error.status === 400) {
+                        this.documentos = [];
+                        this.notifier.notify('error', 'Rango de fechas no válido');
+                    }
+                }
+            );
+
         }
         else {
             this.notifier.notify('error', 'Seleccione un rango de fechas');
@@ -153,7 +170,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
             });
     }
 
-    llenarDataSource2(documentos: Documento[]) {
+    llenarDataSource2(data2) {
         this.dataSource2 = [];
 
         this.sedesDespacho.forEach(
@@ -163,14 +180,19 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     cantidad: 0
                 };
                 reporteSedeDespacho.sedeDespacho = sedeDespacho.nombre;
-                reporteSedeDespacho.cantidad = documentos.filter(documento =>
-                    documento.envio.sede.id === sedeDespacho.id).length;
-
+                Object.keys(data2).forEach(key => {
+                    var obj1 = data2[key];
+                    if (sedeDespacho.id === parseInt(key)){
+                        Object.keys(obj1).forEach(key1 => {
+                            if (key1 == "porcentaje") {
+                                reporteSedeDespacho.cantidad = obj1[key1];
+                            }
+                        });
+                    }
+                });
                 this.dataSource2.push(reporteSedeDespacho);
             }
         )
-
-
     }
         // let reporteSede = {
         //     sede: 'La Molina',
@@ -201,6 +223,52 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
     } */
 
+    llenarDatasource3(data3) {
+
+        this.dataSource3 = [];
+        var a = 0;
+        this.proveedores.forEach(
+            proveedor => {
+                let graficoPorProveedor: any[] = [];
+                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(
+                    plazoDistribucion => {
+                        let graficoPorProveedorObjeto = {
+                            plazo: '',
+                            cantidad: 0
+                        }
+                        Object.keys(this.data).forEach(key => {
+                            var obj1 = this.data[key];
+
+                        if (proveedor.id === parseInt(key)){ 
+                            plazo: plazoDistribucion.tiempoEnvio + ' H',
+
+                            Object.keys(obj1).forEach(key1 => {
+                                
+                                if (key1 == "cantidad") {
+                                    a = a +obj1[key1];
+                                }
+                            
+                            
+                            
+                            });
+
+                        }
+
+                        });
+
+
+                        graficoPorProveedor.push(graficoPorProveedorObjeto);
+                    });
+                this.dataSource3[proveedor.nombre] = graficoPorProveedor;
+            }
+        )
+
+    }
+
+
+
+
+
 
     porcentajeAsignado(proveedor) {
         var a = 0;
@@ -221,10 +289,45 @@ export class ReporteMensualVolumenComponent implements OnInit {
         return final;
     }
 
+    porcentajeAsignado2(sede) {
+        var a = 0;
+        //this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
+            Object.keys(this.data2).forEach(key => {
+            if(sede.id===parseInt(key)){
+                var obj1 = this.data2[key];
+                Object.keys(obj1).forEach(key1 => {
+                    if (key1 == "cantidad") {
+                        a = obj1[key1];
+                    }
+                });
+            }
+            });
+        //});
+        var numero = a;
+        var final = numero;
+        return final;
+    }
+
+
     sumaporproveedor(){
         var a = 0;
         Object.keys(this.data).forEach(key => {
                 var obj1 = this.data[key];
+                Object.keys(obj1).forEach(key1 => {
+                    if (key1 == "cantidad") {
+                        a = a +obj1[key1];
+                    }
+                });
+            });
+        var numero = a;
+        var final = numero;
+        return final;
+    }
+
+    sumaporsede(){
+        var a = 0;
+        Object.keys(this.data2).forEach(key => {
+                var obj1 = this.data2[key];
                 Object.keys(obj1).forEach(key1 => {
                     if (key1 == "cantidad") {
                         a = a +obj1[key1];
@@ -306,8 +409,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
                             formatFunction: (value: any) => {
                                 if (isNaN(value))
                                     return value;
-                                return parseFloat(value);
-                                // return parseFloat(value) + '%';
+                                //return parseFloat(value);
+                                return parseFloat(value) + '%';
                             }
 
                         }

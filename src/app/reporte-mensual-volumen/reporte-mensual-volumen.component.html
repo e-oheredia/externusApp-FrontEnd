@@ -92,9 +92,6 @@
               <th scope="col">General</th>
             </thead>
 
-
-
-
             <tbody>
               <tr>
                 <td *ngFor="let proveedor of proveedores">
@@ -114,6 +111,7 @@
 
   </div>
 
+
   <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
@@ -130,12 +128,43 @@
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="row justify-content-center mt-4">
+      <div class="col-2 center-block ">
+        <table class="table table-bordered ">
+  
+          <thead>
+  
+            <th *ngFor="let sede of sedesDespacho">
+              {{sede.nombre}}
+            </th>
+            <th scope="col">General</th>
+          </thead>
+  
+          <tbody>
+            <tr>
+              <td *ngFor="let sede of sedesDespacho">
+                {{porcentajeAsignado2(sede)}}
+              </td>
+              <td *ngIf="sedesDespacho.length !== 0" scope="col">
+                  {{ sumaporsede() }}
+              </td>
+            </tr>
+          </tbody>
+  
+        </table>
+      </div>
+    </div>
 
 
 
 
-<!--   <div class="card mb-4">
+
+</div>
+
+
+
+  <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
         <h4>Volumen de distribución - por plazo de distribución</h4>
@@ -156,7 +185,7 @@
       </div>
     </div>
   </div>
- -->
+
 </div> 
 
 <ng-template #mensaje>
