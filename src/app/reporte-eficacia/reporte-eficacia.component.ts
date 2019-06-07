@@ -9,6 +9,8 @@ import { ProveedorService } from '../shared/proveedor.service';
 import { EstadoDocumentoService } from '../shared/estadodocumento.service';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { EstadoDocumento } from '../../model/estadodocumento.model';
+import { ReporteService } from '../shared/reporte.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -24,16 +26,20 @@ export class ReporteEficaciaComponent implements OnInit {
         public notifier: NotifierService,
         public utilsService: UtilsService,
         public proveedorService: ProveedorService,
-        public estadoDocumentoService: EstadoDocumentoService) {
-    }
+        public estadoDocumentoService: EstadoDocumentoService,
+        public reporteService: ReporteService
+    ) { }
 
     dataSource = [];
+    estados: EstadoDocumento[] = [];
     proveedores: Proveedor[] = [];
     documentos = [];
-
+    estadosParaReporte = []
+    eficaciaReporte: any[] = [];
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
-    estadoDoc: EstadoDocumento[] = [];
+
+    data: any[] = [];
 
     ngOnInit() {
         this.documentoForm = new FormGroup({
@@ -47,70 +53,60 @@ export class ReporteEficaciaComponent implements OnInit {
                 this.proveedores = proveedores;
             }
         )
-        this.estadoDoc = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor();
-        this.estadoDoc.push({
-            id: EstadoDocumentoEnum.ENVIADO,
-            nombre: "PENDIENTE DE ENTREGA",
-            estadosDocumentoPermitidos: [],
-            motivos: [],
-            tiposDevolucion: []
-        })
-        
-        this.estadoDocumentoService.estadosDocumentoResultadosProveedorChanged.subscribe(
-            estados => {
-                this.estadoDoc = estados;
-                this.estadoDoc.push({
-                    id: EstadoDocumentoEnum.ENVIADO,
-                    nombre: "PENDIENTE DE ENTREGA",
-                    estadosDocumentoPermitidos: [],
-                    motivos: [],
-                    tiposDevolucion: []
-                })
+        this.estados = this.estadoDocumentoService.getEstadosDocumentoResultadosProveedor();
+        this.estados.push(
+            {
+                id: 3,
+                nombre: 'PENDIENTE DE ENTREGA',
+                estadosDocumentoPermitidos: [],
+                motivos: [],
+                tiposDevolucion: []
+            },
+            {
+                id: 4,
+                nombre: 'ENTREGADO',
+                estadosDocumentoPermitidos: [],
+                motivos: [],
+                tiposDevolucion: []
+            },
+            {
+                id: 5,
+                nombre: 'REZAGADO',
+                estadosDocumentoPermitidos: [],
+                motivos: [],
+                tiposDevolucion: []
+            },
+            {
+                id: 6,
+                nombre: 'NO DISTRIBUIBLE',
+                estadosDocumentoPermitidos: [],
+                motivos: [],
+                tiposDevolucion: []
             }
-        )
+        );
+        // this.estadoDocumentoService.estadosDocumentoChanged.subscribe(
+        //     estados => {
+        //         this.estados = estados;
+        //     }
+        // )
 
-
+        console.log(this.estados)
     }
+
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
-        if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
-            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
-                documentos => {
-                    this.dataSource = [];
-                    this.documentos = documentos;
+        console.log(this.estados)
 
-                    this.estadoDoc.forEach(
-                        estado => {
-                            let reporteEficacia = {
-                                estado: estado.nombre
-                            };
+        if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) &&
+            !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-                            this.proveedores.forEach(
-                                proveedor => {
-
-                                    reporteEficacia[proveedor.nombre] =
-                                        documentos.filter(documento =>
-                                            documento.documentosGuia[0].guia.proveedor.id === proveedor.id
-                                            && this.documentoService.getUltimoEstado(documento).id === estado.id
-                                        ).length
-                                }
-                            )
-
-                            console.log(this.dataSource);
-                            this.dataSource.push(reporteEficacia);
-                        }
-                    )
-
-                    console.log(this.dataSource);
-                },
-                error => {
-                    if (error.status === 400) {
-                        this.documentos = [];
-                        this.notifier.notify('error', error.error);
-                    }
+            this.documentosSubscription = this.reporteService.getReporteEficaciaEstadosPorProveedor(fechaIni, fechaFin).subscribe(
+                (data: any) => {
+                    this.data = data
+                    this.llenarEficaciaEstadosPorProveedor(data);
                 }
-            );
+            )
         }
         else {
             this.notifier.notify('error', 'Seleccione rango de fechas');
@@ -118,21 +114,66 @@ export class ReporteEficaciaComponent implements OnInit {
     }
 
 
-    llenarTabla(proveedor, estado) {
+    //1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO
+    llenarEficaciaEstadosPorProveedor(data) {
+        this.eficaciaReporte = [];
+        let valorproveedor = 0;
+        let total1EstadoPorProveedores = 0;
+        let totalproveedor = 0;
+        let cantidadproveedorestado = 0;
+        let total = 0;
+        let valortotal = 0;
 
-        var porcentaje = 100;
-        var total = this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
-        if (total==0) {
-            return '0.0%';
-        }
-        var cantestadocourier = this.documentos.filter(documento =>
-            documento.documentosGuia[0].guia.proveedor.id === proveedor.id
-            && this.documentoService.getUltimoEstado(documento).id === estado.id
-        ).length;
-        var numero = (cantestadocourier * porcentaje) / total
-        var final = numero.toFixed(1);
-        return final + '%';
+        this.estados.forEach(
+            estado => {
+                let eficienciaPorEstadoObjeto = {
+                    estado: "",
+                    proveedor: "",
+                    cantidad: 0
+                };
+                eficienciaPorEstadoObjeto.estado = estado.nombre;
+                Object.keys(data).forEach(key => {
+                    var obj1 = data[key];
+                    if (estado.id === parseInt(key)) {
+                        Object.keys(obj1).forEach(key1 => {
+                            let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key1))
+                            if (proveedor.id === parseInt(key1)) {
+                                eficienciaPorEstadoObjeto.proveedor = proveedor.nombre
+                                eficienciaPorEstadoObjeto.cantidad = obj1[key1]
+                                cantidadproveedorestado = obj1[key1]
+                            }
+                            eficienciaPorEstadoObjeto.cantidad = cantidadproveedorestado
+                            total1EstadoPorProveedores += cantidadproveedorestado
+                        });
+                        this.eficaciaReporte.push(total1EstadoPorProveedores);
+                    }
+                });
+                valortotal = total1EstadoPorProveedores
+                let porcentajePorEstado = (valorproveedor / valortotal) * 100;
+                let positivo = porcentajePorEstado.toFixed(1);
+                this.eficaciaReporte.push(eficienciaPorEstadoObjeto);
+            });
+        console.log(this.eficaciaReporte);
     }
+
+
+
+
+    // llenarTabla(proveedor, estado) {
+
+    //     var porcentaje = 100;
+    //     var total = this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length;
+    //     if (total==0) {
+    //         return '0.0%';
+    //     }
+    //     var cantestadocourier = this.documentos.filter(documento =>
+    //         documento.documentosGuia[0].guia.proveedor.id === proveedor.id
+    //         && this.documentoService.getUltimoEstado(documento).id === estado.id
+    //     ).length;
+    //     var numero = (cantestadocourier * porcentaje) / total
+    //     var final = numero.toFixed(1);
+    //     return final + '%';
+    // }
 
 
 

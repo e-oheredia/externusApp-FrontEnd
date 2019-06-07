@@ -32,20 +32,20 @@ export class ReporteMensualVolumenComponent implements OnInit {
         public proveedorService: ProveedorService,
         public sedeDespachoService: SedeDespachoService,
         private plazoDistribucionService: PlazoDistribucionService,
-        public reporteService : ReporteService
+        public reporteService: ReporteService
     ) { }
 
     plazos: PlazoDistribucion[];
     envios: Envio;
     sedesDespacho: Sede[];
-    proveedores: Proveedor[]=[];
+    proveedores: Proveedor[] = [];
     documentos: Documento[] = [];
     // reportesEficienciaPorPlazoDistribucion: any = {};
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
-    data: any[] = [];
-    data2: any[] = []; 
-    data3: any[] = [];   
+    data1: any[] = [];
+    data2: any[] = [];
+    data3: any[] = [];
     dataSource: any[];
     dataSource2: any[];
     dataSource3: any[];
@@ -61,7 +61,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         this.proveedores = this.proveedorService.getProveedores();
 
         this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
-        
+
         this.proveedorService.proveedoresChanged.subscribe(
             proveedores => {
                 this.proveedores = proveedores;
@@ -75,7 +75,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         )
 
         this.plazos = this.plazoDistribucionService.getPlazosDistribucion();
-        
+
         this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
             plazos => {
                 this.plazos = plazos;
@@ -84,23 +84,12 @@ export class ReporteMensualVolumenComponent implements OnInit {
     }
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
-
-        if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
-            /*this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
-                documentos => {
-
-                    this.documentos = documentos;
-                    this.llenarDataSource(documentos);
-                    this.llenarDataSource2(documentos);
-                    this.llenarDatasource3(documentos);
-
-                },*/
-            this.documentoService.getPosts( fechaIni,fechaFin  ).subscribe(
+        if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) &&
+            !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
+            this.documentosSubscription = this.documentoService.getPosts(fechaIni, fechaFin).subscribe(
                 (data: any) => {
-                    this.data=data;
+                    this.data1 = data;
                     this.llenarDataSource(data);
-                    //this.llenarDataSource2(data);
-                    //this.llenarDatasource3(data);
                 },
                 error => {
                     if (error.status === 400) {
@@ -109,11 +98,10 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     }
                 }
             );
-            this.reporteService.getReporteVolumenporSede( fechaIni,fechaFin  ).subscribe(
-                (data2: any) => {
-                    this.data2=data2;
-                    this.llenarDataSource2(data2);
-                    //this.llenarDatasource3(data);
+            this.reporteService.getReporteVolumenporSede(fechaIni, fechaFin).subscribe(
+                (data: any) => {
+                    this.data2 = data;
+                    this.llenarDataSource2(data);
                 },
                 error => {
                     if (error.status === 400) {
@@ -122,11 +110,10 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     }
                 }
             );
-
-            this.reporteService.getReporteVolumenporproveedorandplazo( fechaIni,fechaFin  ).subscribe(
-                (data3: any) => {
-                    this.data3=data3;
-                    this.llenarDatasource3(data3);
+            this.reporteService.getReporteVolumenporproveedorandplazo(fechaIni, fechaFin).subscribe(
+                (data: any) => {
+                    this.data3 = data;
+                    // this.llenarDatasource3(data);
                 },
                 error => {
                     if (error.status === 400) {
@@ -145,10 +132,9 @@ export class ReporteMensualVolumenComponent implements OnInit {
         console.log(this.sedesDespacho);
     }
 
-
+    //1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO
     llenarDataSource(data) {
         this.dataSource = [];
-
         this.proveedores.forEach(
             proveedor => {
                 let reporteProveedor = {
@@ -158,7 +144,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 reporteProveedor.proveedor = proveedor.nombre;
                 Object.keys(data).forEach(key => {
                     var obj1 = data[key];
-                    if (proveedor.id === parseInt(key)){
+                    if (proveedor.id === parseInt(key)) {
                         Object.keys(obj1).forEach(key1 => {
                             if (key1 == "porcentaje") {
                                 reporteProveedor.cantidad = obj1[key1];
@@ -167,12 +153,47 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     }
                 });
                 this.dataSource.push(reporteProveedor);
-            });
+            }
+        );
     }
 
+    porcentajeAsignado(proveedor) {
+        var a = 0;
+        Object.keys(this.data1).forEach(key => {
+            if (proveedor.id === parseInt(key)) {
+                var obj1 = this.data1[key];
+                Object.keys(obj1).forEach(key1 => {
+                    if (key1 == "cantidad") {
+                        a = obj1[key1];
+                    }
+                });
+            }
+        });
+        var numero = a;
+        var final = numero;
+        return final;
+    }
+
+    sumaporproveedor() {
+        var a = 0;
+        Object.keys(this.data1).forEach(key => {
+            var obj1 = this.data1[key];
+            Object.keys(obj1).forEach(key1 => {
+                if (key1 == "cantidad") {
+                    a = a + obj1[key1];
+                }
+            });
+        });
+        var numero = a;
+        var final = numero;
+        return final;
+    }
+
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO
     llenarDataSource2(data2) {
         this.dataSource2 = [];
-
         this.sedesDespacho.forEach(
             sedeDespacho => {
                 let reporteSedeDespacho = {
@@ -182,7 +203,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 reporteSedeDespacho.sedeDespacho = sedeDespacho.nombre;
                 Object.keys(data2).forEach(key => {
                     var obj1 = data2[key];
-                    if (sedeDespacho.id === parseInt(key)){
+                    if (sedeDespacho.id === parseInt(key)) {
                         Object.keys(obj1).forEach(key1 => {
                             if (key1 == "porcentaje") {
                                 reporteSedeDespacho.cantidad = obj1[key1];
@@ -192,108 +213,14 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 });
                 this.dataSource2.push(reporteSedeDespacho);
             }
-        )
-    }
-        // let reporteSede = {
-        //     sede: 'La Molina',
-        //     cantidad: 0
-        // };
-        // reporteSede.cantidad = documentos.length;
-        // this.dataSource2.push(reporteSede);
-
-
-/*     llenarDatasource3(documentos: Documento[]) {
-        this.dataSource3 = [];
-        this.proveedores.forEach(
-            proveedor => {
-                let graficoPorProveedor: any[] = [];
-                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(
-                    plazoDistribucion => {
-                        let graficoPorProveedorObjeto = {
-                            plazo: plazoDistribucion.tiempoEnvio + ' H',
-                            cantidad: documentos.filter(documento =>
-                                documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                documento.envio.plazoDistribucion.id === plazoDistribucion.id).length
-                        }
-                        graficoPorProveedor.push(graficoPorProveedorObjeto);
-                    });
-                this.dataSource3[proveedor.nombre] = graficoPorProveedor;
-            }
-        )
-
-    } */
-
-    llenarDatasource3(data3) {
-
-        this.dataSource3 = [];
-        var a = 0;
-        this.proveedores.forEach(
-            proveedor => {
-                let graficoPorProveedor: any[] = [];
-                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(
-                    plazoDistribucion => {
-                        let graficoPorProveedorObjeto = {
-                            plazo: '',
-                            cantidad: 0
-                        }
-                        Object.keys(this.data).forEach(key => {
-                            var obj1 = this.data[key];
-
-                        if (proveedor.id === parseInt(key)){ 
-                            plazo: plazoDistribucion.tiempoEnvio + ' H',
-
-                            Object.keys(obj1).forEach(key1 => {
-                                
-                                if (key1 == "cantidad") {
-                                    a = a +obj1[key1];
-                                }
-                            
-                            
-                            
-                            });
-
-                        }
-
-                        });
-
-
-                        graficoPorProveedor.push(graficoPorProveedorObjeto);
-                    });
-                this.dataSource3[proveedor.nombre] = graficoPorProveedor;
-            }
-        )
-
-    }
-
-
-
-
-
-
-    porcentajeAsignado(proveedor) {
-        var a = 0;
-        //this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
-            Object.keys(this.data).forEach(key => {
-            if(proveedor.id===parseInt(key)){
-                var obj1 = this.data[key];
-                Object.keys(obj1).forEach(key1 => {
-                    if (key1 == "cantidad") {
-                        a = obj1[key1];
-                    }
-                });
-            }
-            });
-        //});
-        var numero = a;
-        var final = numero;
-        return final;
+        );
     }
 
     porcentajeAsignado2(sede) {
         var a = 0;
         //this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
-            Object.keys(this.data2).forEach(key => {
-            if(sede.id===parseInt(key)){
+        Object.keys(this.data2).forEach(key => {
+            if (sede.id === parseInt(key)) {
                 var obj1 = this.data2[key];
                 Object.keys(obj1).forEach(key1 => {
                     if (key1 == "cantidad") {
@@ -301,39 +228,23 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     }
                 });
             }
-            });
+        });
         //});
         var numero = a;
         var final = numero;
         return final;
     }
 
-
-    sumaporproveedor(){
-        var a = 0;
-        Object.keys(this.data).forEach(key => {
-                var obj1 = this.data[key];
-                Object.keys(obj1).forEach(key1 => {
-                    if (key1 == "cantidad") {
-                        a = a +obj1[key1];
-                    }
-                });
-            });
-        var numero = a;
-        var final = numero;
-        return final;
-    }
-
-    sumaporsede(){
+    sumaporsede() {
         var a = 0;
         Object.keys(this.data2).forEach(key => {
-                var obj1 = this.data2[key];
-                Object.keys(obj1).forEach(key1 => {
-                    if (key1 == "cantidad") {
-                        a = a +obj1[key1];
-                    }
-                });
+            var obj1 = this.data2[key];
+            Object.keys(obj1).forEach(key1 => {
+                if (key1 == "cantidad") {
+                    a = a + obj1[key1];
+                }
             });
+        });
         var numero = a;
         var final = numero;
         return final;
@@ -379,7 +290,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                                 if (isNaN(value))
                                     return value;
                                 //return parseFloat(value);
-                                 return parseFloat(value) + '%';
+                                return parseFloat(value) + '%';
                             },
                         }
                     ]
@@ -454,42 +365,42 @@ export class ReporteMensualVolumenComponent implements OnInit {
         }
     }
 
-    getSeriesGroups(type: string, datas: any[], orientation = 'vertical') {
-        let series: any[] = [];
-        datas.forEach(data => {
-            let keys: string[] = Object.keys(data);
-            if (keys.length == 1) {
-                series.push({
-                    dataField: keys[0],
-                    displayText: data[keys[0]],
-                    showLabels: true
-                })
-            } else {
-                series.push({
-                    dataField: keys[0],
-                    displayText: data[keys[0]],
-                    colorFunction: (value, itemIndex) => {
-                        if (data['indiceReporte'] < itemIndex) {
-                            return '#fff655';
-                        }
-                        return '#55CC55';
-                    },
-                    showLabels: true
-                })
-            }
-        });
+    // getSeriesGroups(type: string, datas: any[], orientation = 'vertical') {
+    //     let series: any[] = [];
+    //     datas.forEach(data => {
+    //         let keys: string[] = Object.keys(data);
+    //         if (keys.length == 1) {
+    //             series.push({
+    //                 dataField: keys[0],
+    //                 displayText: data[keys[0]],
+    //                 showLabels: true
+    //             })
+    //         } else {
+    //             series.push({
+    //                 dataField: keys[0],
+    //                 displayText: data[keys[0]],
+    //                 colorFunction: (value, itemIndex) => {
+    //                     if (data['indiceReporte'] < itemIndex) {
+    //                         return '#fff655';
+    //                     }
+    //                     return '#55CC55';
+    //                 },
+    //                 showLabels: true
+    //             })
+    //         }
+    //     });
 
 
-        return [
-            {
-                type: type,
-                orientation: orientation,
-                series: series,
-                columnsMinWidth: 20,
-                columnsMaxWidth: 30,
-            }
-        ]
-    }
+    //     return [
+    //         {
+    //             type: type,
+    //             orientation: orientation,
+    //             series: series,
+    //             columnsMinWidth: 20,
+    //             columnsMaxWidth: 30,
+    //         }
+    //     ]
+    // }
 
 
 

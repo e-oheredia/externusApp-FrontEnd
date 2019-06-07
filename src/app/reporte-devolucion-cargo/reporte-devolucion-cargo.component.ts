@@ -308,6 +308,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     otras_areas.cantidad = cantidad_otras_areas.toString();
 
                     this.dataGraficoDetallePendienteAreaTop.push(otras_areas);
+                    console.log(this.dataGraficoDetallePendienteAreaTop);
 
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------         
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
