@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { DocumentoService } from '../shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
@@ -24,6 +24,7 @@ import { ReporteService } from '../shared/reporte.service';
 export class ReporteMensualVolumenComponent implements OnInit {
 
     @ViewChild('eventText') eventText: ElementRef;
+    plazo: any;
 
     constructor(
         public documentoService: DocumentoService,
@@ -41,7 +42,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
     proveedores: Proveedor[]=[];
     documentos: Documento[] = [];
     // reportesEficienciaPorPlazoDistribucion: any = {};
-    documentosSubscription: Subscription;
+    documentosSubscription:Subscription[] = [];
     documentoForm: FormGroup;
     data: any[] = [];
     data2: any[] = []; 
@@ -56,6 +57,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
+            
         })
 
         this.proveedores = this.proveedorService.getProveedores();
@@ -95,21 +97,22 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     this.llenarDatasource3(documentos);
 
                 },*/
-            this.documentoService.getPosts( fechaIni,fechaFin  ).subscribe(
+                this.documentosSubscription.push(this.documentoService.getPosts( fechaIni,fechaFin ).subscribe(
                 (data: any) => {
                     this.data=data;
                     this.llenarDataSource(data);
                     //this.llenarDataSource2(data);
                     //this.llenarDatasource3(data);
                 },
+                
                 error => {
                     if (error.status === 400) {
                         this.documentos = [];
                         this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
-            );
-            this.reporteService.getReporteVolumenporSede( fechaIni,fechaFin  ).subscribe(
+            ));
+            this.documentosSubscription.push(this.reporteService.getReporteVolumenporSede( fechaIni,fechaFin  ).subscribe(
                 (data2: any) => {
                     this.data2=data2;
                     this.llenarDataSource2(data2);
@@ -121,9 +124,9 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
-            );
+            ));
 
-            this.reporteService.getReporteVolumenporproveedorandplazo( fechaIni,fechaFin  ).subscribe(
+            this.documentosSubscription.push(this.reporteService.getReporteVolumenporproveedorandplazo( fechaIni,fechaFin  ).subscribe(
                 (data3: any) => {
                     this.data3=data3;
                     this.llenarDatasource3(data3);
@@ -134,13 +137,13 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
-            );
+            )); 
 
         }
         else {
             this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
-
+        console.log(this.data)
         console.log(this.proveedores);
         console.log(this.sedesDespacho);
     }
@@ -202,7 +205,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         // this.dataSource2.push(reporteSede);
 
 
-/*     llenarDatasource3(documentos: Documento[]) {
+    /*llenarDatasourcje3(documentos: Documento[]) {
         this.dataSource3 = [];
         this.proveedores.forEach(
             proveedor => {
@@ -223,48 +226,43 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
     } */
 
-    llenarDatasource3(data3) {
+     llenarDatasource3(data3) {
 
         this.dataSource3 = [];
         var a = 0;
         this.proveedores.forEach(
             proveedor => {
                 let graficoPorProveedor: any[] = [];
-                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(
+
+                Object.keys(this.data3).forEach(key => {
+                    var obj1 = this.data3[key];
+
+                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(                
                     plazoDistribucion => {
                         let graficoPorProveedorObjeto = {
                             plazo: '',
                             cantidad: 0
                         }
-                        Object.keys(this.data).forEach(key => {
-                            var obj1 = this.data[key];
+                        if ( proveedor.id==parseInt(key)){ 
+                            graficoPorProveedorObjeto.plazo=plazoDistribucion.tiempoEnvio + ' H',
 
-                        if (proveedor.id === parseInt(key)){ 
-                            plazo: plazoDistribucion.tiempoEnvio + ' H',
-
-                            Object.keys(obj1).forEach(key1 => {
-                                
-                                if (key1 == "cantidad") {
-                                    a = a +obj1[key1];
+                            Object.keys(obj1).forEach(key1 => {                                
+                                if (plazoDistribucion.id==parseInt(key1) ) {
+                                    graficoPorProveedorObjeto.cantidad = (obj1[key1]);
                                 }
-                            
-                            
-                            
                             });
-
                         }
 
-                        });
-
-
                         graficoPorProveedor.push(graficoPorProveedorObjeto);
-                    });
+                    }
+                );
+            });
                 this.dataSource3[proveedor.nombre] = graficoPorProveedor;
             }
         )
 
     }
-
+ 
 
 
 
@@ -340,7 +338,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
     }
 
     ngOnDestroy() {
-        this.documentosSubscription.unsubscribe();
+        this.documentosSubscription.forEach(s => s.unsubscribe());
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------

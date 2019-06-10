@@ -188,7 +188,6 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                             }
                         )
 
-
                         let registroGrafico = {
                             mes: "",
                             cantidad: 0
@@ -196,9 +195,11 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
 
                         registroGrafico.mes = this.utilsService.getNombreMes(fechaInicial);//this.NombreMes(fechaInicial);
                         registroGrafico.cantidad = documentos.filter(documento => {
+
                             return new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss")).getFullYear() == new Date(fechaInicial).getFullYear() &&
                                 new Date(moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENVIADO).fecha, "DD-MM-YYYY HH:mm:ss")).getMonth() == new Date(fechaInicial).getMonth()
-                        }
+                        
+                            }
                         ).length;
 
                         this.dataGrafico.push(registroGrafico);
