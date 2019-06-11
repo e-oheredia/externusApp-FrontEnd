@@ -265,11 +265,11 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
 
         this.eficienciaPorPlazoDistribucion.push(dataProveedor);
 
-        console.log("PLAZOOOOOOOOOOOOOS")
-        console.log(dataProveedor.plazosDistribucion)
+        // console.log("PLAZOOOOOOOOOOOOOS")
+        // console.log(dataProveedor.plazosDistribucion)
       });
-      console.log("2.  eficienciaPorPlazoDistribucion: ")
-      console.log(this.eficienciaPorPlazoDistribucion)
+      // console.log("2.  eficienciaPorPlazoDistribucion: ")
+      // console.log(this.eficienciaPorPlazoDistribucion)
 
   }
 
@@ -363,7 +363,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
 
   getAxis2(plazos) {
     let nombre1
-    console.log(plazos)
+    // console.log(plazos)
 
     return {
       dataField: nombre1,

@@ -365,42 +365,42 @@ export class ReporteMensualVolumenComponent implements OnInit {
         }
     }
 
-    // getSeriesGroups(type: string, datas: any[], orientation = 'vertical') {
-    //     let series: any[] = [];
-    //     datas.forEach(data => {
-    //         let keys: string[] = Object.keys(data);
-    //         if (keys.length == 1) {
-    //             series.push({
-    //                 dataField: keys[0],
-    //                 displayText: data[keys[0]],
-    //                 showLabels: true
-    //             })
-    //         } else {
-    //             series.push({
-    //                 dataField: keys[0],
-    //                 displayText: data[keys[0]],
-    //                 colorFunction: (value, itemIndex) => {
-    //                     if (data['indiceReporte'] < itemIndex) {
-    //                         return '#fff655';
-    //                     }
-    //                     return '#55CC55';
-    //                 },
-    //                 showLabels: true
-    //             })
-    //         }
-    //     });
+    getSeriesGroups(type: string, datas: any[], orientation = 'vertical') {
+        let series: any[] = [];
+        datas.forEach(data => {
+            let keys: string[] = Object.keys(data);
+            if (keys.length == 1) {
+                series.push({
+                    dataField: keys[0],
+                    displayText: data[keys[0]],
+                    showLabels: true
+                })
+            } else {
+                series.push({
+                    dataField: keys[0],
+                    displayText: data[keys[0]],
+                    colorFunction: (value, itemIndex) => {
+                        if (data['indiceReporte'] < itemIndex) {
+                            return '#fff655';
+                        }
+                        return '#55CC55';
+                    },
+                    showLabels: true
+                })
+            }
+        });
 
 
-    //     return [
-    //         {
-    //             type: type,
-    //             orientation: orientation,
-    //             series: series,
-    //             columnsMinWidth: 20,
-    //             columnsMaxWidth: 30,
-    //         }
-    //     ]
-    // }
+        return [
+            {
+                type: type,
+                orientation: orientation,
+                series: series,
+                columnsMinWidth: 20,
+                columnsMaxWidth: 30,
+            }
+        ]
+    }
 
 
 

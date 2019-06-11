@@ -138,7 +138,7 @@
 
 <!-- </div> PERTENECE AL IF -->
 
-<!-- <div class="card mb-4">
+<div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
         <h4>Volumen de distribución - por plazo de distribución</h4>
@@ -151,14 +151,15 @@
           <h4>{{proveedor.nombre}}</h4>
           <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por plazo de distribución'" [description]="''" [showLegend]="true"
             [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS" [source]="dataSource3[proveedor.nombre]"
-            [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+            [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)" 
+            [seriesGroups]="getSeriesGroups('stackedcolumn', 
               [{cantidad: 'Cantidad'}], 
               'horizontal')" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 
 
 <ng-template #mensaje>
