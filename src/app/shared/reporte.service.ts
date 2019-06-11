@@ -29,4 +29,8 @@ constructor(private requester : RequesterService ){
     getReporteVolumenporproveedorandplazo(fechaini: Date, fechafin: Date): any {
         return this.requester.get<any>(this.REQUEST_URL + "volumen/plazodistribucion", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
+
+    getvolumen(fechaini: Date, fechafin: Date): any {
+        return this.requester.get(AppSettings.API_ENDPOINT  +'reportes/volumen/curier', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
 }
