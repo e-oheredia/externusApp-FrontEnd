@@ -8,6 +8,8 @@
 
 <div class="row justify-content-center">
   <div class="col">
+
+
     <div class="card mb-5">
       <div class="card-header">
         <h4>Datos de consulta</h4>
@@ -28,7 +30,6 @@
                 <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
-
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
@@ -42,23 +43,22 @@
     </div>
 
 
-
-
     <!--    <div *ngIf="documentos.length > 0; else mensaje"> -->
-    <div class="card mb-5">
+    <div class="card mb-4">
       <div class="card-header">
-        <h4>Eficiencia - por courier</h4>
+        <div class="titulo">
+          <h4>Eficiencia - por courier</h4>
+        </div>
       </div>
       <div class="card-body">
-
         <div class="row justify-content-center">
           <div class="col-10">
             <jqxChart #myChart [height]="500" [title]="'Eficiencia por courier'" [description]="''" [showLegend]="true"
               [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
               [source]="eficienciaPorProveedor" [xAxis]="getAxis('proveedor')"
-              [valueAxis]="getValueAxis('Cantidad de Entregados')" 
-              [seriesGroups]="getSeriesGroups('stackedcolumn', [{dentroPlazo: 'Dentro del Plazo'}, {fueraPlazo: 'Fuera del Plazo'}], 'vertical', 70)" 
-              [colorScheme]="'scheme01'">
+              [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+                [{dentroPlazo: 'Dentro del Plazo'}, {fueraPlazo: 'Fuera del Plazo'}], 
+                'vertical', 70)" [colorScheme]="'scheme01'">
             </jqxChart>
           </div>
         </div>
@@ -94,6 +94,7 @@
 
 
 
+
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -101,19 +102,16 @@
         </div>
       </div>
       <div class="card-body">
-
         <div class="row justify-content-center" *ngFor="let proveedor of proveedores">
           <div class="col-10">
             <h4>{{proveedor.nombre}}</h4>
-
             <jqxChart #myChart [height]="500" [title]="'Eficiencia - ' + proveedor.nombre" [description]="''"
               [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-              [source]="eficienciaPorPlazoDistribucion" [xAxis]="getAxis('plazoDistribucion')"
-              [valueAxis]="getValueAxis('Cantidad de entregados')" 
-              [seriesGroups]="getSeriesGroups('stackedcolumn', [{dentroPlazo: 'Dentro del Plazo'}, {fueraPlazo: 'Fuera del Plazo'}], 'vertical', 60)" 
-              [colorScheme]="'scheme01'">
+              [source]="eficienciaPorPlazoDistribucion" [xAxis]="getAxis2(proveedor)"
+              [valueAxis]="getValueAxis('Cantidad de entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+                [{dentroPlazo: 'Dentro del Plazo'}, {fueraPlazo: 'Fuera del Plazo'}], 
+                'vertical', 60)" [colorScheme]="'scheme01'">
             </jqxChart>
-
           </div>
           <div class="col-10 ">
             <table class="table table-bordered">
@@ -122,7 +120,6 @@
                   <th scope="col">Indicador</th>
                   <th scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">
                     {{plazoDistribucion.nombre}}</th>
-                  <th scope="col">General</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,8 +140,11 @@
           </div>
         </div>
       </div>
-
     </div>
+
+
+
+
     <!-- <div class="card mb-4">
         <div class="card-header">
           <div class="titulo">

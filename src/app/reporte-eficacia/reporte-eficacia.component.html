@@ -7,36 +7,29 @@
 </div>
 
 
-
-
 <div class="row justify-content-center">
-
   <div class="col">
-    <div class="card mb-5">
 
+    <div class="card mb-5">
       <div class="card-header">
         <h4>Datos de consulta</h4>
       </div>
-
       <div class="card-body">
-        <form [formGroup]="documentoForm" (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
-
+        <form [formGroup]="documentoForm" action="a=1" 
+          (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
           <div class="form-row">
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni">
               </div>
             </div>
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
-
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
@@ -44,75 +37,74 @@
                 </button>
               </div>
             </div>
-
           </div>
-
         </form>
       </div>
     </div>
+
   </div>
 </div>
-<div *ngIf="documentos.length !== 0; else mensaje">
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Por estados</h4>
+
+<div *ngIf="validacion == 1; else mensaje">
+  <div *ngIf="validacion == 1 && validacionError !== 1; else mensaje2">
+
+    <div class="card mb-4">
+
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Por estados</h4>
+        </div>
       </div>
-    </div>
-    <div class="card-body" *ngIf="documentos.length !== 0; else mensaje">
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <jqxChart #myChart [height]="500" [title]="'Reporte de eficacia'" [description]="''"
-            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
-            [xAxis]="xAxisCourier" [seriesGroups]="seriesGroupsCourier" [colorScheme]="'scheme26'">
-          </jqxChart>
+
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <jqxChart #myChart [height]="500" [title]="'Reporte de eficacia'" [description]="''" [showLegend]="true"
+              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataSource"
+              [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme26'">
+            </jqxChart>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <table class="table table-bordered" align=center>
+              <thead>
+                <tr>
+                  <th scope="col">ESTADO</th>
+                  <th scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr scope="col" *ngFor="let estado of estados">
+                  <td> {{estado.nombre}} </td>
+                  <td scope="col" *ngFor="let proveedor of proveedores">
+                    {{estadoProveedor(proveedor, estado)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Por proveedor</h4>
-      </div>
-    </div>
-    <div class="card-body" *ngIf="documentos.length !== 0; else mensaje">
-
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <table class="table table-bordered" align=center>
-            <thead>
-              <tr>
-                <th width=33%>ESTADO</th>
-                <th scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr scope="col" *ngFor="let estado of estadoDoc">
-                <td> {{estado.nombre}} </td>
-                <td scope="col" *ngFor="let proveedor of proveedores">
-                  {{llenarTabla(proveedor,estado)}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
 
   </div>
-
-
-
-
-
-
 </div>
-
 
 
 <ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert" align=center>
+        Elija un rango de fechas válido
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mensaje2>
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>

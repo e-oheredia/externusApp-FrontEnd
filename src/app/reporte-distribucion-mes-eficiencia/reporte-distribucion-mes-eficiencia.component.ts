@@ -91,8 +91,8 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       proveedor => {
         let eficienciaPorProveedorObjeto = {
           proveedor: "",
-          dentroPlazo: 0,
-          fueraPlazo: 0
+          dentroPlazo: "",
+          fueraPlazo: ""
         };
         eficienciaPorProveedorObjeto.proveedor = proveedor.nombre;
         Object.keys(data).forEach(key => {
@@ -110,11 +110,14 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         valortotal = valordentroplazo + valorfuerplazo;
         let porcentajedentroplazo = (valordentroplazo / valortotal) * 100;
         let porcentajefueraplazo = (valorfuerplazo / valortotal) * 100;
-        eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo;
-        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo;
+        let positivo1 = porcentajedentroplazo.toFixed(1);
+        let positivo2 = porcentajefueraplazo.toFixed(1);
+        eficienciaPorProveedorObjeto.dentroPlazo = positivo1 + "%";
+        eficienciaPorProveedorObjeto.fueraPlazo = positivo2 + "%";
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       });
-    console.log(this.eficienciaPorProveedor)
+      console.log("1.  eficienciaPorProveedor: ")
+      console.log(this.eficienciaPorProveedor)
   }
 
   dentroPlazoproveedor(proveedor) {
@@ -254,54 +257,107 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
    ); 
   */
 
-  /* llenarEficienciaPorProveedor(documentos: Documento[]) {
-    this.eficienciaPorProveedor = [];
     this.proveedores.forEach(
       proveedor => {
-        let eficienciaPorProveedorObjeto = {
+        let dataProveedor = {
           proveedor: "",
-          dentroPlazo: 0,
-          fueraPlazo: 0
+          plazosDistribucion: [],
+          datagrafico: [],
+          dentroPlazo: "",
+          fueraPlazo: ""
         };
-        eficienciaPorProveedorObjeto.proveedor = proveedor.nombre;        
-        eficienciaPorProveedorObjeto.dentroPlazo = documentos.filter(documento =>          
-          documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-          moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
-        ).length;
-        eficienciaPorProveedorObjeto.fueraPlazo = documentos.filter(documento => {
-          return documento.documentosGuia[0].guia.proveedor.id === proveedor.id && 
-            moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
-        }).length;
-        this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
-      }
-    )
-  } */
+        dataProveedor.proveedor = proveedor.nombre;
+        Object.keys(data).forEach(key => {
+          var obj = data[key];
+          if (proveedor.id === parseInt(key)) {
 
-  llenarEficienciaPorPlazoDistribucionN(documentos: Documento[]) {
-    this.reportesEficienciaPorPlazoDistribucion = {};
-    this.proveedores.forEach(
-      proveedor => {
-        let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
-        proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion => {
-          let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-            plazoDistribucion: plazoDistribucion.nombre,
-            dentroPlazo: documentos.filter(documento =>
-              documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-              documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-              moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
-            ).length,
-            fueraPlazo: documentos.filter(documento =>
-              documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-              documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-              moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") < moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
-            ).length,
+            let datagrafico = [];
+
+            let registrografico = {
+              plazo:"",
+              dentroPlazo: "",
+              fueraPlazo: ""
+            };
+
+            Object.keys(obj).forEach(key1 => {
+              var obj2 = obj[key1];
+              let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
+
+              registrografico.plazo = plazitoID.nombre;
+
+              if (plazitoID.id === parseInt(key1)) {
+                let plazo = {
+                  nombre: "",
+                  id: "",
+                  cantidadDentro: 0,
+                  cantidadFuera: 0
+                }
+                Object.keys(obj2).forEach(key2 => {
+                  if (key2 == "dentroplazo") {
+                    plazo.nombre = plazitoID.nombre
+                    plazo.id = key1;
+                    plazo.cantidadDentro = obj2[key2];
+                    registrografico.dentroPlazo = obj2[key2];
+                    dentroplazoPorplazo += obj2[key2];
+                  } else {
+                    plazo.nombre = plazitoID.nombre
+                    plazo.id = key1;
+                    plazo.cantidadFuera = obj2[key2];
+                    registrografico.fueraPlazo = obj2[key2];
+                    fueraplazoPorplazo += obj2[key2];
+                  }
+                  totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
+                });
+                dataProveedor.plazosDistribucion.push(plazo);
+                datagrafico.push(registrografico);
+              }
+
+            });
+            let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
+            let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
+            let positivo1 = porcentajedentroplazo.toFixed(1);
+            let positivo2 = porcentajefueraplazo.toFixed(1);
+            dataProveedor.dentroPlazo = positivo1 + "%";
+            dataProveedor.fueraPlazo = positivo2 + "%";
+
+            //invocar funcion
+            dataProveedor.datagrafico=datagrafico;
+
           }
-          eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
         });
-        this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = eficienciaPorPlazoDistribucionPorProveedor;
-      }
-    )
+
+        
+
+        this.eficienciaPorPlazoDistribucion.push(dataProveedor);
+
+        // console.log("PLAZOOOOOOOOOOOOOS")
+        // console.log(dataProveedor.plazosDistribucion)
+      });
+      // console.log("2.  eficienciaPorPlazoDistribucion: ")
+      // console.log(this.eficienciaPorPlazoDistribucion)
+
   }
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) {
     return this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id && documento.envio.plazoDistribucion.id === plazoDistribucion.id && moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
@@ -370,6 +426,28 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     }
   }
 
+  getAxis2(plazos) {
+    let nombre1
+    // console.log(plazos)
+
+    return {
+      dataField: nombre1,
+      unitInterval: 1,
+      axisSize: 'auto',
+      flip: false,
+      tickMarks: {
+        visible: false,
+        interval: 1,
+        color: '#CACACA'
+      },
+      gridLines: {
+        visible: false,
+        interval: 1,
+        color: '#BCBCBC'
+      }
+    }
+  }
+
   getValueAxis(title: string, flip = false) {
     return {
       title: { text: title },
@@ -405,8 +483,6 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         })
       }
     });
-
-
     return [
       {
         type: type,
@@ -416,4 +492,10 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       }
     ]
   }
+
+
+
+
+
+
 }
