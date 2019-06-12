@@ -183,7 +183,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 proveedor => {
                     let reporteProveedor = {
                         proveedor: '',
-                        cantidad: 0
+                        cantidad: ''
                     };
                     reporteProveedor.proveedor = proveedor.nombre;
                     Object.keys(obj1).forEach(key2 => {
@@ -191,7 +191,9 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         if (proveedor.id === parseInt(key2)){
                             Object.keys(obj2).forEach(key3 => {
                                 if (key3 == "porcentaje") {
-                                    reporteProveedor.cantidad = obj2[key3];
+                                    let numero = obj2[key3];
+                                    let decimal = numero.toFixed(1);
+                                    reporteProveedor.cantidad = decimal+"%";
                                 }
                             });
                         }
@@ -202,13 +204,6 @@ export class ReporteMensualVolumenComponent implements OnInit {
         });
     }
 
-
-
-
-
-
-
-
     llenarDataSource2(data2) {
         this.dataSource2 = [];
 
@@ -216,7 +211,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
             sedeDespacho => {
                 let reporteSedeDespacho = {
                     sedeDespacho: '',
-                    cantidad: 0
+                    cantidad: ''
                 };
                 reporteSedeDespacho.sedeDespacho = sedeDespacho.nombre;
                 Object.keys(data2).forEach(key => {
@@ -228,7 +223,9 @@ export class ReporteMensualVolumenComponent implements OnInit {
                             var obj2 = obj1[key1];
                             Object.keys(obj2).forEach(key2 => {
                                 if (key2 == "porcentaje") {
-                                    reporteSedeDespacho.cantidad = obj2[key2];
+                                    let numero = obj2[key2];
+                                    let decimal = numero.toFixed(1);
+                                    reporteSedeDespacho.cantidad = decimal+'%';
                                 }
                             });
                         }

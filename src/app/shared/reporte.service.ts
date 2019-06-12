@@ -33,4 +33,16 @@ constructor(private requester : RequesterService ){
     getvolumen(fechaini: Date, fechafin: Date): any {
         return this.requester.get(AppSettings.API_ENDPOINT  +'reportes/volumen/curier', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
+
+    getindicadorvolumen(fechaini: Date, fechafin: Date): any{
+        return this.requester.get(this.REQUEST_URL +'indicadorvolumen', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
+
+
+
+
+
+
+
 }

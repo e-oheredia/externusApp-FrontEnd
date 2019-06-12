@@ -280,9 +280,6 @@ export class DocumentoService {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
 
-    getPosts(fechaini: Date, fechafin: Date): any {
-        return this.requesterService.get(AppSettings.API_ENDPOINT  +'reportes/volumen/curier', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
-    }
 
     listarDocumentosUtdBCPCodigo(codigo: string) {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
