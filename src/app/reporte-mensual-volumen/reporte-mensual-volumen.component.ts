@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { DocumentoService } from '../shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
@@ -24,6 +24,7 @@ import { ReporteService } from '../shared/reporte.service';
 export class ReporteMensualVolumenComponent implements OnInit {
 
     @ViewChild('eventText') eventText: ElementRef;
+    plazo: any;
 
     constructor(
         public documentoService: DocumentoService,
@@ -41,7 +42,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
     proveedores: Proveedor[]=[];
     documentos: Documento[] = [];
     // reportesEficienciaPorPlazoDistribucion: any = {};
-    documentosSubscription: Subscription;
+    documentosSubscription:Subscription[] = [];
     documentoForm: FormGroup;
     data: any[] = [];
     data2: any[] = []; 
@@ -56,6 +57,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
+            
         })
 
         this.proveedores = this.proveedorService.getProveedores();
@@ -95,21 +97,22 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     this.llenarDatasource3(documentos);
 
                 },*/
-            this.documentoService.getPosts( fechaIni,fechaFin  ).subscribe(
+                this.documentosSubscription.push(this.reporteService.getvolumen( fechaIni,fechaFin ).subscribe(
                 (data: any) => {
                     this.data=data;
                     this.llenarDataSource(data);
-                    //this.llenarDataSource2(data);
-                    //this.llenarDatasource3(data);
+                    this.llenarDataSource2(data);
+                    this.llenarDatasource3(data);
                 },
+                
                 error => {
                     if (error.status === 400) {
                         this.documentos = [];
                         this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
-            );
-            this.reporteService.getReporteVolumenporSede( fechaIni,fechaFin  ).subscribe(
+            ));
+/*             this.documentosSubscription.push(this.reporteService.getReporteVolumenporSede( fechaIni,fechaFin  ).subscribe(
                 (data2: any) => {
                     this.data2=data2;
                     this.llenarDataSource2(data2);
@@ -121,9 +124,9 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
-            );
+            ));
 
-            this.reporteService.getReporteVolumenporproveedorandplazo( fechaIni,fechaFin  ).subscribe(
+            this.documentosSubscription.push(this.reporteService.getReporteVolumenporproveedorandplazo( fechaIni,fechaFin  ).subscribe(
                 (data3: any) => {
                     this.data3=data3;
                     this.llenarDatasource3(data3);
@@ -134,21 +137,20 @@ export class ReporteMensualVolumenComponent implements OnInit {
                         this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
-            );
+            ));  */
 
         }
         else {
             this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
-
+        console.log('DATOS'+this.data)
         console.log(this.proveedores);
         console.log(this.sedesDespacho);
     }
 
 
-    llenarDataSource(data) {
+/*     llenarDataSource(data) {
         this.dataSource = [];
-
         this.proveedores.forEach(
             proveedor => {
                 let reporteProveedor = {
@@ -167,7 +169,39 @@ export class ReporteMensualVolumenComponent implements OnInit {
                     }
                 });
                 this.dataSource.push(reporteProveedor);
-            });
+            });  
+    } */
+
+
+    llenarDataSource(data) {
+        this.dataSource = [];
+        Object.keys(data).forEach(key1 => {
+
+        if(1 === parseInt(key1)){
+            var obj1 = data[key1];    
+            this.proveedores.forEach(
+                proveedor => {
+                    let reporteProveedor = {
+                        proveedor: '',
+                        cantidad: ''
+                    };
+                    reporteProveedor.proveedor = proveedor.nombre;
+                    Object.keys(obj1).forEach(key2 => {
+                        var obj2 = obj1[key2];
+                        if (proveedor.id === parseInt(key2)){
+                            Object.keys(obj2).forEach(key3 => {
+                                if (key3 == "porcentaje") {
+                                    let numero = obj2[key3];
+                                    let decimal = numero.toFixed(1);
+                                    reporteProveedor.cantidad = decimal+"%";
+                                }
+                            });
+                        }
+                    });
+                    this.dataSource.push(reporteProveedor);
+                });  
+        }    
+        });
     }
 
     llenarDataSource2(data2) {
@@ -177,16 +211,24 @@ export class ReporteMensualVolumenComponent implements OnInit {
             sedeDespacho => {
                 let reporteSedeDespacho = {
                     sedeDespacho: '',
-                    cantidad: 0
+                    cantidad: ''
                 };
                 reporteSedeDespacho.sedeDespacho = sedeDespacho.nombre;
                 Object.keys(data2).forEach(key => {
+                    if(2 === parseInt(key)){
                     var obj1 = data2[key];
-                    if (sedeDespacho.id === parseInt(key)){
                         Object.keys(obj1).forEach(key1 => {
-                            if (key1 == "porcentaje") {
-                                reporteSedeDespacho.cantidad = obj1[key1];
-                            }
+                            if (sedeDespacho.id === parseInt(key1)){
+
+                            var obj2 = obj1[key1];
+                            Object.keys(obj2).forEach(key2 => {
+                                if (key2 == "porcentaje") {
+                                    let numero = obj2[key2];
+                                    let decimal = numero.toFixed(1);
+                                    reporteSedeDespacho.cantidad = decimal+'%';
+                                }
+                            });
+                        }
                         });
                     }
                 });
@@ -202,7 +244,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         // this.dataSource2.push(reporteSede);
 
 
-/*     llenarDatasource3(documentos: Documento[]) {
+    /*llenarDatasourcje3(documentos: Documento[]) {
         this.dataSource3 = [];
         this.proveedores.forEach(
             proveedor => {
@@ -223,6 +265,43 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
     } */
 
+/*      llenarDatasource3(data3) {
+
+        this.dataSource3 = [];
+        var a = 0;
+        this.proveedores.forEach(
+            proveedor => {
+                let graficoPorProveedor: any[] = [];
+
+                Object.keys(this.data3).forEach(key => {
+                    var obj1 = this.data3[key];
+
+                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(                
+                    plazoDistribucion => {
+                        let graficoPorProveedorObjeto = {
+                            plazo: '',
+                            cantidad: 0
+                        }
+                        if ( proveedor.id==parseInt(key)){ 
+                            graficoPorProveedorObjeto.plazo=plazoDistribucion.tiempoEnvio + ' H',
+
+                            Object.keys(obj1).forEach(key1 => {                                
+                                if (plazoDistribucion.id==parseInt(key1) ) {
+                                    graficoPorProveedorObjeto.cantidad = (obj1[key1]);
+                                }
+                            });
+                            graficoPorProveedor.push(graficoPorProveedorObjeto);
+                        }
+                    }
+                );
+                });
+                this.dataSource3[proveedor.nombre] = graficoPorProveedor;
+            }
+        )
+
+    } */
+
+
     llenarDatasource3(data3) {
 
         this.dataSource3 = [];
@@ -230,59 +309,65 @@ export class ReporteMensualVolumenComponent implements OnInit {
         this.proveedores.forEach(
             proveedor => {
                 let graficoPorProveedor: any[] = [];
-                proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(
+
+
+                Object.keys(data3).forEach(key => {
+                    var objn = data3[key];
+
+                    if(3 === parseInt(key)){    
+                    Object.keys(objn).forEach(keyx => {
+                    var obj1 = objn[keyx];
+
+                    proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(                
                     plazoDistribucion => {
                         let graficoPorProveedorObjeto = {
                             plazo: '',
                             cantidad: 0
                         }
-                        Object.keys(this.data).forEach(key => {
-                            var obj1 = this.data[key];
+                        if ( proveedor.id==parseInt(keyx)){ 
+                            graficoPorProveedorObjeto.plazo=plazoDistribucion.tiempoEnvio + ' H',
 
-                        if (proveedor.id === parseInt(key)){ 
-                            plazo: plazoDistribucion.tiempoEnvio + ' H',
-
-                            Object.keys(obj1).forEach(key1 => {
-                                
-                                if (key1 == "cantidad") {
-                                    a = a +obj1[key1];
+                            Object.keys(obj1).forEach(key1 => {                                
+                                if (plazoDistribucion.id==parseInt(key1) ) {
+                                    graficoPorProveedorObjeto.cantidad = (obj1[key1]);
                                 }
-                            
-                            
-                            
                             });
 
+                            graficoPorProveedor.push(graficoPorProveedorObjeto);
                         }
+                    }
+                );
+                });
 
-                        });
+                }
 
+            });
 
-                        graficoPorProveedor.push(graficoPorProveedorObjeto);
-                    });
                 this.dataSource3[proveedor.nombre] = graficoPorProveedor;
             }
         )
 
     }
 
-
-
-
-
-
     porcentajeAsignado(proveedor) {
         var a = 0;
         //this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
-            Object.keys(this.data).forEach(key => {
-            if(proveedor.id===parseInt(key)){
-                var obj1 = this.data[key];
-                Object.keys(obj1).forEach(key1 => {
-                    if (key1 == "cantidad") {
-                        a = obj1[key1];
+            Object.keys(this.data).forEach(key1 => {
+            if(1 === parseInt(key1)){
+    
+            var obj1 = this.data[key1];    
+            Object.keys(obj1).forEach(key2 => {
+            if(proveedor.id===parseInt(key2)){
+                var obj2 = obj1[key2];
+                Object.keys(obj2).forEach(key3 => {
+                    if (key3 == "cantidad") {
+                        a = obj2[key3];
                     }
                 });
             }
-            });
+        });
+        }
+        });
         //});
         var numero = a;
         var final = numero;
@@ -292,14 +377,21 @@ export class ReporteMensualVolumenComponent implements OnInit {
     porcentajeAsignado2(sede) {
         var a = 0;
         //this.documentoService.getPosts(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')).subscribe((data: any) => {
-            Object.keys(this.data2).forEach(key => {
-            if(sede.id===parseInt(key)){
-                var obj1 = this.data2[key];
+            Object.keys(this.data).forEach(key => {
+                if(2 === parseInt(key)){
+
+                var obj1 = this.data[key];
                 Object.keys(obj1).forEach(key1 => {
-                    if (key1 == "cantidad") {
-                        a = obj1[key1];
+                    if(sede.id===parseInt(key1)){
+                    var obj2 = obj1[key1];
+                    Object.keys(obj2).forEach(key3 => {
+                        if (key3 == "cantidad") {
+                            a = obj2[key3];
+                        }
+                    });
                     }
                 });
+
             }
             });
         //});
@@ -313,18 +405,23 @@ export class ReporteMensualVolumenComponent implements OnInit {
         var a = 0;
         Object.keys(this.data).forEach(key => {
                 var obj1 = this.data[key];
+                if(1 === parseInt(key)){
                 Object.keys(obj1).forEach(key1 => {
-                    if (key1 == "cantidad") {
-                        a = a +obj1[key1];
-                    }
+                    var obj2 = obj1 [key1];
+                    Object.keys(obj2).forEach(key2 => {
+                        if (key2 == "cantidad") {
+                            a = a +obj2[key2];
+                        }
+                    });
                 });
+            }
             });
         var numero = a;
         var final = numero;
         return final;
     }
 
-    sumaporsede(){
+/*     sumaporsede(){
         var a = 0;
         Object.keys(this.data2).forEach(key => {
                 var obj1 = this.data2[key];
@@ -337,10 +434,30 @@ export class ReporteMensualVolumenComponent implements OnInit {
         var numero = a;
         var final = numero;
         return final;
+    } */
+
+    sumaporsede(){
+        var a = 0;
+        Object.keys(this.data).forEach(key => {
+            if(2 === parseInt(key)){
+                var obj1 = this.data[key];
+                Object.keys(obj1).forEach(key1 => {
+                    var obj2 = obj1[key1];
+                    Object.keys(obj2).forEach(key2 => {
+                        if (key2 == "cantidad") {
+                            a = a +obj2[key2];
+                        }
+                    });
+                });
+            }
+            });
+        var numero = a;
+        var final = numero;
+        return final;
     }
 
     ngOnDestroy() {
-        this.documentosSubscription.unsubscribe();
+        this.documentosSubscription.forEach(s => s.unsubscribe());
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------
