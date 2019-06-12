@@ -39,7 +39,7 @@
         </form>
       </div>
     </div>
- <!--    <div *ngIf="documentos.length > 0; else mensaje"> -->
+    <div *ngIf="data.length !== 0; else mensaje">
       <div class="card mb-4">
         <div class="card-header">
           <div class="titulo">
@@ -109,19 +109,19 @@
                   <tr>
                     <th scope="col">Indicador</th>
                     <th scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{plazoDistribucion.nombre}}</th>
-                    <th scope="col">General</th>
+                    
 
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td scope="col">Dentro de Plazo</td>
-                    <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) | number: '1.1-1'}}%</td>
+                    <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion)}}</td>
                     
                   </tr>
                   <tr>
                     <td scope="col">Fuera de Plazo</td>
-                    <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) | number: '1.1-1'}}%</td>
+                    <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion)}}</td>
                   
                   </tr>
                 </tbody>
@@ -162,8 +162,8 @@
           </div>
         </div>  
       </div> -->
-   <!--  </div> -->
-<!--     <ng-template #mensaje>
+    </div>
+    <ng-template #mensaje>
       <div class="row">
         <div class="col">
           <div class="alert alert-info" role="alert" align=center>
@@ -171,6 +171,6 @@
           </div>
         </div>
       </div>
-    </ng-template> -->
+    </ng-template>
   </div>
 </div>

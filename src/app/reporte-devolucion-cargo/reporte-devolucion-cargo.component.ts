@@ -47,6 +47,8 @@ export class ReporteDevolucionCargoComponent implements OnInit {
     pendientesDocu = [];
 
     data: any[] = [];
+    dataGrafico1 : any[]= [];
+    dataGrafico2 : any[] = [];
     data2: any[] = [];
     constructor(
         public notifier: NotifierService,
@@ -130,10 +132,20 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             this.documentosSubscription = this.reporteService.cantidadDevolucionPorTipoDevolucion(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
                 (data: any) => {
                     this.data = data
-                    //this.generalTipoDevolucion(data);
-                    this.GraficoDevolucionCargos(data);
-                    this.GraficoDevolucionDocumentos(data);
-                    this.GraficoDevolucionDenuncias(data);
+                    Object.keys(data).forEach(key => {
+                        var obj = data[key];
+                        if ( parseInt(key) == 1) {
+                            this.dataGrafico1 = obj
+                        }else{
+                            this.dataGrafico2 =obj
+                        }
+
+                    })
+                    this.GraficoDevolucionCargos(this.dataGrafico1);
+                    this.GraficoDevolucionDocumentos(this.dataGrafico1);
+                    this.GraficoDevolucionDenuncias(this.dataGrafico1);
+                    this.GraficoPorArea(this.dataGrafico2);
+                    
                 }
             );
 
@@ -537,7 +549,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         let cantdevuelto = 0;
         let cantpendiente = 0;
         let valortotal = 0;
-        
+
         this.proveedores.forEach(
             proveedores => {
                 let eficienciaPorProveedorObjeto = {
@@ -555,19 +567,19 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     var obj = data[key];
                     if (proveedores.id == parseInt(key)) {
                         Object.keys(obj).forEach(key1 => {
-                            tipocantidad.tipo=parseInt(key);
-                                var cantTipo = obj[key1];
-                                Object.keys(cantTipo).forEach(key2 => {
-                                    if (key2 == "devuelto") {
-                                        tipocantidad.devuelto = cantTipo[key2]
-                                        cantdevuelto+=cantTipo[key2]
-                                    }else{
-                                        tipocantidad.pendiente = cantTipo[key2]
-                                    }
+                            tipocantidad.tipo = parseInt(key);
+                            var cantTipo = obj[key1];
+                            Object.keys(cantTipo).forEach(key2 => {
+                                if (key2 == "devuelto") {
+                                    tipocantidad.devuelto = cantTipo[key2]
+                                    cantdevuelto += cantTipo[key2]
+                                } else {
+                                    tipocantidad.pendiente = cantTipo[key2]
+                                }
 
 
-                                });
-                            
+                            });
+
 
                         });
                     }
@@ -589,8 +601,9 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         this.dataTablaCargoArray = [];
         this.tablaProveedores = [];
         let jj: number = 1;
-        let cantdevueltos =0;
-        let cantpendientes =0;
+        let cantdevueltos = 0;
+        let cantpendientes = 0;
+        let total = 0;
         let rTablaPendienteCar = {
             estado: '',
             general: '',
@@ -600,13 +613,13 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             general: '',
         }
         this.proveedores.forEach(
-              proveedor => {
-                  let cargos = {
-                    Courier : "",
-                    Pendiente : 0,
-                    Devuelto : 0
-                  }
-                  let listaProveedor = {
+            proveedor => {
+                let cargos = {
+                    Courier: "",
+                    PendientePorcentaje: "",
+                    DevueltoPorcentaje: ""
+                }
+                let listaProveedor = {
                     id: 0,
                     nombre: ""
                 };
@@ -618,41 +631,69 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                 listaProveedor.id = jj + 1;
                 listaProveedor.nombre = proveedor.nombre;
                 this.tablaProveedores.push(listaProveedor);
-                  Object.keys(data).forEach(key => {
+                jj++;
+                Object.keys(data).forEach(key => {
                     if (proveedor.id == parseInt(key)) {
                         var obj = data[key];
-                        cargos.Courier=proveedor.nombre
+                        cargos.Courier = proveedor.nombre
                         Object.keys(obj).forEach(key1 => {
-                            if(parseInt(key1)==1){
+                            if (parseInt(key1) == 1) {
                                 var cantTipo = obj[key1];
+                                for (var el in cantTipo) {
+                                    if (cantTipo.hasOwnProperty(el)) {
+                                        total += parseInt(cantTipo[el]);
+                                    }
+                                }
                                 Object.keys(cantTipo).forEach(key2 => {
                                     if (key2 == "devuelto") {
-                                        cargos.Devuelto = cantTipo[key2]
-                                        cantdevueltos+=cantTipo[key2]
-                                    }else{
-                                        cargos.Pendiente = cantTipo[key2]
-                                        cantpendientes+= cantTipo[key2]
+                                        let resultado = (cantTipo[key2] * 100) / total;
+                                        if (isNaN(resultado)) {
+                                            resultado = 0;
+                                        }
+                                        cargos.DevueltoPorcentaje = resultado.toFixed(1) + '%';
+                                        cantdevueltos += cantTipo[key2]
+                                    } else {
+                                        let resultado = (cantTipo[key2] * 100) / total;
+                                        if (isNaN(resultado)) {
+                                            resultado = 0;
+                                        }
+                                        cargos.PendientePorcentaje = resultado.toFixed(1) + '%';
+                                        cantpendientes += cantTipo[key2]
                                     }
-                             });    
+                                });
                             }
-                            
+
                         });
                         this.dataGraficoDevolucionCargos.push(cargos);
                     }
                 });
-                jj++;
-              }
-          );
-            
+
+            }
+        );
+
         let cargosGeneral = {
             Courier: "",
             Devuelto: 0,
-            Pendiente: 0
+            Pendiente: 0,
+            DevueltoPorcentaje: "",
+            PendientePorcentaje: ""
         }
-        cargosGeneral.Courier='GENERAL'
-        cargosGeneral.Devuelto=cantdevueltos
-        cargosGeneral.Pendiente=cantpendientes
-        this.dataGraficoDevolucionCargos.push(cargosGeneral);  
+        cargosGeneral.Courier = 'GENERAL'
+        cargosGeneral.Devuelto = cantdevueltos
+        cargosGeneral.Pendiente = cantpendientes
+        let totalGeneral = cantdevueltos + cantpendientes
+        let resultadodevueltos = (cantdevueltos * 100) / totalGeneral;
+        if (isNaN(resultadodevueltos)) {
+            resultadodevueltos = 0;
+        }
+        cargosGeneral.DevueltoPorcentaje = resultadodevueltos.toFixed(1) + '%';
+        let resultadopendientes = (cantpendientes * 100) / totalGeneral;
+        if (isNaN(resultadopendientes)) {
+            resultadopendientes = 0;
+        }
+        cargosGeneral.PendientePorcentaje = resultadopendientes.toFixed(1) + '%';
+        this.dataGraficoDevolucionCargos.push(cargosGeneral);
+
         rTablaPendienteCar.estado = 'PENDIENTE';
         rTablaPendienteCar.general = this.Porcentaje(cargosGeneral.Pendiente, cargosGeneral.Pendiente + cargosGeneral.Devuelto);
 
@@ -662,7 +703,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
         this.dataTablaCargo.push(rTablaPendienteCar);
         this.dataTablaCargo.push(rTablaDevueltoCar);
-        
+
 
         this.dataTablaCargoArray = this.dataTablaCargo.map(function (obj) {
             return [obj.estado, obj.general];
@@ -673,66 +714,95 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
     GraficoDevolucionDocumentos(data) {
         this.dataGraficoDevolucionDocumentos = [];
-        let cantdevueltos =0;
-        let cantpendientes =0;
+        let cantdevueltos = 0;
+        let cantpendientes = 0;
+        let total = 0;
+        this.dataTablaDocumento = [];
+        this.dataTablaDocumentoArray = [];
         let rTablaPendienteDoc = {
             estado: '',
             general: '',
-         }
+        }
 
         let rTablaDevueltoDoc = {
             estado: '',
             general: '',
         }
         this.proveedores.forEach(
-              proveedor => {
-                  let cargos = {
-                    Courier : "",
-                    Pendiente : 0,
-                    Devuelto : 0
-                  }
-                  Object.keys(data).forEach(key => {
+            proveedor => {
+                let cargos = {
+                    Courier: "",
+                    PendientePorcentaje: "",
+                    DevueltoPorcentaje: ""
+                }
+                Object.keys(data).forEach(key => {
                     if (proveedor.id == parseInt(key)) {
                         var obj = data[key];
-                        cargos.Courier=proveedor.nombre
+                        cargos.Courier = proveedor.nombre
                         Object.keys(obj).forEach(key1 => {
-                            if(parseInt(key1)==2){
+                            if (parseInt(key1) == 2) {
                                 var cantTipo = obj[key1];
+                                for (var el in cantTipo) {
+                                    if (cantTipo.hasOwnProperty(el)) {
+                                        total += parseInt(cantTipo[el]);
+                                    }
+                                }
                                 Object.keys(cantTipo).forEach(key2 => {
                                     if (key2 == "devuelto") {
-                                        cargos.Devuelto = cantTipo[key2]
-                                        cantdevueltos+=cantTipo[key2]
-                                    }else{
-                                        cargos.Pendiente = cantTipo[key2]
-                                        cantpendientes+=cantTipo[key2]
+                                        let resultado = (cantTipo[key2] * 100) / total;
+                                        if (isNaN(resultado)) {
+                                            resultado = 0;
+                                        }
+                                        cargos.DevueltoPorcentaje = resultado.toFixed(1) + '%';
+                                        cantdevueltos += cantTipo[key2]
+                                    } else {
+                                        let resultado = (cantTipo[key2] * 100) / total;
+                                        if (isNaN(resultado)) {
+                                            resultado = 0;
+                                        }
+                                        cargos.PendientePorcentaje = resultado.toFixed(1) + '%';
+                                        cantpendientes += cantTipo[key2]
                                     }
-                             });    
+                                });
                             }
                         });
                         this.dataGraficoDevolucionDocumentos.push(cargos);
                     }
-                 });
-              }
-          );
-          let cargosGeneral = {
+                });
+            }
+        );
+        let documentosGeneral = {
             Courier: "",
             Devuelto: 0,
-            Pendiente: 0
+            Pendiente: 0,
+            DevueltoPorcentaje :"",
+            PendientePorcentaje:""
         }
-        cargosGeneral.Courier='GENERAL'
-        cargosGeneral.Devuelto=cantdevueltos
-        cargosGeneral.Pendiente=cantpendientes
-        this.dataGraficoDevolucionDocumentos.push(cargosGeneral);
+        documentosGeneral.Courier = 'GENERAL'
+        documentosGeneral.Devuelto = cantdevueltos
+        documentosGeneral.Pendiente = cantpendientes
+        let totalGeneral = cantdevueltos + cantpendientes
+        let resultadodevueltos = (cantdevueltos * 100) / totalGeneral;
+        if (isNaN(resultadodevueltos)) {
+            resultadodevueltos = 0;
+        }
+        documentosGeneral.DevueltoPorcentaje = resultadodevueltos.toFixed(1) + '%';
+        let resultadopendientes = (cantpendientes * 100) / totalGeneral;
+        if (isNaN(resultadopendientes)) {
+            resultadopendientes = 0;
+        }
+        documentosGeneral.PendientePorcentaje = resultadopendientes.toFixed(1) + '%';
+        this.dataGraficoDevolucionDocumentos.push(documentosGeneral);
         rTablaPendienteDoc.estado = 'PENDIENTE';
-        rTablaPendienteDoc.general = this.Porcentaje(cargosGeneral.Pendiente, cargosGeneral.Pendiente + cargosGeneral.Devuelto);
+        rTablaPendienteDoc.general = this.Porcentaje(documentosGeneral.Pendiente, documentosGeneral.Pendiente + documentosGeneral.Devuelto);
 
         rTablaDevueltoDoc.estado = 'DEVUELTO';
-        rTablaDevueltoDoc.general = this.Porcentaje(cargosGeneral.Devuelto, cargosGeneral.Pendiente + cargosGeneral.Devuelto);
+        rTablaDevueltoDoc.general = this.Porcentaje(documentosGeneral.Devuelto, documentosGeneral.Pendiente + documentosGeneral.Devuelto);
 
 
         this.dataTablaDocumento.push(rTablaPendienteDoc);
         this.dataTablaDocumento.push(rTablaDevueltoDoc);
-        
+
 
         this.dataTablaDocumentoArray = this.dataTablaDocumento.map(function (obj) {
             return [obj.estado, obj.general];
@@ -742,72 +812,145 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
     GraficoDevolucionDenuncias(data) {
         this.dataGraficoDevolucionDenuncias = [];
-        let cantdevueltos =0;
-        let cantpendientes =0;
+        let cantdevueltos = 0;
+        let cantpendientes = 0;
+        let total = 0;
+        this.dataTablaDenuncia = []
+        this.dataTablaDenunciaArray = []
         let rTablaPendienteDenu = {
             estado: '',
             general: ''
-            }
+        }
         let rTablaDevueltoDenu = {
             estado: '',
             general: ''
         }
         this.proveedores.forEach(
-              proveedor => {
-                  let cargos = {
-                    Courier : "",
-                    Pendiente : 0,
-                    Devuelto : 0
-                  }
-                  Object.keys(data).forEach(key => {
+            proveedor => {
+                let cargos = {
+                    Courier: "",
+                    PendientePorcentaje: "",
+                    DevueltoPorcentaje: ""
+                }
+                Object.keys(data).forEach(key => {
                     if (proveedor.id == parseInt(key)) {
                         var obj = data[key];
-                        cargos.Courier=proveedor.nombre
+                        cargos.Courier = proveedor.nombre
                         Object.keys(obj).forEach(key1 => {
-                            if(parseInt(key1)==3){
+                            if (parseInt(key1) == 3) {
                                 var cantTipo = obj[key1];
+                                for (var el in cantTipo) {
+                                    if (cantTipo.hasOwnProperty(el)) {
+                                        total += parseInt(cantTipo[el]);
+                                    }
+                                }
                                 Object.keys(cantTipo).forEach(key2 => {
                                     if (key2 == "devuelto") {
-                                        cargos.Devuelto = cantTipo[key2]
-                                        cantdevueltos+=cantTipo[key2]
-                                    }else{
-                                        cargos.Pendiente = cantTipo[key2]
-                                        cantpendientes+=cantTipo[key2]
+                                        let resultado = (cantTipo[key2] * 100) / total;
+                                        if (isNaN(resultado)) {
+                                            resultado = 0;
+                                        }
+                                        cargos.DevueltoPorcentaje = resultado.toFixed(1) + '%';
+                                        cantdevueltos += cantTipo[key2]
+                                    } else {
+                                        let resultado = (cantTipo[key2] * 100) / total;
+                                        if (isNaN(resultado)) {
+                                            resultado = 0;
+                                        }
+                                        cargos.PendientePorcentaje = resultado.toFixed(1) + '%';
+                                        cantpendientes += cantTipo[key2]
                                     }
-                             });    
+                                });
                             }
                         });
                         this.dataGraficoDevolucionDenuncias.push(cargos);
                     }
-                 });
-              }
-          );
-          let cargosGeneral = {
+                });
+            }
+        );
+        let denunciasGeneral = {
             Courier: "",
             Devuelto: 0,
-            Pendiente: 0
+            Pendiente: 0,
+            DevueltoPorcentaje:"",
+            PendientePorcentaje:""
         }
-        cargosGeneral.Courier='GENERAL'
-        cargosGeneral.Devuelto=cantdevueltos
-        cargosGeneral.Pendiente=cantpendientes
-        this.dataGraficoDevolucionDenuncias.push(cargosGeneral);
+        denunciasGeneral.Courier = 'GENERAL'
+        denunciasGeneral.Devuelto = cantdevueltos
+        denunciasGeneral.Pendiente = cantpendientes
+        let totalGeneral = cantdevueltos + cantpendientes
+        let resultadodevueltos = (cantdevueltos * 100) / totalGeneral;
+        if (isNaN(resultadodevueltos)) {
+            resultadodevueltos = 0;
+        }
+        denunciasGeneral.DevueltoPorcentaje = resultadodevueltos.toFixed(1) + '%';
+        let resultadopendientes = (cantpendientes * 100) / totalGeneral;
+        if (isNaN(resultadopendientes)) {
+            resultadopendientes = 0;
+        }
+        denunciasGeneral.PendientePorcentaje = resultadopendientes.toFixed(1) + '%';
+        this.dataGraficoDevolucionDenuncias.push(denunciasGeneral);
 
         rTablaPendienteDenu.estado = 'PENDIENTE';
-        rTablaPendienteDenu.general = this.Porcentaje(cargosGeneral.Pendiente, cargosGeneral.Pendiente + cargosGeneral.Devuelto);
+        rTablaPendienteDenu.general = this.Porcentaje(denunciasGeneral.Pendiente, denunciasGeneral.Pendiente + denunciasGeneral.Devuelto);
 
         rTablaDevueltoDenu.estado = 'DEVUELTO';
-        rTablaDevueltoDenu.general = this.Porcentaje(cargosGeneral.Devuelto, cargosGeneral.Pendiente + cargosGeneral.Devuelto);
+        rTablaDevueltoDenu.general = this.Porcentaje(denunciasGeneral.Devuelto, denunciasGeneral.Pendiente + denunciasGeneral.Devuelto);
 
 
         this.dataTablaDenuncia.push(rTablaPendienteDenu);
         this.dataTablaDenuncia.push(rTablaDevueltoDenu);
-        
+
 
         this.dataTablaDenunciaArray = this.dataTablaDenuncia.map(function (obj) {
             return [obj.estado, obj.general];
         });
-        
 
+
+    }
+
+     GraficoPorArea(data) {
+        let ii=1;
+        this.dataGraficoDetallePendienteAreaTop =[];
+        this.areas.forEach(
+           
+            area => {
+                    let r_area = {
+                        nombre: '',
+                        cantidad: '',
+                    }
+                    Object.keys(data).forEach(key =>{
+                        if(area.id==parseInt(key)){
+                            r_area.nombre = area.nombre;
+                            r_area.cantidad=data[key];
+                            this.dataGraficoDetallePendienteArea.push(r_area);
+                        }
+                    });
+            }
+        );
+        this.dataGraficoDetallePendienteArea.sort((a, b) => (a.cantidad > b.cantidad) ? 1 : ((b.cantidad > a.cantidad) ? -1 : 0)).reverse();
+         let i = 1;
+        let cantidad_otras_areas: number = 0;
+        let otras_areas = {
+            nombre: '',
+            cantidad: '',
+        }
+        this.dataGraficoDetallePendienteArea.forEach(
+            registro => {
+                if (i <= 6) {
+                    this.dataGraficoDetallePendienteAreaTop.push(registro);
+                    i++;
+                }
+                else {
+                    cantidad_otras_areas += parseInt(registro.cantidad);
+                }
+            }
+        )
+
+        otras_areas.nombre = "OTROS";
+        otras_areas.cantidad = cantidad_otras_areas.toString();
+
+        this.dataGraficoDetallePendienteAreaTop.push(otras_areas);
     }
 
     //**************************************************************************************************************************************** */
@@ -846,8 +989,8 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     tickMarksColor: '#FFFFFF'
                 },
                 series: [
-                    { dataField: 'Devuelto', displayText: 'Devuelto', showLabels: true, },
-                    { dataField: 'Pendiente', displayText: 'Pendiente', showLabels: true, }
+                    { dataField: 'DevueltoPorcentaje', displayText: 'Devuelto', showLabels: true, },
+                    { dataField: 'PendientePorcentaje', displayText: 'Pendiente', showLabels: true, }
                 ]
             }
         ];

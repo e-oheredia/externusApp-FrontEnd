@@ -97,7 +97,7 @@ export class ReporteEficaciaComponent implements OnInit {
                                 }
                             )
 
-                            console.log(this.dataSource);
+                            
                             this.dataSource.push(reporteEficacia);
                         }
                     )
