@@ -15,7 +15,7 @@
         <h4>Datos de consulta</h4>
       </div>
       <div class="card-body">
-        <form [formGroup]="documentoForm" action="a=1" 
+        <form [formGroup]="documentoForm" action="a=1"
           (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
           <div class="form-row">
             <div class="col-4">
@@ -75,13 +75,14 @@
                 <tr>
                   <th scope="col">ESTADO</th>
                   <th scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
+                  <th scope="col">General</th>
                 </tr>
               </thead>
               <tbody>
                 <tr scope="col" *ngFor="let estado of estados">
                   <td> {{estado.nombre}} </td>
-                  <td scope="col" *ngFor="let proveedor of proveedores">
-                    {{estadoProveedor(proveedor, estado)}}</td>
+                  <td scope="col" *ngFor="let proveedor of proveedores">{{estadoProveedor(proveedor, estado)}}</td>
+                  <td scope="col">{{generalPorEstado(estado)}}</td>
                 </tr>
               </tbody>
             </table>
