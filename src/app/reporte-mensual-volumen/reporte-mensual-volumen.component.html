@@ -6,33 +6,30 @@
   </div>
 </div>
 
+
 <div class="row justify-content-center">
   <div class="col">
     <div class="card mb-5">
-
       <div class="card-header">
         <h4>Datos de consulta</h4>
       </div>
 
       <div class="card-body">
-        <form [formGroup]="documentoForm" (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
-
+        <form [formGroup]="documentoForm"
+          (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
           <div class="form-row">
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni">
               </div>
             </div>
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
-
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
@@ -40,75 +37,57 @@
                 </button>
               </div>
             </div>
-
           </div>
-
         </form>
       </div>
-
     </div>
-
-
   </div>
-
 </div>
 
  <div *ngIf="data.length!==0 && data !==null ; else mensaje">
 
 
 
+<!-- <div *ngIf="data.length!== 0; else mensaje"> -->
 
   <div class="card mb-4">
-
-
-
     <div class="card-header">
       <div class="titulo">
         <h4>Volumen de distribución: por courier</h4>
       </div>
     </div>
-
     <div class="card-body">
-
       <div class="row justify-content-center">
         <div class="col-8">
-          <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por courier'" [description]="''" [showLegend]="true" [enableAnimations]="true"
-            [padding]="paddingC" [titlePadding]="titlePaddingC" [source]="dataSource" [showBorderLine]="true" [seriesGroups]="seriesGroupsPro"
-            [colorScheme]="'scheme26'">
+          <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por courier'" [description]="''"
+            [showLegend]="true" [enableAnimations]="true" [padding]="paddingC" [titlePadding]="titlePaddingC"
+            [source]="dataSource" [showBorderLine]="true" [seriesGroups]="seriesGroupsPro" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
       </div>
-
-
       <div class="row justify-content-center mt-4">
         <div class="col-2 center-block ">
           <table class="table table-bordered ">
-
             <thead>
-
               <th *ngFor="let proveedor of proveedores">
                 {{proveedor.nombre}}
               </th>
               <th scope="col">General</th>
             </thead>
-
             <tbody>
               <tr>
                 <td *ngFor="let proveedor of proveedores">
                   {{porcentajeAsignado(proveedor)}}
                 </td>
                 <td *ngIf="proveedores.length !== 0" scope="col">
-                    {{sumaporproveedor()}}
+                  {{sumaporproveedor()}}
                 </td>
               </tr>
             </tbody>
-
           </table>
         </div>
       </div>
-
     </div>
-
   </div>
 
 
@@ -121,33 +100,30 @@
     <div class="card-body">
       <div class="row justify-content-center">
         <div class="col-8">
-          <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por UTD'" [description]="''" [showLegend]="true" [enableAnimations]="true"
-            [padding]="paddingU" [titlePadding]="titlePaddingU" [source]="dataSource2" [showBorderLine]="true" [seriesGroups]="seriesGroupsUtd"
-            [colorScheme]="'scheme26'">
+          <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por UTD'" [description]="''"
+            [showLegend]="true" [enableAnimations]="true" [padding]="paddingU" [titlePadding]="titlePaddingU"
+            [source]="dataSource2" [showBorderLine]="true" 
+            [seriesGroups]="seriesGroupsUtd" [colorScheme]="'scheme26'">
           </jqxChart>
         </div>
       </div>
     </div>
-
     <div class="row justify-content-center mt-4">
       <div class="col-2 center-block ">
         <table class="table table-bordered ">
-  
           <thead>
-  
             <th *ngFor="let sede of sedesDespacho">
               {{sede.nombre}}
             </th>
             <th scope="col">General</th>
           </thead>
-  
           <tbody>
             <tr>
               <td *ngFor="let sede of sedesDespacho">
                 {{porcentajeAsignado2(sede)}}
               </td>
               <td *ngIf="sedesDespacho.length !== 0" scope="col">
-                  {{ sumaporsede() }}
+                {{ sumaporsede() }}
               </td>
             </tr>
           </tbody>
@@ -157,6 +133,7 @@
 </div>
 
 
+<!-- </div> PERTENECE AL IF -->
 
  <div class="card mb-4">
     <div class="card-header">
@@ -171,7 +148,8 @@
           <h4>{{proveedor.nombre}}</h4>
           <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por plazo de distribución'" [description]="''" [showLegend]="true"
             [enableAnimations]="true" [padding]="paddingS" [titlePadding]="titlePaddingS" [source]="dataSource3[proveedor.nombre]"
-            [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+            [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)" 
+            [seriesGroups]="getSeriesGroups('stackedcolumn', 
               [{cantidad: 'Cantidad'}], 
               'horizontal')" [colorScheme]="'scheme26'">
           </jqxChart>
@@ -180,7 +158,6 @@
     </div>
   </div>
 
-</div> 
 
 <ng-template #mensaje>
   <div class="row">

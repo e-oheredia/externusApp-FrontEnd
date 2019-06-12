@@ -33,20 +33,20 @@ export class ReporteMensualVolumenComponent implements OnInit {
         public proveedorService: ProveedorService,
         public sedeDespachoService: SedeDespachoService,
         private plazoDistribucionService: PlazoDistribucionService,
-        public reporteService : ReporteService
+        public reporteService: ReporteService
     ) { }
 
     plazos: PlazoDistribucion[];
     envios: Envio;
     sedesDespacho: Sede[];
-    proveedores: Proveedor[]=[];
+    proveedores: Proveedor[] = [];
     documentos: Documento[] = [];
     // reportesEficienciaPorPlazoDistribucion: any = {};
     documentosSubscription:Subscription[] = [];
     documentoForm: FormGroup;
-    data: any[] = [];
-    data2: any[] = []; 
-    data3: any[] = [];   
+    data1: any[] = [];
+    data2: any[] = [];
+    data3: any[] = [];
     dataSource: any[];
     dataSource2: any[];
     dataSource3: any[];
@@ -63,7 +63,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         this.proveedores = this.proveedorService.getProveedores();
 
         this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
-        
+
         this.proveedorService.proveedoresChanged.subscribe(
             proveedores => {
                 this.proveedores = proveedores;
@@ -77,7 +77,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         )
 
         this.plazos = this.plazoDistribucionService.getPlazosDistribucion();
-        
+
         this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
             plazos => {
                 this.plazos = plazos;
@@ -99,7 +99,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 },*/
                 this.documentosSubscription.push(this.reporteService.getvolumen( fechaIni,fechaFin ).subscribe(
                 (data: any) => {
-                    this.data=data;
+                    this.data1 = data;
                     this.llenarDataSource(data);
                     this.llenarDataSource2(data);
                     this.llenarDatasource3(data);
@@ -160,7 +160,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 reporteProveedor.proveedor = proveedor.nombre;
                 Object.keys(data).forEach(key => {
                     var obj1 = data[key];
-                    if (proveedor.id === parseInt(key)){
+                    if (proveedor.id === parseInt(key)) {
                         Object.keys(obj1).forEach(key1 => {
                             if (key1 == "porcentaje") {
                                 reporteProveedor.cantidad = obj1[key1];
@@ -204,9 +204,11 @@ export class ReporteMensualVolumenComponent implements OnInit {
         });
     }
 
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    //2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO
     llenarDataSource2(data2) {
         this.dataSource2 = [];
-
         this.sedesDespacho.forEach(
             sedeDespacho => {
                 let reporteSedeDespacho = {
@@ -393,7 +395,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 });
 
             }
-            });
+        });
         //});
         var numero = a;
         var final = numero;
@@ -424,13 +426,13 @@ export class ReporteMensualVolumenComponent implements OnInit {
 /*     sumaporsede(){
         var a = 0;
         Object.keys(this.data2).forEach(key => {
-                var obj1 = this.data2[key];
-                Object.keys(obj1).forEach(key1 => {
-                    if (key1 == "cantidad") {
-                        a = a +obj1[key1];
-                    }
-                });
+            var obj1 = this.data2[key];
+            Object.keys(obj1).forEach(key1 => {
+                if (key1 == "cantidad") {
+                    a = a + obj1[key1];
+                }
             });
+        });
         var numero = a;
         var final = numero;
         return final;
@@ -496,7 +498,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                                 if (isNaN(value))
                                     return value;
                                 //return parseFloat(value);
-                                 return parseFloat(value) + '%';
+                                return parseFloat(value) + '%';
                             },
                         }
                     ]

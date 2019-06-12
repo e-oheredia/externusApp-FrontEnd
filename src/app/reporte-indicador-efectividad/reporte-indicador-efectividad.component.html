@@ -1,7 +1,7 @@
-<div class="row" >
+<div class="row">
   <div class="col-10">
-    <div class="pb-2 mt-4 mb-2" >
-      <h1>Documentos varios - indicador de efectividad</h1>
+    <div class="pb-2 mt-4 mb-2">
+      <h1>Indicador de eficacia</h1>
     </div>
   </div>
 </div>
@@ -12,7 +12,8 @@
         <h4>Datos de consulta</h4>
       </div>
       <div class="card-body">
-        <form [formGroup]="busquedaForm" (ngSubmit)="MostrarReportes(busquedaForm.get('fechaIni').value, busquedaForm.get('fechaFin').value)">
+        <form [formGroup]="busquedaForm"
+          (ngSubmit)="MostrarReportes(busquedaForm.get('fechaIni').value, busquedaForm.get('fechaFin').value)">
           <div class="form-row">
             <div class="col-4">
               <div class="form-group">
@@ -45,26 +46,35 @@
 <div class="row" *ngIf="graficoEfectividad.length > 0; else mensaje">
   <div class="col">
     <div class="card mb-4">
+
       <div class="card-header">
         <div class="titulo">
-          <h4>Indicador de efectividad</h4>
+          <h4>Indicador de eficacia</h4>
         </div>
       </div>
+
       <div class="card-body">
+
         <div class="row">
           <div class="col">
-            <jqxChart #myChart [height]="500" [title]="'Indicador de efectividad'" [description]="''" [showLegend]="true"
-              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="graficoEfectividad" [xAxis]="getAxis"
-              [valueAxis]="getValueAxis" [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme05'">
+            <jqxChart #myChart [height]="500" [title]="'Indicador de efectividad'" [description]="''"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+              [source]="graficoEfectividad" [xAxis]="getAxis" [valueAxis]="getValueAxis"
+              [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme05'">
             </jqxChart>
           </div>
         </div>
+
+        <br>
+
         <div class="row">
           <div class="col">
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th scope="col">Mes
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </th>
                   <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
                 </tr>
               </thead>
@@ -77,41 +87,40 @@
             </table>
           </div>
         </div>
-      </div>
-    </div>
-    <div *ngIf="arrayTablaEfectividad.length > 0">
-      <div class="card mb-4">
-        
-        <div class="card-body">
-          <div class="row">
-            <div class="col">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Mes </th>
-                    <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-                  </tr>
-                </thead>
-                <tbody>        
-                  <tr *ngFor="let _r of arrayTablaEfectividad">                    
-                    <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
-                    <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Mes </th>
+                  <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let _r of arrayTablaEfectividad">
+                  <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
+                  <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+
       </div>
+
     </div>
   </div>
 </div>
+
 <ng-template #mensaje>
-    <div class="row">
-      <div class="col">
-        <div class="alert alert-info" role="alert">
-          No se encontraron documentos.
-        </div>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No se encontraron documentos.
       </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>
