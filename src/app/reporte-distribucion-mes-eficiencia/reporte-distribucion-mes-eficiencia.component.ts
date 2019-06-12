@@ -38,11 +38,16 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
   eficienciaPorDetalle: any[] = [];
 
   reportesEficienciaPorPlazoDistribucion: any = {};
+  // reportesDetalleEficiencia: any = {};
   documentosSubscription: Subscription;
+  // proveedorElegidoDetalle: Proveedor;
 
   data1: any[] = [];
   data2: any[] = [];
   data3: any[] = [];
+
+  // sumaDentroPlazoTotal: number = 0;
+  // sumaFueraPlazoTotal: number = 0;
 
   ngOnInit() {
     this.busquedaForm = new FormGroup({
@@ -179,10 +184,6 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     return final;
   }
 
-  obtenerPlazosPorProveedor(proveedor){
-    return proveedor.plazosDistribucion;
-  }
-
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO
 
@@ -191,6 +192,70 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     let dentroplazoPorplazo = 0;
     let fueraplazoPorplazo = 0;
     let totalPorPlazo = 0;
+
+    this.proveedores.forEach(
+      proveedor => {        
+        let dataProveedor = {
+          proveedor: "",
+          plazosDistribucion: [],
+          porcentajePorPlazoDentro: 0,
+          porcentajePorPlazoFuera: 0
+        };
+        let plazo = {
+          id: "",
+          cantidadDentro:0,
+          cantidadFuera:0
+        }
+        dataProveedor.proveedor = proveedor.nombre;
+        Object.keys(data).forEach(key => {
+          var obj = data[key];
+          if (proveedor.id === parseInt(key)) {
+            Object.keys(obj).forEach(key1 => {
+              var obj2 = obj[key1];
+              let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
+              if (plazitoID.id === parseInt(key1)) {
+                Object.keys(obj2).forEach(key2 => {
+                  if(key2 == "dentroplazo"){
+                    plazo.id = key1;
+                    plazo.cantidadDentro = obj2[key2]
+                    dentroplazoPorplazo += obj2[key2]
+                  } else {
+                    plazo.id = key1;
+                    plazo.cantidadFuera = obj2[key2]
+                    fueraplazoPorplazo += obj2[key2]
+                  }
+                });
+                dataProveedor.plazosDistribucion.push(plazo);
+                totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
+                this.eficienciaPorPlazoDistribucion.push(dataProveedor);
+              }
+            });
+
+            let porcentajedentroplazo = ( dentroplazoPorplazo / totalPorPlazo) * 100;
+            let porcentajefueraplazo = ( fueraplazoPorplazo / totalPorPlazo) * 100;     
+            dataProveedor.porcentajePorPlazoDentro = porcentajedentroplazo;
+            dataProveedor.porcentajePorPlazoFuera = porcentajefueraplazo;
+            this.eficienciaPorPlazoDistribucion.push(dataProveedor);
+          }          
+        });        
+        this.eficienciaPorPlazoDistribucion.push(dataProveedor);
+      });
+  }
+
+  /* this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
+     documentos => {
+       this.documentos = documentos;
+       this.llenarEficienciaPorProveedor(this.data);
+       this.llenarEficienciaPorPlazoDistribucion(documentos);
+       this.llenarDetalleEficiencia(documentos);
+     },
+     error => {
+       if (error.status === 400) {
+         this.notifier.notify('error', error.error);
+       }
+     }
+   ); 
+  */
 
     this.proveedores.forEach(
       proveedor => {
@@ -273,7 +338,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
 
   }
 
-
+ 
 
 
 
