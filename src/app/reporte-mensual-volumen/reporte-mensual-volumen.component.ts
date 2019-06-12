@@ -44,7 +44,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
     // reportesEficienciaPorPlazoDistribucion: any = {};
     documentosSubscription:Subscription[] = [];
     documentoForm: FormGroup;
-    data1: any[] = [];
+    data: any[] = [];
     data2: any[] = [];
     data3: any[] = [];
     dataSource: any[];
@@ -99,7 +99,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
                 },*/
                 this.documentosSubscription.push(this.reporteService.getvolumen( fechaIni,fechaFin ).subscribe(
                 (data: any) => {
-                    this.data1 = data;
+                    this.data = data;
                     this.llenarDataSource(data);
                     this.llenarDataSource2(data);
                     this.llenarDatasource3(data);
@@ -143,9 +143,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
         else {
             this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
-        console.log('DATOS'+this.data)
-        console.log(this.proveedores);
-        console.log(this.sedesDespacho);
+     
     }
 
 
