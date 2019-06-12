@@ -29,23 +29,19 @@ export class ReporteEficaciaComponent implements OnInit {
 
     dataSource = [];
     estados: EstadoDocumento[] = [];
-    proveedores: Proveedor[] = [];
-    documentos = [];
-    estadosParaReporte = []
-    eficaciaReporte: any[] = [];
+    proveedores: Proveedor[] = [];    
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
 
     data: any[] = [];
     validacion = 0;
-    totalvalidacion = 0;
     validacionError = 0;
 
     ngOnInit() {
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
-        })
+        });
 
         this.proveedores = this.proveedorService.getProveedores();
         this.proveedorService.proveedoresChanged.subscribe(
@@ -172,6 +168,23 @@ export class ReporteEficaciaComponent implements OnInit {
             }
         });
         return cantidad;
+    }
+
+    generalPorEstado(estado){
+        var total = 0;
+        Object.keys(this.data).forEach(key => {
+            if (estado.id === parseInt(key)){
+                var prove = this.data[key];
+                Object.keys(prove).forEach(key2 => {
+                    let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key2))
+                    if (proveedor.id === parseInt(key2)){
+                        total += prove[key2]
+                    }
+                })
+                
+            }
+        });
+        return total;
     }
 
 
