@@ -22,6 +22,14 @@ constructor(private requester : RequesterService ){
         return this.requester.get<any>(this.REQUEST_URL + "eficiencia/courierporplazo", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
+    cantidadDevolucionPorTipoDevolucion(fechaini: Date, fechafin: Date): any {
+        return this.requester.get<any>(this.REQUEST_URL + "cargos/devolucionportipo", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
+    getControlCargosDocumentosDenuncias(fechaini: Date, fechafin: Date, id:number): any {
+        return this.requester.get<any>(this.REQUEST_URL + "control/"+ id + "/estado" , {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
     getReporteVolumenporSede(fechaini: Date, fechafin: Date): any {
         return this.requester.get<any>(this.REQUEST_URL + "volumen/porsede", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }

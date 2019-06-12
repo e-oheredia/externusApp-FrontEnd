@@ -139,6 +139,47 @@
     </div>
   </div>
 
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Devolución de Denuncias</h4>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-center">
+
+        <div class="col-10" >
+          <jqxChart  [height]="500" [title]="'Devolución de Denuncias'" [description]="''"
+            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionDenuncias"
+            [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme01'">
+          </jqxChart>
+        </div>
+
+
+
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-10" >
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th *ngFor="let _r of tablaProveedores" scope="col">{{_r.nombre}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let _r of dataTablaDenunciaArray">
+                <td scope=col>{{ _r[0]}}</td>
+                <td *ngFor="let _p of tablaProveedores" scope="col">{{_r[_p.id] }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <div class="card mb-4">
