@@ -44,6 +44,8 @@
   </div>
 </div>
 
+ <div *ngIf="data.length!==0 && data !==null ; else mensaje">
+
 
 
 <!-- <div *ngIf="data.length!== 0; else mensaje"> -->
@@ -128,17 +130,12 @@
         </table>
       </div>
     </div>
-  </div>
-
-
-
-
-
+</div>
 
 
 <!-- </div> PERTENECE AL IF -->
 
-<div class="card mb-4">
+ <div class="card mb-4">
     <div class="card-header">
       <div class="titulo">
         <h4>Volumen de distribución - por plazo de distribución</h4>
