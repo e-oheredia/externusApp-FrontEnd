@@ -293,7 +293,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         cargosGeneral.Courier = 'GENERAL'
         cargosGeneral.Devuelto = cantdevueltos
         cargosGeneral.Pendiente = cantpendientes
-        let totalGeneral = cantdevueltos + cantpendientes
+        let totalGeneral = cantdevueltos + cantpendientes        
         let resultadodevueltos = (cantdevueltos * 100) / totalGeneral;
         if (isNaN(resultadodevueltos)) {
             resultadodevueltos = 0;
@@ -317,9 +317,14 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         this.dataTablaCargo.push(rTablaDevueltoCar);
 
 
-        this.dataTablaCargoArray = this.dataTablaCargo.map(function (obj) {
-            return [obj.estado, obj.general];
-        });
+        // this.dataTablaCargoArray = this.dataTablaCargo.map(function (obj) {
+        //     return [obj.estado, obj.general];
+        // });
+
+        console.log("dataGraficoDevolucionCargos")
+        console.log(this.dataGraficoDevolucionCargos)
+        console.log("dataTablaCargoArray")
+        console.log(this.dataTablaCargoArray)
     }
 
     cargospendientes(proveedor){
