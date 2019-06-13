@@ -37,7 +37,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
     dataTablaCargo = [];
     dataTablaDocumento = [];
     dataTablaDenuncia = [];
-
+    validacion = 0;
     dataTablaCargoArray = [];
     dataTablaDocumentoArray = [];
     dataTablaDenunciaArray = [];
@@ -103,6 +103,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
+        this.validacion = 0
         // console.log(this.areas);
         let fi = new Date(new Date(fechaIni).getTimezoneOffset() * 60 * 1000 + new Date(fechaIni).getTime());
         let ff = new Date(new Date(fechaFin).getTimezoneOffset() * 60 * 1000 + new Date(fechaFin).getTime());
@@ -126,6 +127,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
             this.documentosSubscription = this.reporteService.cantidadDevolucionPorTipoDevolucion(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
                 (data: any) => {
+                    this.validacion = 1;
                     this.data = data
                     Object.keys(data).forEach(key => {
                         // console.log("DATA")
@@ -362,6 +364,60 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         return cantidaddevuelto;
     }
 
+    totalcargospendientes(){
+        var total = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key));
+            if (proveedor.id === parseInt(key)){
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key2 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key2));  
+                    if (devolucion.id === parseInt("1")){
+                        var obj2 = obj1[key2];
+                        Object.keys(obj2).forEach(key3 => {
+                            if (key3 === "pendiente"){
+                                total += obj2[key3]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return total;
+    }
+
+    totalcargosdevueltos(){
+        var total = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key));
+            if (proveedor.id === parseInt(key)){
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key2 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key2));  
+                    if (devolucion.id === parseInt("1")){
+                        var obj2 = obj1[key2];
+                        Object.keys(obj2).forEach(key3 => {
+                            if (key3 === "devuelto"){
+                                total += obj2[key3]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return total;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -506,6 +562,61 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         })
         return cantidaddevuelto;
     }
+
+    totalrezagospendientes(){
+        var total = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key));
+            if (proveedor.id === parseInt(key)){
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key2 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key2));  
+                    if (devolucion.id === parseInt("2")){
+                        var obj2 = obj1[key2];
+                        Object.keys(obj2).forEach(key3 => {
+                            if (key3 === "pendiente"){
+                                total += obj2[key3]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return total;
+    }
+
+    totalrezagosdevueltos(){
+        var total = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key));
+            if (proveedor.id === parseInt(key)){
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key2 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key2));  
+                    if (devolucion.id === parseInt("2")){
+                        var obj2 = obj1[key2];
+                        Object.keys(obj2).forEach(key3 => {
+                            if (key3 === "devuelto"){
+                                total += obj2[key3]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return total;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -652,6 +763,69 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         })
         return cantidaddevuelto;
     }
+
+    totaldenunciaspendientes(){
+        var total = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key));
+            if (proveedor.id === parseInt(key)){
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key2 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key2));  
+                    if (devolucion.id === parseInt("3")){
+                        var obj2 = obj1[key2];
+                        Object.keys(obj2).forEach(key3 => {
+                            if (key3 === "pendiente"){
+                                total += obj2[key3]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return total;
+    }
+
+    totaldenunciasdevueltas(){
+        var total = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key));
+            if (proveedor.id === parseInt(key)){
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key2 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key2));  
+                    if (devolucion.id === parseInt("3")){
+                        var obj2 = obj1[key2];
+                        Object.keys(obj2).forEach(key3 => {
+                            if (key3 === "devuelto"){
+                                total += obj2[key3]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return total;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
      GraficoPorArea(data) {
         let ii=1;
