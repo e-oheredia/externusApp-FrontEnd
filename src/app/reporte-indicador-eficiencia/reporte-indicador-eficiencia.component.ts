@@ -13,6 +13,7 @@ import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { forEach } from '@angular/router/src/utils/collection';
 import { registerContentQuery } from '@angular/core/src/render3/instructions';
 import { EstadoDocumento } from 'src/model/estadodocumento.model';
+import { ReporteService } from '../shared/reporte.service';
 
 @Component({
     selector: 'app-reporte-indicador-eficiencia',
@@ -25,6 +26,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
     documentosSubscription: Subscription;
     proveedores: Proveedor[];
     plazosDistribucion: PlazoDistribucion[];
+    data: any[] = [];
 
     dataGrafico = [];
     _registros = [];
@@ -40,7 +42,9 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
         public utilsService: UtilsService,
         public documentoService: DocumentoService,
         public proveedorService: ProveedorService,
+        private reporteService: ReporteService,
         public plazoDistribucionService: PlazoDistribucionService
+
 
     ) { }
 
@@ -119,7 +123,14 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
             // }
 
 
-            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENTREGADO).subscribe(
+            this.documentosSubscription = this.reporteService.getindicadoreficiencia(fechaIni, fechaFin).subscribe(
+                (data: any) => {
+                    this.data = data
+                    this.llenarDataSource(data);
+                });
+
+
+/*             this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENTREGADO).subscribe(
 
                 documentos => {
 
@@ -358,14 +369,53 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                         this.notifier.notify('error', 'Rango de fechas no válido');
                     }
                 }
-            );
+            ); */
         }
         else {
             this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
     }
 
+    llenarDataSource(data){
+            this.data=data;
+            this.dataGrafico = [];
+            this.meses = [];
+            this._registros = [];
+            this._final = [];
 
+            let ii = 1;
+
+                    Object.keys(data).forEach(key2 => {
+                        var obj2 = data[key2];    
+                        Object.keys(obj2).forEach(key3 => {
+                            let registroGrafico = {
+                                mes: "",
+                                cantidad: "0"
+                            };
+                            registroGrafico.mes = this.utilsService.getNombreMes2(parseInt(key3));//this.NombreMes(fechaInicial);            
+                            let numero = obj2[key3];
+                            let decimal = numero.toFixed(1);
+                            let porcentaje = decimal + "%";
+                            registroGrafico.cantidad=porcentaje
+                            this.dataGrafico.push(registroGrafico);
+
+                            let mes = {
+                                id: 0,
+                                nombre: ""
+                            }
+                            mes.id = parseInt(key3);
+                            mes.nombre = this.utilsService.getNombreMes2(parseInt(key3));//this.NombreMes(fechaInicial);
+                            this.meses.push(mes);
+
+                        });                                
+
+
+                    });
+
+
+                
+        
+    }
 
     padding: any = { left: 10, top: 10, right: 15, bottom: 10 };
     titlePadding: any = { left: 90, top: 0, right: 0, bottom: 10 };
