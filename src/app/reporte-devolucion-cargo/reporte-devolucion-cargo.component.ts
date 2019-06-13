@@ -103,8 +103,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
-
-        console.log(this.areas);
+        // console.log(this.areas);
         let fi = new Date(new Date(fechaIni).getTimezoneOffset() * 60 * 1000 + new Date(fechaIni).getTime());
         let ff = new Date(new Date(fechaFin).getTimezoneOffset() * 60 * 1000 + new Date(fechaFin).getTime());
         let fechaInicial = new Date(moment(new Date(fi.getFullYear(), fi.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
@@ -115,434 +114,45 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         let aFin = fechaFinal.getFullYear();
         let mFin = fechaFinal.getMonth();
 
-
         if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
             this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
             return;
         }
 
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
-
-
             let fechaIniDate = new Date(fechaIni);
             let fechaFinDate = new Date(fechaFin);
             fechaIniDate = new Date(fechaIniDate.getTimezoneOffset() * 60 * 1000 + fechaIniDate.getTime());
             fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
-
             this.documentosSubscription = this.reporteService.cantidadDevolucionPorTipoDevolucion(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
                 (data: any) => {
                     this.data = data
                     Object.keys(data).forEach(key => {
+                        // console.log("DATA")
+                        // console.log(data)
                         var obj = data[key];
                         if ( parseInt(key) == 1) {
                             this.dataGrafico1 = obj
                         }else{
                             this.dataGrafico2 =obj
                         }
-
                     })
                     this.GraficoDevolucionCargos(this.dataGrafico1);
                     this.GraficoDevolucionDocumentos(this.dataGrafico1);
                     this.GraficoDevolucionDenuncias(this.dataGrafico1);
                     this.GraficoPorArea(this.dataGrafico2);
-                    
-                }
-            );
+                    console.log("DATAGRAFICO 1 : ")
+                    console.log(this.dataGrafico1)
+                    console.log("DATAGRAFICO 2 : ")
+                    console.log(this.dataGrafico2)
 
-            /*            this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENVIADO).subscribe(
-                           documentos => {
-           
-                               let rTablaPendienteCar = {
-                                   estado: '',
-                                   general: '',
-                                   pro01: '',
-                                   pro02: '',
-                                   pro03: '',
-                                   pro04: '',
-                                   pro05: ''
-                               }
-                               let rTablaDevueltoCar = {
-                                   estado: '',
-                                   general: '',
-                                   pro01: '',
-                                   pro02: '',
-                                   pro03: '',
-                                   pro04: '',
-                                   pro05: ''
-                               }
-           
-                               let rTablaPendienteDoc = {
-                                   estado: '',
-                                   general: '',
-                                   pro01: '',
-                                   pro02: '',
-                                   pro03: '',
-                                   pro04: '',
-                                   pro05: ''
-                               }
-           
-                               let rTablaDevueltoDoc = {
-                                   estado: '',
-                                   general: '',
-                                   pro01: '',
-                                   pro02: '',
-                                   pro03: '',
-                                   pro04: '',
-                                   pro05: ''
-                               }
-           
-                               let rTablaPendienteDenu = {
-                                   estado: '',
-                                   general: '',
-                                   pro01: '',
-                                   pro02: '',
-                                   pro03: '',
-                                   pro04: '',
-                                   pro05: ''
-                               }
-                               let rTablaDevueltoDenu = {
-                                   estado: '',
-                                   general: '',
-                                   pro01: '',
-                                   pro02: '',
-                                   pro03: '',
-                                   pro04: '',
-                                   pro05: ''
-                               }
-           
-                               this.dataGraficoDevolucionCargos = [];
-                               this.dataGraficoDevolucionDocumentos = [];
-                               this.dataGraficoDevolucionDenuncia = [];
-                               this.dataGraficoDetallePendienteArea = [];
-                               this.dataTablaCargo = [];
-                               this.dataTablaDocumento = [];
-           
-                               this.dataTablaCargoArray = [];
-                               this.dataTablaDocumentoArray = [];
-                               this.dataTablaDenunciaArray = [];
-           
-                               this.tablaProveedores = [];
-           
-                               let cargosGeneral = {
-                                   Courier: "",
-                                   Devuelto: 0,
-                                   Pendiente: 0
-                               }
-                               cargosGeneral.Courier = "GENERAL";
-                                cargosGeneral.Devuelto = documentos.filter(documento => {
-                                   return documento.recepcionado === true &&
-                                       this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
-                               }
-                               ).length; 
-                               
-                               
-                               cargosGeneral.Pendiente = documentos.filter(documento => {
-                                   return documento.recepcionado === false &&
-                                       this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
-                               }
-                               ).length;
-           
-                               this.dataGraficoDevolucionCargos.push(cargosGeneral);
-           
-                               //------------------------------------------- Registro Tabla Cargo ----------- -------------------------------------------------
-           
-                               rTablaPendienteCar.estado = 'PENDIENTE';
-                               rTablaPendienteCar.general = this.Porcentaje(cargosGeneral.Pendiente, cargosGeneral.Pendiente + cargosGeneral.Devuelto);
-           
-                               rTablaDevueltoCar.estado = 'DEVUELTO';
-                               rTablaDevueltoCar.general = this.Porcentaje(cargosGeneral.Devuelto, cargosGeneral.Pendiente + cargosGeneral.Devuelto);
-           
-                               this.dataTablaCargo.push(rTablaPendienteCar);
-                               this.dataTablaCargo.push(rTablaDevueltoCar);
-           
-           
-                               //--------------------------------------------------------------------------------------------------------------------------------
-           
-           
-           
-                               let documentosGeneral = {
-                                   Courier: "",
-                                   Devuelto: 0,
-                                   Pendiente: 0
-                               }
-           
-                               documentosGeneral.Courier = "GENERAL";
-                               // documentosGeneral.Devuelto = documentos.filter(documento => {
-                               //     return documento.recepcionado === true &&
-                               //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                               //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                               // }).length;
-                               documentosGeneral.Devuelto = documentos.filter(documento => {
-                                   return documento.recepcionado === true &&
-                                       (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false )
-                               }).length;
-           
-                               // documentosGeneral.Pendiente = documentos.filter(documento => {
-                               //     return documento.recepcionado === false &&
-                               //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                               //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                               // }).length;
-                               documentosGeneral.Pendiente = documentos.filter(documento => {
-                                   return documento.recepcionado === false &&
-                                       (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false )
-                               }).length;
-                               
-           
-                               this.dataGraficoDevolucionDocumentos.push(documentosGeneral);
-           
-           
-                               //------------------------------------------- Registro Tabla Documentos ----------------------------------------------------------
-           
-                               rTablaPendienteDoc.estado = 'PENDIENTE';
-                               rTablaPendienteDoc.general = this.Porcentaje(documentosGeneral.Pendiente, documentosGeneral.Pendiente + documentosGeneral.Devuelto);
-           
-                               rTablaDevueltoDoc.estado = 'DEVUELTO';
-                               rTablaDevueltoDoc.general = this.Porcentaje(documentosGeneral.Devuelto, documentosGeneral.Pendiente + documentosGeneral.Devuelto);
-           
-           
-                               this.dataTablaDocumento.push(rTablaPendienteDoc);
-                               this.dataTablaDocumento.push(rTablaDevueltoDoc);
-           
-           
-                               //--------------------------------------------------------------------------------------------------------------------------------
-           
-                               // ----------------------------------------------- Datos Grafico x Area ----------------------------------------------------------
-           
-                               this.areas.forEach(
-           
-                                   area => {
-           
-                                       let r_area = {
-                                           nombre: '',
-                                           cantidad: '',
-                                       }
-           
-                                       r_area.nombre = area.nombre;
-                                       let c = documentos.filter(documento => {
-           
-                                           return documento.envio.buzon.area.id === area.id &&
-                                               documento.recepcionado === false &&
-                                               (
-                                               // this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                               // this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false ||
-                                               // this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
-                                               this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                               this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
-                                               )
-                                       }
-                                       ).length;
-           
-                                       r_area.cantidad = c.toString();
-           
-                                       this.dataGraficoDetallePendienteArea.push(r_area);
-                                   }
-                               )
-           
-           
-                               this.dataGraficoDetallePendienteArea.sort((a, b) => (a.cantidad > b.cantidad) ? 1 : ((b.cantidad > a.cantidad) ? -1 : 0)).reverse();
-           
-                               let i = 1;
-                               let BreakException = {};
-           
-                               let cantidad_otras_areas: number = 0;
-           
-                               let otras_areas = {
-                                   nombre: '',
-                                   cantidad: '',
-                               }
-           
-                               this.dataGraficoDetallePendienteArea.forEach(
-                                   registro => {
-                                       if (i <= 6) {
-                                           this.dataGraficoDetallePendienteAreaTop.push(registro);
-                                           i++;
-                                       }
-                                       else {
-                                           cantidad_otras_areas += parseInt(registro.cantidad);
-                                       }
-                                   }
-                               )
-           
-                               otras_areas.nombre = "OTROS";
-                               otras_areas.cantidad = cantidad_otras_areas.toString();
-           
-                               this.dataGraficoDetallePendienteAreaTop.push(otras_areas);
-           
-           //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------         
-           //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-           
-           
-           
-           
-                               let jj: number = 1;
-           
-                               this.proveedores.forEach(
-           
-           
-                                   proveedor => {
-           
-                                       let cargosProveedor = {
-                                           Courier: "",
-                                           Devuelto: 0,
-                                           Pendiente: 0
-                                       }
-           
-                                       cargosProveedor.Courier = proveedor.nombre;
-                                       cargosProveedor.Devuelto = documentos.filter(documento => {
-                                           return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                               documento.recepcionado === true &&
-                                               this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
-                                       }
-                                       ).length;
-                                       cargosProveedor.Pendiente = documentos.filter(documento => {
-                                           return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                               documento.recepcionado === false &&
-                                               this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO)) === false
-                                       }
-                                       ).length;
-           
-           
-                                       this.dataGraficoDevolucionCargos.push(cargosProveedor);
-           
-                                       //-------------------------------------------------- Actualizar columnas tabla Cargo  ---------------------------------------------------
-           
-                                       let cargosP = this.Porcentaje(cargosProveedor.Pendiente, cargosProveedor.Pendiente + cargosProveedor.Devuelto);
-                                       let cargosD = this.Porcentaje(cargosProveedor.Devuelto, cargosProveedor.Pendiente + cargosProveedor.Devuelto);
-           
-                                       if (jj === 1) {
-                                           this.dataTablaCargo.find(x => x.estado == 'PENDIENTE').pro01 = cargosP;
-                                           this.dataTablaCargo.find(x => x.estado == 'DEVUELTO').pro01 = cargosD;
-                                       }
-                                       if (jj === 2) {
-                                           this.dataTablaCargo.find(x => x.estado == 'PENDIENTE').pro02 = cargosP;
-                                           this.dataTablaCargo.find(x => x.estado == 'DEVUELTO').pro02 = cargosD;
-                                       }
-                                       if (jj === 3) {
-                                           this.dataTablaCargo.find(x => x.estado == 'PENDIENTE').pro03 = cargosP;
-                                           this.dataTablaCargo.find(x => x.estado == 'DEVUELTO').pro03 = cargosD;
-                                       }
-                                       if (jj === 4) {
-                                           this.dataTablaCargo.find(x => x.estado == 'PENDIENTE').pro04 = cargosP;
-                                           this.dataTablaCargo.find(x => x.estado == 'DEVUELTO').pro04 = cargosD;
-                                       }
-                                       if (jj === 5) {
-                                           this.dataTablaCargo.find(x => x.estado == 'PENDIENTE').pro05 = cargosP;
-                                           this.dataTablaCargo.find(x => x.estado == 'DEVUELTO').pro05 = cargosD;
-                                       }
-           
-                                       //------------------------------------------------------------------------------------------------------------------------------------
-           
-           
-                                       let documentoProveedor = {
-                                           Courier: "",
-                                           Devuelto: 0,
-                                           Pendiente: 0
-                                       }
-           
-                                       documentoProveedor.Courier = proveedor.nombre;
-                                       // documentoProveedor.Devuelto = documentos.filter(documento => {
-                                       //     return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                       //         documento.recepcionado === true &&
-                                       //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                       //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                                       // }).length;
-                                       documentoProveedor.Devuelto = documentos.filter(documento => {
-                                           return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                               documento.recepcionado === true &&
-                                               (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false)
-                                       }).length;
-           
-                                       // documentoProveedor.Pendiente = documentos.filter(documento => {
-                                       //     return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                       //         documento.recepcionado === false &&
-                                       //         (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false ||
-                                       //             this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.DEVUELTO)) === false)
-                                       // }).length;
-                                       documentoProveedor.Pendiente = documentos.filter(documento => {
-                                           return documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                                               documento.recepcionado === false &&
-                                               (this.utilsService.isUndefinedOrNullOrEmpty(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.REZAGADO)) === false)
-                                       }).length;
-           
-                                       this.dataGraficoDevolucionDocumentos.push(documentoProveedor);
-           
-                                       //-------------------------------------------------- Actualizar columnas tabla Documento  ---------------------------------------------------
-           
-                                       let cantidadDP = this.Porcentaje(documentoProveedor.Pendiente, documentoProveedor.Pendiente + documentoProveedor.Devuelto);
-                                       let cantidadDD = this.Porcentaje(documentoProveedor.Devuelto, documentoProveedor.Pendiente + documentoProveedor.Devuelto);
-           
-                                       if (jj === 1) {
-                                           this.dataTablaDocumento.find(x => x.estado == 'PENDIENTE').pro01 = cantidadDP;
-                                           this.dataTablaDocumento.find(x => x.estado === 'DEVUELTO').pro01 = cantidadDD;
-                                       }
-                                       if (jj === 2) {
-                                           this.dataTablaDocumento.find(x => x.estado == 'PENDIENTE').pro02 = cantidadDP;
-                                           this.dataTablaDocumento.find(x => x.estado == 'DEVUELTO').pro02 = cantidadDD;
-                                       }
-                                       if (jj === 3) {
-                                           this.dataTablaDocumento.find(x => x.estado == 'PENDIENTE').pro03 = cantidadDP;
-                                           this.dataTablaDocumento.find(x => x.estado == 'DEVUELTO').pro03 = cantidadDD;
-                                       }
-                                       if (jj === 4) {
-                                           this.dataTablaDocumento.find(x => x.estado == 'PENDIENTE').pro04 = cantidadDP;
-                                           this.dataTablaDocumento.find(x => x.estado == 'DEVUELTO').pro04 = cantidadDD;
-                                       }
-                                       if (jj === 5) {
-                                           this.dataTablaDocumento.find(x => x.estado == 'PENDIENTE').pro05 = cantidadDP;
-                                           this.dataTablaDocumento.find(x => x.estado == 'DEVUELTO').pro05 = cantidadDD;
-                                       }
-           
-                                       //----------------------------------------------------------------------------------------------------------------------------------------------
-           
-           
-                                       let listaProveedor = {
-                                           id: 0,
-                                           nombre: ""
-                                       }
-           
-                                       if (jj === 1) {
-                                           listaProveedor.id = jj;
-                                           listaProveedor.nombre = 'GENERAL';
-                                       }
-                                       listaProveedor.id = jj + 1;
-                                       listaProveedor.nombre = proveedor.nombre;
-                                       this.tablaProveedores.push(listaProveedor);
-           
-                                       jj++;
-           
-                                   }
-           
-           
-           
-                               )
-           
-           
-                               this.dataTablaCargoArray = this.dataTablaCargo.map(function (obj) {
-                                   return [obj.estado, obj.general, obj.pro01, obj.pro02, obj.pro03, obj.pro04, obj.pro05];
-                               });
-           
-                               this.dataTablaDocumentoArray = this.dataTablaDocumento.map(function (obj) {
-                                   return [obj.estado, obj.general, obj.pro01, obj.pro02, obj.pro03, obj.pro04, obj.pro05];
-                               });
-           
-           
-                           },
-                           error => {
-                               if (error.status === 400) {
-                                   this.notifier.notify('error', 'Rango de fechas no válido');
-                               }
-                           }
-           
-           
-           
-                       );
-            */
+                }
+            );   
         }
         else {
             this.notifier.notify('error', 'Seleccione un rango de fechas');
         }
     }
-
 
     generalTipoDevolucion(data) {
         //   this.eficienciaPorProveedor = [];
@@ -592,7 +202,6 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                 eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo;
                 //     this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
             });
-        //   console.log(this.eficienciaPorProveedor)
     }
 
     GraficoDevolucionCargos(data) {
@@ -603,7 +212,6 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         let jj: number = 1;
         let cantdevueltos = 0;
         let cantpendientes = 0;
-        let total = 0;
         let rTablaPendienteCar = {
             estado: '',
             general: '',
@@ -614,6 +222,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         }
         this.proveedores.forEach(
             proveedor => {
+                let total = 0;
                 let cargos = {
                     Courier: "",
                     PendientePorcentaje: "",
@@ -628,7 +237,8 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     listaProveedor.id = jj;
                     listaProveedor.nombre = 'GENERAL';
                 }
-                listaProveedor.id = jj + 1;
+                // listaProveedor.id = jj + 1;
+                listaProveedor.id = jj;
                 listaProveedor.nombre = proveedor.nombre;
                 this.tablaProveedores.push(listaProveedor);
                 jj++;
@@ -708,15 +318,60 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         this.dataTablaCargoArray = this.dataTablaCargo.map(function (obj) {
             return [obj.estado, obj.general];
         });
-
     }
+
+    cargospendientes(proveedor){
+        var cantidadpendiente = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            if(proveedor.id === parseInt(key)){                 
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key1 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key1));
+                    if (devolucion.id === parseInt("1")){
+                        var obj2 = obj1[key1];
+                        Object.keys(obj2).forEach(key2 => {
+                            if (key2 === "pendiente"){
+                                cantidadpendiente = obj2[key2]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return cantidadpendiente;
+    }
+
+    cargosdevueltos(proveedor){
+        var cantidaddevuelto = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            if(proveedor.id === parseInt(key)){                 
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key1 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key1));
+                    if (devolucion.id === parseInt("1")){
+                        var obj2 = obj1[key1];
+                        Object.keys(obj2).forEach(key2 => {
+                            if (key2 === "devuelto"){
+                                cantidaddevuelto = obj2[key2]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return cantidaddevuelto;
+    }
+
+
+
+
+
 
 
     GraficoDevolucionDocumentos(data) {
         this.dataGraficoDevolucionDocumentos = [];
         let cantdevueltos = 0;
         let cantpendientes = 0;
-        let total = 0;
         this.dataTablaDocumento = [];
         this.dataTablaDocumentoArray = [];
         let rTablaPendienteDoc = {
@@ -730,6 +385,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         }
         this.proveedores.forEach(
             proveedor => {
+                let total = 0;
                 let cargos = {
                     Courier: "",
                     PendientePorcentaje: "",
@@ -809,12 +465,57 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         });
     }
 
+    rezagospendientes(proveedor){
+        var cantidadpendiente = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            if(proveedor.id === parseInt(key)){                 
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key1 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key1));
+                    if (devolucion.id === parseInt("2")){
+                        var obj2 = obj1[key1];
+                        Object.keys(obj2).forEach(key2 => {
+                            if (key2 === "pendiente"){
+                                cantidadpendiente = obj2[key2]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return cantidadpendiente;
+    }
+
+    rezagosdevueltos(proveedor){
+        var cantidaddevuelto = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            if(proveedor.id === parseInt(key)){                 
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key1 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key1));
+                    if (devolucion.id === parseInt("2")){
+                        var obj2 = obj1[key1];
+                        Object.keys(obj2).forEach(key2 => {
+                            if (key2 === "devuelto"){
+                                cantidaddevuelto = obj2[key2]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return cantidaddevuelto;
+    }
+
+
+
+
+
 
     GraficoDevolucionDenuncias(data) {
         this.dataGraficoDevolucionDenuncias = [];
         let cantdevueltos = 0;
         let cantpendientes = 0;
-        let total = 0;
         this.dataTablaDenuncia = []
         this.dataTablaDenunciaArray = []
         let rTablaPendienteDenu = {
@@ -827,6 +528,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
         }
         this.proveedores.forEach(
             proveedor => {
+                let total = 0;
                 let cargos = {
                     Courier: "",
                     PendientePorcentaje: "",
@@ -909,6 +611,48 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
     }
 
+    denunciaspendientes(proveedor){
+        var cantidadpendiente = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            if(proveedor.id === parseInt(key)){                 
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key1 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key1));
+                    if (devolucion.id === parseInt("3")){
+                        var obj2 = obj1[key1];
+                        Object.keys(obj2).forEach(key2 => {
+                            if (key2 === "pendiente"){
+                                cantidadpendiente = obj2[key2]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return cantidadpendiente;
+    }
+
+    denunciasdevueltas(proveedor){
+        var cantidaddevuelto = 0
+        Object.keys(this.dataGrafico1).forEach(key => {
+            if(proveedor.id === parseInt(key)){                 
+                var obj1 = this.dataGrafico1[key];
+                Object.keys(obj1).forEach(key1 => {
+                    let devolucion = this.tiposDevolucion.find(devolucion => devolucion.id === parseInt(key1));
+                    if (devolucion.id === parseInt("3")){
+                        var obj2 = obj1[key1];
+                        Object.keys(obj2).forEach(key2 => {
+                            if (key2 === "devuelto"){
+                                cantidaddevuelto = obj2[key2]
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        return cantidaddevuelto;
+    }
+
      GraficoPorArea(data) {
         let ii=1;
         this.dataGraficoDetallePendienteAreaTop =[];
@@ -916,12 +660,12 @@ export class ReporteDevolucionCargoComponent implements OnInit {
            
             area => {
                     let r_area = {
-                        nombre: '',
+                        area: '',
                         cantidad: '',
                     }
                     Object.keys(data).forEach(key =>{
                         if(area.id==parseInt(key)){
-                            r_area.nombre = area.nombre;
+                            r_area.area = area.nombre;
                             r_area.cantidad=data[key];
                             this.dataGraficoDetallePendienteArea.push(r_area);
                         }
@@ -932,7 +676,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
          let i = 1;
         let cantidad_otras_areas: number = 0;
         let otras_areas = {
-            nombre: '',
+            area: '',
             cantidad: '',
         }
         this.dataGraficoDetallePendienteArea.forEach(
@@ -947,7 +691,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             }
         )
 
-        otras_areas.nombre = "OTROS";
+        otras_areas.area = "OTROS";
         otras_areas.cantidad = cantidad_otras_areas.toString();
 
         this.dataGraficoDetallePendienteAreaTop.push(otras_areas);
@@ -1002,7 +746,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
     xAxis3: any =
         {
-            dataField: 'nombre',
+            dataField: 'area',
             labels:
             {
                 angle: 90,
@@ -1018,8 +762,11 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             minValue: 0,
             flip: true,
             labels: {
-                visible: true
-            }
+             visible: true
+            },
+            // axisSize: 'auto',
+            maxValue: 'auto',
+            unitInterval: 5,
         };
     seriesGroups3: any[] =
         [

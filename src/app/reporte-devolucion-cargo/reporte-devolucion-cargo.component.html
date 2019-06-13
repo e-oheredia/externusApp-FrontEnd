@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h2>Reporte - devolución de cargos y documentos</h2>
+      <h2>Reporte - Devolución de cargos y documentos</h2>
     </div>
   </div>
 </div>
@@ -15,7 +15,8 @@
       </div>
 
       <div class="card-body">
-        <form [formGroup]="documentoForm" (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+        <form [formGroup]="documentoForm"
+          (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
           <div class="form-row">
 
             <div class="col-4">
@@ -41,167 +42,183 @@
             </div>
 
           </div>
-
-
         </form>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>
 
 
-
-
-
-
-
-
-<div *ngIf="dataGraficoDevolucionCargos.length !== 0; else mensaje">
+<!-- REPORTE DEVOLUCION DE CARGOS -->
+  <!-- <div *ngIf="dataGraficoDevolucionCargos.length !== 0; else mensaje"> -->
   <div class="card mb-4">
+
     <div class="card-header">
       <div class="titulo">
         <h4>Devolución de cargos</h4>
       </div>
     </div>
-    <div class="card-body">
-      <div class="row justify-content-center">
 
-        <div class="col-10" >
-          <jqxChart  [height]="500" [title]="'Devolución de cargos'" [description]="''"
-            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionCargos"
-            [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme01'">
-          </jqxChart>
-        </div>
-
-
-
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-10" >
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th *ngFor="let _r of tablaProveedores" scope="col">{{_r.nombre}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let _r of dataTablaCargoArray">
-                <td scope=col>{{ _r[0]}}</td>
-                <td *ngFor="let _p of tablaProveedores" scope="col">{{_r[_p.id] }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Devolución de documentos</h4>
-      </div>
-    </div>
     <div class="card-body">
       <div class="row justify-content-center">
         <div class="col-10">
-          <jqxChart [height]="500" [title]="'Devolución de documentos'" [description]="''"
-            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionDocumentos"
-            [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme01'">
-          </jqxChart>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-10">
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th *ngFor="let _r of tablaProveedores" scope="col">{{_r.nombre}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let _r of dataTablaDocumentoArray">
-                <td scope=col>{{ _r[0]}}</td>
-                <td *ngFor="let _p of tablaProveedores" scope="col">{{_r[_p.id] }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Devolución de Denuncias</h4>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="row justify-content-center">
-
-        <div class="col-10" >
-          <jqxChart  [height]="500" [title]="'Devolución de Denuncias'" [description]="''"
-            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGraficoDevolucionDenuncias"
-            [xAxis]="xAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme01'">
-          </jqxChart>
-        </div>
-
-
-
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-10" >
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th *ngFor="let _r of tablaProveedores" scope="col">{{_r.nombre}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let _r of dataTablaDenunciaArray">
-                <td scope=col>{{ _r[0]}}</td>
-                <td *ngFor="let _p of tablaProveedores" scope="col">{{_r[_p.id] }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Cargos y documentos pendientes por área</h4>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <jqxChart #myChart [height]="500" [title]="'Detalle de pendientes por área'"
-            [description]="''" [enableAnimations]="true" [showLegend]="true" [padding]="padding" [titlePadding]="titlePadding"
-            [source]="dataGraficoDetallePendienteAreaTop" [xAxis]="xAxis3" [valueAxis]="valueAxis3" [seriesGroups]="seriesGroups3"
+          <jqxChart [height]="500" [title]="'Devolución de cargos'" [description]="''" [showLegend]="true"
+            [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+            [source]="dataGraficoDevolucionCargos" [xAxis]="xAxis" [seriesGroups]="seriesGroups"
             [colorScheme]="'scheme01'">
           </jqxChart>
         </div>
       </div>
+
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th *ngFor="let proveedor of tablaProveedores" scope="col">{{proveedor.nombre}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="col">PENDIENTE</td>
+                <td scope="col" *ngFor="let proveedor of tablaProveedores">{{cargospendientes(proveedor)}}</td>
+              </tr>
+              <tr>
+                <td scope="col">DEVUELTO</td>
+                <td scope="col" *ngFor="let proveedor of tablaProveedores">{{cargosdevueltos(proveedor)}}</td>
+              </tr>
+            </tbody>
+            <!-- <tbody>
+              <tr *ngFor="let _r of dataTablaCargoArray">
+                <td scope=col>{{ _r[0]}}</td>
+                <td *ngFor="let proveedor of tablaProveedores" scope="col">{{_r[proveedor.id] }}</td>
+              </tr>
+            </tbody> -->
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
-</div>
+
+
+  <!-- REPORTE DEVOLUCION DE REZAGOS -->
+  <div class="card mb-4">
+
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Devolución de rezagos</h4>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <jqxChart [height]="500" [title]="'Devolución de documentos'" [description]="''" [showLegend]="true"
+            [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+            [source]="dataGraficoDevolucionDocumentos" [xAxis]="xAxis" [seriesGroups]="seriesGroups"
+            [colorScheme]="'scheme01'">
+          </jqxChart>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th *ngFor="let proveedor of tablaProveedores" scope="col">{{proveedor.nombre}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="col">PENDIENTE</td>
+                <td scope="col" *ngFor="let proveedor of tablaProveedores">{{rezagospendientes(proveedor)}}</td>
+              </tr>
+              <tr>
+                <td scope="col">DEVUELTO</td>
+                <td scope="col" *ngFor="let proveedor of tablaProveedores">{{rezagosdevueltos(proveedor)}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- REPORTE DEVOLUCION DE DENUNCIAS -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Devolución de denuncias</h4>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <jqxChart [height]="500" [title]="'Devolución de Denuncias'" [description]="''" [showLegend]="true"
+            [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+            [source]="dataGraficoDevolucionDenuncias" [xAxis]="xAxis" [seriesGroups]="seriesGroups"
+            [colorScheme]="'scheme01'">
+          </jqxChart>
+        </div>
+      </div>
+      
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th *ngFor="let proveedor of tablaProveedores" scope="col">{{proveedor.nombre}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope="col">PENDIENTE</td>
+                <td scope="col" *ngFor="let proveedor of tablaProveedores">{{denunciaspendientes(proveedor)}}</td>
+              </tr>
+              <tr>
+                <td scope="col">DEVUELTO</td>
+                <td scope="col" *ngFor="let proveedor of tablaProveedores">{{denunciasdevueltas(proveedor)}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- REPORTE DE CARGOS, REZAGOS Y DENUNCUAS POR AREAS -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Cargos, rezagos y denuncias pendientes por área</h4>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <jqxChart #myChart [height]="500" [title]="'Detalle de pendientes por área'" [description]="''"
+            [enableAnimations]="true" [showLegend]="true" [padding]="padding" [titlePadding]="titlePadding"
+            [source]="dataGraficoDetallePendienteAreaTop" [xAxis]="xAxis3" [valueAxis]="valueAxis3"
+            [seriesGroups]="seriesGroups3" [colorScheme]="'scheme01'">
+          </jqxChart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
 
 <ng-template #mensaje>
   <div class="row">

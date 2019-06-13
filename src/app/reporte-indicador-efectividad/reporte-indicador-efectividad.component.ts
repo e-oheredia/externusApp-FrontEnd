@@ -313,7 +313,7 @@ export class ReporteIndicadorEfectividadComponent implements OnInit {
             }
           });
           //
-
+          console.log(this.graficoEfectividad);
         },
         error => {
           if (error.status === 400) {
