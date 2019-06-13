@@ -70,7 +70,6 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
             } else {
               this.dataGrafico2 = obj
             }
-
           });
           this.llenarEficienciaPorProveedor(this.dataGrafico1);
           this.llenarEficienciaPorPlazo(this.dataGrafico2);
@@ -168,6 +167,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       });
       console.log("1.  eficienciaPorProveedor: ")
       console.log(this.eficienciaPorProveedor) */
+      console.log(this.proveedores);
   }
 
   dentroPlazoproveedor(proveedor) {
@@ -247,7 +247,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
     let totalPorPlazo = 0;
 
     this.proveedores.forEach(
-      proveedor => {        
+      proveedor => {
         let dataProveedor = {
           proveedor: "",
           plazosDistribucion: [],
