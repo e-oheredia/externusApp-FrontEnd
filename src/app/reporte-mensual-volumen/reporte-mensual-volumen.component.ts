@@ -561,13 +561,13 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
     getValueAxis(title: string, flip = false) {
         return {
-            visible: true,
+            visible: false,
             flip: flip,
             title: { text: title },
             tickMarks: { color: '#BCBCBC' },
             labels: { horizontalAlignment: 'left' },
             minValue: 0,
-            unitInterval: 1
+            unitInterval: 2
         }
     }
 

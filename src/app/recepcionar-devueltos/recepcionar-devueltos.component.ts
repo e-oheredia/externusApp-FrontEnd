@@ -39,6 +39,7 @@ export class RecepcionarDevueltosComponent implements OnInit {
     });
     this.generarColumnas();
     this.listarDocumentosConResultadosYRecepcionados();
+    this.settings.hideSubHeader = false;
   }
 
   generarColumnas() {
