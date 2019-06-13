@@ -50,6 +50,7 @@
 </div>
 
 
+<div *ngIf="validacion == 1; else mensaje">
 <!-- REPORTE DEVOLUCION DE CARGOS -->
   <!-- <div *ngIf="dataGraficoDevolucionCargos.length !== 0; else mensaje"> -->
   <div class="card mb-4">
@@ -78,16 +79,19 @@
               <tr>
                 <th scope="col"></th>
                 <th *ngFor="let proveedor of tablaProveedores" scope="col">{{proveedor.nombre}}</th>
+                <th scope="col">General</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td scope="col">PENDIENTE</td>
                 <td scope="col" *ngFor="let proveedor of tablaProveedores">{{cargospendientes(proveedor)}}</td>
+                <td scope="col">{{totalcargospendientes()}}</td>
               </tr>
               <tr>
                 <td scope="col">DEVUELTO</td>
                 <td scope="col" *ngFor="let proveedor of tablaProveedores">{{cargosdevueltos(proveedor)}}</td>
+                <td scope="col">{{totalcargosdevueltos()}}</td>
               </tr>
             </tbody>
             <!-- <tbody>
@@ -130,16 +134,19 @@
               <tr>
                 <th scope="col"></th>
                 <th *ngFor="let proveedor of tablaProveedores" scope="col">{{proveedor.nombre}}</th>
+                <th scope="col">General</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td scope="col">PENDIENTE</td>
                 <td scope="col" *ngFor="let proveedor of tablaProveedores">{{rezagospendientes(proveedor)}}</td>
+                <td scope="col">{{totalrezagospendientes()}}</td>
               </tr>
               <tr>
                 <td scope="col">DEVUELTO</td>
                 <td scope="col" *ngFor="let proveedor of tablaProveedores">{{rezagosdevueltos(proveedor)}}</td>
+                <td scope="col">{{totalrezagosdevueltos()}}</td>
               </tr>
             </tbody>
           </table>
@@ -174,16 +181,19 @@
               <tr>
                 <th scope="col"></th>
                 <th *ngFor="let proveedor of tablaProveedores" scope="col">{{proveedor.nombre}}</th>
+                <th scope="col">General</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td scope="col">PENDIENTE</td>
                 <td scope="col" *ngFor="let proveedor of tablaProveedores">{{denunciaspendientes(proveedor)}}</td>
+                <td scope="col">{{totaldenunciaspendientes()}}</td>
               </tr>
               <tr>
                 <td scope="col">DEVUELTO</td>
                 <td scope="col" *ngFor="let proveedor of tablaProveedores">{{denunciasdevueltas(proveedor)}}</td>
+                <td scope="col">{{totaldenunciasdevueltas()}}</td>
               </tr>
             </tbody>
           </table>
@@ -215,7 +225,7 @@
       </div>
     </div>
   </div>
-
+</div>
 
 
 
