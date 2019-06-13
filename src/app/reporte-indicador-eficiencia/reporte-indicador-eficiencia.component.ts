@@ -27,7 +27,8 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
     proveedores: Proveedor[];
     plazosDistribucion: PlazoDistribucion[];
     data: any[] = [];
-
+    dataGrafico1 : any[]= [];
+    dataGrafico2 : any[] = [];
     dataGrafico = [];
     _registros = [];
     _final = [];
@@ -126,9 +127,31 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
             this.documentosSubscription = this.reporteService.getindicadoreficiencia(fechaIni, fechaFin).subscribe(
                 (data: any) => {
                     this.data = data
+                    Object.keys(data).forEach(key => {
+                        // console.log("DATA")
+                        // console.log(data)
+                        var obj = data[key];
+                        if ( parseInt(key) == 1) {
+                            this.dataGrafico1 = obj
+                        }else{
+                            this.dataGrafico2 =obj
+                        }
+                    })
+                    this.llenarDataSource(this.dataGrafico1);
+                    this.llenarDataSource2(this.dataGrafico2);
+
+                    console.log("DATAGRAFICO 1 : ")
+                    console.log(this.dataGrafico1)
+                    console.log("DATAGRAFICO 2 : ")
+                    console.log(this.dataGrafico2)
+
+                });
+                
+    /*             (data: any) => {
+                    this.data = data
                     this.llenarDataSource(data);
                 });
-
+ */
 
 /*             this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENTREGADO).subscribe(
 
@@ -415,6 +438,345 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
 
                 
         
+    }
+
+    llenarDataSource2(dataGrafico2){
+ 
+        
+        this._registros = [];
+        this._final = [];
+
+              this.proveedores.forEach(
+                proveedor => {
+                    let reporteFinal = {
+                        proveedor: "", plazoDistribucion: "", eficiencia: "", cantidad01: "0", cantidad02: "0", cantidad03: "0", cantidad04: "0", cantidad05: "0",
+                        cantidad06: "0", cantidad07: "0", cantidad08: "0", cantidad09: "0", cantidad10: "0", cantidad11: "0", cantidad12: "0", cantidad13: "0", tipoFila: 1, estilo: ""
+                    }
+                    let dentro1=0;
+                    let fuera1=0;
+                    var dentro2=0;
+                    var fuera2=0;
+                    var dentro3=0;
+                    var fuera3=0;
+                    var dentro4=0;
+                    var fuera4=0;
+                    var dentro5=0;
+                    var fuera5=0;
+                    var dentro6=0;
+                    var fuera6=0;
+                    var dentro7=0;
+                    var fuera7=0;
+                    var dentro8=0;
+                    var fuera8=0;
+                    var dentro9=0;
+                    var fuera9=0;
+                    var dentro10=0;
+                    var fuera10=0;
+                    var dentro11=0;
+                    var fuera11=0;
+                    var dentro12=0;
+                    var fuera12=0;
+                    var dentro13=0;
+                    var fuera13=0;
+                  Object.keys(dataGrafico2).forEach(key2 => {
+                    var obj2 = dataGrafico2[key2];
+                    if (proveedor.id == parseInt(key2)) {
+                        
+                        reporteFinal.proveedor = proveedor.nombre;
+                        reporteFinal.plazoDistribucion = proveedor.nombre;
+                        reporteFinal.eficiencia = proveedor.nombre;
+                        reporteFinal.tipoFila = 2;
+  
+
+
+
+
+                      Object.keys(obj2).forEach(key3 => {
+                        var obj3 = obj2[key3];//{5={dasdas:0 dasdsdas:0}}
+                        Object.keys(obj3).forEach(key4 => {
+                            var obj4 = obj3[key4];
+                            Object.keys(obj4).forEach(key5 => {
+                                var obj5 = obj4[key5];
+                                Object.keys(obj5).forEach(key6 => {
+                                    var obj6 = obj5[key6];
+                                        
+                                            if (parseInt(key5) == 1) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro1=dentro1+obj6;
+                                                }else{
+                                                    fuera1=fuera1+obj6;
+                                                }
+                                                reporteFinal.cantidad01=dentro1/(dentro1+fuera1)+"%";
+                                            }
+                                            if (parseInt(key5) == 2) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro2=dentro2+obj6;
+                                                }else{
+                                                    fuera2=fuera2+obj6;
+                                                }
+                                                reporteFinal.cantidad02=dentro2/(dentro2+fuera2)+"%";
+                                            }
+                                            if (parseInt(key5) == 3) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro3=dentro3+obj6;
+                                                }else{
+                                                    fuera3=fuera3+obj6;
+                                                }
+                                                reporteFinal.cantidad03=dentro3/(dentro3+fuera3)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 4) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro4=dentro4+obj6;
+                                                }else{
+                                                    fuera4=fuera4+obj6;
+                                                }
+                                                reporteFinal.cantidad04=dentro4/(dentro4+fuera4)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 5) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro5=dentro5+obj6;
+                                                }else{
+                                                    fuera5=fuera5+obj6;
+                                                }
+                                                reporteFinal.cantidad05=dentro5/(dentro5+fuera5)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 6) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro6=dentro6+obj6;
+                                                }else{
+                                                    fuera6=fuera6+obj6;
+                                                }
+                                                reporteFinal.cantidad06=dentro6/(dentro6+fuera6)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 7) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro7=dentro7+obj6;
+                                                }else{
+                                                    fuera7=fuera7+obj6;
+                                                }
+                                                reporteFinal.cantidad07=dentro7/(dentro7+fuera7)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 8) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro8=dentro8+obj6;
+                                                }else{
+                                                    fuera8=fuera8+obj6;
+                                                }
+                                                reporteFinal.cantidad08=dentro8/(dentro8+fuera8)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 9) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro9=dentro9+obj6;
+                                                }else{
+                                                    fuera9=fuera9+obj6;
+                                                }
+                                                reporteFinal.cantidad09=dentro9/(dentro9+fuera9)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 10) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro10=dentro10+obj6;
+                                                }else{
+                                                    fuera10=fuera10+obj6;
+                                                }
+                                                reporteFinal.cantidad10=dentro10/(dentro10+fuera10)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 11) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro11=dentro11+obj6;
+                                                }else{
+                                                    fuera11=fuera11+obj6;
+                                                }
+                                                reporteFinal.cantidad11=dentro11/(dentro11+fuera11)+"%";
+
+                                            }
+                                            if (parseInt(key5) == 12) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro12=dentro12+obj6;
+                                                }else{
+                                                    fuera12=fuera12+obj6;
+                                                }
+                                                if(dentro12+fuera12){
+                                                    reporteFinal.cantidad12=dentro12/(dentro12+fuera12)+"%";
+                                                }
+
+                                            }
+                                            if (parseInt(key5) == 13) {
+                                                if(key6=="dentroplazo"){
+                                                    dentro13=dentro13+obj6;
+                                                }else{
+                                                    fuera13=fuera13+obj6;
+                                                }
+                                                reporteFinal.cantidad13=dentro13/(dentro13+fuera13)+"%";
+
+                                            }
+                        });
+                        });
+                        });
+                      
+                    
+                    
+                    });
+                    reporteFinal.estilo = "proveedor"
+
+                    }
+                  });
+                  this._final.push(reporteFinal);
+                  Object.keys(dataGrafico2).forEach(keyn1 => {
+                      this.plazosDistribucion.forEach(
+                        plazos => {
+
+                          let reporteDentro = {
+                            proveedor: "", plazoDistribucion: "", eficiencia: "", cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0,
+                            cantidad06: 0, cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, tipoFila: 1, estilo: ""
+                        }
+
+                        let reporteFuera = {
+                            proveedor: "", plazoDistribucion: "", eficiencia: "", cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0,
+                            cantidad06: 0, cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, tipoFila: 1, estilo: ""
+                        }
+
+
+                          reporteDentro.proveedor = proveedor.nombre;
+                          reporteDentro.plazoDistribucion = plazos.nombre;
+                          reporteDentro.eficiencia = 'DENTRO';
+                          
+
+                          reporteFuera.proveedor = proveedor.nombre;
+                          reporteFuera.plazoDistribucion = plazos.nombre;
+                          reporteFuera.eficiencia = 'FUERA DE PLAZO';
+                         
+
+
+                    if (proveedor.id == parseInt(keyn1)) {
+                        var objn1 = dataGrafico2[keyn1];
+                          Object.keys(objn1).forEach(keyn2 => {
+                            if (plazos.id == parseInt(keyn2)) {
+                              var objn2 = objn1[keyn2];
+                              Object.keys(objn2).forEach(keyn3 => {
+                                var objn3 = objn2[keyn3];
+                                  Object.keys(objn3).forEach(keyn4 => {
+                                    var objn4 = objn3[keyn4];
+                                    Object.keys(objn4).forEach(keyn5 => {
+                                        var obj6= objn4[keyn5];
+                                      if (parseInt(keyn4) == 1) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad01=reporteDentro.cantidad01+obj6;
+                                        }else{
+                                            reporteFuera.cantidad01=reporteFuera.cantidad01+obj6;
+                                        }
+                                      }
+                                      if (parseInt(keyn4) == 2) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad02=reporteDentro.cantidad02+obj6;
+                                        }else{
+                                            reporteFuera.cantidad02=reporteFuera.cantidad02+obj6;
+                                        }
+                                      }
+                                      if (parseInt(keyn4) == 3) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad03=reporteDentro.cantidad03+obj6;
+                                        }else{
+                                            reporteFuera.cantidad03=reporteFuera.cantidad03+obj6;
+                                        }
+                                      }
+                                      if (parseInt(keyn4) == 4) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad04=reporteDentro.cantidad04+obj6;
+                                        }else{
+                                            reporteFuera.cantidad04=reporteFuera.cantidad04+obj6;
+                                        }
+                                      }
+                                      if (parseInt(keyn4) == 5) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad05=reporteDentro.cantidad05+obj6;
+                                        }else{
+                                            reporteFuera.cantidad05=reporteFuera.cantidad05+obj6;
+                                        }
+                                      }
+                                      if (parseInt(keyn4) == 6) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad06=reporteDentro.cantidad06+obj6;
+                                        }else{
+                                            reporteFuera.cantidad06=reporteFuera.cantidad06+obj6;
+                                        }
+                                      }
+                                      if (parseInt(keyn4) == 7) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad07=reporteDentro.cantidad07+obj6;
+                                        }else{
+                                            reporteFuera.cantidad07=reporteFuera.cantidad07+obj6;
+                                        }                                      
+                                    }
+                                      if (parseInt(keyn4) == 8) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad08=reporteDentro.cantidad08+obj6;
+                                        }else{
+                                            reporteFuera.cantidad08=reporteFuera.cantidad08+obj6;
+                                        }                                    
+                                    }
+                                      if (parseInt(keyn4) == 9) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad09=reporteDentro.cantidad09+obj6;
+                                        }else{
+                                            reporteFuera.cantidad09=reporteFuera.cantidad09+obj6;
+                                        }                                   
+                                    }
+                                      if (parseInt(keyn4) == 10) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad10=reporteDentro.cantidad10+obj6;
+                                        }else{
+                                            reporteFuera.cantidad10=reporteFuera.cantidad10+obj6;
+                                        }                                    
+                                    }
+                                      if (parseInt(keyn4) == 11) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad11=reporteDentro.cantidad11+obj6;
+                                        }else{
+                                            reporteFuera.cantidad11=reporteFuera.cantidad11+obj6;
+                                        }
+                                    }
+                                      if (parseInt(keyn4) == 12) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad12=reporteDentro.cantidad12+obj6;
+                                        }else{
+                                            reporteFuera.cantidad12=reporteFuera.cantidad12+obj6;
+                                        }                                    
+                                    }
+                                      if (parseInt(keyn4) == 13) {
+                                        if(keyn5=="dentroplazo"){
+                                            reporteDentro.cantidad13=reporteDentro.cantidad13+obj6;
+                                        }else{
+                                            reporteFuera.cantidad13=reporteFuera.cantidad13+obj6;
+                                        }                                   
+                                    }
+                                    });
+                                  });
+                                
+                              });
+                            }
+                          });
+                          reporteFinal.estilo = "";
+                          this._final.push(reporteDentro);                         
+                          this._final.push(reporteFuera);
+                        }
+ 
+                        });
+                   
+                  });
+                });
+                this._registros = this._final.map(function (obj) {
+                    return [obj.plazoDistribucion, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.proveedor, obj.eficiencia, obj.tipoFila, obj.estilo];
+                });
+            
+   
     }
 
     padding: any = { left: 10, top: 10, right: 15, bottom: 10 };
