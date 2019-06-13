@@ -154,8 +154,9 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         valortotal = valordentroplazo + valorfuerplazo;
         let porcentajedentroplazo = (valordentroplazo / valortotal) * 100;
         let porcentajefueraplazo = (valorfuerplazo / valortotal) * 100;
-        eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo + "%";
-        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo+ "%";
+
+        eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo.toFixed(1) + "%";
+        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo.toFixed(1)+ "%";
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       });
     /* console.log(this.eficienciaPorProveedor)
