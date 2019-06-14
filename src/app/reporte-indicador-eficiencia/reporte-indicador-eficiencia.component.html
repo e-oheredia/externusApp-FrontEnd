@@ -6,9 +6,11 @@
   </div>
 </div>
 
+
+
+
 <div class="row justify-content-center">
   <div class="col">
-
     <div class="card mb-5">
 
       <div class="card-header">
@@ -16,24 +18,21 @@
       </div>
 
       <div class="card-body">
-        <form [formGroup]="documentoForm" (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
-
+        <form [formGroup]="documentoForm"
+          (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
           <div class="form-row">
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="month" formControlName="fechaIni">
               </div>
             </div>
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="month" formControlName="fechaFin">
               </div>
             </div>
-
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
@@ -41,13 +40,12 @@
                 </button>
               </div>
             </div>
-
           </div>
-
         </form>
       </div>
 
     </div>
+
 
     <div *ngIf="dataGrafico.length !== 0; else mensaje">
 
@@ -60,19 +58,18 @@
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de eficiencia'" [description]="''" [showLegend]="true"
-                [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGrafico" [xAxis]="xAxis"
-                [valueAxis]="valueAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme05'">
+              <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de eficiencia'"
+                [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="padding"
+                [titlePadding]="titlePadding" [source]="dataGrafico" [xAxis]="xAxis" [valueAxis]="valueAxis"
+                [seriesGroups]="seriesGroups" [colorScheme]="'scheme05'">
               </jqxChart>
             </div>
           </div>
         </div>
-      </div>
 
 
 
 
-      <div class="card mb-4">
         <div class="card-body">
           <div class="row">
             <div class="col">

@@ -155,8 +155,16 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         let porcentajedentroplazo = (valordentroplazo / valortotal) * 100;
         let porcentajefueraplazo = (valorfuerplazo / valortotal) * 100;
 
+        if (isNaN(porcentajedentroplazo)) {
+          porcentajedentroplazo = 0;
+        }
+
+        if (isNaN(porcentajefueraplazo)) {
+          porcentajefueraplazo = 0;
+        }
+
         eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo.toFixed(1) + "%";
-        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo.toFixed(1)+ "%";
+        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo.toFixed(1) + "%";
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       });
     /* console.log(this.eficienciaPorProveedor)
@@ -168,7 +176,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
       });
       console.log("1.  eficienciaPorProveedor: ")
       console.log(this.eficienciaPorProveedor) */
-      console.log(this.proveedores);
+    console.log(this.proveedores);
   }
 
   dentroPlazoproveedor(proveedor) {
@@ -252,8 +260,8 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         };
         let plazo = {
           id: "",
-          cantidadDentro:0,
-          cantidadFuera:0
+          cantidadDentro: 0,
+          cantidadFuera: 0
         }
         dataProveedor.proveedor = proveedor.nombre;
         Object.keys(data).forEach(key => {
@@ -264,7 +272,7 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
               let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
               if (plazitoID.id === parseInt(key1)) {
                 Object.keys(obj2).forEach(key2 => {
-                  if(key2 == "dentroplazo"){
+                  if (key2 == "dentroplazo") {
                     plazo.id = key1;
                     plazo.cantidadDentro = obj2[key2]
                     dentroplazoPorplazo += obj2[key2]
@@ -280,13 +288,13 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
               }
             });
 
-            let porcentajedentroplazo = ( dentroplazoPorplazo / totalPorPlazo) * 100;
-            let porcentajefueraplazo = ( fueraplazoPorplazo / totalPorPlazo) * 100;     
+            let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
+            let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
             dataProveedor.porcentajePorPlazoDentro = porcentajedentroplazo;
             dataProveedor.porcentajePorPlazoFuera = porcentajefueraplazo;
             this.eficienciaPorPlazoDistribucion.push(dataProveedor);
-          }          
-        });        
+          }
+        });
         this.eficienciaPorPlazoDistribucion.push(dataProveedor);
       });
   }
@@ -306,78 +314,78 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
    ); 
   */
 
- /*    this.proveedores.forEach(
-      proveedor => {
-        let dataProveedor = {
-          proveedor: "",
-          plazosDistribucion: [],
-          datagrafico: [],
-          dentroPlazo: "",
-          fueraPlazo: ""
-        };
-        dataProveedor.proveedor = proveedor.nombre;
-        Object.keys(data).forEach(key => {
-          var obj = data[key];
-          if (proveedor.id === parseInt(key)) {
-
-            let datagrafico = [];
-
-            let registrografico = {
-              plazo:"",
-              dentroPlazo: "",
-              fueraPlazo: ""
-            };
-
-            Object.keys(obj).forEach(key1 => {
-              var obj2 = obj[key1];
-              let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
-
-              registrografico.plazo = plazitoID.nombre;
-
-              if (plazitoID.id === parseInt(key1)) {
-                let plazo = {
-                  nombre: "",
-                  id: "",
-                  cantidadDentro: 0,
-                  cantidadFuera: 0
-                }
-                Object.keys(obj2).forEach(key2 => {
-                  if (key2 == "dentroplazo") {
-                    plazo.nombre = plazitoID.nombre
-                    plazo.id = key1;
-                    plazo.cantidadDentro = obj2[key2];
-                    registrografico.dentroPlazo = obj2[key2];
-                    dentroplazoPorplazo += obj2[key2];
-                  } else {
-                    plazo.nombre = plazitoID.nombre
-                    plazo.id = key1;
-                    plazo.cantidadFuera = obj2[key2];
-                    registrografico.fueraPlazo = obj2[key2];
-                    fueraplazoPorplazo += obj2[key2];
-                  }
-                  totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
-                });
-                dataProveedor.plazosDistribucion.push(plazo);
-                datagrafico.push(registrografico);
-              }
-
-            });
-            let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
-            let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
-            let positivo1 = porcentajedentroplazo.toFixed(1);
-            let positivo2 = porcentajefueraplazo.toFixed(1);
-            dataProveedor.dentroPlazo = positivo1 + "%";
-            dataProveedor.fueraPlazo = positivo2 + "%";
-
-            //invocar funcion
-            dataProveedor.datagrafico=datagrafico;
-
-          }
-        });
-        this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = eficienciaPorPlazoDistribucionPorProveedor;
-      }
-    )
-  } */ 
+  /*    this.proveedores.forEach(
+       proveedor => {
+         let dataProveedor = {
+           proveedor: "",
+           plazosDistribucion: [],
+           datagrafico: [],
+           dentroPlazo: "",
+           fueraPlazo: ""
+         };
+         dataProveedor.proveedor = proveedor.nombre;
+         Object.keys(data).forEach(key => {
+           var obj = data[key];
+           if (proveedor.id === parseInt(key)) {
+ 
+             let datagrafico = [];
+ 
+             let registrografico = {
+               plazo:"",
+               dentroPlazo: "",
+               fueraPlazo: ""
+             };
+ 
+             Object.keys(obj).forEach(key1 => {
+               var obj2 = obj[key1];
+               let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
+ 
+               registrografico.plazo = plazitoID.nombre;
+ 
+               if (plazitoID.id === parseInt(key1)) {
+                 let plazo = {
+                   nombre: "",
+                   id: "",
+                   cantidadDentro: 0,
+                   cantidadFuera: 0
+                 }
+                 Object.keys(obj2).forEach(key2 => {
+                   if (key2 == "dentroplazo") {
+                     plazo.nombre = plazitoID.nombre
+                     plazo.id = key1;
+                     plazo.cantidadDentro = obj2[key2];
+                     registrografico.dentroPlazo = obj2[key2];
+                     dentroplazoPorplazo += obj2[key2];
+                   } else {
+                     plazo.nombre = plazitoID.nombre
+                     plazo.id = key1;
+                     plazo.cantidadFuera = obj2[key2];
+                     registrografico.fueraPlazo = obj2[key2];
+                     fueraplazoPorplazo += obj2[key2];
+                   }
+                   totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
+                 });
+                 dataProveedor.plazosDistribucion.push(plazo);
+                 datagrafico.push(registrografico);
+               }
+ 
+             });
+             let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
+             let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
+             let positivo1 = porcentajedentroplazo.toFixed(1);
+             let positivo2 = porcentajefueraplazo.toFixed(1);
+             dataProveedor.dentroPlazo = positivo1 + "%";
+             dataProveedor.fueraPlazo = positivo2 + "%";
+ 
+             //invocar funcion
+             dataProveedor.datagrafico=datagrafico;
+ 
+           }
+         });
+         this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = eficienciaPorPlazoDistribucionPorProveedor;
+       }
+     )
+   } */
 
   llenarEficienciaPorPlazo(data) {
     this.reportesEficienciaPorPlazoDistribucion = {};

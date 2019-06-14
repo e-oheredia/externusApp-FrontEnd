@@ -1,6 +1,6 @@
-<div class="row" >
+<div class="row">
   <div class="col-10">
-    <div class="pb-2 mt-4 mb-2" >
+    <div class="pb-2 mt-4 mb-2">
       <h1>Documentos varios - indicador de volumen</h1>
     </div>
   </div>
@@ -8,7 +8,6 @@
 
 <div class="row justify-content-center">
   <div class="col">
-
     <div class="card mb-5">
 
       <div class="card-header">
@@ -16,24 +15,22 @@
       </div>
 
       <div class="card-body">
-        <form [formGroup]="documentoForm" (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
+        <form [formGroup]="documentoForm"
+          (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
 
           <div class="form-row">
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="month" formControlName="fechaIni">
               </div>
             </div>
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="month" formControlName="fechaFin">
               </div>
             </div>
-
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
@@ -41,109 +38,104 @@
                 </button>
               </div>
             </div>
-
           </div>
 
         </form>
       </div>
 
     </div>
+  </div>
+</div>
 
 
+<div *ngIf="dataGrafico.length !== 0; else mensaje">
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <div class="titulo">
+        <h4>Indicador de volumen</h4>
+      </div>
     </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de volumen'" [description]="''"
+            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+            [source]="dataGrafico" [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups"
+            [colorScheme]="'scheme05'">
+          </jqxChart>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td scope=col>TOTAL</td>
+                <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let _r of _registros">
+                <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
+                <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
 
   </div>
 
 
-  <div *ngIf="dataGrafico.length !== 0; else mensaje">
 
-    <div class="card mb-4">
-      <div class="card-header">
-        <div class="titulo">
-          <h4>Indicador de volumen</h4>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de volumen'" [description]="''" [showLegend]="true"
-              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="dataGrafico"
-              [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups" [colorScheme]="'scheme05'">
-            </jqxChart>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-
-              <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                      <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td scope=col>TOTAL</td>
-                      <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
-                    </tr>
-                  </tbody>
-              </table>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-      <div class="card-body">
-        <div class="row">
-          <div class="col">
-
-            <table class="table table-bordered">
-              <thead> 
-                <tr>
-                  <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                  <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let _r of _registros" >
-                  <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
-                  <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>
-                </tr>
-              </tbody>
-            </table>
-
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-
-
-
-  </div>
+</div>
 
 
 
 
 <ng-template #mensaje>
-    <div class="row">
-      <div class="col">
-        <div class="alert alert-info" role="alert" align=center>
-          No se encontraron documentos.
-        </div>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert" align=center>
+        No se encontraron documentos.
       </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>

@@ -941,7 +941,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
             minValue: 0,
             flip: true,
             labels: {
-             visible: true
+             visible: false
             },
             // axisSize: 'auto',
             maxValue: 'auto',
