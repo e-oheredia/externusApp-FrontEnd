@@ -6,6 +6,8 @@
   </div>
 </div>
 
+
+
 <div class="row justify-content-center">
   <div class="col">
     <div class="card mb-5">
@@ -15,24 +17,21 @@
       </div>
 
       <div class="card-body">
-        <form [formGroup]="documentoForm" (ngSubmit)="mostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
-
+        <form [formGroup]="documentoForm"
+          (ngSubmit)="mostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
           <div class="form-row">
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaIni">Fecha inicial</label>
                 <input class="form-control" type="date" formControlName="fechaIni">
               </div>
             </div>
-
             <div class="col-4">
               <div class="form-group">
                 <label for="fechaFin">Fecha final</label>
                 <input class="form-control" type="date" formControlName="fechaFin">
               </div>
             </div>
-
             <div class="col-4 mt-4">
               <div class="col">
                 <button type="submit" class="btn btn-primary form-control mt-2">
@@ -40,100 +39,114 @@
                 </button>
               </div>
             </div>
-
           </div>
-
         </form>
       </div>
-
 
     </div>
   </div>
 </div>
 
 
+
+
+
+
+
+
 <!-- <div *ngIf="documentos.length !== 0; else mensaje"> -->
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-4">
 
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Estado de devolución de cargos</h4>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col">
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-
-                <th scope="col">Courier / Estado de cargo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-
-                <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-                <th scope="col">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let _r of _registros">
-                <td [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" scope=col>{{ _r[0]}}</td>
-                <td  [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
-                <td  [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" scope=col>{{ _r[14]}}</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-  <div class="card mb-4">
-
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Áreas con cargos pendientes</h4>
-      </div>
-    </div>
-    
-    <div class="card-body">
-      <div class="row">
-        <div class="col">
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Área remitente &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-                <th scope="col">Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let _r of _registros2">
-                <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" scope=col>{{ _r[0]}}</td>
-                <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
-                <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" scope=col>{{ _r[14]}}</td>
-              </tr>
-            </tbody>
-          </table>
-
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Estado de devolución de cargos</h4>
         </div>
       </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Courier / Estado de cargo &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let _r of _registros">
+                  <td [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" scope=col>
+                    {{ _r[0]}}</td>
+                  <td [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}"
+                    *ngFor="let _mes of meses" scope="col">{{_r[_mes.id] }}</td>
+                  <td [ngClass]="{'font-weight-bold': _r[0] !== 'PENDIENTE' && _r[0] !== 'DEVUELTO'}" scope=col>
+                    {{ _r[14]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
-
   </div>
+</div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-4">
+
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Áreas con cargos pendientes</h4>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Área remitente
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </th>
+                  <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let _r of _registros2">
+                  <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" scope=col>{{ _r[0]}}</td>
+                  <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" *ngFor="let _mes of meses" scope="col">
+                    {{_r[_mes.id] }}</td>
+                  <td [ngClass]="{'font-weight-bold': _r[0] === 'TOTAL'}" scope=col>{{ _r[14]}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 

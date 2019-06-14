@@ -54,7 +54,9 @@ constructor(private requester : RequesterService ){
     }
 
 
-
+    getindicadoreficiencia(fechaini: Date, fechafin: Date): any{
+        return this.requester.get(this.REQUEST_URL +'indicadoreficiencia/graficotabla', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
 
 
 

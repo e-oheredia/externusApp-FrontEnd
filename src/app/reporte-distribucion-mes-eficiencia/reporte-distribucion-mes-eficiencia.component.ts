@@ -154,8 +154,9 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         valortotal = valordentroplazo + valorfuerplazo;
         let porcentajedentroplazo = (valordentroplazo / valortotal) * 100;
         let porcentajefueraplazo = (valorfuerplazo / valortotal) * 100;
-        eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo + "%";
-        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo+ "%";
+
+        eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo.toFixed(1) + "%";
+        eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo.toFixed(1)+ "%";
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       });
     /* console.log(this.eficienciaPorProveedor)
@@ -182,15 +183,12 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
         });
       }
     });
-
     var numero = a;
     return numero;
-
   }
 
   fueraPlazoproveedor(proveedor) {
     var a = 0;
-
     Object.keys(this.dataGrafico1).forEach(key => {
       if (proveedor.id === parseInt(key)) {
         var obj1 = this.dataGrafico1[key];
@@ -199,12 +197,10 @@ export class ReporteDistribucionMesEficienciaComponent implements OnInit {
             a = obj1[key1];
           }
         });
-
       }
     });
     var numero = a;
     return numero;
-
   }
 
   sumadentroplazo() {
