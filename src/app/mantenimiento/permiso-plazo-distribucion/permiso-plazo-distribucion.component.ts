@@ -90,6 +90,9 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     this.modalService.onHide.subscribe(
       () => {
         this.buzonForm.reset();
+        this.buzonService.listarBuzonesAll().subscribe(buzones => {
+          this.buzones = buzones
+        })
       }
     )
   }
@@ -109,6 +112,9 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
     this.modalService.onHide.subscribe(
       () => {
         this.areaForm.reset();
+        this.areaService.listarAreasAll().subscribe(areas => {
+          this.areas = areas
+        })
       }
     )
   }

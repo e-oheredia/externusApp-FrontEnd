@@ -7,12 +7,8 @@ import { DocumentoService } from '../shared/documento.service';
 import { Proveedor } from 'src/model/proveedor.model';
 import { ProveedorService } from '../shared/proveedor.service';
 import { PlazoDistribucionService } from '../shared/plazodistribucion.service';
-import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import * as moment from 'moment-timezone';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
-import { forEach } from '@angular/router/src/utils/collection';
-import { registerContentQuery } from '@angular/core/src/render3/instructions';
-import { EstadoDocumento } from 'src/model/estadodocumento.model';
 import { ReporteService } from '../shared/reporte.service';
 
 @Component({
@@ -128,8 +124,6 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                 (data: any) => {
                     this.data = data
                     Object.keys(data).forEach(key => {
-                        // console.log("DATA")
-                        // console.log(data)
                         var obj = data[key];
                         if ( parseInt(key) == 1) {
                             this.dataGrafico1 = obj
@@ -399,6 +393,8 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
         }
     }
 
+
+
     llenarDataSource(data){
             this.data=data;
             this.dataGrafico = [];
@@ -429,23 +425,19 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                             mes.id = parseInt(key3);
                             mes.nombre = this.utilsService.getNombreMes2(parseInt(key3));//this.NombreMes(fechaInicial);
                             this.meses.push(mes);
-
-                        });                                
-
-
-                    });
-
-
-                
-        
+                        });
+                    });        
     }
 
-    llenarDataSource2(dataGrafico2){
- 
-        
+
+
+
+
+
+
+    llenarDataSource2(dataGrafico2){        
         this._registros = [];
         this._final = [];
-
               this.proveedores.forEach(
                 proveedor => {
                     let reporteFinal = {
@@ -486,10 +478,6 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                         reporteFinal.plazoDistribucion = proveedor.nombre;
                         reporteFinal.eficiencia = proveedor.nombre;
                         reporteFinal.tipoFila = 2;
-  
-
-
-
 
                       Object.keys(obj2).forEach(key3 => {
                         var obj3 = obj2[key3];//{5={dasdas:0 dasdsdas:0}}
@@ -506,7 +494,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera1=fuera1+obj6;
                                                 }
-                                                reporteFinal.cantidad01=dentro1/(dentro1+fuera1)+"%";
+
+                                                let valor = dentro1/(dentro1+fuera1)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad01=porcentaje
                                             }
                                             if (parseInt(key5) == 2) {
                                                 if(key6=="dentroplazo"){
@@ -514,7 +511,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera2=fuera2+obj6;
                                                 }
-                                                reporteFinal.cantidad02=dentro2/(dentro2+fuera2)+"%";
+
+                                                let valor = dentro2/(dentro2+fuera2)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+                                                
+                                                reporteFinal.cantidad02=porcentaje;
                                             }
                                             if (parseInt(key5) == 3) {
                                                 if(key6=="dentroplazo"){
@@ -522,7 +528,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera3=fuera3+obj6;
                                                 }
-                                                reporteFinal.cantidad03=dentro3/(dentro3+fuera3)+"%";
+
+                                                let valor = dentro3/(dentro3+fuera3)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad03=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 4) {
@@ -531,7 +546,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera4=fuera4+obj6;
                                                 }
-                                                reporteFinal.cantidad04=dentro4/(dentro4+fuera4)+"%";
+
+                                                let valor = dentro4/(dentro4+fuera4)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad04=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 5) {
@@ -540,7 +564,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera5=fuera5+obj6;
                                                 }
-                                                reporteFinal.cantidad05=dentro5/(dentro5+fuera5)+"%";
+
+                                                let valor = dentro5/(dentro5+fuera5)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad05=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 6) {
@@ -549,7 +582,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera6=fuera6+obj6;
                                                 }
-                                                reporteFinal.cantidad06=dentro6/(dentro6+fuera6)+"%";
+
+                                                let valor = dentro6/(dentro6+fuera6)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad06=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 7) {
@@ -558,7 +600,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera7=fuera7+obj6;
                                                 }
-                                                reporteFinal.cantidad07=dentro7/(dentro7+fuera7)+"%";
+
+                                                let valor = dentro7/(dentro7+fuera7)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad07=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 8) {
@@ -567,7 +618,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera8=fuera8+obj6;
                                                 }
-                                                reporteFinal.cantidad08=dentro8/(dentro8+fuera8)+"%";
+
+                                                let valor = dentro8/(dentro8+fuera8)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad08=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 9) {
@@ -576,7 +636,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera9=fuera9+obj6;
                                                 }
-                                                reporteFinal.cantidad09=dentro9/(dentro9+fuera9)+"%";
+
+                                                let valor = dentro9/(dentro9+fuera9)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad09=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 10) {
@@ -585,7 +654,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera10=fuera10+obj6;
                                                 }
-                                                reporteFinal.cantidad10=dentro10/(dentro10+fuera10)+"%";
+
+                                                let valor = dentro10/(dentro10+fuera10)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad10=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 11) {
@@ -594,7 +672,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera11=fuera11+obj6;
                                                 }
-                                                reporteFinal.cantidad11=dentro11/(dentro11+fuera11)+"%";
+
+                                                let valor = dentro11/(dentro11+fuera11)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad11=porcentaje;
 
                                             }
                                             if (parseInt(key5) == 12) {
@@ -603,8 +690,17 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera12=fuera12+obj6;
                                                 }
+
+                                                let valor = dentro12/(dentro12+fuera12)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
                                                 if(dentro12+fuera12){
-                                                    reporteFinal.cantidad12=dentro12/(dentro12+fuera12)+"%";
+                                                    reporteFinal.cantidad12=porcentaje;
                                                 }
 
                                             }
@@ -614,7 +710,16 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                                 }else{
                                                     fuera13=fuera13+obj6;
                                                 }
-                                                reporteFinal.cantidad13=dentro13/(dentro13+fuera13)+"%";
+
+                                                let valor = dentro13/(dentro13+fuera13)
+                                                if(isNaN(valor)){
+                                                    valor = 0
+                                                }
+                                                let porciento = valor * 100
+                                                let decimal = porciento.toFixed(1)
+                                                let porcentaje = decimal + "%"
+
+                                                reporteFinal.cantidad13=porcentaje;
 
                                             }
                         });
