@@ -21,6 +21,7 @@ export class Guia {
         public seguimientosGuia: SeguimientoGuia[],
         public sede: Sede,
         public cantidadDocumentos: number,
+        public cantidadDocumentosPendientes: number,
         public tipoGuia: TipoGuia,
         public producto: Producto,
         public clasificacion: Clasificacion,

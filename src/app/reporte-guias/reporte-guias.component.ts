@@ -72,10 +72,13 @@ export class ReporteGuiasComponent implements OnInit {
       sede: {
         title: 'Sede'
       },
+      pendienteResultado: {
+        title: 'Pendiente de resultado'
+      },
       totalDocumentos: {
         title: 'Total de documentos'
       },
-      fechaCreacion: {
+     fechaCreacion: {
         title: 'Fecha Creación'
       },
       fechalimite: {
@@ -111,6 +114,7 @@ export class ReporteGuiasComponent implements OnInit {
               tipoServicio: guia.tipoServicio.nombre,
               tipoSeguridad: guia.tipoSeguridad.nombre,
               sede: guia.sede.nombre,
+              pendienteResultado: guia.cantidadDocumentosPendientes,
               totalDocumentos: guia.cantidadDocumentos,
               fechaCreacion:this.guiaService.getFechaCreacion(guia),
               fechalimite: guia.fechaLimite ? guia.fechaLimite : '-',
@@ -161,6 +165,7 @@ export class ReporteGuiasComponent implements OnInit {
                       tipoServicio: guia.tipoServicio.nombre,
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
+                      pendienteResultado:guia.cantidadDocumentosPendientes,
                       totalDocumentos: guia.cantidadDocumentos,
                       fechaCreacion: this.guiaService.getFechaCreacion(guia),
                       fechalimite: guia.fechaLimite,
