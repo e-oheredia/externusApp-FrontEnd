@@ -83,7 +83,7 @@ export class RecepcionarDocumentoComponent implements OnInit {
           this.documentoRecepcionadoEvent.emit(documento);
         },
         error => {
-          this.notifier.notify('error', error.error.mensaje);
+          this.notifier.notify('error', error.error);
         }
       );
   }
