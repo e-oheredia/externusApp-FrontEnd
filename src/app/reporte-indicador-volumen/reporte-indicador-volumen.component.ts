@@ -7,7 +7,6 @@ import { DocumentoService } from '../shared/documento.service';
 import { Proveedor } from 'src/model/proveedor.model';
 import { ProveedorService } from '../shared/proveedor.service';
 import { PlazoDistribucionService } from '../shared/plazodistribucion.service';
-import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import * as moment from 'moment-timezone';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { ReporteService } from '../shared/reporte.service';
@@ -36,8 +35,6 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
         public proveedorService: ProveedorService,
         public plazoDistribucionService: PlazoDistribucionService,
         public reporteService : ReporteService
-
-
     ) { }
 
     ngOnInit() {
@@ -74,7 +71,6 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
         let mIni = fechaInicial.getMonth();
         let aFin = fechaFinal.getFullYear();
         let mFin = fechaFinal.getMonth();
-
         
         if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
             this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
@@ -86,7 +82,6 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
             let fechaFinDate = new Date(fechaFin);
             fechaIniDate = new Date(fechaIniDate.getTimezoneOffset() * 60 * 1000 + fechaIniDate.getTime());
             fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
-
 
 /*             this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENVIADO).subscribe(
                 documentos => {
