@@ -77,6 +77,8 @@ export class ReporteMensualCargosComponent implements OnInit {
 
   }
 
+
+
   mostrarReportes(fechaIni: Date, fechaFin: Date) {
 
     let fi = new Date(new Date(fechaIni).getTimezoneOffset() * 60 * 1000 + new Date(fechaIni).getTime());
@@ -103,7 +105,7 @@ export class ReporteMensualCargosComponent implements OnInit {
 
       // this.documentosSubscription = this.documentoService.listarCargos(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
 
-      this.documentosSubscription = this.reporteService.getControlCargosDocumentosDenuncias(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), 1).subscribe(
+      this.documentosSubscription = this.reporteService.getControlCargosDocumentosDenuncias(fechaIni, fechaFin, 1).subscribe(
         (data: any) => {
           this.data = data
           Object.keys(data).forEach(key => {

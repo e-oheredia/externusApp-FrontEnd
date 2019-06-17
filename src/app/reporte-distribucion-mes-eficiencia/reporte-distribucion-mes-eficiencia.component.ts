@@ -1,12 +1,10 @@
-import { PlazoDistribucion } from './../../model/plazodistribucion.model';
 import { PlazoDistribucionService } from './../shared/plazodistribucion.service';
 import { Documento } from './../../model/documento.model';
-import { EstadoDocumentoEnum } from './../enum/estadodocumento.enum';
 import { NotifierService } from 'angular-notifier';
 import { DocumentoService } from './../shared/documento.service';
 import { Subscription } from 'rxjs';
 import { UtilsService } from './../shared/utils.service';
-import { FormGroup, Validators, FormControl, AbstractControlDirective } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProveedorService } from '../shared/proveedor.service';
 import { Proveedor } from '../../model/proveedor.model';
@@ -18,7 +16,7 @@ import { ReporteService } from '../shared/reporte.service';
   templateUrl: './reporte-distribucion-mes-eficiencia.component.html',
   styleUrls: ['./reporte-distribucion-mes-eficiencia.component.css']
 })
-export class ReporteDistribucionMesEficienciaComponent implements OnInit {
+export class ReporteEficienciaComponent implements OnInit {
 
   constructor(
     private proveedorService: ProveedorService,

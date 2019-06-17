@@ -1,22 +1,20 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Indicadores de eficiencia</h1>
+      <h1>Indicador de eficiencia</h1>
     </div>
   </div>
 </div>
 
 
-
-
 <div class="row justify-content-center">
   <div class="col">
-    <div class="card mb-5">
 
+
+    <div class="card mb-4">
       <div class="card-header">
         <h4>Datos de consulta</h4>
       </div>
-
       <div class="card-body">
         <form [formGroup]="documentoForm"
           (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
@@ -43,11 +41,20 @@
           </div>
         </form>
       </div>
-
     </div>
 
 
     <div *ngIf="dataGrafico.length !== 0; else mensaje">
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row justify-content-center">
+            <h6>EFICIENCIA: Mide la cantidad de documentos con estado "Entregado" sobre el total de documentos con
+              resultado
+              ("Entregado", "Rezagado" y "No distribuible").</h6>
+          </div>
+        </div>
+      </div>
 
       <div class="card mb-4">
         <div class="card-header">
@@ -65,15 +72,11 @@
               </jqxChart>
             </div>
           </div>
-        </div>
 
+          <br>
 
-
-
-        <div class="card-body">
           <div class="row">
             <div class="col">
-
               <table class="table table-bordered">
                 <thead>
                   <tr>
@@ -88,19 +91,13 @@
                   </tr>
                 </tbody>
               </table>
-
             </div>
           </div>
-        </div>
 
+          <br>
 
-
-
-
-        <div class="card-body">
           <div class="row">
             <div class="col">
-
               <table class="table table-bordered">
                 <thead>
                   <tr>
@@ -116,30 +113,24 @@
                   </tr>
                 </tbody>
               </table>
-
             </div>
           </div>
         </div>
-
-
       </div>
+
 
     </div>
 
-    <ng-template #mensaje>
-      <div class="row">
-        <div class="col">
-          <div class="alert alert-info" role="alert">
-            No hay resultados.
-          </div>
-        </div>
-      </div>
-    </ng-template>
-
-
-
-
 
   </div>
-
 </div>
+
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No hay resultados.
+      </div>
+    </div>
+  </div>
+</ng-template>
