@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-10">
     <div class="pb-2 mt-4 mb-2">
-      <h1>Reporte - eficacia</h1>
+      <h1>Reporte - Eficacia</h1>
     </div>
   </div>
 </div>
@@ -10,7 +10,7 @@
 <div class="row justify-content-center">
   <div class="col">
 
-    <div class="card mb-5">
+    <div class="card mb-4">
       <div class="card-header">
         <h4>Datos de consulta</h4>
       </div>
@@ -47,6 +47,16 @@
 
 <div *ngIf="validacion == 1; else mensaje">
   <div *ngIf="validacion == 1 && validacionError !== 1; else mensaje2">
+
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <h6>EFICACIA: Mide la cantidad de documentos con estado "Entregado" sobre el total de documentos con resultado
+            ("Entregado", "Rezagado" y "No distribuible").</h6>
+        </div>
+      </div>
+    </div>
 
     <div class="card mb-4">
 

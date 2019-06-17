@@ -54,7 +54,11 @@
 
 
 
-<!-- <div *ngIf="documentos.length !== 0; else mensaje"> -->
+<div *ngIf="data.length !== 0; else mensaje">
+
+
+
+  
 <div class="row justify-content-center">
   <div class="col">
     <div class="card mb-4">
@@ -151,11 +155,11 @@
 
 
 
-<!-- </div> -->
+</div>
 
 
 
-<!-- <ng-template #mensaje>
+<ng-template #mensaje>
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>
@@ -163,4 +167,4 @@
       </div>
     </div>
   </div>
-</ng-template> -->
+</ng-template>

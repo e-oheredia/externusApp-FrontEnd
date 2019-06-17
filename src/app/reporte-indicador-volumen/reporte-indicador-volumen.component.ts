@@ -246,7 +246,7 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                     }
                 }
             ); */
-            this.documentosSubscription = this.reporteService.getindicadorvolumen(fechaIni,fechaFin ).subscribe(
+            this.documentosSubscription = this.reporteService.getindicadorvolumen(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
                 
                 data => {
                     this.data=data;

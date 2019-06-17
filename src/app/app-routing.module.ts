@@ -1,4 +1,4 @@
-import { ReporteDistribucionMesEficienciaComponent } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.component';
+import { ReporteEficienciaComponent } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.component';
 import { ListarGuiasCreadasComponent } from './listar-guias-creadas/listar-guias-creadas.component';
 import { CustodiarEnviosMasivosComponent } from './custodiar-envios-masivos/custodiar-envios-masivos.component';
 import { CustodiarDocumentosIndividualesComponent } from './custodiar-documentos-individuales/custodiar-documentos-individuales.component';
@@ -13,7 +13,7 @@ import { ReporteIndicadorVolumenComponent } from './reporte-indicador-volumen/re
 import { ReporteMensualVolumenComponent } from './reporte-mensual-volumen/reporte-mensual-volumen.component';
 import {  ReporteEficaciaComponent } from './reporte-eficacia/reporte-eficacia.component';
 import { ReporteMensualCargosComponent } from './reporte-mensual-cargos/reporte-mensual-cargos.component';
-import { ReporteIndicadorEfectividadComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
+import { ReporteIndicadorEficaciaComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
 import { ReporteIndicadorEficienciaComponent } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.component';
 import { CambiarEstadoComponent } from './cambiar-estado/cambiar-estado.component';
 import { ReporteGuiasComponent } from './reporte-guias/reporte-guias.component';
@@ -88,12 +88,12 @@ const appRoutes: Routes = [
         component: ReporteMensualCargosComponent
     },
     {
-        path: 'reporte-distribucion-mes-eficiencia',
-        component: ReporteDistribucionMesEficienciaComponent
+        path: 'reporte-eficiencia',
+        component: ReporteEficienciaComponent
     },
     {
-        path: 'reporte-indicador-efectividad',
-        component: ReporteIndicadorEfectividadComponent
+        path: 'reporte-indicador-eficacia',
+        component: ReporteIndicadorEficaciaComponent
     },
     {
         path: 'reporte-indicador-eficiencia',
