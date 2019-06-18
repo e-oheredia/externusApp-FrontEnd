@@ -36,6 +36,7 @@ export class ReporteIndicadorEficaciaComponent implements OnInit {
   documentosSubscription: Subscription;
   busquedaForm: FormGroup;
   // documentosSubscription: Subscription = new Subscription();
+  validacion: number;
 
   data: any[] = [];
   data1: any[] = [];
@@ -48,6 +49,7 @@ export class ReporteIndicadorEficaciaComponent implements OnInit {
   arrayTablaEfectividad = [];
 
   ngOnInit() {
+    this.validacion = 0
     this.busquedaForm = new FormGroup({
       "fechaIni": new FormControl(null, Validators.required),
       "fechaFin": new FormControl(null, Validators.required)
@@ -112,10 +114,10 @@ export class ReporteIndicadorEficaciaComponent implements OnInit {
     let mFin = fechaFinal.getMonth();
 
 
-    if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
-      this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
-      return;
-    }
+    // if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
+    //   this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
+    //   return;
+    // }
 
     if (!this.utilsService.isUndefinedOrNullOrEmpty(fechaIni) &&
       !this.utilsService.isUndefinedOrNullOrEmpty(fechaFin)) {
@@ -128,8 +130,8 @@ export class ReporteIndicadorEficaciaComponent implements OnInit {
       // this.documentosSubscription = this.reporteService.getReporteIndicadorEficaciaGrafico(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD'), EstadoDocumentoEnum.ENVIADO).subscribe(
       this.documentosSubscription = this.reporteService.getReporteIndicadorEficaciaGrafico(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
         (data: any) => {
-          this.data = data
-          console.log(this.data)
+          this.validacion = 1;
+          this.data = data;
 
           this.meses = [];
           this.graficoEfectividad = [];
@@ -313,14 +315,24 @@ export class ReporteIndicadorEficaciaComponent implements OnInit {
           console.log(this.graficoEfectividad);
         },
         error => {
-          if (error.status === 400) {
-            this.notifier.notify('error', 'Rango de fechas no válido');
+          if (error.status === 409) {
+            this.validacion = 2
+            // this.notifier.notify('error', 'No se encontraron registros');
+          }
+          if (error.status === 417) {
+            // this.validacion = 2
+            this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
+          }
+          if (error.status === 424) {
+            // this.validacion = 2
+            this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
           }
         }
       );
     }
     else {
-      this.notifier.notify('error', 'Seleccione un rango de fechas');
+      this.validacion = 0
+      // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
     }
   }
 

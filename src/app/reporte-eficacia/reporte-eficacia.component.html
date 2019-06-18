@@ -41,12 +41,15 @@
         </form>
       </div>
     </div>
-
   </div>
 </div>
 
-<div *ngIf="validacion == 1; else mensaje">
-  <div *ngIf="validacion == 1 && validacionError !== 1; else mensaje2">
+
+
+
+<div *ngIf="validacion !== 0; else mensaje">
+  <div *ngIf="validacion === 1; else mensaje2">
+
 
 
     <div class="card mb-4">
@@ -119,7 +122,7 @@
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>
-        No se encontraron documentos
+        No se encontraron registros.
       </div>
     </div>
   </div>

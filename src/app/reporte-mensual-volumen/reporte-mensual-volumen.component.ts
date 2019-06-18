@@ -42,6 +42,7 @@ export class ReporteMensualVolumenComponent implements OnInit {
     proveedores: Proveedor[] = [];
     documentos: Documento[] = [];
     // reportesEficienciaPorPlazoDistribucion: any = {};
+    validacion: number;
     documentosSubscription:Subscription[] = [];
     documentoForm: FormGroup;
     data: any[] = [];
@@ -51,9 +52,11 @@ export class ReporteMensualVolumenComponent implements OnInit {
     dataSource2: any[];
     dataSource3: any[];
     _postsArray: Array<any> = [];
+
     private _sumagoblal: number = 0;
 
     ngOnInit() {
+        this.validacion = 0;
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
@@ -87,61 +90,36 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
-        if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
-            /*this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENVIADO).subscribe(
-                documentos => {
+        if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && 
+            !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-                    this.documentos = documentos;
-                    this.llenarDataSource(documentos);
-                    this.llenarDataSource2(documentos);
-                    this.llenarDatasource3(documentos);
-
-                },*/
-                this.documentosSubscription.push(this.reporteService.getvolumen( fechaIni,fechaFin ).subscribe(
+                this.documentosSubscription = this.reporteService.getvolumen( fechaIni,fechaFin ).subscribe(
                 (data: any) => {
+                    this.validacion = 1;
                     this.data = data;
                     this.llenarDataSource(data);
                     this.llenarDataSource2(data);
                     this.llenarDatasource3(data);
                 },
-                
                 error => {
-                    if (error.status === 400) {
-                        this.documentos = [];
-                        this.notifier.notify('error', 'Rango de fechas no válido');
+                    if (error.status === 409) {
+                        this.validacion = 2;
+                        // this.notifier.notify('error', 'No se encontraron registros');
+                    }
+                    if (error.status === 417) {
+                        // this.validacion = 2;
+                        this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
+                    }
+                    if (error.status === 424) {
+                        // this.validacion = 2;
+                        this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
                     }
                 }
-            ));
-/*             this.documentosSubscription.push(this.reporteService.getReporteVolumenporSede( fechaIni,fechaFin  ).subscribe(
-                (data2: any) => {
-                    this.data2=data2;
-                    this.llenarDataSource2(data2);
-                    //this.llenarDatasource3(data);
-                },
-                error => {
-                    if (error.status === 400) {
-                        this.documentos = [];
-                        this.notifier.notify('error', 'Rango de fechas no válido');
-                    }
-                }
-            ));
-
-            this.documentosSubscription.push(this.reporteService.getReporteVolumenporproveedorandplazo( fechaIni,fechaFin  ).subscribe(
-                (data3: any) => {
-                    this.data3=data3;
-                    this.llenarDatasource3(data3);
-                },
-                error => {
-                    if (error.status === 400) {
-                        this.documentos = [];
-                        this.notifier.notify('error', 'Rango de fechas no válido');
-                    }
-                }
-            ));  */
-
+            );
         }
         else {
-            this.notifier.notify('error', 'Seleccione un rango de fechas');
+            this.validacion = 0;
+            // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
         }
      
     }
