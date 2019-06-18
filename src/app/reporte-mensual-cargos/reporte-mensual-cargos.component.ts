@@ -34,6 +34,7 @@ export class ReporteMensualCargosComponent implements OnInit {
 
   documentoForm: FormGroup;
   documentosSubscription: Subscription;
+  validacion: number;
   documentos: Documento[] = [];
   areas: Area[];
   proveedores: Proveedor[];
@@ -50,6 +51,7 @@ export class ReporteMensualCargosComponent implements OnInit {
   data: any[] = [];
 
   ngOnInit() {
+    this.validacion = 0;
     this.documentoForm = new FormGroup({
       "fechaIni": new FormControl(null, Validators.required),
       "fechaFin": new FormControl(null, Validators.required)
@@ -91,10 +93,10 @@ export class ReporteMensualCargosComponent implements OnInit {
     let mFin = fechaFinal.getMonth();
 
 
-    if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
-      this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
-      return;
-    }
+    // if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
+    //   this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
+    //   return;
+    // }
 
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
@@ -107,7 +109,8 @@ export class ReporteMensualCargosComponent implements OnInit {
 
       this.documentosSubscription = this.reporteService.getControlCargosDocumentosDenuncias(fechaIni, fechaFin, 1).subscribe(
         (data: any) => {
-          this.data = data
+          this.validacion = 1;
+          this.data = data;
           Object.keys(data).forEach(key => {
             var obj = data[key];
             if (parseInt(key) == 1) {
@@ -121,15 +124,25 @@ export class ReporteMensualCargosComponent implements OnInit {
           this.graficoEstadoProveedor2(this.dataGrafico2);
         },
         error => {
-          if (error.status === 400) {
-            this.notifier.notify('error', 'Rango de fechas no válido');
+          if (error.status === 409) {
+            this.validacion = 2;
+            // this.notifier.notify('error', 'No se encontraron registros');
+          }
+          if (error.status === 417) {
+            // this.validacion = 2;
+            this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
+          }
+          if (error.status === 424) {
+            // this.validacion = 2;
+            this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
           }
         }
       );
 
     }
     else {
-      this.notifier.notify('error', 'Seleccione un rango de fechas');
+      this.validacion = 0;
+      // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
     }
 
 
@@ -155,10 +168,10 @@ export class ReporteMensualCargosComponent implements OnInit {
             regproa.estado = area.nombre;
 
 
-/*             regproa.nombre = "TOTALITO";
-            regproa.estado = "TOTAL";
-
-            this._final2.push(regtotal2); */
+            /*             regproa.nombre = "TOTALITO";
+                        regproa.estado = "TOTAL";
+            
+                        this._final2.push(regtotal2); */
 
             Object.keys(index).forEach(key1 => {          // 1 2 3
               //1 2 3
@@ -166,65 +179,65 @@ export class ReporteMensualCargosComponent implements OnInit {
               let total = 0;
               Object.keys(tipo).forEach(key2 => {          //5
                 var tipo1 = tipo[key2]
-/*                 if (num == 0) {
-                  let mes = {
-                    id: 0,
-                    nombre: ""
-                  }
-                  mes.id = parseInt(key2);
-                  mes.nombre = this.utilsService.getNombreMes2(parseInt(key2));
-                  this.meses.push(mes);
-                } */
+                /*                 if (num == 0) {
+                                  let mes = {
+                                    id: 0,
+                                    nombre: ""
+                                  }
+                                  mes.id = parseInt(key2);
+                                  mes.nombre = this.utilsService.getNombreMes2(parseInt(key2));
+                                  this.meses.push(mes);
+                                } */
                 if (parseInt(key2) == 1) {
-                  regproa.cantidad01=tipo1;
+                  regproa.cantidad01 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad01;
                 }
                 if (parseInt(key2) == 2) {
-                  regproa.cantidad02=tipo1;
+                  regproa.cantidad02 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad02;
                 }
                 if (parseInt(key2) == 3) {
-                  regproa.cantidad03=tipo1;
+                  regproa.cantidad03 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad03;
                 }
                 if (parseInt(key2) == 4) {
-                  regproa.cantidad04=tipo1;
+                  regproa.cantidad04 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad04;
                 }
                 if (parseInt(key2) == 5) {
-                  regproa.cantidad05=tipo1;
+                  regproa.cantidad05 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad05;
                 }
                 if (parseInt(key2) == 6) {
-                  regproa.cantidad06=tipo1;
+                  regproa.cantidad06 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad06;
                 }
                 if (parseInt(key2) == 7) {
-                  regproa.cantidad07=tipo1;
+                  regproa.cantidad07 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad07;
                 }
                 if (parseInt(key2) == 8) {
-                  regproa.cantidad08=tipo1;
+                  regproa.cantidad08 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad08;
                 }
                 if (parseInt(key2) == 9) {
-                  regproa.cantidad09=tipo1;
+                  regproa.cantidad09 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad09;
                 }
                 if (parseInt(key2) == 10) {
-                  regproa.cantidad10=tipo1;
+                  regproa.cantidad10 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad10;
                 }
                 if (parseInt(key2) == 11) {
-                  regproa.cantidad11=tipo1;
+                  regproa.cantidad11 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad11;
                 }
                 if (parseInt(key2) == 12) {
-                  regproa.cantidad12=tipo1;
+                  regproa.cantidad12 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad12;
                 }
                 if (parseInt(key2) == 13) {
-                  regproa.cantidad13=tipo1;
+                  regproa.cantidad13 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad13;
                 }
               });
@@ -236,9 +249,9 @@ export class ReporteMensualCargosComponent implements OnInit {
       });
 
 
-      this._registros2 = this._final2.map(function (obj) {
-        return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
-      });
+    this._registros2 = this._final2.map(function (obj) {
+      return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
+    });
   }
 
 

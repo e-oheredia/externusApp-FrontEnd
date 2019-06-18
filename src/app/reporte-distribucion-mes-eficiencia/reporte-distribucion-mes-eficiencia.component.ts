@@ -38,6 +38,7 @@ export class ReporteEficienciaComponent implements OnInit {
   reportesEficienciaPorPlazoDistribucion: any = {};
   // reportesDetalleEficiencia: any = {};
   documentosSubscription: Subscription;
+  validacion: number;
   proveedorElegidoDetalle: Proveedor;
   data: any[] = [];
   dataGrafico1: any[] = [];
@@ -46,6 +47,7 @@ export class ReporteEficienciaComponent implements OnInit {
   sumaFueraPlazoTotal: number = 0;
 
   ngOnInit() {
+    this.validacion = 0;
     this.busquedaForm = new FormGroup({
       "fechaIni": new FormControl(null, Validators.required),
       "fechaFin": new FormControl(null, Validators.required)
@@ -60,7 +62,8 @@ export class ReporteEficienciaComponent implements OnInit {
       !this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaFin'].value)) {
       this.documentosSubscription = this.reporteService.getReporteEficienciaPorCourier(fechaIni, fechaFin).subscribe(
         (data: any) => {
-          this.data = data
+          this.validacion = 1;
+          this.data = data;
           Object.keys(data).forEach(key => {
             var obj = data[key];
             if (parseInt(key) == 1) {
@@ -71,27 +74,26 @@ export class ReporteEficienciaComponent implements OnInit {
           });
           this.llenarEficienciaPorProveedor(this.dataGrafico1);
           this.llenarEficienciaPorPlazo(this.dataGrafico2);
+        },
+        error => {
+          if (error.status === 409) {
+            this.validacion = 2
+            // this.notifier.notify('error', 'No se encontraron registros');
+          }
+          if (error.status === 417) {
+            // this.validacion = 2
+            this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
+          }
+          if (error.status === 424) {
+            // this.validacion = 2
+            this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
+          }
         }
       )
-
-
-
-      /*  this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
-         documentos => {
-           this.documentos = documentos;
-           this.llenarEficienciaPorProveedor(this.data);
-           this.llenarEficienciaPorPlazoDistribucion(documentos);
-           this.llenarDetalleEficiencia(documentos);
-         },
-         error => {
-           if (error.status === 400) {
-             this.notifier.notify('error', error.error);
-           }
-         }
-       ); */
     }
     else {
-      this.notifier.notify('error', 'Seleccione un rango de fechas');
+      this.validacion = 0
+      // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
     }
   }
 
