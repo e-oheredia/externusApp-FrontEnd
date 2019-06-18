@@ -484,43 +484,48 @@ export class ReporteEficienciaComponent implements OnInit {
   }
 
 
-  /*     llenarDetalleEficiencia(documentos: Documento[]) {
-        this.reportesDetalleEficiencia = {};
-      let documentosAux: Documento[] = [];
-      this.proveedores.forEach(
-        proveedor => {
-          proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion => {
-            let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
-            proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
-              let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-                plazoDistribucion: plazoDistribucion2.tiempoEnvio + ' H',
-                dentroPlazo: documentos.filter(documento => {
-                  if (documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                    documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                    moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
-                  ) {
-                    return true;
-                  }
-                  documentosAux.push(documento);
-                }).length
-              }
-              documentos = documentosAux;
-              documentosAux = [];
-              eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
-            });
-            eficienciaPorPlazoDistribucionPorProveedor.push({
-              plazoDistribucion: 'Más',
-              dentroPlazo: documentos.filter(documento =>
-                documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
-              ).length
-            });
-            this.reportesDetalleEficiencia[proveedor.nombre + '-' + plazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
+
+//LLENAR DETALLE EFICIENCIA---------------------------------------------------------------------------------------------------------------------------------
+  /*llenarDetalleEficiencia(documentos: Documento[]) {
+    this.reportesDetalleEficiencia = {};
+    let documentosAux: Documento[] = [];
+    this.proveedores.forEach(
+      proveedor => {
+        proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion => {
+          let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
+          proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
+            let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
+              plazoDistribucion: plazoDistribucion2.tiempoEnvio + ' H',
+              dentroPlazo: documentos.filter(documento => {
+                if (documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+                  documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
+                  moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
+                ) {
+                  return true;
+                }
+                documentosAux.push(documento);
+              }).length
+            }
+            documentos = documentosAux;
+            documentosAux = [];
+            eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
           });
-        }
-      )
-    } */
+          eficienciaPorPlazoDistribucionPorProveedor.push({
+            plazoDistribucion: 'Más',
+            dentroPlazo: documentos.filter(documento =>
+              documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+              documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
+              moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") < moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
+            ).length
+          });
+          this.reportesDetalleEficiencia[proveedor.nombre + '-' + plazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
+        });
+      }
+    )
+  }*/
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
   getAxis(dataField: string) {
     return {
