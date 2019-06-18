@@ -9,7 +9,6 @@ import * as moment from 'moment-timezone';
 import { Documento } from 'src/model/documento.model';
 import { Area } from 'src/model/area.model';
 import { AreaService } from '../shared/area.service';
-import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { Proveedor } from 'src/model/proveedor.model';
 import { ReporteService } from '../shared/reporte.service';
 import { TipoDevolucionService } from '../shared/tipodevolucion.service';
@@ -39,9 +38,12 @@ export class ReporteMensualCargosComponent implements OnInit {
   areas: Area[];
   proveedores: Proveedor[];
   areasSubscription: Subscription;
+  devolucionElegida: TipoDevolucion;
   tipoDevoluciones: TipoDevolucion[];
   dataGrafico1: any[] = [];
   dataGrafico2: any[] = [];
+
+  titulo : string;
 
   _registros = [];
   _registros2 = [];
@@ -77,6 +79,10 @@ export class ReporteMensualCargosComponent implements OnInit {
       }
     )
 
+    // let tipodevo = this.tipoDevoluciones.find(tipodevo => tipodevo.id === 1)
+    // this.devolucionElegida = tipodevo
+
+
   }
 
 
@@ -93,11 +99,13 @@ export class ReporteMensualCargosComponent implements OnInit {
     let mFin = fechaFinal.getMonth();
 
 
-    // if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
-    //   this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
-    //   return;
-    // }
-
+    
+    if(this.utilsService.isUndefinedOrNullOrEmpty(this.devolucionElegida)){
+      let tipodevo = this.tipoDevoluciones.find(tipodevo => tipodevo.id === 1)
+      this.devolucionElegida = tipodevo;
+    }
+    
+    this.titulo = this.devolucionElegida.nombre.toLowerCase();
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
       let fechaIniDate = new Date(fechaIni);
@@ -107,7 +115,7 @@ export class ReporteMensualCargosComponent implements OnInit {
 
       // this.documentosSubscription = this.documentoService.listarCargos(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
 
-      this.documentosSubscription = this.reporteService.getControlCargosDocumentosDenuncias(fechaIni, fechaFin, 1).subscribe(
+      this.documentosSubscription = this.reporteService.getControlCargosDocumentosDenuncias(fechaIni, fechaFin, this.devolucionElegida.id).subscribe(
         (data: any) => {
           this.validacion = 1;
           this.data = data;
@@ -145,8 +153,9 @@ export class ReporteMensualCargosComponent implements OnInit {
       // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
     }
 
-
   }
+
+
 
   graficoEstadoProveedor2(data) {
     let num = 0;
@@ -167,27 +176,13 @@ export class ReporteMensualCargosComponent implements OnInit {
             regproa.area = area.nombre;
             regproa.estado = area.nombre;
 
-
-            /*             regproa.nombre = "TOTALITO";
-                        regproa.estado = "TOTAL";
-            
-                        this._final2.push(regtotal2); */
-
             Object.keys(index).forEach(key1 => {          // 1 2 3
               //1 2 3
               var tipo = index[key1]                      // tipo => 5{ devuelto : 3 pendiente :0 }
               let total = 0;
               Object.keys(tipo).forEach(key2 => {          //5
                 var tipo1 = tipo[key2]
-                /*                 if (num == 0) {
-                                  let mes = {
-                                    id: 0,
-                                    nombre: ""
-                                  }
-                                  mes.id = parseInt(key2);
-                                  mes.nombre = this.utilsService.getNombreMes2(parseInt(key2));
-                                  this.meses.push(mes);
-                                } */
+
                 if (parseInt(key2) == 1) {
                   regproa.cantidad01 = tipo1;
                   regproa.total = regproa.total + regproa.cantidad01;
@@ -256,10 +251,9 @@ export class ReporteMensualCargosComponent implements OnInit {
 
 
 
+
   graficoEstadoProveedor(data) {
-    //this.meses = [];
-    //this._registros = [];
-    //this._final = [];
+
     this.meses = [];
     this._registros = [];
     this._registros2 = [];
@@ -267,22 +261,10 @@ export class ReporteMensualCargosComponent implements OnInit {
     this._final2 = [];
     var num = 0;
 
-
-
-
-
-
-
-
     this.proveedores.forEach(
       proveedor => {
 
         Object.keys(data).forEach(key => {
-
-
-
-
-
           if (proveedor.id == parseInt(key)) {
 
             let totalMeses = 0;
@@ -293,14 +275,12 @@ export class ReporteMensualCargosComponent implements OnInit {
             }
 
             let devuelto = {
-
               estado: '',
               cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0, cantidad06: 0,
               cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, proveedor: '', total: 0
             }
 
             let pendiente = {
-
               estado: '',
               cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0, cantidad06: 0,
               cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, proveedor: '', total: 0
@@ -314,12 +294,7 @@ export class ReporteMensualCargosComponent implements OnInit {
               var tipo = index[key1]                      // tipo => 5{ devuelto : 3 pendiente :0 }
               let total = 0;
               Object.keys(tipo).forEach(key2 => {          //5
-                var tipo1 = tipo[key2]                    //tipo 3 o 0
-                /*               for (var el in tipo1) {
-                                if (tipo1.hasOwnProperty(el)) {
-                                  total += parseInt(tipo1[el]);
-                                }
-                              } */
+                var tipo1 = tipo[key2]
                 if (num == 0) {
                   let mes = {
                     id: 0,
@@ -634,14 +609,16 @@ export class ReporteMensualCargosComponent implements OnInit {
       });
     });
 
-
     regtotal.total = total;
     this._final.push(regtotal);
 
     this._registros = this._final.map(function (obj) {
       return [obj.estado, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.total];
     });
+
   }
+
+
 
 
 

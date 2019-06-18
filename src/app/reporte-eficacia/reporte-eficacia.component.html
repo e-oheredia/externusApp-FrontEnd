@@ -15,7 +15,7 @@
         <h4>Datos de consulta</h4>
       </div>
       <div class="card-body">
-        <form [formGroup]="documentoForm" action="a=1"
+        <form [formGroup]="documentoForm"
           (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
           <div class="form-row">
             <div class="col-4">
@@ -55,20 +55,17 @@
     <div class="card mb-4">
       <div class="card-body">
         <div class="row justify-content-center">
-          <h6>EFICACIA: Mide la cantidad de documentos con estado "Entregado" sobre el total de documentos con resultado
-            ("Entregado", "Rezagado" y "No distribuible").</h6>
+          <h6>Este reporte medirá la cantidad de documentos entregados, entre el volumen total de documentos entregados. Dentro del tiempo buscado.</h6>
         </div>
       </div>
     </div>
 
     <div class="card mb-4">
-
       <div class="card-header">
         <div class="titulo">
           <h4>Eficacia: Por proveedor</h4>
         </div>
       </div>
-
       <div class="card-body">
         <div class="row justify-content-center">
           <div class="col-10">

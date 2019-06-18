@@ -6,18 +6,17 @@
   </div>
 </div>
 
+
 <div class="row justify-content-center">
   <div class="col">
-    <div class="card mb-5">
 
+    <div class="card mb-4">
       <div class="card-header">
         <h4>Datos de consulta</h4>
       </div>
-
       <div class="card-body">
         <form [formGroup]="documentoForm"
           (ngSubmit)="MostrarReportes(documentoForm.get('fechaIni').value, documentoForm.get('fechaFin').value)">
-
           <div class="form-row">
             <div class="col-4">
               <div class="form-group">
