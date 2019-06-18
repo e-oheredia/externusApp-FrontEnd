@@ -39,92 +39,91 @@
               </div>
             </div>
           </div>
-
         </form>
       </div>
-
     </div>
   </div>
 </div>
 
 
-<div *ngIf="dataGrafico.length !== 0; else mensaje">
 
-  <div class="card mb-4">
-    <div class="card-header">
-      <div class="titulo">
-        <h4>Indicador de volumen</h4>
+<div *ngIf="validacion !== 0; else mensaje">
+  <div *ngIf="validacion === 1; else mensaje2">
+
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Indicador de volumen</h4>
+        </div>
       </div>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col">
-          <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de volumen'" [description]="''"
-            [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-            [source]="dataGrafico" [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups"
-            [colorScheme]="'scheme05'">
-          </jqxChart>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <jqxChart #myChart [width]="getWidth()" [height]="500" [title]="'Indicador de volumen'" [description]="''"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+              [source]="dataGrafico" [xAxis]="xAxis" [valueAxis]="valueAxis" [seriesGroups]="seriesGroups"
+              [colorScheme]="'scheme05'">
+            </jqxChart>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope=col>TOTAL</td>
+                  <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                  <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let _r of _registros">
+                  <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
+                  <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
 
-
-
-
-    <div class="card-body">
-      <div class="row">
-        <div class="col">
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                <th *ngFor="let _r of dataGrafico" scope="col">{{_r.mes}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td scope=col>TOTAL</td>
-                <td *ngFor="let _r of dataGrafico" scope="col">{{_r.cantidad }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-    <div class="card-body">
-      <div class="row">
-        <div class="col">
-
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">Mes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                <th *ngFor="let _mes of meses" scope="col">{{_mes.nombre}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let _r of _registros">
-                <td scope=col [attr.class]=_r[15]>{{ _r[0]}}</td>
-                <td *ngFor="let _mes of meses" scope="col" [attr.class]=_r[15]>{{_r[_mes.id] }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </div>
 
 
   </div>
-
-
-
 </div>
 
 
@@ -134,7 +133,17 @@
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>
-        No se encontraron documentos.
+        Seleccione el rango de fechas de la búsqueda.
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mensaje2>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert" align=center>
+        No se encontraron registros.
       </div>
     </div>
   </div>

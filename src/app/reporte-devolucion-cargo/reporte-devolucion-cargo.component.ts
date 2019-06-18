@@ -37,7 +37,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
     dataTablaCargo = [];
     dataTablaDocumento = [];
     dataTablaDenuncia = [];
-    validacion = 0;
+    validacion: number;
     dataTablaCargoArray = [];
     dataTablaDocumentoArray = [];
     dataTablaDenunciaArray = [];
@@ -61,6 +61,7 @@ export class ReporteDevolucionCargoComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.validacion = 0;
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
@@ -103,32 +104,32 @@ export class ReporteDevolucionCargoComponent implements OnInit {
 
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
-        this.validacion = 0
-        // console.log(this.areas);
+
         let fi = new Date(new Date(fechaIni).getTimezoneOffset() * 60 * 1000 + new Date(fechaIni).getTime());
         let ff = new Date(new Date(fechaFin).getTimezoneOffset() * 60 * 1000 + new Date(fechaFin).getTime());
         let fechaInicial = new Date(moment(new Date(fi.getFullYear(), fi.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
         let fechaFinal = new Date(moment(new Date(ff.getFullYear(), ff.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
-
         let aIni = fechaInicial.getFullYear();
         let mIni = fechaInicial.getMonth();
         let aFin = fechaFinal.getFullYear();
         let mFin = fechaFinal.getMonth();
 
-        if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
-            this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
-            return;
-        }
+        // if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
+        //     this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
+        //     return;
+        // }
 
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
+
             let fechaIniDate = new Date(fechaIni);
             let fechaFinDate = new Date(fechaFin);
             fechaIniDate = new Date(fechaIniDate.getTimezoneOffset() * 60 * 1000 + fechaIniDate.getTime());
             fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
+            
             this.documentosSubscription = this.reporteService.cantidadDevolucionPorTipoDevolucion(moment(new Date(fechaIniDate.getFullYear(), fechaIniDate.getMonth(), 1)).format('YYYY-MM-DD'), moment(new Date(fechaFinDate.getFullYear(), fechaFinDate.getMonth() + 1, 0)).format('YYYY-MM-DD')).subscribe(
                 (data: any) => {
                     this.validacion = 1;
-                    this.data = data
+                    this.data = data;
                     Object.keys(data).forEach(key => {
                         // console.log("DATA")
                         // console.log(data)
@@ -148,11 +149,26 @@ export class ReporteDevolucionCargoComponent implements OnInit {
                     console.log("DATAGRAFICO 2 : ")
                     console.log(this.dataGrafico2)
 
+                },
+                error => {
+                    if (error.status === 409) {
+                        this.validacion = 2
+                        // this.notifier.notify('error', 'No se encontraron registros');
+                    }
+                    if (error.status === 417) {
+                        // this.validacion = 2
+                        this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
+                    }
+                    if (error.status === 424) {
+                        // this.validacion = 2
+                        this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
+                    }
                 }
             );   
         }
         else {
-            this.notifier.notify('error', 'Seleccione un rango de fechas');
+            this.validacion = 0;
+            // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
         }
     }
 

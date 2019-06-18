@@ -34,10 +34,10 @@ export class ReporteEficaciaComponent implements OnInit {
     documentoForm: FormGroup;
 
     data: any[] = [];
-    validacion = 0;
-    validacionError = 0;
+    validacion: number;
 
     ngOnInit() {
+        this.validacion = 0;
         this.documentoForm = new FormGroup({
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
@@ -84,31 +84,38 @@ export class ReporteEficaciaComponent implements OnInit {
 
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
-        this.validacion = 0;
-        this.validacionError = 0;
+
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) &&
             !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-            this.validacion = 1;
-
             this.documentosSubscription = this.reporteService.getReporteEficaciaEstadosPorProveedor(fechaIni, fechaFin).subscribe(
                 (data: any) => {
-                    this.data = data
+                    this.validacion = 1;
+                    this.data = data;
                     this.llenarEficaciaEstadosPorProveedor(data);
                     console.log("LA DATA VALIDACION ES : " + data)
                     console.log(data)
 
                 },
                 error => {
-                    if (error.status === 400) {
-                        this.notifier.notify('error', 'Rango de fechas no válido');
-                        this.validacionError = 1;
+                    if (error.status === 409) {
+                        this.validacion = 2
+                        // this.notifier.notify('error', 'No se encontraron registros');
+                    }
+                    if (error.status === 417) {
+                        // this.validacion = 2
+                        this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
+                    }
+                    if (error.status === 424) {
+                        // this.validacion = 2
+                        this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
                     }
                 }
             )
         }
         else {
-            this.notifier.notify('error', 'Seleccione rango de fechas');
+            this.validacion = 0
+            // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
         }
     }
 

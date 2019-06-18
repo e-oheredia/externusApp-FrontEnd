@@ -10,6 +10,7 @@ import { Envio } from 'src/model/envio.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EnvioMasivo } from 'src/model/enviomasivo.model';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 
 @Component({
   selector: 'app-reporte-autorizacion',
@@ -65,6 +66,19 @@ export class ReporteAutorizacionComponent implements OnInit {
       },
       cantidadDocumentos: {
         title: 'Cantidad de documentos'
+      },
+      buttonDescargarPermiso: {
+        title: 'Adjunto',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          instance.claseIcono = "fas fa-download";
+          instance.mostrarData.subscribe(row => {
+            let envio = this.envios.find(envio => envio.id == row.id)
+            instance.ruta = envio.rutaAutorizacion
+          });
+
+        }
       },
       autorizacion: {
         title: 'Estado autorización'

@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReporteDistribucionMesEficienciaComponent } from './reporte-distribucion-mes-eficiencia.component';
+import { ReporteEficienciaComponent } from './reporte-distribucion-mes-eficiencia.component';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -12,7 +12,7 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule
   ],
   declarations: [
-    ReporteDistribucionMesEficienciaComponent
+    ReporteEficienciaComponent
   ]
 })
 export class ReporteDistribucionMesEficienciaModule { }

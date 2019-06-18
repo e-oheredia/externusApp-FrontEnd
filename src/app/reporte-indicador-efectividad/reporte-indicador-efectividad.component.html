@@ -5,9 +5,12 @@
     </div>
   </div>
 </div>
+
+
 <div class="row justify-content-center">
   <div class="col">
-    <div class="card mb-5">
+
+    <div class="card mb-4">
       <div class="card-header">
         <h4>Datos de consulta</h4>
       </div>
@@ -43,24 +46,34 @@
 </div>
 
 
-<div class="row" *ngIf="graficoEfectividad.length > 0; else mensaje">
-  <div class="col">
-    <div class="card mb-4">
 
+
+
+<div *ngIf="validacion !== 0; else mensaje">
+  <div *ngIf="validacion === 1; else mensaje2">
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <h6>EFICACIA: Mide la cantidad de documentos con estado "Entregado" sobre el total de documentos con
+            resultado
+            ("Entregado", "Rezagado" y "No distribuible").</h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
           <h4>Indicador de eficacia</h4>
         </div>
       </div>
-
       <div class="card-body">
-
         <div class="row">
           <div class="col">
-            <jqxChart #myChart [height]="500" [title]="'Indicador de efectividad'" [description]="''"
-              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-              [source]="graficoEfectividad" [xAxis]="getAxis" [valueAxis]="getValueAxis"
-              [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme05'">
+            <jqxChart #myChart [height]="500" [title]="'Indicador de eficacia'" [description]="''" [showLegend]="true"
+              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding" [source]="graficoEfectividad"
+              [xAxis]="getAxis" [valueAxis]="getValueAxis" [seriesGroups]="getSeriesGroups" [colorScheme]="'scheme05'">
             </jqxChart>
           </div>
         </div>
@@ -108,19 +121,32 @@
             </table>
           </div>
         </div>
-
       </div>
-
     </div>
+
+
   </div>
 </div>
 
+
+
+
 <ng-template #mensaje>
-  <div class="row">
-    <div class="col">
-      <div class="alert alert-info" role="alert">
-        No se encontraron documentos.
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-info" role="alert" align=center>
+          Seleccione el rango de fechas de la búsqueda.
+        </div>
       </div>
     </div>
-  </div>
-</ng-template>
+  </ng-template>
+  
+  <ng-template #mensaje2>
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-info" role="alert" align=center>
+          No se encontraron registros.
+        </div>
+      </div>
+    </div>
+  </ng-template>

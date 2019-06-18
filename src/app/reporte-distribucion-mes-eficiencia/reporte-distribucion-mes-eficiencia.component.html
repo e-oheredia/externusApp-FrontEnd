@@ -10,7 +10,7 @@
 <div class="row justify-content-center">
   <div class="col">
 
-    <div class="card mb-5">
+    <div class="card mb-4">
       <div class="card-header">
         <h4>Datos de consulta</h4>
       </div>
@@ -41,6 +41,8 @@
         </form>
       </div>
     </div>
+  </div>
+</div>
 
 
 
@@ -49,119 +51,128 @@
 
 
 
-    <div *ngIf="data.length !== 0; else mensaje">
+<div *ngIf="validacion !== 0; else mensaje">
+  <div *ngIf="validacion === 1; else mensaje2">
 
 
-
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="titulo">
-            <h4>Eficiencia: Por proveedor</h4>
-          </div>
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <h6>EFICIENCIA: Mide la cantidad de documentos con estado "Entregado" sobre el total de documentos con
+            resultado
+            ("Entregado", "Rezagado" y "No distribuible").</h6>
         </div>
-        <div class="card-body">
-          <div class="row justify-content-center">
-            <div class="col-10">
-              <jqxChart #myChart [height]="500" [title]="'Eficiencia por courier'" [description]="''"
-                [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-                [source]="eficienciaPorProveedor" [xAxis]="getAxis('proveedor')"
-                [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Eficiencia: Por courier</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <jqxChart #myChart [height]="500" [title]="'Eficiencia por courier'" [description]="''" [showLegend]="true"
+              [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+              [source]="eficienciaPorProveedor" [xAxis]="getAxis('proveedor')"
+              [valueAxis]="getValueAxis('Cantidad de Entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', 
                 [{dentroPlazo: 'Dentro del Plazo'}, {fueraPlazo: 'Fuera del Plazo'}], 
                 'vertical', 70)" [colorScheme]="'scheme01'">
-              </jqxChart>
-            </div>
+            </jqxChart>
           </div>
+        </div>
 
-          <div class="row justify-content-center">
-            <div class="col-10">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Indicador</th>
-                    <th scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
-                    <th scope="col">GENERAL</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td scope="col">Dentro de Plazo</td>
-                    <td scope="col" *ngFor="let proveedor of proveedores">{{dentroPlazoproveedor(proveedor)}}</td>
-                    <td scope="col">{{sumadentroplazo()}}</td>
-                  </tr>
-                  <tr>
-                    <td scope="col">Fuera de Plazo</td>
-                    <td scope="col" *ngFor="let proveedor of proveedores">{{fueraPlazoproveedor(proveedor)}}</td>
-                    <td scope="col">{{sumafueraplazo()}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <div class="row justify-content-center">
+          <div class="col-10">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Indicador</th>
+                  <th scope="col" *ngFor="let proveedor of proveedores">{{proveedor.nombre}}</th>
+                  <th scope="col">GENERAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="col">Dentro de Plazo</td>
+                  <td scope="col" *ngFor="let proveedor of proveedores">{{dentroPlazoproveedor(proveedor)}}</td>
+                  <td scope="col">{{sumadentroplazo()}}</td>
+                </tr>
+                <tr>
+                  <td scope="col">Fuera de Plazo</td>
+                  <td scope="col" *ngFor="let proveedor of proveedores">{{fueraPlazoproveedor(proveedor)}}</td>
+                  <td scope="col">{{sumafueraplazo()}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+    </div>
 
 
 
 
 
-      <div class="card mb-4">
-        <div class="card-header">
-          <div class="titulo">
-            <h4>Eficiencia: Por plazo de distribución vs proveedor</h4>
-          </div>
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Eficiencia: Por plazo de distribución vs courier</h4>
         </div>
+      </div>
 
-        <div class="card-body">
-          <div class="row justify-content-center" *ngFor="let proveedor of proveedores">
-            <div class="col-10">
-              <h4>{{proveedor.nombre}}</h4>
-              <jqxChart #myChart [height]="500" [title]="'Eficiencia - ' + proveedor.nombre" [description]="''"
-                [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-                [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]"
-                [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de entregados')"
-                [seriesGroups]="getSeriesGroups('stackedcolumn', [{
+      <div class="card-body">
+        <div class="row justify-content-center" *ngFor="let proveedor of proveedores">
+          <div class="col-10">
+            <h4>{{proveedor.nombre}}</h4>
+            <jqxChart #myChart [height]="500" [title]="'Eficiencia - ' + proveedor.nombre" [description]="''"
+              [showLegend]="true" [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+              [source]="reportesEficienciaPorPlazoDistribucion[proveedor.nombre]" [xAxis]="getAxis('plazoDistribucion')"
+              [valueAxis]="getValueAxis('Cantidad de entregados')" [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                           dentroPlazo: 'Dentro del Plazo'}, 
                           {fueraPlazo: 'Fuera del Plazo'}
                         ], 'vertical', 60)" [colorScheme]="'scheme01'">
-              </jqxChart>
-            </div>
-            <div class="col-10 ">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th scope="col">Indicador</th>
-                    <th scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">
-                      {{plazoDistribucion.nombre}}</th>
+            </jqxChart>
+          </div>
+          <div class="col-10 ">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Indicador</th>
+                  <th scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">
+                    {{plazoDistribucion.nombre}}</th>
 
 
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td scope="col">Dentro de Plazo</td>
-                    <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor,
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="col">Dentro de Plazo</td>
+                  <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeDentroPlazoPorProveedorYPlazoDistribucion(proveedor,
                       plazoDistribucion)}}</td>
 
-                  </tr>
-                  <tr>
-                    <td scope="col">Fuera de Plazo</td>
-                    <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor,
+                </tr>
+                <tr>
+                  <td scope="col">Fuera de Plazo</td>
+                  <td scope="col" *ngFor="let plazoDistribucion of proveedor.plazosDistribucion">{{getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor,
                       plazoDistribucion)}}</td>
 
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
+    </div>
 
 
 
 
 
 
-      <div class="card mb-4">
+    <!-- <div class="card mb-4">
         <div class="card-header">
           <div class="titulo">
             <h4>Detalle de eficiencia: Por plazo de distribución</h4>
@@ -194,21 +205,31 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-
-
-    </div><!--  -->
 
 
   </div>
 </div>
 
+
+
+
 <ng-template #mensaje>
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>
-        No se encontraron documentos.
+        Seleccione el rango de fechas de la búsqueda.
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mensaje2>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert" align=center>
+        No se encontraron registros.
       </div>
     </div>
   </div>
