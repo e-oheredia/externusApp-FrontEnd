@@ -33,9 +33,9 @@ export class ReporteEficaciaComponent implements OnInit {
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
     prove: Proveedor[] = [];
-
     data: any[] = [];
     validacion: number;
+    seriesGroups: any[];
 
     ngOnInit() {
         this.validacion = 0;
@@ -94,6 +94,7 @@ export class ReporteEficaciaComponent implements OnInit {
                     this.validacion = 1;
                     this.data = data;
                     this.llenarEficaciaEstadosPorProveedor(data);
+                    this.getdatas2();
                     // console.log("data")
                     // console.log(data)
                 },
@@ -219,6 +220,7 @@ export class ReporteEficaciaComponent implements OnInit {
         showGridLines: false
     };
 
+    /*
     seriesGroups: any[] = [
         {
             type: 'column',
@@ -233,62 +235,48 @@ export class ReporteEficaciaComponent implements OnInit {
                 minValue: 0,
                 maxValue: 'auto',
                 tickMarksColor: '#134f8e'
-            },            
+            },          
+            
             series: [
                 {
-                    dataField: 'DOCFLOW',    //LO QUE SE PINTA EN EL GRAFICO
-                    displayText: 'DOCFLOW' //LO QUE SE LEE EN LA LEYENDA
-                },
-                {
-                    dataField: 'URBANO',    //LO QUE SE PINTA EN EL GRAFICO
-                    displayText: 'URBANO' //LO QUE SE LEE EN LA LEYENDA
+                        dataField: 'DOCFLOW',    //LO QUE SE PINTA EN EL GRAFICO
+                        displayText: 'DOCFLOW' //LO QUE SE LEE EN LA LEYENDA
                 }
+
             ]
         }
-    ];
+    ];*/
 
-
-
-
-
-
-
-    // FALTA QUE LOS PROVEEDORES QUE SE MUESTRAN SEAN AUTOMATICOS Y NO EN DURO COMO LOS dataField DE ARRIBA
-    getSeriesGroups(type: string, datas: any[], orientation = 'vertical') {
+    getdatas2(){
+        let seriesGroupss: any[] = [];
         let series: any[] = [];
-        datas.forEach(data => {
-            let keys: string[] = Object.keys(data);
-            if (keys.length == 1) {
-                series.push({
-                    dataField: keys[0],
-                    displayText: data[keys[0]],
-                    showLabels: true
-                })
-            } else {
-                series.push({
-                    dataField: keys[0],
-                    displayText: data[keys[0]],
-                    colorFunction: (value, itemIndex) => {
-                        if (data['indiceReporte'] < itemIndex) {
-                            return '#fff655';
-                        }
-                        return '#55CC55';
-                    },
-                    showLabels: true
-                })
-            }
-        });
 
+        this.proveedores.forEach(
+            proveedor => {
+            series.push(
+                    {
+                            dataField: proveedor.nombre ,    //LO QUE SE PINTA EN EL GRAFICO
+                            displayText: proveedor.nombre
+                    })
+            })
 
-        return [
-            {
-                type: type,
-                orientation: orientation,
-                series: series,
-                columnsMinWidth: 20,
-                columnsMaxWidth: 30,
-            }
-        ]
+            seriesGroupss.push({
+                type: 'column',
+                columnsGapPercent: 50,
+                showLabels: true,
+                seriesGapPercent: 5,
+                valueAxis:
+                {
+                    visible: true,
+                    displayValueAxis: true,
+                    axisSize: 'auto',
+                    minValue: 0,
+                    maxValue: 'auto',
+                    tickMarksColor: '#134f8e'
+                },  
+                series:series        
+            })
+        this.seriesGroups=seriesGroupss;
     }
 
 
