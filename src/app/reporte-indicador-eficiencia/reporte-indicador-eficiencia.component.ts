@@ -480,6 +480,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                         reporteFinal.plazoDistribucion = proveedor.nombre;
                         reporteFinal.eficiencia = proveedor.nombre;
                         reporteFinal.tipoFila = 2;
+                        reporteFinal.estilo = "proveedor";
 
                       Object.keys(obj2).forEach(key3 => {
                         var obj3 = obj2[key3];//{5={dasdas:0 dasdsdas:0}}
@@ -731,11 +732,10 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                     
                     
                     });
-                    reporteFinal.estilo = "proveedor"
-
+                    reporteFinal.estilo = "proveedor"; 
+                    this._final.push(reporteFinal);
                     }
                   });
-                  this._final.push(reporteFinal);
                   Object.keys(dataGrafico2).forEach(keyn1 => {
                       this.plazosDistribucion.forEach(
                         plazos => {
@@ -870,7 +870,7 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                               });
                             }
                           });
-                          reporteFinal.estilo = "";
+                          reporteFinal.estilo = "proveedor";
                           this._final.push(reporteDentro);                         
                           this._final.push(reporteFuera);
                         }
