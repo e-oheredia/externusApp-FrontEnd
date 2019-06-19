@@ -94,8 +94,8 @@ export class ReporteEficaciaComponent implements OnInit {
                     this.validacion = 1;
                     this.data = data;
                     this.llenarEficaciaEstadosPorProveedor(data);
-                    // console.log("data")
-                    // console.log(data)
+                    console.log("data")
+                    console.log(data)
                 },
                 error => {
                     if (error.status === 409) {

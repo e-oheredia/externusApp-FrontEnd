@@ -43,6 +43,7 @@ export class ReporteEficienciaComponent implements OnInit {
   data: any[] = [];
   dataGrafico1: any[] = [];
   dataGrafico2: any[] = [];
+  dataGrafico3: any[] = [];
   sumaDentroPlazoTotal: number = 0;
   sumaFueraPlazoTotal: number = 0;
 
@@ -64,16 +65,33 @@ export class ReporteEficienciaComponent implements OnInit {
         (data: any) => {
           this.validacion = 1;
           this.data = data;
+          console.log("this.data");
+          console.log(this.data);
+
           Object.keys(data).forEach(key => {
             var obj = data[key];
             if (parseInt(key) == 1) {
               this.dataGrafico1 = obj
-            } else {
+              console.log("this.dataGrafico1")
+              console.log(this.dataGrafico1)
+              
+            } 
+            if (parseInt(key) == 2) {
               this.dataGrafico2 = obj
+              console.log("this.dataGrafico2")
+              console.log(this.dataGrafico2)
+
+            }             
+            if (parseInt(key) == 3) {
+              this.dataGrafico3 = obj
+              console.log("this.dataGrafico3")
+              console.log(this.dataGrafico3)
+
             }
           });
           this.llenarEficienciaPorProveedor(this.dataGrafico1);
-          this.llenarEficienciaPorPlazo(this.dataGrafico2);
+          this.llenarEficienciaPorPlazovsProveedor(this.dataGrafico2);
+          this.llenarEficienciaPorPlazo(this.dataGrafico3);
         },
         error => {
           if (error.status === 409) {
@@ -97,32 +115,6 @@ export class ReporteEficienciaComponent implements OnInit {
     }
   }
 
-  /*   getKeys(cantidadesporproveedor){
-      let abc = Array.from(cantidadesporproveedor.getKeys);
-      return abc;
-    } */
-
-  /*   getPorcentajeDentroPlazoPorProveedor(proveedor = { id: 0 }) {
-      if (proveedor.id === 0) {
-        return this.documentos.filter(documento => moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") ).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
-      } else {
-        return this.documentos.filter(documento =>
-          documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-          moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
-        ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length) * 100;
-      }
-    }
-  
-    getPorcentajeFueraPlazoPorProveedor(proveedor = { id: 0 }) {
-      if (proveedor.id === 0) {
-        return this.documentos.filter(documento => moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") < moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") ).length / (this.documentos.length === 0 ? 1 : this.documentos.length) * 100;
-      } else {
-        return this.documentos.filter(documento =>
-          documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-          moment(documento.documentosGuia[0].guia.fechaLimite,"DD/MM/YYYY") <  moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha,"DD/MM/YYYY") 
-        ).length / (this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length === 0 ? 1 : this.documentos.filter(documento => documento.documentosGuia[0].guia.proveedor.id === proveedor.id).length) * 100;
-      }
-    } */
 
   //1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO
   llenarEficienciaPorProveedor(data) {
@@ -167,16 +159,7 @@ export class ReporteEficienciaComponent implements OnInit {
         eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo.toFixed(1) + "%";
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       });
-    /* console.log(this.eficienciaPorProveedor)
-        let positivo1 = porcentajedentroplazo.toFixed(1);
-        let positivo2 = porcentajefueraplazo.toFixed(1);
-        eficienciaPorProveedorObjeto.dentroPlazo = positivo1 + "%";
-        eficienciaPorProveedorObjeto.fueraPlazo = positivo2 + "%";
-        this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
-      });
-      console.log("1.  eficienciaPorProveedor: ")
-      console.log(this.eficienciaPorProveedor) */
-    console.log(this.proveedores);
+
   }
 
   dentroPlazoproveedor(proveedor) {
@@ -244,150 +227,10 @@ export class ReporteEficienciaComponent implements OnInit {
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO
 
-  llenarEficienciaPorPlazoDistribucion(data) {
-    this.eficienciaPorPlazoDistribucion = [];
-    let dentroplazoPorplazo = 0;
-    let fueraplazoPorplazo = 0;
-    let totalPorPlazo = 0;
 
-    this.proveedores.forEach(
-      proveedor => {
-        let dataProveedor = {
-          proveedor: "",
-          plazosDistribucion: [],
-          porcentajePorPlazoDentro: 0,
-          porcentajePorPlazoFuera: 0
-        };
-        let plazo = {
-          id: "",
-          cantidadDentro: 0,
-          cantidadFuera: 0
-        }
-        dataProveedor.proveedor = proveedor.nombre;
-        Object.keys(data).forEach(key => {
-          var obj = data[key];
-          if (proveedor.id === parseInt(key)) {
-            Object.keys(obj).forEach(key1 => {
-              var obj2 = obj[key1];
-              let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
-              if (plazitoID.id === parseInt(key1)) {
-                Object.keys(obj2).forEach(key2 => {
-                  if (key2 == "dentroplazo") {
-                    plazo.id = key1;
-                    plazo.cantidadDentro = obj2[key2]
-                    dentroplazoPorplazo += obj2[key2]
-                  } else {
-                    plazo.id = key1;
-                    plazo.cantidadFuera = obj2[key2]
-                    fueraplazoPorplazo += obj2[key2]
-                  }
-                });
-                dataProveedor.plazosDistribucion.push(plazo);
-                totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
-                this.eficienciaPorPlazoDistribucion.push(dataProveedor);
-              }
-            });
 
-            let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
-            let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
-            dataProveedor.porcentajePorPlazoDentro = porcentajedentroplazo;
-            dataProveedor.porcentajePorPlazoFuera = porcentajefueraplazo;
-            this.eficienciaPorPlazoDistribucion.push(dataProveedor);
-          }
-        });
-        this.eficienciaPorPlazoDistribucion.push(dataProveedor);
-      });
-  }
 
-  /* this.documentosSubscription = this.documentoService.listarDocumentosReportesVolumen(fechaIni, fechaFin, EstadoDocumentoEnum.ENTREGADO).subscribe(
-     documentos => {
-       this.documentos = documentos;
-       this.llenarEficienciaPorProveedor(this.data);
-       this.llenarEficienciaPorPlazoDistribucion(documentos);
-       this.llenarDetalleEficiencia(documentos);
-     },
-     error => {
-       if (error.status === 400) {
-         this.notifier.notify('error', error.error);
-       }
-     }
-   ); 
-  */
-
-  /*    this.proveedores.forEach(
-       proveedor => {
-         let dataProveedor = {
-           proveedor: "",
-           plazosDistribucion: [],
-           datagrafico: [],
-           dentroPlazo: "",
-           fueraPlazo: ""
-         };
-         dataProveedor.proveedor = proveedor.nombre;
-         Object.keys(data).forEach(key => {
-           var obj = data[key];
-           if (proveedor.id === parseInt(key)) {
- 
-             let datagrafico = [];
- 
-             let registrografico = {
-               plazo:"",
-               dentroPlazo: "",
-               fueraPlazo: ""
-             };
- 
-             Object.keys(obj).forEach(key1 => {
-               var obj2 = obj[key1];
-               let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
- 
-               registrografico.plazo = plazitoID.nombre;
- 
-               if (plazitoID.id === parseInt(key1)) {
-                 let plazo = {
-                   nombre: "",
-                   id: "",
-                   cantidadDentro: 0,
-                   cantidadFuera: 0
-                 }
-                 Object.keys(obj2).forEach(key2 => {
-                   if (key2 == "dentroplazo") {
-                     plazo.nombre = plazitoID.nombre
-                     plazo.id = key1;
-                     plazo.cantidadDentro = obj2[key2];
-                     registrografico.dentroPlazo = obj2[key2];
-                     dentroplazoPorplazo += obj2[key2];
-                   } else {
-                     plazo.nombre = plazitoID.nombre
-                     plazo.id = key1;
-                     plazo.cantidadFuera = obj2[key2];
-                     registrografico.fueraPlazo = obj2[key2];
-                     fueraplazoPorplazo += obj2[key2];
-                   }
-                   totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
-                 });
-                 dataProveedor.plazosDistribucion.push(plazo);
-                 datagrafico.push(registrografico);
-               }
- 
-             });
-             let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
-             let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
-             let positivo1 = porcentajedentroplazo.toFixed(1);
-             let positivo2 = porcentajefueraplazo.toFixed(1);
-             dataProveedor.dentroPlazo = positivo1 + "%";
-             dataProveedor.fueraPlazo = positivo2 + "%";
- 
-             //invocar funcion
-             dataProveedor.datagrafico=datagrafico;
- 
-           }
-         });
-         this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = eficienciaPorPlazoDistribucionPorProveedor;
-       }
-     )
-   } */
-
-  llenarEficienciaPorPlazo(data) {
+  llenarEficienciaPorPlazovsProveedor(data) {
     this.reportesEficienciaPorPlazoDistribucion = {};
     let valordentroplazo = "";
     let valorfueraplazo = "";
@@ -481,6 +324,16 @@ export class ReporteEficienciaComponent implements OnInit {
       }
     });
     return valor;
+  }
+
+
+
+
+
+
+
+  llenarEficienciaPorPlazo(data){
+
   }
 
 
@@ -616,6 +469,88 @@ export class ReporteEficienciaComponent implements OnInit {
 
 
 
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // llenarEficienciaPorPlazoDistribucion(data) {
+  //   this.eficienciaPorPlazoDistribucion = [];
+  //   let dentroplazoPorplazo = 0;
+  //   let fueraplazoPorplazo = 0;
+  //   let totalPorPlazo = 0;
+
+  //   this.proveedores.forEach(
+  //     proveedor => {
+  //       let dataProveedor = {
+  //         proveedor: "",
+  //         plazosDistribucion: [],
+  //         porcentajePorPlazoDentro: 0,
+  //         porcentajePorPlazoFuera: 0
+  //       };
+  //       let plazo = {
+  //         id: "",
+  //         cantidadDentro: 0,
+  //         cantidadFuera: 0
+  //       }
+  //       dataProveedor.proveedor = proveedor.nombre;
+  //       Object.keys(data).forEach(key => {
+  //         var obj = data[key];
+  //         if (proveedor.id === parseInt(key)) {
+  //           Object.keys(obj).forEach(key1 => {
+  //             var obj2 = obj[key1];
+  //             let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
+  //             if (plazitoID.id === parseInt(key1)) {
+  //               Object.keys(obj2).forEach(key2 => {
+  //                 if (key2 == "dentroplazo") {
+  //                   plazo.id = key1;
+  //                   plazo.cantidadDentro = obj2[key2]
+  //                   dentroplazoPorplazo += obj2[key2]
+  //                 } else {
+  //                   plazo.id = key1;
+  //                   plazo.cantidadFuera = obj2[key2]
+  //                   fueraplazoPorplazo += obj2[key2]
+  //                 }
+  //               });
+  //               dataProveedor.plazosDistribucion.push(plazo);
+  //               totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
+  //               this.eficienciaPorPlazoDistribucion.push(dataProveedor);
+  //             }
+  //           });
+
+  //           let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
+  //           let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
+  //           dataProveedor.porcentajePorPlazoDentro = porcentajedentroplazo;
+  //           dataProveedor.porcentajePorPlazoFuera = porcentajefueraplazo;
+  //           this.eficienciaPorPlazoDistribucion.push(dataProveedor);
+  //         }
+  //       });
+  //       this.eficienciaPorPlazoDistribucion.push(dataProveedor);
+  //     });
+  // }
