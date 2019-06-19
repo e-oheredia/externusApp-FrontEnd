@@ -24,7 +24,6 @@ export class ReporteIndicadorEficaciaComponent implements OnInit {
   constructor(
     private proveedorService: ProveedorService,
     private utilsService: UtilsService,
-    private documentoService: DocumentoService,
     private reporteService: ReporteService,
     private estadoDocumentoService: EstadoDocumentoService,
     private notifier: NotifierService
