@@ -29,9 +29,10 @@ export class ReporteEficaciaComponent implements OnInit {
 
     dataSource = [];
     estados: EstadoDocumento[] = [];
-    proveedores: Proveedor[] = [];    
+    proveedores: Proveedor[] = [];
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
+    prove: Proveedor[] = [];
 
     data: any[] = [];
     validacion: number;
@@ -93,9 +94,8 @@ export class ReporteEficaciaComponent implements OnInit {
                     this.validacion = 1;
                     this.data = data;
                     this.llenarEficaciaEstadosPorProveedor(data);
-                    console.log("LA DATA VALIDACION ES : " + data)
-                    console.log(data)
-
+                    // console.log("data")
+                    // console.log(data)
                 },
                 error => {
                     if (error.status === 409) {
@@ -117,6 +117,7 @@ export class ReporteEficaciaComponent implements OnInit {
             this.validacion = 0
             // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
         }
+
     }
 
 
@@ -157,6 +158,7 @@ export class ReporteEficaciaComponent implements OnInit {
                     }
                 });
             });
+        console.log("this.dataSource");
         console.log(this.dataSource);
     }
 
@@ -177,18 +179,18 @@ export class ReporteEficaciaComponent implements OnInit {
         return cantidad;
     }
 
-    generalPorEstado(estado){
+    generalPorEstado(estado) {
         var total = 0;
         Object.keys(this.data).forEach(key => {
-            if (estado.id === parseInt(key)){
+            if (estado.id === parseInt(key)) {
                 var prove = this.data[key];
                 Object.keys(prove).forEach(key2 => {
                     let proveedor = this.proveedores.find(proveedor => proveedor.id === parseInt(key2))
-                    if (proveedor.id === parseInt(key2)){
+                    if (proveedor.id === parseInt(key2)) {
                         total += prove[key2]
                     }
                 })
-                
+
             }
         });
         return total;
@@ -217,39 +219,38 @@ export class ReporteEficaciaComponent implements OnInit {
         showGridLines: false
     };
 
-    seriesGroups: any[] =
-        [
+    seriesGroups: any[] = [
+        {
+            type: 'column',
+            columnsGapPercent: 50,
+            showLabels: true,
+            seriesGapPercent: 0,
+            valueAxis:
             {
-                type: 'column',
-                columnsGapPercent: 50,
-                showLabels: true,
-                seriesGapPercent: 0,
-                valueAxis:
+                visible: true,
+                displayValueAxis: true,
+                axisSize: 'auto',
+                minValue: 0,
+                maxValue: 'auto',
+                tickMarksColor: '#134f8e'
+            },            
+            series: [
                 {
-                    visible: true,
-                    displayValueAxis: true,
-                    axisSize: 'auto',
-                    minValue: 0,
-                    maxValue: 'auto',
-                    tickMarksColor: '#134f8e'
+                    dataField: 'DOCFLOW',    //LO QUE SE PINTA EN EL GRAFICO
+                    displayText: 'DOCFLOW' //LO QUE SE LEE EN LA LEYENDA
                 },
-                series:
-                    [
-                        {
-                            dataField: 'URBANO',
-                            displayText: 'URBANO'
-                        },
-                        {
-                            dataField: 'DOCFLOW',
-                            displayText: 'DOCFLOW'
-                        },
-                        {
-                            dataField: 'PITS',
-                            displayText: 'PITS'
-                        }
-                    ]
-            }
-        ];
+                {
+                    dataField: 'URBANO',    //LO QUE SE PINTA EN EL GRAFICO
+                    displayText: 'URBANO' //LO QUE SE LEE EN LA LEYENDA
+                }
+            ]
+        }
+    ];
+
+
+
+
+
 
 
     // FALTA QUE LOS PROVEEDORES QUE SE MUESTRAN SEAN AUTOMATICOS Y NO EN DURO COMO LOS dataField DE ARRIBA
@@ -289,6 +290,8 @@ export class ReporteEficaciaComponent implements OnInit {
             }
         ]
     }
+
+
 
 
 

@@ -79,10 +79,6 @@ export class ReporteMensualCargosComponent implements OnInit {
       }
     )
 
-    // let tipodevo = this.tipoDevoluciones.find(tipodevo => tipodevo.id === 1)
-    // this.devolucionElegida = tipodevo
-
-
   }
 
 
