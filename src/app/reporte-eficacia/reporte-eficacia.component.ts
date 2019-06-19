@@ -94,6 +94,8 @@ export class ReporteEficaciaComponent implements OnInit {
                     this.validacion = 1;
                     this.data = data;
                     this.llenarEficaciaEstadosPorProveedor(data);
+                    console.log("data")
+                    console.log(data)
                     this.getdatas2();
                     // console.log("data")
                     // console.log(data)
@@ -247,36 +249,36 @@ export class ReporteEficaciaComponent implements OnInit {
         }
     ];*/
 
-    getdatas2(){
+    getdatas2() {
         let seriesGroupss: any[] = [];
         let series: any[] = [];
 
         this.proveedores.forEach(
             proveedor => {
-            series.push(
+                series.push(
                     {
-                            dataField: proveedor.nombre ,    //LO QUE SE PINTA EN EL GRAFICO
-                            displayText: proveedor.nombre
+                        dataField: proveedor.nombre,    //LO QUE SE PINTA EN EL GRAFICO
+                        displayText: proveedor.nombre
                     })
             })
 
-            seriesGroupss.push({
-                type: 'column',
-                columnsGapPercent: 50,
-                showLabels: true,
-                seriesGapPercent: 5,
-                valueAxis:
-                {
-                    visible: true,
-                    displayValueAxis: true,
-                    axisSize: 'auto',
-                    minValue: 0,
-                    maxValue: 'auto',
-                    tickMarksColor: '#134f8e'
-                },  
-                series:series        
-            })
-        this.seriesGroups=seriesGroupss;
+        seriesGroupss.push({
+            type: 'column',
+            columnsGapPercent: 50,
+            showLabels: true,
+            seriesGapPercent: 5,
+            valueAxis:
+            {
+                visible: true,
+                displayValueAxis: true,
+                axisSize: 'auto',
+                minValue: 0,
+                maxValue: 'auto',
+                tickMarksColor: '#134f8e'
+            },
+            series: series
+        })
+        this.seriesGroups = seriesGroupss;
     }
 
 

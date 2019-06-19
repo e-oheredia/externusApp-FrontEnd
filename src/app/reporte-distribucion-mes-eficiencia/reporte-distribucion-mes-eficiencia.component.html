@@ -64,6 +64,9 @@
       </div>
     </div>
 
+
+    <!-- -------------------------------------------------------------------------1------------------------------------------------------------------------------- -->
+    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -113,8 +116,8 @@
 
 
 
-
-
+    <!-- -------------------------------------------------------------------------2------------------------------------------------------------------------------- -->
+    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -168,9 +171,10 @@
 
 
 
+    <!-- -------------------------------------------------------------------------3------------------------------------------------------------------------------- -->
     <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
-<!-- 
+
+    <!-- 
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -195,7 +199,7 @@
                 *ngFor="let plazoDistribucion of proveedorElegidoDetalle.plazosDistribucion; let i = index">
                 <jqxChart [height]="400" [title]="plazoDistribucion.nombre" [description]="''" [showLegend]="false"
                   [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-                  [source]="reportesDetalleEficiencia[proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
+                  [source]="reportesDetalleEficiencia [proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
                   [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de entregados', true)"
                   [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                                             dentroPlazo: 'Dentro del Plazo', 
