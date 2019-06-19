@@ -58,9 +58,8 @@
     <div class="card mb-4">
       <div class="card-body">
         <div class="row justify-content-center">
-          <h6>EFICIENCIA: Mide la cantidad de documentos con estado "Entregado" sobre el total de documentos con
-            resultado
-            ("Entregado", "Rezagado" y "No distribuible").</h6>
+          <h6>Este reporte medirá la cantidad de documentos entregados y rezagados dentro del plazo entre el volumen
+            total de documentos entregados y rezagados. Dentro del tiempo buscado.</h6>
         </div>
       </div>
     </div>
@@ -169,43 +168,48 @@
 
 
 
+    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- 
+    <div class="card mb-4">
+      <div class="card-header">
+        <div class="titulo">
+          <h4>Detalle de eficiencia: Por plazo de distribución</h4>
+        </div>
+      </div>
 
-
-
-    <!-- <div class="card mb-4">
-        <div class="card-header">
-          <div class="titulo">
-            <h4>Detalle de eficiencia: Por plazo de distribución</h4>
+      <div class="card-body">
+        <div class="row mb-4">
+          <div class="col">
+            <label for="">Seleccione el proveedor</label>
+            <select class="form-control" [(ngModel)]="proveedorElegidoDetalle">
+              <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">{{proveedor.nombre}}</option>
+            </select>
           </div>
         </div>
-        <div class="card-body">
-          <div class="row mb-4">
-            <div class="col">
-              <label for="">Seleccione el proveedor</label>
-              <select class="form-control" [(ngModel)]="proveedorElegidoDetalle">
-                <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">{{proveedor.nombre}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div *ngIf="proveedorElegidoDetalle" class="col">
-              <div class="row">
-                <div class="col-4 offset-1 mb-4"
-                  *ngFor="let plazoDistribucion of proveedorElegidoDetalle.plazosDistribucion; let i = index">
-                  <jqxChart [height]="400" [title]="plazoDistribucion.nombre" [description]="''" [showLegend]="false"
-                    [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
-                    [source]="reportesDetalleEficiencia[proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
-                    [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de entregados', true)"
-                    [seriesGroups]="getSeriesGroups('stackedcolumn', [{
+
+        <div class="row">
+          <div *ngIf="proveedorElegidoDetalle" class="col">
+            <div class="row">
+              <div class="col-4 offset-1 mb-4"
+                *ngFor="let plazoDistribucion of proveedorElegidoDetalle.plazosDistribucion; let i = index">
+                <jqxChart [height]="400" [title]="plazoDistribucion.nombre" [description]="''" [showLegend]="false"
+                  [enableAnimations]="true" [padding]="padding" [titlePadding]="titlePadding"
+                  [source]="reportesDetalleEficiencia[proveedorElegidoDetalle.nombre + '-' + plazoDistribucion.id]"
+                  [xAxis]="getAxis('plazoDistribucion')" [valueAxis]="getValueAxis('Cantidad de entregados', true)"
+                  [seriesGroups]="getSeriesGroups('stackedcolumn', [{
                                             dentroPlazo: 'Dentro del Plazo', 
                                             indiceReporte: i}], 'horizontal')" [colorScheme]="'scheme01'">
-                  </jqxChart>
-                </div>
+                </jqxChart>
               </div>
             </div>
           </div>
         </div>
-      </div> -->
+      </div>
+    </div>
+ -->
+    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
+    <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
 
 
