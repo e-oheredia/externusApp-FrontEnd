@@ -10,6 +10,7 @@ import { ProveedorService } from '../shared/proveedor.service';
 import { Proveedor } from '../../model/proveedor.model';
 import * as moment from "moment-timezone";
 import { ReporteService } from '../shared/reporte.service';
+import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 
 @Component({
   selector: 'app-reporte-distribucion-mes-eficiencia',
@@ -36,7 +37,7 @@ export class ReporteEficienciaComponent implements OnInit {
   eficienciaPorDetalle: any[] = [];
 
   reportesEficienciaPorPlazoDistribucion: any = {};
-  // reportesDetalleEficiencia: any = {};
+  reportesDetalleEficiencia: any = {};
   documentosSubscription: Subscription;
   validacion: number;
   proveedorElegidoDetalle: Proveedor;
@@ -73,20 +74,13 @@ export class ReporteEficienciaComponent implements OnInit {
             if (parseInt(key) == 1) {
               this.dataGrafico1 = obj
               console.log("this.dataGrafico1")
-              console.log(this.dataGrafico1)
-              
+              console.log(this.dataGrafico1)              
             } 
             if (parseInt(key) == 2) {
               this.dataGrafico2 = obj
-              console.log("this.dataGrafico2")
-              console.log(this.dataGrafico2)
-
             }             
             if (parseInt(key) == 3) {
               this.dataGrafico3 = obj
-              console.log("this.dataGrafico3")
-              console.log(this.dataGrafico3)
-
             }
           });
           this.llenarEficienciaPorProveedor(this.dataGrafico1);
@@ -227,9 +221,6 @@ export class ReporteEficienciaComponent implements OnInit {
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO
 
-
-
-
   llenarEficienciaPorPlazovsProveedor(data) {
     this.reportesEficienciaPorPlazoDistribucion = {};
     let valordentroplazo = "";
@@ -330,16 +321,28 @@ export class ReporteEficienciaComponent implements OnInit {
 
 
 
-
+  //3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO
 
   llenarEficienciaPorPlazo(data){
+    this.reportesDetalleEficiencia = {};
 
+    this.proveedores.forEach(
+      proveedor => {
+        proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(PlazoDistribucion => {
+          let eficienciaPorPlazo: any [] = [];
+          Object.keys(data).forEach(key => {
+            if (proveedor.id == parseInt(key)){
+              var datosproveedor = data[key];
+              console.log(datosproveedor)
+            }
+          })
+        })
+      }
+    )
   }
 
-
-
-//LLENAR DETALLE EFICIENCIA---------------------------------------------------------------------------------------------------------------------------------
-  /*llenarDetalleEficiencia(documentos: Documento[]) {
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*  llenarDetalleEficiencia(documentos: Documento[]) {
     this.reportesDetalleEficiencia = {};
     let documentosAux: Documento[] = [];
     this.proveedores.forEach(
@@ -397,29 +400,8 @@ export class ReporteEficienciaComponent implements OnInit {
         color: '#BCBCBC'
       }
     }
-  }
+  }  
 
-  getAxis2(plazos) {
-    let nombre1
-    // console.log(plazos)
-
-    return {
-      dataField: nombre1,
-      unitInterval: 1,
-      axisSize: 'auto',
-      flip: false,
-      tickMarks: {
-        visible: false,
-        interval: 1,
-        color: '#CACACA'
-      },
-      gridLines: {
-        visible: false,
-        interval: 1,
-        color: '#BCBCBC'
-      }
-    }
-  }
 
   getValueAxis(title: string, flip = false) {
     return {
