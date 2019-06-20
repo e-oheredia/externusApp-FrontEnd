@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { EnvioService } from '../shared/envio.service';
 import { UtilsService } from '../shared/utils.service';
 import { NotifierService } from '../../../node_modules/angular-notifier';
 import { TituloService } from '../shared/titulo.service';
 import { LocalDataSource } from '../../../node_modules/ng2-smart-table';
 import { AppSettings } from '../shared/app.settings';
-import { Envio } from '../../model/envio.model';
 import { Subscription } from '../../../node_modules/rxjs';
 import { FormGroup, FormControl, Validators } from '../../../node_modules/@angular/forms';
 import * as moment from "moment-timezone";
