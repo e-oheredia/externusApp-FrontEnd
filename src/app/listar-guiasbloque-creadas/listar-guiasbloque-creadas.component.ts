@@ -35,6 +35,8 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
     this.generarColumnas();
     this.listarGuiasBloque();
     console.log(this.guia)
+    this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas() {
