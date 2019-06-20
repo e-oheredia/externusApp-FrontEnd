@@ -4,6 +4,8 @@ import { Injectable, OnInit, OnDestroy } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable, Subscription, Subject } from "rxjs";
+import { HttpParams } from '../../../node_modules/@angular/common/http';
+import { Area } from '../../model/area.model';
 
 @Injectable()
 export class PlazoDistribucionService {
@@ -71,6 +73,14 @@ export class PlazoDistribucionService {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL + "activos", {});
     }
 
+    listarPlazosAutorizados(fechaini: Date, fechafin: Date): any {
+        return this.requester.get(this.REQUEST_URL + "reporteplazos", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
+    getvolumen(fechaini: Date, fechafin: Date): any {
+        return this.requester.get(this.REQUEST_URL + 'volumen', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
     extraerId(id: String){
         return parseInt(id.substring(1,2));
     }
@@ -97,6 +107,33 @@ export class PlazoDistribucionService {
 
     listarPlazosDistribucionAll(): Observable<PlazoDistribucion[]> {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL, {});
+    }
+
+    exportarAutorizaciones(data){
+        let objects = [];
+        Object.keys(data).forEach(key => {
+            if ("area"=== key) {
+                let area = data[key]
+                objects.push({
+                    "Tipo de Asignación" : area.plazoDistribucion.tipoPlazoDistribucion,
+                    "Buzón/Area" : "Área",
+                    "Plazo Actual" : area.plazoDistribucion.nombre ,
+                    "Fecha de cambio" : area.fechaAsociacion,
+                    "Cantidad de documentos" : "FALTA",
+                })
+            }
+            if ("buzon"=== key) {
+                let buzon = data[key]
+                objects.push({
+                    "Tipo de Asignación" : buzon.plazoDistribucion.tipoPlazoDistribucion ,
+                    "Buzón/Area" : "Buzón",
+                    "Plazo Actual" : buzon.plazoDistribucion.nombre ,
+                    "Fecha de cambio" : buzon.fechaAsociacion,
+                    "Cantidad de documentos" : "FALTA",
+                })
+            }
+        });
+
     }
     
 }
