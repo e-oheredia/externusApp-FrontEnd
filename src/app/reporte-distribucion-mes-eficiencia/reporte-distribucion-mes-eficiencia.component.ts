@@ -66,19 +66,17 @@ export class ReporteEficienciaComponent implements OnInit {
         (data: any) => {
           this.validacion = 1;
           this.data = data;
-          console.log("this.data");
-          console.log(this.data);
+
 
           Object.keys(data).forEach(key => {
             var obj = data[key];
             if (parseInt(key) == 1) {
               this.dataGrafico1 = obj
-              console.log("this.dataGrafico1")
-              console.log(this.dataGrafico1)              
-            } 
+
+            }
             if (parseInt(key) == 2) {
               this.dataGrafico2 = obj
-            }             
+            }
             if (parseInt(key) == 3) {
               this.dataGrafico3 = obj
             }
@@ -320,66 +318,108 @@ export class ReporteEficienciaComponent implements OnInit {
 
 
 
+  estadoProveedor(proveedor, estado) {
+    var cantidad = 0;
+    Object.keys(this.data).forEach(key => {
+      if (estado.id === parseInt(key)) {
+        var provedor = this.data[key]
+        Object.keys(provedor).forEach(key1 => {
+          if (proveedor.id === parseInt(key1)) {
+            cantidad = provedor[key1];
+          }
+        });
+      }
+    });
+    return cantidad;
+  }
 
   //3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO
 
-  llenarEficienciaPorPlazo(data){
+  llenarEficienciaPorPlazo(data) {
     this.reportesDetalleEficiencia = {};
-
     this.proveedores.forEach(
       proveedor => {
         proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(PlazoDistribucion => {
-          let eficienciaPorPlazo: any [] = [];
+          let eficienciaPorPlazo: any[] = [];
           Object.keys(data).forEach(key => {
-            if (proveedor.id == parseInt(key)){
+            if (proveedor.id == parseInt(key)) {
+              let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
               var datosproveedor = data[key];
-              console.log(datosproveedor)
+              Object.keys(datosproveedor).forEach(key1 => {
+                if (PlazoDistribucion.id == parseInt(key1)) {
+                  var datosproveedorplazos = datosproveedor[key1]; //{0:1,1:2}
+                  proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
+                    Object.keys(datosproveedorplazos).forEach(key2 => {
+                      var iddeplazos = datosproveedorplazos[key2];
+                      if (plazoDistribucion2.id == parseInt(key2)) {
+                        let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
+                          plazoDistribucion: plazoDistribucion2.tiempoEnvio + 'H',
+                          dentroPlazo: iddeplazos
+                        }
+                        eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
+                      }
+                    });
+                  });
+                  Object.keys(datosproveedorplazos).forEach(key2 => {
+                    if (0 == parseInt(key2)) {
+                      eficienciaPorPlazoDistribucionPorProveedor.push({
+                        plazoDistribucion: 'Más',
+                        dentroPlazo: datosproveedorplazos[key2]
+                      });
+                    }
+                  });
+
+                  this.reportesDetalleEficiencia[proveedor.nombre + '-' + PlazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
+                }
+              });
             }
-          })
-        })
+          });
+        });
       }
     )
   }
 
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*  llenarDetalleEficiencia(documentos: Documento[]) {
-    this.reportesDetalleEficiencia = {};
-    let documentosAux: Documento[] = [];
-    this.proveedores.forEach(
-      proveedor => {
-        proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion => {
-          let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
-          proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
-            let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-              plazoDistribucion: plazoDistribucion2.tiempoEnvio + ' H',
-              dentroPlazo: documentos.filter(documento => {
-                if (documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                  documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                  moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
-                ) {
-                  return true;
-                }
-                documentosAux.push(documento);
-              }).length
-            }
-            documentos = documentosAux;
-            documentosAux = [];
-            eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
+
+
+  //-------------------------------------------------------------------------------------------------------------------------------------------------------------
+  /*  llenarDetalleEficiencia(documentos: Documento[]) {
+      this.reportesDetalleEficiencia = {};
+      let documentosAux: Documento[] = [];
+      this.proveedores.forEach(
+        proveedor => {
+          proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion => {
+            let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
+            proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
+              let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
+                plazoDistribucion: plazoDistribucion2.tiempoEnvio + ' H',
+                dentroPlazo: documentos.filter(documento => {
+                  if (documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+                    documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
+                    moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
+                  ) {
+                    return true;
+                  }
+                  documentosAux.push(documento);
+                }).length
+              }
+              documentos = documentosAux;
+              documentosAux = [];
+              eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
+            });
+            eficienciaPorPlazoDistribucionPorProveedor.push({
+              plazoDistribucion: 'Más',
+              dentroPlazo: documentos.filter(documento =>
+                documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
+                documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
+                moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") < moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
+              ).length
+            });
+            this.reportesDetalleEficiencia[proveedor.nombre + '-' + plazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
           });
-          eficienciaPorPlazoDistribucionPorProveedor.push({
-            plazoDistribucion: 'Más',
-            dentroPlazo: documentos.filter(documento =>
-              documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-              documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-              moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") < moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
-            ).length
-          });
-          this.reportesDetalleEficiencia[proveedor.nombre + '-' + plazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
-        });
-      }
-    )
-  }*/
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------
+        }
+      )
+    }*/
+  //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -400,7 +440,7 @@ export class ReporteEficienciaComponent implements OnInit {
         color: '#BCBCBC'
       }
     }
-  }  
+  }
 
 
   getValueAxis(title: string, flip = false) {
@@ -415,6 +455,7 @@ export class ReporteEficienciaComponent implements OnInit {
   }
 
   getSeriesGroups(type: string, datas: any[], orientation = 'vertical', columnsGapPercent = 100) {
+    console.log(datas);
     let series: any[] = [];
     datas.forEach(data => {
       let keys: string[] = Object.keys(data);
@@ -432,8 +473,12 @@ export class ReporteEficienciaComponent implements OnInit {
           colorFunction: (value, itemIndex) => {
             if (data['indiceReporte'] < itemIndex) {
               return '#dc3545';
+            }else if(data['indiceReporte'] == itemIndex){
+              return '#007bff'
+            }else{
+              return '#14D666';
             }
-            return '#007bff';
+
           }
         })
       }
