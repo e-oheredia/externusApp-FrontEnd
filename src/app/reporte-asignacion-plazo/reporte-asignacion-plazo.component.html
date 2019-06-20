@@ -20,7 +20,7 @@
       </div>
 
       <div class="card-body">
-        <form [formGroup]="envioForm" (ngSubmit)="listarAutorizaciones()">
+        <form [formGroup]="plazoForm" (ngSubmit)="listarAsignacionesDePlazos()">
 
           <div class="form-row">
 
@@ -48,8 +48,8 @@
 
           </div>
 
-          <div *ngIf="envios.length !== 0  ; else mensaje">
-            <ng2-smart-table [settings]="settings" [source]="dataEnvios"></ng2-smart-table>
+          <div *ngIf="reportesAsignacion.length !== 0  ; else mensaje">
+            <ng2-smart-table [settings]="settings" [source]="dataAsignaciones"></ng2-smart-table>
           </div>
           
           <ng-template #mensaje>

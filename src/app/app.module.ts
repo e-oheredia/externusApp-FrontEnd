@@ -32,6 +32,7 @@ import { ReporteAutorizacionModule } from './reporte-autorizacion/reporte-autori
 import { ReporteInconsistenciaModule } from './reporte-inconsistencia/reporte-inconsistencia.module';
 import { RecepcionarDevueltosModule } from './recepcionar-devueltos/recepcionar-devueltos.module';
 import { ReporteAsignacionPlazoModule } from './reporte-asignacion-plazo/reporte-asignacion-plazo.module';
+import { ReporteGuiasBloqueModule } from './reporte-guias-bloque/reporte-guias-bloque.module';
 
 
 
@@ -67,7 +68,8 @@ import { ReporteAsignacionPlazoModule } from './reporte-asignacion-plazo/reporte
     ReporteAutorizacionModule,
     ReporteInconsistenciaModule,
     RecepcionarDevueltosModule,
-    ReporteAsignacionPlazoModule
+    ReporteAsignacionPlazoModule,
+    ReporteGuiasBloqueModule
   ],
   providers: [],
   bootstrap: [AppComponent]
