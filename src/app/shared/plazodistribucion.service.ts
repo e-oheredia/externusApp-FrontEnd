@@ -6,6 +6,7 @@ import { AppSettings } from "./app.settings";
 import { Observable, Subscription, Subject } from "rxjs";
 import { HttpParams } from '../../../node_modules/@angular/common/http';
 import { Area } from '../../model/area.model';
+import { ReporteAsignacionPlazo } from 'src/model/reporteasignacionplazo.model';
 
 @Injectable()
 export class PlazoDistribucionService {
@@ -73,12 +74,12 @@ export class PlazoDistribucionService {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL + "activos", {});
     }
 
-    listarPlazosAutorizados(fechaini: Date, fechafin: Date): any {
-        return this.requester.get(this.REQUEST_URL + "reporteplazos", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
-    }
-
     getvolumen(fechaini: Date, fechafin: Date): any {
         return this.requester.get(this.REQUEST_URL + 'volumen', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    }
+
+    listarReporteAsignacionPlazos(fechaini: Date, fechafin: Date){
+        return this.requester.get<ReporteAsignacionPlazo[]>(this.REQUEST_URL + "reporteplazos", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
     extraerId(id: String){

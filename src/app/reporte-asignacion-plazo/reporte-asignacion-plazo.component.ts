@@ -7,9 +7,9 @@ import { AppSettings } from '../shared/app.settings';
 import { Subscription } from '../../../node_modules/rxjs';
 import { FormGroup, FormControl, Validators } from '../../../node_modules/@angular/forms';
 import * as moment from "moment-timezone";
-import { ButtonViewComponent } from '../shared/button-view.component';
 import { PlazoDistribucionService } from '../shared/plazodistribucion.service';
-import { PlazoDistribucion } from '../../model/plazodistribucion.model';
+import { ReporteAsignacionPlazo } from 'src/model/reporteasignacionplazo.model';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 
 @Component({
   selector: 'app-reporte-asignacion-plazo',
@@ -18,32 +18,32 @@ import { PlazoDistribucion } from '../../model/plazodistribucion.model';
 })
 export class ReporteAsignacionPlazoComponent implements OnInit {
 
-  constructor(    
-    public plazoService : PlazoDistribucionService,
+  constructor(
+    private plazoService: PlazoDistribucionService,
     private utilsService: UtilsService,
     private notifier: NotifierService,
-    private tituloService: TituloService) {
+    private tituloService: TituloService
+  ) { }
 
-   }
-   dataPlazos: LocalDataSource = new LocalDataSource();
-   settings = AppSettings.tableSettings;
-   rutaManual: string = AppSettings.MANUAL_REGISTRO;
-   data: any[] = [];
-   plazos: PlazoDistribucion[] = [];
+  dataAsignaciones: LocalDataSource = new LocalDataSource();
+  settings = AppSettings.tableSettings;
+  rutaManual: string = AppSettings.MANUAL_REGISTRO;
 
-   plazoSubscription: Subscription;
-   envioForm: FormGroup;
+  reportesAsignacion: ReporteAsignacionPlazo[] = [];
+  
+  plazoSubscription: Subscription;
+  plazoForm: FormGroup;
 
 
   ngOnInit() {
-    this.envioForm = new FormGroup({
+    this.plazoForm = new FormGroup({
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
       "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
-    })
-    this.tituloService.setTitulo("REPORTE DE AUTORIZACIONES");
+    }),
+    this.tituloService.setTitulo("REPORTE DE ASIGNACIÓN DE PLAZOS");
     this.settings.hideSubHeader = false;
     this.generarColumnas();
-    this.listarAutorizaciones();
+    this.listarAsignacionesDePlazos();
   }
 
   generarColumnas() {
@@ -54,17 +54,11 @@ export class ReporteAsignacionPlazoComponent implements OnInit {
       barea: {
         title: 'Buzón/Área'
       },
-      plazoactual: {
+      plazo: {
         title: 'Plazo actual'
       },
-      fecha: {
+      fechaCambio: {
         title: 'Fecha de cambio'
-      },
-      autorizacion: {
-        title: 'Autorización'
-      },
-      cantidad: {
-        title: 'Cantidad de documentos'
       },
       buttonDescargarPermiso: {
         title: 'Autorización',
@@ -73,57 +67,45 @@ export class ReporteAsignacionPlazoComponent implements OnInit {
         onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-download";
           instance.mostrarData.subscribe(row => {
-            let plazos = this.plazos.find(envio => envio.id == row.id)
-            instance.ruta = plazos.rutaAutorizacion
+            let asignacion = this.reportesAsignacion.find(asignacion => asignacion.id == row.id)
+            instance.ruta = asignacion.rutaAutorizacion
           });
-
         }
-      },
-
+      }
     }
   }
-  listarAutorizaciones() {
-    this.plazos = [];
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaFin'].value)) {
-      this.plazoSubscription = this.plazoService.listarPlazosAutorizados(this.envioForm.controls['fechaIni'].value, this.envioForm.controls['fechaFin'].value).subscribe(
-        (data: any) => {
-          this.dataPlazos.reset();
-          this.data = data;
-          let dataPlazos = [];
-          if (!this.utilsService.isUndefinedOrNullOrEmpty(data)){          
 
 
+  listarAsignacionesDePlazos() {
 
+    this.reportesAsignacion = [];
 
-          }
-          this.dataPlazos.load(data);
-          // console.log("data")
-          // console.log(data)
-      },
-
-        /*         plazos => {          
-          this.dataPlazos.reset();
-          let dataPlazos = [];
-          if (!this.utilsService.isUndefinedOrNullOrEmpty(plazos)){
-            this.plazos = plazos
-            plazos.forEach(
-              plazos => {
-                dataPlazos.push({
-                  id: plazos.id,
-                  tipo: plazos.buzon.area.nombre,
-                  barea: envio.buzon.nombre,
-                  plazoactual: envio.producto.nombre,
-                  fecha: envio.plazoDistribucion.nombre,
-                  cantidad: this.envioService.getUltimaFechaEstadoAutorizacion(envio)
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.plazoForm.controls['fechaFin'].value)){
+      this.plazoSubscription = this.plazoService.listarReporteAsignacionPlazos(this.plazoForm.controls['fechaIni'].value, this.plazoForm.controls['fechaFin'].value).subscribe(
+        reportesAsignacion => {
+          this.dataAsignaciones.reset();
+          let dataAsignaciones = [];
+          console.log("reportesAsignacion")
+          console.log(reportesAsignacion)
+          if (!this.utilsService.isUndefinedOrNullOrEmpty(reportesAsignacion)){
+            this.reportesAsignacion = reportesAsignacion
+            reportesAsignacion.forEach(
+              asignacion => {
+                dataAsignaciones.push({
+                  id: asignacion.id,
+                  tipo: asignacion.tipoAsignacion,
+                  barea: asignacion.areaBuzon,
+                  plazo: asignacion.plazoActual,
+                  fechaCambio: asignacion.fecha
                 })
               }
             )
           }
-          this.dataPlazos.load(dataPlazos);
-        }, */
+          this.dataAsignaciones.load(dataAsignaciones);
+        },
         error => {
           if (error.status === 400) {
-            this.plazos = [];
+            this.reportesAsignacion = [];
             this.notifier.notify('error', 'El rango de fechas es incorrecto');
           }
         }
@@ -134,7 +116,10 @@ export class ReporteAsignacionPlazoComponent implements OnInit {
     }
   }
 
+
   exportar() {
-    this.plazoService.exportarAutorizaciones(this.data)
+    this.plazoService.exportarAutorizaciones(this.dataAsignaciones);
   }
+
+
 }

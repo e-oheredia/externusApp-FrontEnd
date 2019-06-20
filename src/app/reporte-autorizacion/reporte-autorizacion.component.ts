@@ -9,7 +9,6 @@ import { AppSettings } from '../shared/app.settings';
 import { Envio } from 'src/model/envio.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EnvioMasivo } from 'src/model/enviomasivo.model';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 
 @Component({

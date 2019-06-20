@@ -23,6 +23,8 @@ import { RecepcionarBloqueComponent } from './recepcionar-bloque/recepcionar-blo
 import { ReporteAutorizacionComponent } from './reporte-autorizacion/reporte-autorizacion.component';
 import { ReporteInconsistenciaComponent } from './reporte-inconsistencia/reporte-inconsistencia.component';
 import { RecepcionarDevueltosComponent } from './recepcionar-devueltos/recepcionar-devueltos.component';
+import { ReporteAsignacionPlazoComponent } from './reporte-asignacion-plazo/reporte-asignacion-plazo.component';
+import { ReporteGuiasBloqueComponent } from './reporte-guias-bloque/reporte-guias-bloque.component';
 
 
 
@@ -126,6 +128,14 @@ const appRoutes: Routes = [
     {
         path: 'recepcionar-devueltos',
         component: RecepcionarDevueltosComponent
+    },
+    {
+        path: 'reporte-asignacion-plazos',
+        component: ReporteAsignacionPlazoComponent
+    },
+    {
+        path: 'reporte-guias-bloque',
+        component: ReporteGuiasBloqueComponent
     }
 
 ]
