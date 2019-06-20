@@ -9,6 +9,7 @@ import { ProveedorService } from '../shared/proveedor.service';
 import { EstadoDocumentoService } from '../shared/estadodocumento.service';
 import { EstadoDocumento } from '../../model/estadodocumento.model';
 import { ReporteService } from '../shared/reporte.service';
+import { Area } from '../../model/area.model';
 
 @Component({
     selector: 'app-reporte-eficacia',
@@ -33,6 +34,7 @@ export class ReporteEficaciaComponent implements OnInit {
     documentosSubscription: Subscription;
     documentoForm: FormGroup;
     prove: Proveedor[] = [];
+    area : Area[]=[];
     data: any[] = [];
     validacion: number;
     seriesGroups: any[];

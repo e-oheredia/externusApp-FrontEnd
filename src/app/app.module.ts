@@ -31,6 +31,7 @@ import { RecepcionarBloqueModule } from './recepcionar-bloque/recepcionar-bloque
 import { ReporteAutorizacionModule } from './reporte-autorizacion/reporte-autorizacion.module';
 import { ReporteInconsistenciaModule } from './reporte-inconsistencia/reporte-inconsistencia.module';
 import { RecepcionarDevueltosModule } from './recepcionar-devueltos/recepcionar-devueltos.module';
+import { ReporteAsignacionPlazoModule } from './reporte-asignacion-plazo/reporte-asignacion-plazo.module';
 
 
 
@@ -65,7 +66,8 @@ import { RecepcionarDevueltosModule } from './recepcionar-devueltos/recepcionar-
     RecepcionarBloqueModule,
     ReporteAutorizacionModule,
     ReporteInconsistenciaModule,
-    RecepcionarDevueltosModule
+    RecepcionarDevueltosModule,
+    ReporteAsignacionPlazoModule
   ],
   providers: [],
   bootstrap: [AppComponent]

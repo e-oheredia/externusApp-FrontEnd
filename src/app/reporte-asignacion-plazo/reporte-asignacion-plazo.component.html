@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Reporte de Asignación de plazos</h2>
+    </div>
+  </div>
+  <div class="col-2 text-right">
+    <div class="pb-2 mt-4 mb-2">
+      <button type="button" class="btn btn-success" (click)="exportar()">EXPORTAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col">
+    <div class="card mb-2">
+
+      <div class="card-header">
+        <h5>Datos de consulta</h5>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="envioForm" (ngSubmit)="listarAutorizaciones()">
+
+          <div class="form-row">
+
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaIni">Fecha inicial</label>
+                <input class="form-control" type="date" formControlName="fechaIni">
+              </div>
+            </div>
+
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaFin">Fecha final</label>
+                <input class="form-control" type="date" formControlName="fechaFin">
+              </div>
+            </div>
+
+            <div class="col-4 mt-4">
+              <div class="col">
+                <button type="submit" class="btn btn-primary form-control mt-2">
+                  Consultar
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="envios.length !== 0  ; else mensaje">
+            <ng2-smart-table [settings]="settings" [source]="dataEnvios"></ng2-smart-table>
+          </div>
+          
+          <ng-template #mensaje>
+            <div class="row">
+              <div class="col">
+                <div class="alert alert-info" role="alert">
+                  No hay autorizaciones.
+                </div>
+              </div>
+            </div>
+          </ng-template>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
