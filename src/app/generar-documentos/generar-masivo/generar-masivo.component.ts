@@ -62,7 +62,7 @@ export class GenerarMasivoComponent implements OnInit {
   tiposServicio: TipoServicio[];
   clasificaciones: Clasificacion[];
   sedesDespacho: Sede[];
-  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""),"", 0, true);
+  plazoDistribucionPermitido: PlazoDistribucion = new PlazoDistribucion(0, "", new TipoPlazoDistribucion(0, ""), "", 0, true);
   buzon: Buzon;
   excelFile: File;
   autorizacionFile: File;

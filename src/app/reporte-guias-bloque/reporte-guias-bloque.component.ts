@@ -1,32 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { GuiaService } from '../shared/guia.service';
 import { UtilsService } from '../shared/utils.service';
 import { NotifierService } from 'angular-notifier';
-import * as moment from "moment-timezone";
 import { TituloService } from '../shared/titulo.service';
+import * as moment from "moment-timezone";
 import { LocalDataSource } from 'ng2-smart-table';
 import { AppSettings } from '../shared/app.settings';
+import { Guia } from 'src/model/guia.model';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GuiaService } from '../shared/guia.service';
-import { Guia } from 'src/model/guia.model';
-import {TipoConsultaGuia} from '../enum/tipoconsultaguia.enum'
+import { TipoConsultaGuia } from '../enum/tipoconsultaguia.enum';
 import { TipoGuiaEnum } from '../enum/tipoguia.enum';
- 
-@Component({
-  selector: 'app-reporte-guias',
-  templateUrl: './reporte-guias.component.html',
-  styleUrls: ['./reporte-guias.component.css']
-})
 
-export class ReporteGuiasComponent implements OnInit {
+@Component({
+  selector: 'app-reporte-guias-bloque',
+  templateUrl: './reporte-guias-bloque.component.html',
+  styleUrls: ['./reporte-guias-bloque.component.css']
+})
+export class ReporteGuiasBloqueComponent implements OnInit {
 
   constructor(
-    public guiaService: GuiaService,
+    private guiaService: GuiaService,
     private utilsService: UtilsService,
-    private notifier: NotifierService,
+    private notifierService: NotifierService,
     private tituloService: TituloService
-    ) { }
-
+  ) { }
 
   dataGuias: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
@@ -36,8 +34,8 @@ export class ReporteGuiasComponent implements OnInit {
 
   guiaSubscription: Subscription;
   guiaForm: FormGroup;
-  verificador:number = TipoConsultaGuia.GUIA_NORMAL;
-  
+  verificador: number = TipoConsultaGuia.GUIA_NORMAL
+
   ngOnInit() {
     this.guiaForm = new FormGroup({
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
@@ -45,13 +43,15 @@ export class ReporteGuiasComponent implements OnInit {
       "codigo": new FormControl('', Validators.required),
       'guiaActiva': new FormControl('', Validators.required),
     })
-    this.tituloService.setTitulo("HISTORIAL DE GUIAS");
+    this.tituloService.setTitulo("HISTORIAL DE GUIAS - BLOQUE");
     this.settings.hideSubHeader = false;
     this.generarColumnas();
     this.listarGuias();
-    console.log("GUIA REGULAR");
+    console.log("GUIA BLOQUE");
     console.log(this.guias);
   }
+
+
 
   generarColumnas() {
     this.settings.columns = {
@@ -97,12 +97,14 @@ export class ReporteGuiasComponent implements OnInit {
     }
   }
 
+
+
   listarGuias() {
     if (this.guiaForm.controls['codigo'].value.length !== 0) {
       if (this.guiaForm.get("guiaActiva").value =='1'){
         this.verificador=TipoConsultaGuia.GUIA_ACTIVA;
       }
-      this.guiaSubscription = this.guiaService.listarGuiaPorCodigo(this.guiaForm.controls['codigo'].value,this.verificador, TipoGuiaEnum.GUIA_REGULAR)
+      this.guiaSubscription = this.guiaService.listarGuiaPorCodigo(this.guiaForm.controls['codigo'].value,this.verificador, TipoGuiaEnum.GUIA_BLOQUE)
         .subscribe(
           guia => {
             this.guias = []
@@ -130,12 +132,12 @@ export class ReporteGuiasComponent implements OnInit {
             this.guiaForm.controls['fechaFin'].reset();
             this.guiaForm.controls['fechaIni'].enable();
             this.guiaForm.controls['fechaFin'].enable();
-            this.notifier.notify('success', 'Guía encontrada');
+            this.notifierService.notify('success', 'Guía encontrada');
           },
           error => {
             if (error.status === 400) {
               this.guias = [];
-              this.notifier.notify('error', 'No hay resultados');
+              this.notifierService.notify('error', 'No hay resultados');
             }
           }
         );
@@ -146,16 +148,16 @@ export class ReporteGuiasComponent implements OnInit {
       if (this.guiaForm.get("guiaActiva").value =='1'){
         this.verificador=TipoConsultaGuia.GUIA_ACTIVA;
       }
-      this.guiaSubscription = this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_REGULAR)
+      this.guiaSubscription = this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_BLOQUE)
         .subscribe(
           guias => {
             this.guias = guias
             this.guiaForm.controls['codigo'].enable();
 
             this.dataGuias.reset();
-            this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_REGULAR).subscribe(
+            this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_BLOQUE).subscribe(
               guias => {
-                console.log("GUIA REGULAR");
+                console.log("GUIA BLOQUE");
                 console.log(this.guias);
                 this.guias = guias;
                 let dataGuias = [];
@@ -186,14 +188,14 @@ export class ReporteGuiasComponent implements OnInit {
           error => {
             if (error.status === 400) {
               this.guias = [];
-              this.notifier.notify('error', 'El rango de fechas es incorrecto');
+              this.notifierService.notify('error', 'El rango de fechas es incorrecto');
             }
           }
         );
     }
 
     else {
-      this.notifier.notify('error', 'Debe ingresar el código o un rango de fechas');
+      this.notifierService.notify('error', 'Debe ingresar el código o un rango de fechas');
     }
   }
 
@@ -218,9 +220,10 @@ export class ReporteGuiasComponent implements OnInit {
   }
 
 
-  exportar(){
-    this.guiaService.exportarGuias(this.guias)
-  }
+  // exportar(){
+  //   this.guiaService.exportarGuias(this.guias)
+  // }
+
 
 
 }
