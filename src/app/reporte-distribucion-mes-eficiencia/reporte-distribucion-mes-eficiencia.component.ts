@@ -455,7 +455,7 @@ export class ReporteEficienciaComponent implements OnInit {
   }
 
   getSeriesGroups(type: string, datas: any[], orientation = 'vertical', columnsGapPercent = 100) {
-    console.log(datas);
+   // console.log(datas);
     let series: any[] = [];
     datas.forEach(data => {
       let keys: string[] = Object.keys(data);
@@ -474,9 +474,9 @@ export class ReporteEficienciaComponent implements OnInit {
             if (data['indiceReporte'] < itemIndex) {
               return '#dc3545';
             }else if(data['indiceReporte'] == itemIndex){
-              return '#007bff'
+              return '#44B876'
             }else{
-              return '#14D666';
+              return '#007bff';
             }
 
           }
