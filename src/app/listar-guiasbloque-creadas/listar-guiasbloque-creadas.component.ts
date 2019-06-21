@@ -121,6 +121,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
               plazoDistribucion: guia.plazoDistribucion.nombre,
               totalDocumentos: guia.cantidadDocumentos,
               tipoSeguridad: guia.tipoSeguridad.nombre,
+              region: guia.region,
               fechaCreacion: this.guiaService.getFechaCreacion(guia)
             })
           })
