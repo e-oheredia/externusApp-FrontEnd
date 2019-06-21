@@ -34,11 +34,13 @@ export class ModificarGuiabloqueComponent implements OnInit {
     })
   }
 
-  onSubmit(form: any){
+  onSubmit(guia){
     if (this.modificarForm.controls['numeroGuia'].value.length !== 0){
-      this.guia.numeroGuia = this.modificarForm.controls['numeroGuia'].value;
-      console.log(this.guia)
-      this.modificarGuiaBloqueSubscription = this.guiaService.modificarGuia(this.guia).subscribe(
+
+      //this.guia.numeroGuia = this.modificarForm.controls['numeroGuia'].value;
+      //console.log(this.guia)
+      guia.id = this.guia.id;
+      this.modificarGuiaBloqueSubscription = this.guiaService.modificarGuia(guia).subscribe(
         guia => {
           this.notifier.notify('success', 'Se modificó la guía con éxito');
           this.bsModalRef.hide();
