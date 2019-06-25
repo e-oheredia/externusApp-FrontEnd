@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UtilsService } from 'src/app/shared/utils.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NotifierService } from 'angular-notifier';
 import { PlazoDistribucionService } from 'src/app/shared/plazodistribucion.service';
@@ -8,6 +7,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TipoPlazoDistribucion } from 'src/model/tipoplazodistribucion.model';
 import { TipoPlazoDistribucionService } from 'src/app/shared/tipoplazodistribucion.service';
+import { Ambito } from 'src/model/ambito.model';
+import { AmbitoService } from 'src/app/shared/ambito.service';
+import { Region } from 'src/model/region.model';
+import { RegionService } from 'src/app/shared/region.service';
 
 @Component({
   selector: 'app-agregar-plazo',
@@ -18,6 +21,8 @@ export class AgregarPlazoComponent implements OnInit {
 
   constructor(
     private tipoPlazosService: TipoPlazoDistribucionService,
+    private ambitoService: AmbitoService,
+    private regionService: RegionService,
     private bsModalRef: BsModalRef,
     private notifier: NotifierService,
     private plazoDistribucionService: PlazoDistribucionService
@@ -28,10 +33,15 @@ export class AgregarPlazoComponent implements OnInit {
   tiposPlazos: TipoPlazoDistribucion[];
   plazo: PlazoDistribucion;
   plazos: PlazoDistribucion[] = [];
+  ambito: Ambito;
+  ambitos: Ambito[] = [];
+  regiones: Region[] = [];
   agregarForm: FormGroup;
 
   crearPlazoSubscription: Subscription;
   tiposPlazosSubscription: Subscription;
+  regionesSubscription: Subscription;
+  ambitosSubscription: Subscription;
 
   ngOnInit() {
     this.cargarDatosVista();
@@ -39,7 +49,9 @@ export class AgregarPlazoComponent implements OnInit {
     this.agregarForm = new FormGroup({
       'nombre': new FormControl('', Validators.required),
       'tiempoEnvio': new FormControl('', Validators.required),
-      'tipoPlazoDistribucion': new FormControl(null, Validators.required)
+      'tipoPlazoDistribucion': new FormControl(null, Validators.required),
+      'region': new FormControl(null, Validators.required),
+      'ambito': new FormControl(null, Validators.required),
     })
   }
 
@@ -50,13 +62,40 @@ export class AgregarPlazoComponent implements OnInit {
         this.tiposPlazos = tiposPlazos;
       }
     )
+
+    this.regiones = this.regionService.getRegiones();
+    this.regionesSubscription = this.regionService.regionesChanged.subscribe(
+      regiones => {
+        this.regiones = regiones;
+      }
+    )
+
+    this.ambitos = this.ambitoService.getAmbitos();
+    this.ambitosSubscription = this.ambitoService.ambitosChanged.subscribe(
+      ambitos => {
+        this.ambitos = ambitos;
+      }
+    )
+
+  }
+
+  onRegionSelectedChanged(region) {
+    this.ambitosSubscription = this.ambitoService.listarAmbitosPorRegion(region.id).subscribe(
+      ambitos => {
+        this.ambitos = ambitos;
+        console.log(ambitos);
+      }
+    );
   }
 
   onSubmit(plazo) {
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
-    if (nombreSinEspacios.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0) {
+    let region = this.agregarForm.controls['region'].value;
+    let ambito = this.agregarForm.controls['ambito'].value;
+    if (nombreSinEspacios.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0 && 
+    this.agregarForm.controls['region'].value.length !== 0 && this.agregarForm.controls['ambito'].value.length !== 0) {
       plazo.nombre = nombreSinEspacios;
-      this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo).subscribe(
+      this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo, region.id, ambito.id).subscribe(
         plazo => {
           this.notifier.notify('success', 'Se ha agregado el plazo de distribución correctamente');
           this.bsModalRef.hide();

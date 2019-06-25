@@ -12,30 +12,27 @@ export class AmbitoService {
     private ambitos: Ambito[];
 
     constructor(private requester: RequesterService ){
-
-        /* NO EXISTEN AMBITOS ACTIVOS PUESTO QUE EL USUARIO NO 
-        REQUIERE AMBITOS ACTIVOS EN ALGUNA VISTA*/
         
-        // this.listarAmbitosActivos().subscribe(
-        //     ambitos => {
-        //         this.ambitos = ambitos;
-        //         this.ambitosChanged.next(this.ambitos);
-        //     }
-        // )
+        this.listarAmbitosAll().subscribe(
+            ambitos => {
+                this.ambitos = ambitos;
+                this.ambitosChanged.next(this.ambitos);
+            }
+        )
     }    
     
-    getAmbitosActivos(): Ambito[] { 
+    getAmbitos(): Ambito[] { 
         return this.ambitos;
     }
 
     public ambitosChanged = new Subject<Ambito[]>();
 
-    // listarAmbitosActivos(): Observable<Ambito[]>{
-    //     return this.requester.get<Ambito[]>(this.REQUEST_URL + "activos", {});
-    // }
-
     listarAmbitosAll(): Observable<Ambito[]> {
         return this.requester.get<Ambito[]>(this.REQUEST_URL + "ambitos", {});
+    }
+
+    listarAmbitosPorRegion(regionId: number): Observable<Ambito[]>{
+        return this.requester.get<Ambito[]>(this.REQUEST_URL + regionId.toString() + "/ambitos/activos", {});
     }
 
     agregarAmbito(ambito: Ambito): Observable<Ambito>{

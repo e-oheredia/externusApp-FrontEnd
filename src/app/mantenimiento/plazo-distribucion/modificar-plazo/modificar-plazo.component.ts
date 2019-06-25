@@ -9,6 +9,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TipoPlazoDistribucion } from 'src/model/tipoplazodistribucion.model';
 import { TipoPlazoDistribucionService } from 'src/app/shared/tipoplazodistribucion.service';
 import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
+import { Ambito } from 'src/model/ambito.model';
+import { AmbitoService } from 'src/app/shared/ambito.service';
+import { Region } from 'src/model/region.model';
+import { RegionService } from 'src/app/shared/region.service';
 
 @Component({
   selector: 'app-modificar-plazo',
@@ -24,17 +28,23 @@ export class ModificarPlazoComponent implements OnInit {
     private modalService: BsModalService,
     private plazoDistribucionService: PlazoDistribucionService,
     private tipoPlazosService: TipoPlazoDistribucionService,
+    private regionService: RegionService,
+    private ambitoService: AmbitoService
   ) { }
 
   @Output() confirmarEvent = new EventEmitter();
 
   tiposPlazos: TipoPlazoDistribucion[];
   estados: boolean;
+  regiones: Region[] = [];
+  ambitos: Ambito[];
+  ambito: Ambito;
   plazo: PlazoDistribucion;
-  plazos: PlazoDistribucion[] = [];
   modificarForm: FormGroup;
 
   tiposPlazosSubscription: Subscription;
+  regionesSubscription: Subscription;
+  ambitosSubscription: Subscription;
   modificarTipoPlazosSubscription: Subscription;
 
   ngOnInit() {
@@ -43,6 +53,8 @@ export class ModificarPlazoComponent implements OnInit {
       'nombre': new FormControl(this.plazo.nombre, Validators.required),
       'tiempoEnvio': new FormControl(this.plazo.tiempoEnvio, Validators.required),
       'tipoPlazoDistribucion': new FormControl(null, Validators.required),
+      'region': new FormControl(this.plazo.region, Validators.required),
+      'ambito': new FormControl(this.plazo.ambito, Validators.required),
       'activo': new FormControl(this.plazo.activo, Validators.required)
     });
     this.cargarDatosVista();
@@ -50,18 +62,47 @@ export class ModificarPlazoComponent implements OnInit {
 
   cargarDatosVista() {
     this.tiposPlazos = this.tipoPlazosService.getTiposPlazosDistribucion();
-
     if (this.tiposPlazos) {
       this.modificarForm.get("tipoPlazoDistribucion").setValue(this.tiposPlazos.find(tipoPlazo => this.plazo.tipoPlazoDistribucion.id === tipoPlazo.id));
+    } else {
+      this.tiposPlazosSubscription = this.tipoPlazosService.tiposPlazosDistribucionChanged.subscribe(
+        tiposPlazos => {
+          this.tiposPlazos = tiposPlazos;
+          this.modificarForm.get("tipoPlazoDistribucion").setValue(this.tiposPlazos.find(tipoPlazo => this.plazo.tipoPlazoDistribucion.id === tipoPlazo.id));
+          }
+      )
     }
 
-    this.tiposPlazosSubscription = this.tipoPlazosService.tiposPlazosDistribucionChanged.subscribe(
-      tiposPlazos => {
-        this.tiposPlazos = tiposPlazos;
-        this.modificarForm.get("tipoPlazoDistribucion").setValue(this.tiposPlazos.find(tipoPlazo => this.plazo.tipoPlazoDistribucion.id === tipoPlazo.id));
-      
-        }
+    this.regiones = this.regionService.getRegiones();
+    this.regionesSubscription = this.regionService.regionesChanged.subscribe(
+      regiones => {
+        this.regiones = regiones;
+      }
     )
+
+    this.ambitos = this.ambitoService.getAmbitos();
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazo.ambito)){
+      if (this.ambitos) {
+        this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.plazo.ambito.id === ambito.id));
+      } else {
+        this.ambitosSubscription = this.ambitoService.ambitosChanged.subscribe(
+          ambitos => {
+            this.ambitos = ambitos;
+            this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.ambito.id === ambito.id));
+          }
+        )
+      }
+    }
+
+  }
+
+  onRegionSelectedChanged(region) {
+    this.ambitosSubscription = this.ambitoService.listarAmbitosPorRegion(region.id).subscribe(
+      ambitos => {
+        this.ambitos = ambitos;
+        console.log(ambitos);
+      }
+    );
   }
 
   onSubmit(form: any) {

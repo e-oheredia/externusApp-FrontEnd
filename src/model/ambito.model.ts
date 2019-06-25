@@ -1,4 +1,5 @@
 import { Region } from "./region.model";
+import { PlazoDistribucion } from "./plazodistribucion.model";
 
 export class Ambito {
     constructor(        
@@ -8,4 +9,5 @@ export class Ambito {
         public nombre:string; 
         public activo: boolean;
         public region: Region;
+        public plazos: PlazoDistribucion[] = [];
 }   
