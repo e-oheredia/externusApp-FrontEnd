@@ -87,8 +87,8 @@ export class PlazoDistribucionService {
         return parseInt(id.substring(1,2));
     }
 // 
-    agregarPlazoDistribucion(plazo: PlazoDistribucion, regionId: number, ambitoId: number): Observable<PlazoDistribucion>{
-        return this.requester.post<PlazoDistribucion>(this.REQUEST_URL + ambitoId + "/ambito/" + regionId + "/region", plazo, {});
+    agregarPlazoDistribucion(plazo: PlazoDistribucion): Observable<PlazoDistribucion>{
+        return this.requester.post<PlazoDistribucion>(this.REQUEST_URL, plazo, {});
     }
 
     modificarPlazoDistribucion(id:number, plazo: PlazoDistribucion): Observable<PlazoDistribucion> {

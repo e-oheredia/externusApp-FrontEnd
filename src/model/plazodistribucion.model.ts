@@ -12,6 +12,5 @@ export class PlazoDistribucion {
         public tiempoEnvio: number ,
         public activo: boolean
         ){}
-        public ambito: Ambito
-        public region: Region
+        public ambitos: Ambito[] = []
 }

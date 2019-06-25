@@ -53,8 +53,8 @@ export class ModificarPlazoComponent implements OnInit {
       'nombre': new FormControl(this.plazo.nombre, Validators.required),
       'tiempoEnvio': new FormControl(this.plazo.tiempoEnvio, Validators.required),
       'tipoPlazoDistribucion': new FormControl(null, Validators.required),
-      'region': new FormControl(this.plazo.region, Validators.required),
-      'ambito': new FormControl(this.plazo.ambito, Validators.required),
+      'region': new FormControl(null, Validators.required),
+      'ambito': new FormControl(null, Validators.required),
       'activo': new FormControl(this.plazo.activo, Validators.required)
     });
     this.cargarDatosVista();
@@ -81,9 +81,9 @@ export class ModificarPlazoComponent implements OnInit {
     )
 
     this.ambitos = this.ambitoService.getAmbitos();
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazo.ambito)){
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazo.ambitos[0])){
       if (this.ambitos) {
-        this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.plazo.ambito.id === ambito.id));
+        this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.plazo.ambitos[0].id === ambito.id));
       } else {
         this.ambitosSubscription = this.ambitoService.ambitosChanged.subscribe(
           ambitos => {

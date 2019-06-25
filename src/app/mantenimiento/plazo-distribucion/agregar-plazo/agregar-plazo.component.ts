@@ -90,12 +90,14 @@ export class AgregarPlazoComponent implements OnInit {
 
   onSubmit(plazo) {
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
-    let region = this.agregarForm.controls['region'].value;
     let ambito = this.agregarForm.controls['ambito'].value;
+    let ambitosArray = [];
+    ambitosArray.push(ambito)
+    plazo.ambitos = ambitosArray;
     if (nombreSinEspacios.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0 && 
     this.agregarForm.controls['region'].value.length !== 0 && this.agregarForm.controls['ambito'].value.length !== 0) {
       plazo.nombre = nombreSinEspacios;
-      this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo, region.id, ambito.id).subscribe(
+      this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo).subscribe(
         plazo => {
           this.notifier.notify('success', 'Se ha agregado el plazo de distribución correctamente');
           this.bsModalRef.hide();
