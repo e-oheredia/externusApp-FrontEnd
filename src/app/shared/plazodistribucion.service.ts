@@ -7,6 +7,8 @@ import { Observable, Subscription, Subject } from "rxjs";
 import { HttpParams } from '../../../node_modules/@angular/common/http';
 import { Area } from '../../model/area.model';
 import { ReporteAsignacionPlazo } from 'src/model/reporteasignacionplazo.model';
+import { Region } from 'src/model/region.model';
+import { Ambito } from 'src/model/ambito.model';
 
 @Injectable()
 export class PlazoDistribucionService {
@@ -45,7 +47,6 @@ export class PlazoDistribucionService {
 
             }
         )
-
     }
 
     private plazosDistribucion: PlazoDistribucion[];
@@ -85,7 +86,7 @@ export class PlazoDistribucionService {
     extraerId(id: String){
         return parseInt(id.substring(1,2));
     }
-
+// 
     agregarPlazoDistribucion(plazo: PlazoDistribucion): Observable<PlazoDistribucion>{
         return this.requester.post<PlazoDistribucion>(this.REQUEST_URL, plazo, {});
     }
@@ -93,7 +94,7 @@ export class PlazoDistribucionService {
     modificarPlazoDistribucion(id:number, plazo: PlazoDistribucion): Observable<PlazoDistribucion> {
         return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + id, plazo, {});
     }
-
+// 
     listarPlazoDistribucionPermititoByBuzonId(buzonId: number): Observable<PlazoDistribucion | any> {
         return this.requester.get<PlazoDistribucion | any>(this.BUZON_REQUEST_URL + buzonId.toString() + "/plazodistribucionpermitido", {});
     }

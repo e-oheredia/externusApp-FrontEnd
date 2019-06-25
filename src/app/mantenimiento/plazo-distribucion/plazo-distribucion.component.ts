@@ -11,6 +11,8 @@ import { MensajeExitoComponent } from 'src/app/modals/mensaje-exito/mensaje-exit
 import { ModificarPlazoComponent } from './modificar-plazo/modificar-plazo.component';
 import { AgregarPlazoComponent } from './agregar-plazo/agregar-plazo.component';
 import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
+import { Ambito } from 'src/model/ambito.model';
+import { Region } from 'src/model/region.model';
 
 @Component({
   selector: 'app-plazo-distribucion',
@@ -29,7 +31,8 @@ export class PlazoDistribucionComponent implements OnInit {
   settings = AppSettings.tableSettings;
   plazos: PlazoDistribucion[] = [];
   plazo: PlazoDistribucion;
-
+  region: Region;
+  ambito: Ambito;
   plazosSubscription: Subscription;
   plazoForm: FormGroup;
 
@@ -49,11 +52,14 @@ export class PlazoDistribucionComponent implements OnInit {
       nombre : {
         title : 'Nombre'
       },
+      plazos : {
+        title : 'Plazo de distribución (hrs)'
+      },
       tipoPlazo :{
         title : 'Tipo de plazo'
       },
-      plazos : {
-        title : 'Plazo de distribución (hrs)'
+      ambito: {
+        title: 'Ámbito'
       },
       estado : {
         title : 'Estado'
@@ -122,6 +128,8 @@ export class PlazoDistribucionComponent implements OnInit {
       initialState: {
         id: this.plazo.id,
         plazo: this.plazo,
+        region: this.region,
+        ambito: this.ambito,
         titulo: 'Modificar el plazo de la distribución'
       },
       class: 'modal-md',

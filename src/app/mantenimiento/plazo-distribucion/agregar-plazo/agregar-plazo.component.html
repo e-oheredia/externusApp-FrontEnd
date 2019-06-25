@@ -48,6 +48,40 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="region">Región</label>
+            <select class="form-control" id="region" [(ngModel)]="region" 
+            (change)="onRegionSelectedChanged(region)" formControlName="region">
+              <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}
+              </option>
+            </select>
+            <span *ngIf="!agregarForm.get('region').valid && agregarForm.get('region').touched"
+              class="text-danger small">
+              Es necesario la elección de una región
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label for="ambito">Ámbito</label>
+            <select class="form-control" id="ambito" [(ngModel)]="provincia"
+              formControlName="ambito">
+              <option *ngFor="let ambito of ambitos" [ngValue]="ambito">{{ambito.nombre}}
+              </option>
+            </select>
+            <span *ngIf="!agregarForm.get('ambito').valid && agregarForm.get('ambito').touched"
+              class="text-danger small">
+              Es necesario la elección de un ámbito
+            </span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="modal-footer">
