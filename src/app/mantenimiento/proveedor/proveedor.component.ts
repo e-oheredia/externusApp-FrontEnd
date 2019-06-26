@@ -47,11 +47,11 @@ export class ProveedorComponent implements OnInit {
 
   generarColumnas(){
     this.settings.columns = {
-      id: {
-        title : 'ID'
-      },
       nombre: {
         title : 'Nombre'
+      },
+      ambito: {
+        title : 'Ámbito'
       },
       plazos: {
         title : 'Plazos de distribución'
@@ -84,6 +84,7 @@ export class ProveedorComponent implements OnInit {
             dataProveedores.push({
               id: proveedor.id,
               nombre: proveedor.nombre,
+              ambito: proveedor.ambitos.map(ambito => ambito.nombre).join(", "),
               plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
               activo: proveedor.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
