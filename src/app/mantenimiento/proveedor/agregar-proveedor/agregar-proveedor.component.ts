@@ -7,6 +7,10 @@ import { FormGroup, FormControl, Validators, Form } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { PlazoDistribucionService } from 'src/app/shared/plazodistribucion.service';
+import { Region } from 'src/model/region.model';
+import { RegionService } from 'src/app/shared/region.service';
+import { AmbitoService } from 'src/app/shared/ambito.service';
+import { Ambito } from 'src/model/ambito.model';
 
 @Component({
   selector: 'app-agregar-proveedor',
@@ -19,7 +23,9 @@ export class AgregarProveedorComponent implements OnInit {
     private bsModalRef: BsModalRef,
     private notifier: NotifierService,
     private proveedorService: ProveedorService, 
-    private plazoDistribucionService: PlazoDistribucionService
+    private plazoDistribucionService: PlazoDistribucionService,
+    private regionService: RegionService,
+    private ambitoService: AmbitoService
   ) { }
 
   @Output() proveedorCreadoEvent = new EventEmitter<Proveedor>();
@@ -29,25 +35,32 @@ export class AgregarProveedorComponent implements OnInit {
   agregarForm: FormGroup;
   plazosDistribucion: PlazoDistribucion[];
   plazosDistribucionElegidos: PlazoDistribucion[] = [];
+  regiones: Region[];
+  regionesElegidas: Region[] = [];
+  ambitos: Ambito[];
+  ambitosElegidos: Ambito[] = [];
 
   crearProveedorSubscription: Subscription;
 
   ngOnInit() {
     this.agregarForm = new FormGroup({
       'nombreProveedor' : new FormControl('', Validators.required),
-      'plazosProveedor' : new FormControl('', Validators.required),
+      // 'plazosProveedor' : new FormControl('', Validators.required),
+      'regionesProveedor' : new FormControl('', Validators.required),
+      'ambitosProveedor' : new FormControl('', Validators.required),
     });
 
-    this.listarPlazosDistribucion();
-
+    // this.listarPlazosDistribucion();
+    this.listarRegiones();
+    this.listarAmbitos();
   }
 
   onSubmit(proveedor){
     let nombreSinEspacios = this.agregarForm.controls['nombreProveedor'].value.trim();
-    if (nombreSinEspacios.length !== 0 && this.plazosDistribucionElegidos.length !==0) {
+    if (nombreSinEspacios.length !== 0 && this.regionesElegidas.length !==0 && this.ambitosElegidos.length !==0) {
     let proveedor: Proveedor = new Proveedor();
     proveedor.nombre = nombreSinEspacios;
-    proveedor.plazosDistribucion = this.plazosDistribucionElegidos;
+    proveedor.ambitos = this.ambitosElegidos;
     this.crearProveedorSubscription = this.proveedorService.agregarProveedor(proveedor).subscribe(
       proveedor => {
         this.notifier.notify('success', 'Se ha agregado el proveedor correctamente');
@@ -66,20 +79,41 @@ export class AgregarProveedorComponent implements OnInit {
 
 
 
-  listarPlazosDistribucion() {
-    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
-    this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
-      plazosDistribucion => this.plazosDistribucion = plazosDistribucion
+  // listarPlazosDistribucion() {
+  //   this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+  //   this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
+  //     plazosDistribucion => this.plazosDistribucion = plazosDistribucion
+  //   )
+  // }
+
+  // onChangePlazoDistribucionElegido(event: any, plazoDistribucion: PlazoDistribucion) {    
+  //   event.srcElement.checked ? this.plazosDistribucionElegidos.push(plazoDistribucion) : this.plazosDistribucionElegidos.splice(this.plazosDistribucionElegidos.indexOf(plazoDistribucion), 1);
+  // }
+
+
+
+  listarRegiones(){
+    this.regiones = this.regionService.getRegiones();
+    this.regionService.regionesChanged.subscribe(
+      regiones => this.regiones = regiones
     )
   }
 
-  onChangePlazoDistribucionElegido(event: any, plazoDistribucion: PlazoDistribucion) {
-    
-    event.srcElement.checked ? this.plazosDistribucionElegidos.push(plazoDistribucion) : this.plazosDistribucionElegidos.splice(this.plazosDistribucionElegidos.indexOf(plazoDistribucion), 1);
+  onChangeRegionesElegidas(event: any, region: Region) {    
+    event.srcElement.checked ? this.regionesElegidas.push(region) : this.regionesElegidas.splice(this.regionesElegidas.indexOf(region), 1);
+  }
+  
 
+
+  listarAmbitos(){
+    this.ambitos = this.ambitoService.getAmbitos();
+    this.ambitoService.ambitosChanged.subscribe(
+      ambitos => this.ambitos = ambitos
+    )
   }
 
-
-  
+  onChangeAmbitosElegidos(event: any, ambito: Ambito) {    
+    event.srcElement.checked ? this.ambitosElegidos.push(ambito) : this.ambitosElegidos.splice(this.ambitosElegidos.indexOf(ambito), 1);
+  }
 
 }
