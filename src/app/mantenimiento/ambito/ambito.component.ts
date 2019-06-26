@@ -10,6 +10,8 @@ import { ButtonViewComponent } from 'src/app/table-management/button-view/button
 import { AgregarAmbitoComponent } from './agregar-ambito/agregar-ambito.component';
 import { ModificarAmbitoComponent } from './modificar-ambito/modificar-ambito.component';
 import { AdjuntarUbigeoComponent } from './adjuntar-ubigeo/adjuntar-ubigeo.component';
+import { AmbitoDistrito } from '../../../model/ambitodistrito';
+import { WriteExcelService } from '../../shared/write-excel.service';
 
 @Component({
   selector: 'app-ambito',
@@ -20,7 +22,8 @@ export class AmbitoComponent implements OnInit {
 
   constructor(
     private modalService: BsModalService,
-    public ambitoService: AmbitoService
+    public ambitoService: AmbitoService,
+    private writeExcelService: WriteExcelService,
   ) { }
 
   dataAmbitos: LocalDataSource = new LocalDataSource();
@@ -30,6 +33,7 @@ export class AmbitoComponent implements OnInit {
   procesarForm: FormGroup;
   ambitosSubscription: Subscription;
   ambitoForm: FormGroup;
+  ambitodistrito: AmbitoDistrito[] = [];
 
   ngOnInit() {
     this.generarColumnas();
@@ -133,6 +137,16 @@ export class AmbitoComponent implements OnInit {
       this.listarAmbitos()
     )
   }
+
+  exportar() {
+    this.ambitoService.listarAmbitoDistritos().subscribe(
+      ambitodistrito => {
+        this.ambitodistrito = ambitodistrito;
+        this.ambitoService.exportarAmbitoDistrito(ambitodistrito)
+      }
+    )
+  }
+
 
 
   onSubmit(){
