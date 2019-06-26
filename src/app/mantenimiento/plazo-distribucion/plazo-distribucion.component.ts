@@ -92,6 +92,7 @@ export class PlazoDistribucionComponent implements OnInit {
               nombre: plazo.nombre,
               tipoPlazo: plazo.tipoPlazoDistribucion.nombre,
               plazos: plazo.tiempoEnvio,
+              ambito: plazo.ambitos ? plazo.ambitos.map(ambito => ambito.nombre).join(", ") : "-",
               estado: plazo.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
@@ -128,8 +129,7 @@ export class PlazoDistribucionComponent implements OnInit {
       initialState: {
         id: this.plazo.id,
         plazo: this.plazo,
-        region: this.region,
-        ambito: this.ambito,
+        // region: this.plazo.ambitos[0].region,
         titulo: 'Modificar el plazo de la distribución'
       },
       class: 'modal-md',

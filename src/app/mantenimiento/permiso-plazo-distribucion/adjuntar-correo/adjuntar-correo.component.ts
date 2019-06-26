@@ -1,8 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { NotifierService } from 'angular-notifier';
-import { Documento } from 'src/model/documento.model';
-import { DocumentoService } from 'src/app/shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BuzonService } from 'src/app/shared/buzon.service';
 import { UtilsService } from 'src/app/shared/utils.service';

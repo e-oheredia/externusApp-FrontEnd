@@ -37,6 +37,7 @@ export class ModificarPlazoComponent implements OnInit {
   tiposPlazos: TipoPlazoDistribucion[];
   estados: boolean;
   regiones: Region[] = [];
+  region: Region;
   ambitos: Ambito[];
   ambito: Ambito;
   plazo: PlazoDistribucion;
@@ -48,7 +49,6 @@ export class ModificarPlazoComponent implements OnInit {
   modificarTipoPlazosSubscription: Subscription;
 
   ngOnInit() {
-    
     this.modificarForm = new FormGroup({
       'nombre': new FormControl(this.plazo.nombre, Validators.required),
       'tiempoEnvio': new FormControl(this.plazo.tiempoEnvio, Validators.required),
@@ -61,6 +61,7 @@ export class ModificarPlazoComponent implements OnInit {
   }
 
   cargarDatosVista() {
+
     this.tiposPlazos = this.tipoPlazosService.getTiposPlazosDistribucion();
     if (this.tiposPlazos) {
       this.modificarForm.get("tipoPlazoDistribucion").setValue(this.tiposPlazos.find(tipoPlazo => this.plazo.tipoPlazoDistribucion.id === tipoPlazo.id));
@@ -69,26 +70,39 @@ export class ModificarPlazoComponent implements OnInit {
         tiposPlazos => {
           this.tiposPlazos = tiposPlazos;
           this.modificarForm.get("tipoPlazoDistribucion").setValue(this.tiposPlazos.find(tipoPlazo => this.plazo.tipoPlazoDistribucion.id === tipoPlazo.id));
-          }
+        }
       )
     }
 
     this.regiones = this.regionService.getRegiones();
-    this.regionesSubscription = this.regionService.regionesChanged.subscribe(
-      regiones => {
-        this.regiones = regiones;
-      }
-    )
+
+    if (this.regiones) {
+      let region = this.regiones.find(region => this.plazo.ambitos[0].region.id === region.id);
+      this.modificarForm.get("region").setValue(region);
+    } else {
+      this.regionesSubscription = this.regionService.regionesChanged.subscribe(
+        regiones => {
+          this.regiones = regiones;
+          let region = this.regiones.find(region => this.plazo.ambitos[0].region.id === region.id);
+          this.modificarForm.get("region").setValue(region);
+        }
+      )
+    }
+    console.log("REGIONES")
+    console.log(this.plazo.ambitos[0].region)
 
     this.ambitos = this.ambitoService.getAmbitos();
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazo.ambitos[0])){
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazo.ambitos[0])) {
       if (this.ambitos) {
-        this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.plazo.ambitos[0].id === ambito.id));
+        this.ambitos = this.ambitoService.getAmbitos().filter(ambito => ambito.region.id === this.plazo.ambitos[0].region.id);
+        let ambito = this.ambitos.find(ambito => this.plazo.ambitos[0].id === ambito.id)
+        this.modificarForm.get("ambito").setValue(ambito);
       } else {
         this.ambitosSubscription = this.ambitoService.ambitosChanged.subscribe(
           ambitos => {
-            this.ambitos = ambitos;
-            this.modificarForm.get("ambito").setValue(this.ambitos.find(ambito => this.ambito.id === ambito.id));
+            this.ambitos = ambitos.filter(ambito => ambito.region.id === this.plazo.ambitos[0].region.id);
+            let ambito = this.ambitos.find(ambito => this.plazo.ambitos[0].id === ambito.id);
+            this.modificarForm.get("ambito").setValue(ambito);
           }
         )
       }
@@ -100,7 +114,6 @@ export class ModificarPlazoComponent implements OnInit {
     this.ambitosSubscription = this.ambitoService.listarAmbitosPorRegion(region.id).subscribe(
       ambitos => {
         this.ambitos = ambitos;
-        console.log(ambitos);
       }
     );
   }
@@ -113,6 +126,8 @@ export class ModificarPlazoComponent implements OnInit {
       plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
       plazo.activo = this.modificarForm.get('activo').value;
+      plazo.ambitos[0] = this.modificarForm.get('ambito').value;
+      plazo.ambitos[0].region = this.modificarForm.get('region').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -120,15 +135,15 @@ export class ModificarPlazoComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(plazo.id,plazo).subscribe(
-        plazo => {
-          this.notifier.notify('success', 'Se ha modificado el plazo de distribución correctamente');
-          this.bsModalRef.hide();
-          this.confirmarEvent.emit();
-        },
-        error => {
-          this.notifier.notify('error', 'El nombre modificado ya existe');
-        }
+        this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(plazo.id, plazo).subscribe(
+          plazo => {
+            this.notifier.notify('success', 'Se ha modificado el plazo de distribución correctamente');
+            this.bsModalRef.hide();
+            this.confirmarEvent.emit();
+          },
+          error => {
+            this.notifier.notify('error', 'El nombre modificado ya existe');
+          }
         );
       })
     }

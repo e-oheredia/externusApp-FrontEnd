@@ -53,8 +53,8 @@
               <div class="col">
                 <div class="form-group">
                   <label for="region">Región</label>
-                  <select class="form-control" id="region" 
-                  (change)="onRegionSelectedChanged(region)" formControlName="region">
+                  <select class="form-control" id="region"
+                  (change)="onRegionSelectedChanged(modificarForm.get('region').value)" formControlName="region">
                     <option *ngFor="let region of regiones" [ngValue]="region">
                       {{region.nombre}}
                     </option>

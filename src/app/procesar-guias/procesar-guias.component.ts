@@ -9,7 +9,6 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { Subscription } from 'rxjs';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { AdjuntarArchivoComponent } from '../modals/adjuntar-archivo/adjuntar-archivo.component';
 import { Documento } from 'src/model/documento.model';
 import { UtilsService } from '../shared/utils.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
