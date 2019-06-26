@@ -23,10 +23,10 @@
                 </div>
               </div>
         
-              <div class="form-row">
+              <!-- <div class="form-row">
                 <div class="col">
                   <div formArrayName="plazos">
-                    <label for="nombreProveedor">Plazos del proveedor</label>
+                    <label for="plazosProveedor">Plazos del proveedor</label>
                     <div class="form-group"
                       *ngFor="let plazoDistribucionControl of modificarForm.get('plazos').controls; let i = index">
                       <div class="form-check">
@@ -38,7 +38,42 @@
                     </div>
                   </div>
                 </div>
+              </div> -->
+
+              <div class="form-row">
+                <div class="col">
+                  <div formArrayName="regiones">
+                    <label for="regionesProveedor">Regiones</label>
+                    <div class="form-group"
+                      *ngFor="let regionControl of modificarForm.get('regiones').controls; let i = index">
+                      <div class="form-check">
+                        <input name="regionesProveedor" type="checkbox" class="form-check-input"
+                          [formControl]="regionControl"
+                          (change)="onChangeRegionElegida($event, regiones[i])">
+                        <label class="form-check-label">{{regiones[i].nombre}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <div class="form-row">
+                <div class="col">
+                  <div formArrayName="ambitos">
+                    <label for="ambitosProveedor">Ámbitos</label>
+                    <div class="form-group"
+                      *ngFor="let ambitoControl of modificarForm.get('ambitos').controls; let i = index">
+                      <div class="form-check">
+                        <input name="ambitosProveedor" type="checkbox" class="form-check-input"
+                          [formControl]="ambitoControl"
+                          (change)="onChangeAmbitoElegido($event, ambitos[i])">
+                        <label class="form-check-label">{{ambitos[i].nombre}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
           </div>
 
           <div class="form-row">
