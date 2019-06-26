@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { TituloService } from 'src/app/shared/titulo.service';
 import { AmbitoService } from 'src/app/shared/ambito.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { AppSettings } from 'src/app/shared/app.settings';
 import { Ambito } from 'src/model/ambito.model';
 import { Subscription } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
 import { AgregarAmbitoComponent } from './agregar-ambito/agregar-ambito.component';
 import { ModificarAmbitoComponent } from './modificar-ambito/modificar-ambito.component';
-import { MensajeExitoComponent } from 'src/app/modals/mensaje-exito/mensaje-exito.component';
+import { AdjuntarUbigeoComponent } from './adjuntar-ubigeo/adjuntar-ubigeo.component';
 
 @Component({
   selector: 'app-ambito',
@@ -28,7 +27,7 @@ export class AmbitoComponent implements OnInit {
   settings = AppSettings.tableSettings;
   ambito: Ambito;
   ambitos: Ambito[] = [];
-
+  procesarForm: FormGroup;
   ambitosSubscription: Subscription;
   ambitoForm: FormGroup;
 
@@ -36,19 +35,21 @@ export class AmbitoComponent implements OnInit {
     this.generarColumnas();
     this.listarAmbitos();
     this.settings.hideSubHeader = false;
-
+    this.procesarForm = new FormGroup({
+      'excel': new FormControl(null, Validators.required)
+    })
   }
 
   generarColumnas() {
     this.settings.columns = {
-      id: {
-        title: 'ID'
-      },
       nombre: {
         title: 'Nombre'
       },
       region: {
         title: 'Región'
+      },
+      plazo: {
+        title: 'Plazos'
       },
       estado: {
         title: 'Estado'
@@ -67,6 +68,8 @@ export class AmbitoComponent implements OnInit {
     }
   }
 
+
+
   listarAmbitos() {
     this.dataAmbitos.reset();
     this.ambitoService.listarAmbitosAll().subscribe(
@@ -79,6 +82,7 @@ export class AmbitoComponent implements OnInit {
               id: ambito.id,
               nombre: ambito.nombre,
               region: ambito.region.nombre,
+              plazo: ambito.plazos ? ambito.plazos.map(plazo => plazo.nombre).join(", ") : "-",
               estado: ambito.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
@@ -88,9 +92,14 @@ export class AmbitoComponent implements OnInit {
     )
   }
 
+
+
   onAgregar() {
     this.agregarAmbito();
   }
+
+
+
 
   agregarAmbito() {
     let bsModalRef: BsModalRef = this.modalService.show(AgregarAmbitoComponent, {
@@ -101,11 +110,12 @@ export class AmbitoComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
-
     bsModalRef.content.ambitoCreadoEvent.subscribe(() =>
       this.listarAmbitos()
     )
   }
+
+
 
   modificarAmbito(row) {
     this.ambito = this.ambitos.find(ambito => ambito.id == row.id)
@@ -123,6 +133,27 @@ export class AmbitoComponent implements OnInit {
       this.listarAmbitos()
     )
   }
+
+
+  onSubmit(){
+    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarUbigeoComponent, {
+      initialState: {
+        titulo: "Adjuntar ubigeos con ámbitos",
+      },
+      class: 'modal-md',
+      keyboard: false,
+      backdrop: "static"
+    });
+    this.modalService.onHide.subscribe(
+      () => {
+        this.procesarForm.reset();
+        // this.buzonService.listarBuzonesAll().subscribe(buzones => {
+        //   this.buzones = buzones
+        // })
+      }
+    )
+  }
+
 
 
 }

@@ -76,6 +76,7 @@ import { RecepcionarDocumentoComponent } from '../recepcionar-devueltos/recepcio
 import { TipoDevolucionService } from '../shared/tipodevolucion.service';
 import { AdjuntarCorreoComponent } from '../mantenimiento/permiso-plazo-distribucion/adjuntar-correo/adjuntar-correo.component';
 import { ReporteService } from '../shared/reporte.service';
+import { AdjuntarUbigeoComponent } from '../mantenimiento/ambito/adjuntar-ubigeo/adjuntar-ubigeo.component';
 
 
 @NgModule({
@@ -109,7 +110,8 @@ import { ReporteService } from '../shared/reporte.service';
     ModificarEnvioComponent,
     ModificarAmbitoComponent,
     RecepcionarDocumentoComponent,
-    AdjuntarCorreoComponent
+    AdjuntarCorreoComponent,
+    AdjuntarUbigeoComponent
   ],
   imports: [
     HttpClientModule,
@@ -202,7 +204,8 @@ import { ReporteService } from '../shared/reporte.service';
     ModificarAmbitoComponent,
     ModificarRegionComponent,
     RecepcionarDocumentoComponent,
-    AdjuntarCorreoComponent
+    AdjuntarCorreoComponent,
+    AdjuntarUbigeoComponent
   ],
 })
 export class LayoutModule { }

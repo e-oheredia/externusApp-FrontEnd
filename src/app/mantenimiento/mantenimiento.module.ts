@@ -37,7 +37,7 @@ import { DiaLaborableComponent } from './dias-laborables/dias-laborables.compone
     ProductoComponent,
     AmbitoComponent,
     ClasificacionComponent,
-    DiaLaborableComponent,
+    DiaLaborableComponent
   ],
   entryComponents: [
     ButtonViewComponent,

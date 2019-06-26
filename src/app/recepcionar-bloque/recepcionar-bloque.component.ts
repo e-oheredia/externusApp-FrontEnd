@@ -6,7 +6,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { LocalDataSource } from 'ng2-smart-table';
 import { AppSettings } from '../shared/app.settings';
 import { Guia } from 'src/model/guia.model';
-import { Documento } from 'src/model/documento.model';
 import { Subscription } from 'rxjs';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';

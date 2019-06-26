@@ -1,33 +1,66 @@
-<!-- CAMBIAR ESTE TITULO POR EL setTitulo -->
+<div class="row">
+  <div class="col-10">
+    <div class="pb-2 mt-4 mb-2">
+      <h2>Mantenimiento de ámbito</h2>
+    </div>
+  </div>
+</div>
+
 
 <div class="row">
-    <div class="col-10">
-      <div class="pb-2 mt-4 mb-2">
-        <h2>Mantenimiento de ámbito</h2>
-      </div>
+  <div class="col-10 btn-group">
+    <div class="mb-2">
+      <button type="button" class="btn btn-success" (click)="onAgregar()">Agregar</button>
     </div>
   </div>
-  
-  <!--  -->
-  
-  <div class="row">
-    <div class="col-10 btn-group">
-      <div class="mb-2">
-        <button type="button" class="btn btn-success" (click)="onAgregar()">Agregar</button>
+  <div class="col-2">
+      <div class="mb-2 text-right">
+        <button type="button" class="btn btn-success" (click)="exportar()">DESCARGAR UBIGEOS</button>
       </div>
     </div>
-  </div>
-  
+</div>
+
+<br>
+
+<div *ngIf="ambitos.length !== 0; else mensaje" class="center">
+
+  <ng2-smart-table [settings]="settings" [source]="dataAmbitos"></ng2-smart-table>
+
   <br>
-  <div *ngIf="ambitos.length !== 0; else mensaje" class="center">
-    <ng2-smart-table [settings]="settings" [source]="dataAmbitos"></ng2-smart-table>
-  </div>
-  <ng-template #mensaje>
-    <div class="row">
-      <div class="col">
-        <div class="alert alert-info" role="alert">
-          No existen ámbitos.
+
+  <form [formGroup]="procesarForm" (ngSubmit)="onSubmit(procesarForm)">
+    <div *ngIf="ambitos.length !== 0">
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <h5>Elegir archivo de ámbitos por ubigeos :</h5>
+            <input type="file" class="form-control-file"
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" id="excel"
+              formControlName="excel" (change)="onChangeExcelFile($event.srcElement.files[0])">
+          </div>
         </div>
       </div>
     </div>
-  </ng-template>
+    <div *ngIf="ambitos.length !== 0">
+      <div class="row">
+        <div class="button-group col text-left mb-4">
+          <button class="btn btn-outline-success" [disabled]="!procesarForm.valid" type="submit">
+            Subir ambitos actualizados
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+
+
+<ng-template #mensaje>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info" role="alert">
+        No existen ámbitos.
+      </div>
+    </div>
+  </div>
+</ng-template>
