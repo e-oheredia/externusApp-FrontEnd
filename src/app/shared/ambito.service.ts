@@ -3,15 +3,21 @@ import { RequesterService } from "./requester.service";
 import { Observable, Subject } from "rxjs";
 import { AppSettings } from "./app.settings";
 import { Ambito } from "src/model/ambito.model";
+import { AmbitoDistrito } from "../../model/ambitodistrito";
+import { WriteExcelService } from "./write-excel.service";
 
 @Injectable()
 export class AmbitoService {
-
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.REGION_URL;
+    REQUEST_URL2 = AppSettings.API_ENDPOINT + AppSettings.AMBITODISTRITO_URL;
+    ;
 
     private ambitos: Ambito[];
 
-    constructor(private requester: RequesterService ){
+    constructor
+    (private requester: RequesterService, 
+     private writeExcelService: WriteExcelService,
+    ){
         
         this.listarAmbitosAll().subscribe(
             ambitos => {
@@ -41,6 +47,24 @@ export class AmbitoService {
 
     modificarAmbito(id:number, ambito: Ambito): Observable<Ambito> {
         return this.requester.put<Ambito>(this.REQUEST_URL + id + "/ambitos", ambito, {});
+    }
+
+    listarAmbitoDistritos() :Observable< AmbitoDistrito[]> {
+        return this.requester.get<AmbitoDistrito[]>(this.REQUEST_URL2, {});
+    }
+
+    exportarAmbitoDistrito(ambitodistrito) {
+        let objects = [];
+        ambitodistrito.forEach(adistrito => {
+            objects.push({
+                "Ubigeo": adistrito.distrito.ubigeo, 
+                "Departamento": adistrito.distrito.provincia.departamento.nombre,
+                "Provincia":  adistrito.distrito.provincia.nombre,
+                "Distrito":adistrito.distrito.nombre,
+                "Ambito":adistrito.ambito.nombre
+            })
+        });
+        this.writeExcelService.jsonToExcel(objects, "Ubigeo_Distrito_Ambito");
     }
 
 
