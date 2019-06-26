@@ -170,10 +170,11 @@ export class ReporteGuiasBloqueComponent implements OnInit {
                       tipoServicio: guia.tipoServicio.nombre,
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
-                      pendienteResultado:guia.cantidadDocumentosPendientes,
+                      pendienteResultado: guia.cantidadDocumentosPendientes,
                       totalDocumentos: guia.cantidadDocumentos,
                       fechaCreacion: this.guiaService.getFechaCreacion(guia),
-                      fechalimite: guia.fechaLimite,
+                      // fechalimite: guia.fechaLimite,
+                      fechalimite: " ",
                       fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre
@@ -220,9 +221,9 @@ export class ReporteGuiasBloqueComponent implements OnInit {
   }
 
 
-  // exportar(){
-  //   this.guiaService.exportarGuias(this.guias)
-  // }
+  exportar(){
+    this.guiaService.exportarGuiasBloque(this.guias)
+  }
 
 
 
