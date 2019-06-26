@@ -241,5 +241,27 @@ export class GuiaService {
         this.writeExcelService.jsonToExcel(objects, "Reporte de guías: ");
     }
 
+    exportarGuiasBloque(guias){
+        let objects = [];
+        guias.forEach(guia => {
+            objects.push({
+                "Número de guía" : guia.numeroGuia,
+                "Proveedor" : guia.proveedor.nombre,
+                "Plazo de distribución" : guia.plazoDistribucion.nombre,
+                "Tipo de servicio" : guia.tipoServicio.nombre,
+                "Tipo de seguridad" : guia.tipoSeguridad.nombre,
+                "Sede" : guia.sede.nombre,
+                "Pendiente de resultado": guia.cantidadDocumentosPendientes,
+                "Total de documentos" : guia.cantidadDocumentos,
+                "Fecha creación" : this.getFechaCreacion(guia),
+                "Fecha límite" : guia.fechaLimite,
+                "Fecha envío" : !this.utilsService.isUndefinedOrNullOrEmpty(this.getFechaEnvio(guia)) ? this.getFechaEnvio(guia) : ' ',
+                "Fecha último estado" : this.getFechaUltimoEstadoGuia(guia),
+                "Estado" : this.getEstadoGuia(guia).nombre
+            })
+        });
+        this.writeExcelService.jsonToExcel(objects, "Reporte de guías bloque: ");
+    }
+
 
 }

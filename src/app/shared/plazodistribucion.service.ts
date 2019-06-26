@@ -9,6 +9,7 @@ import { Area } from '../../model/area.model';
 import { ReporteAsignacionPlazo } from 'src/model/reporteasignacionplazo.model';
 import { Region } from 'src/model/region.model';
 import { Ambito } from 'src/model/ambito.model';
+import { WriteExcelService } from './write-excel.service';
 
 @Injectable()
 export class PlazoDistribucionService {
@@ -18,7 +19,7 @@ export class PlazoDistribucionService {
     AREA_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.AREA_URL;
     PROVEEDOR_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PROVEEDOR_URL;
 
-    constructor(private requester: RequesterService, private buzonService: BuzonService) {
+    constructor(private requester: RequesterService, private buzonService: BuzonService, private writeExcelService: WriteExcelService,) {
         this.listarPlazosDistribucion().subscribe(
             plazosDistribucion => {
                 this.plazosDistribucion = plazosDistribucion;
@@ -37,7 +38,7 @@ export class PlazoDistribucionService {
                                         this.areaPlazoDistribucionPermitido = data2.plazoDistribucion;
                                         this.plazoDistribucionPermitido = this.buzonPlazoDistribucionPermitido;
                                         if (this.areaPlazoDistribucionPermitido.id > this.buzonPlazoDistribucionPermitido.id) {
-                                            this.plazoDistribucionPermitido = this.areaPlazoDistribucionPermitido;                                            
+                                            this.plazoDistribucionPermitido = this.areaPlazoDistribucionPermitido;
                                         }
                                         this.plazoDistribucionPermitidoChanged.next(this.plazoDistribucionPermitido);
                                     }
@@ -58,10 +59,10 @@ export class PlazoDistribucionService {
         return this.plazoDistribucionPermitido;
     }
 
-    public plazoDistribucionPermitidoChanged = new Subject<PlazoDistribucion>(); 
+    public plazoDistribucionPermitidoChanged = new Subject<PlazoDistribucion>();
     public plazosDistribucionChanged = new Subject<PlazoDistribucion[]>();
 
-    
+
 
     buzonPlazoDistribucionPermitidoSubscription: Subscription;
     areaPlazoDistribucionPermitidoSubscription: Subscription;
@@ -79,22 +80,22 @@ export class PlazoDistribucionService {
         return this.requester.get(this.REQUEST_URL + 'volumen', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    listarReporteAsignacionPlazos(fechaini: Date, fechafin: Date){
-        return this.requester.get<ReporteAsignacionPlazo[]>(this.REQUEST_URL + "reporteplazos", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    listarReporteAsignacionPlazos(fechaini: Date, fechafin: Date) {
+        return this.requester.get<ReporteAsignacionPlazo[]>(this.REQUEST_URL + "reporteplazos", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    extraerId(id: String){
-        return parseInt(id.substring(1,2));
+    extraerId(id: String) {
+        return parseInt(id.substring(1, 2));
     }
-// 
-    agregarPlazoDistribucion(plazo: PlazoDistribucion): Observable<PlazoDistribucion>{
+    // 
+    agregarPlazoDistribucion(plazo: PlazoDistribucion): Observable<PlazoDistribucion> {
         return this.requester.post<PlazoDistribucion>(this.REQUEST_URL, plazo, {});
     }
 
-    modificarPlazoDistribucion(id:number, plazo: PlazoDistribucion): Observable<PlazoDistribucion> {
+    modificarPlazoDistribucion(id: number, plazo: PlazoDistribucion): Observable<PlazoDistribucion> {
         return this.requester.put<PlazoDistribucion>(this.REQUEST_URL + id, plazo, {});
     }
-// 
+    // 
     listarPlazoDistribucionPermititoByBuzonId(buzonId: number): Observable<PlazoDistribucion | any> {
         return this.requester.get<PlazoDistribucion | any>(this.BUZON_REQUEST_URL + buzonId.toString() + "/plazodistribucionpermitido", {});
     }
@@ -111,31 +112,49 @@ export class PlazoDistribucionService {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL, {});
     }
 
-    exportarAutorizaciones(data){
+    // exportarAutorizaciones(data) {
+    //     let objects = [];
+    //     data.forEach(entidad => {
+    //         objects.push({
+    //             "Tipo de Asignación": entidad.plazoDistribucion.tipoPlazoDistribucion,
+    //             "Buzón/Area": entidad.nombre,
+    //             "Plazo Actual": entidad.plazoDistribucion.nombre,
+    //             "Fecha de cambio": entidad.fechaAsociacion,
+    //             "Cantidad de documentos": "FALTA",
+    //         })
+    //     });
+    // }
+
+    exportarAutorizaciones(data) {
         let objects = [];
         Object.keys(data).forEach(key => {
-            if ("area"=== key) {
-                let area = data[key]
-                objects.push({
-                    "Tipo de Asignación" : area.plazoDistribucion.tipoPlazoDistribucion,
-                    "Buzón/Area" : "Área",
-                    "Plazo Actual" : area.plazoDistribucion.nombre ,
-                    "Fecha de cambio" : area.fechaAsociacion,
-                    "Cantidad de documentos" : "FALTA",
-                })
-            }
-            if ("buzon"=== key) {
-                let buzon = data[key]
-                objects.push({
-                    "Tipo de Asignación" : buzon.plazoDistribucion.tipoPlazoDistribucion ,
-                    "Buzón/Area" : "Buzón",
-                    "Plazo Actual" : buzon.plazoDistribucion.nombre ,
-                    "Fecha de cambio" : buzon.fechaAsociacion,
-                    "Cantidad de documentos" : "FALTA",
+            if (key === "data"){
+                var obj1 = data[key];
+                obj1.forEach(entidad => {
+                    objects.push({
+                        "Tipo de Asignación": entidad.tipo,
+                        "Buzón/Area": entidad.barea,
+                        "Plazo Actual": entidad.plazo,
+                        "Fecha de cambio": entidad.fechaCambio,
+                    })
                 })
             }
         });
 
+
+        // data.forEach(entidad => {
+        //     objects.push({
+        //         "Tipo de Asignación": entidad.plazoDistribucion.tipoPlazoDistribucion,
+        //         "Buzón/Area": entidad.nombre,
+        //         "Plazo Actual": entidad.plazoDistribucion.nombre,
+        //         "Fecha de cambio": entidad.fechaAsociacion,
+        //         "Cantidad de documentos": "FALTA",
+        //     })
+        // })
+        this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");
+
     }
-    
+
+
+
 }
