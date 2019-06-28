@@ -6,7 +6,6 @@ import { TipoDevolucion } from "./tipodevolucion.model";
 
 export class Documento {
 
-
     constructor(){}
     
     public id: number;

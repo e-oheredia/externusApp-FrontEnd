@@ -126,6 +126,9 @@ export class ReporteInconsistenciaComponent implements OnInit {
     }
   }
 
+  exportar() {
+    // this.documentoService.exportarInconsistenciasMasivoyBloque(this.envios);
+  }
 
 
 }
