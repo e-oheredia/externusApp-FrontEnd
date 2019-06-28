@@ -83,14 +83,9 @@ export class ProveedorComponent implements OnInit {
             dataProveedores.push({
               id: proveedor.id,
               nombre: proveedor.nombre,
-<<<<<<< HEAD
               region: this.sinrepetir(proveedor.ambitos.map(ambito =>    ambito.region.nombre)).join(", "),
               ambito: proveedor.ambitos.map(ambito => ambito.nombre).join(", "),
               //plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
-=======
-              // region: this.proveedorService.getRegionPorAmbito(proveedor.ambitos),
-              ambito: proveedor.ambitos.map(ambito => ambito.nombre).join(", "),
->>>>>>> 95519b29c76423f4949e2f1dbc4ded1a79ebfe7d
               activo: proveedor.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }

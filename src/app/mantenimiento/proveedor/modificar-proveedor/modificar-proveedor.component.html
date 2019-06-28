@@ -39,8 +39,48 @@
                   </div>
                 </div>
               </div> -->
-
+                
               <div class="form-row">
+                <div class="col">
+                  <div formArrayName="regiones">
+                    <label for="regionesProveedor"></label>
+                    <div class="form-group"
+                      *ngFor="let regionControl of modificarForm.get('regiones').controls; let j = index">
+                      <div class="form-check">
+                        <label class="form-check-label">{{regiones[j].nombre}}</label>
+                        <div class="form-row">
+                          <div class="col">
+                            <div formArrayName="ambitos" >
+                              <label for="ambitosProveedor"></label>
+                              <div class="form-group"
+                                *ngFor="let ambitoControl of modificarForm.get('ambitos').controls; let i = index">
+                                <div *ngIf="ambitos[i].region.nombre==regiones[j].nombre  ">
+                                    <div class="form-check">
+                                        <div>
+                                            <input name="ambitosProveedor" type="checkbox" class="form-check-input"
+                                            [formControl]="ambitoControl"
+                                            (change)="onChangeAmbitoElegido($event, ambitos[i])">
+                                        </div>
+                                        <label class="form-check-label">{{ambitos[i].nombre}}</label>
+                                      </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
+<!--               <div class="form-row">
                 <div class="col">
                   <div formArrayName="regiones">
                     <label for="regionesProveedor">Regiones</label>
@@ -72,7 +112,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
           </div>
 
