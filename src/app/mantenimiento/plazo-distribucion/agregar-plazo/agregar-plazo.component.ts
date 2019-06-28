@@ -50,8 +50,7 @@ export class AgregarPlazoComponent implements OnInit {
       'nombre': new FormControl('', Validators.required),
       'tiempoEnvio': new FormControl('', Validators.required),
       'tipoPlazoDistribucion': new FormControl(null, Validators.required),
-      'region': new FormControl(null, Validators.required),
-      'ambito': new FormControl(null, Validators.required),
+      'region': new FormControl(null, Validators.required)
     })
   }
 
@@ -70,13 +69,6 @@ export class AgregarPlazoComponent implements OnInit {
       }
     )
 
-    this.ambitos = this.ambitoService.getAmbitos();
-    this.ambitosSubscription = this.ambitoService.ambitosChanged.subscribe(
-      ambitos => {
-        this.ambitos = ambitos;
-      }
-    )
-
   }
 
   onRegionSelectedChanged(region) {
@@ -87,15 +79,12 @@ export class AgregarPlazoComponent implements OnInit {
       }
     );
   }
+  
 
   onSubmit(plazo) {
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
-    let ambito = this.agregarForm.controls['ambito'].value;
-    let ambitosArray = [];
-    ambitosArray.push(ambito)
-    plazo.ambitos = ambitosArray;
     if (nombreSinEspacios.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0 && 
-    this.agregarForm.controls['region'].value.length !== 0 && this.agregarForm.controls['ambito'].value.length !== 0) {
+    this.agregarForm.controls['region'].value.length !== 0) {
       plazo.nombre = nombreSinEspacios;
       this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo).subscribe(
         plazo => {
