@@ -141,6 +141,8 @@ export class ModificarProveedorComponent implements OnInit {
       let nombreSinEspacios = this.modificarForm.controls['nombreProveedor'].value.trim();
       proveedor.nombre = nombreSinEspacios;
       proveedor.activo = this.modificarForm.get('activo').value;
+      proveedor.plazosDistribucion=[];
+      //proveedor.ambitos=this.modificarForm.get('ambitosProveedor').value;
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {

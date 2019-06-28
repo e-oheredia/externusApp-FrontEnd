@@ -50,11 +50,11 @@ export class ProveedorComponent implements OnInit {
       nombre: {
         title : 'Nombre'
       },
+      region: {
+        title : 'Región'
+      },
       ambito: {
         title : 'Ámbito'
-      },
-      plazos: {
-        title : 'Plazos de distribución'
       },
       activo: {
         title : 'Estado'
@@ -84,8 +84,9 @@ export class ProveedorComponent implements OnInit {
             dataProveedores.push({
               id: proveedor.id,
               nombre: proveedor.nombre,
+              region: this.sinrepetir(proveedor.ambitos.map(ambito =>    ambito.region.nombre)).join(", "),
               ambito: proveedor.ambitos.map(ambito => ambito.nombre).join(", "),
-              plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
+              //plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
               activo: proveedor.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
@@ -94,6 +95,16 @@ export class ProveedorComponent implements OnInit {
       }
     )
   }
+
+  sinrepetir(ambitos){
+    let unicos = [];
+    ambitos.forEach( it => {
+      if (unicos.indexOf(it) == -1)
+         unicos.push(it);
+    })
+    return unicos;
+  }
+
 
   onAgregar(){
     this.agregarProveedor();
