@@ -58,6 +58,9 @@ export class PlazoDistribucionComponent implements OnInit {
       tipoPlazo :{
         title : 'Tipo de plazo'
       },
+      region: {
+        title: 'Region'
+      },
       ambito: {
         title: 'Ámbito'
       },
@@ -92,6 +95,7 @@ export class PlazoDistribucionComponent implements OnInit {
               nombre: plazo.nombre,
               tipoPlazo: plazo.tipoPlazoDistribucion.nombre,
               plazos: plazo.tiempoEnvio,
+              region: plazo.region ? plazo.region.nombre : "-",
               ambito: plazo.ambitos ? plazo.ambitos.map(ambito => ambito.nombre).join(", ") : "-",
               estado: plazo.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })

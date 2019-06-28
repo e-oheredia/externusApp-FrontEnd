@@ -54,7 +54,6 @@ export class EstadoDocumentoService {
     }
 
 
-
     getEstadosDocumentoResultadosProveedor() {
         return this.estadosDocumentoResultadosProveedor;
     }

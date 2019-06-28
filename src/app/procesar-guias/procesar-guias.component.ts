@@ -195,10 +195,6 @@ export class ProcesarGuiasComponent implements OnInit {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.resultadosCorrectos = data.documentos;
         this.resultadosIncorrectos = data.inconsistenciasResultado;
-        // if(this.utilsService.isUndefinedOrNullOrEmpty(this.resultadosIncorrectos)){
-        //   this.resultadosIncorrectos = [];
-        // }
-        // descargar inconsistencias
         if (this.resultadosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.resultadosIncorrectos);
         }
