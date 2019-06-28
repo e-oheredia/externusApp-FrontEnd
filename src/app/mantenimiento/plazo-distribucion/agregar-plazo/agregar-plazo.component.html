@@ -65,22 +65,6 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="col">
-          <div class="form-group">
-            <label for="ambito">Ámbito</label>
-            <select class="form-control" id="ambito" [(ngModel)]="provincia"
-              formControlName="ambito">
-              <option *ngFor="let ambito of ambitos" [ngValue]="ambito">{{ambito.nombre}}
-              </option>
-            </select>
-            <span *ngIf="!agregarForm.get('ambito').valid && agregarForm.get('ambito').touched"
-              class="text-danger small">
-              Es necesario la elección de un ámbito
-            </span>
-          </div>
-        </div>
-      </div>
 
     </div>
 

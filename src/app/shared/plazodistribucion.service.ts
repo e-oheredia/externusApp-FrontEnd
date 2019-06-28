@@ -111,6 +111,10 @@ export class PlazoDistribucionService {
     listarPlazosDistribucionAll(): Observable<PlazoDistribucion[]> {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL, {});
     }
+    
+    // listarAmbitosDeUnaRegion(plazo: PlazoDistribucion){
+    //     return plazo.region.
+    // }
 
     // exportarAutorizaciones(data) {
     //     let objects = [];

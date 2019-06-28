@@ -7,7 +7,6 @@ import { AppSettings } from 'src/app/shared/app.settings';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
 import { Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
-import { MensajeExitoComponent } from 'src/app/modals/mensaje-exito/mensaje-exito.component';
 import { ModificarPlazoComponent } from './modificar-plazo/modificar-plazo.component';
 import { AgregarPlazoComponent } from './agregar-plazo/agregar-plazo.component';
 import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
@@ -27,7 +26,7 @@ export class PlazoDistribucionComponent implements OnInit {
     private tituloService: TituloService
   ) { }
 
-  dataPlazosDistribucion : LocalDataSource = new LocalDataSource();
+  dataPlazosDistribucion: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
   plazos: PlazoDistribucion[] = [];
   plazo: PlazoDistribucion;
@@ -44,34 +43,28 @@ export class PlazoDistribucionComponent implements OnInit {
 
   }
 
-  generarColumnas(){
+  generarColumnas() {
     this.settings.columns = {
-      id : {
-        title : 'ID'
+      nombre: {
+        title: 'Nombre'
       },
-      nombre : {
-        title : 'Nombre'
+      plazos: {
+        title: 'Plazo de distribución (hrs)'
       },
-      plazos : {
-        title : 'Plazo de distribución (hrs)'
-      },
-      tipoPlazo :{
-        title : 'Tipo de plazo'
+      tipoPlazo: {
+        title: 'Tipo de plazo'
       },
       region: {
         title: 'Region'
       },
-      ambito: {
-        title: 'Ámbito'
-      },
-      estado : {
-        title : 'Estado'
+      estado: {
+        title: 'Estado'
       },
       buttonModificar: {
-        title : 'Modificar',
-        type : 'custom',
-        renderComponent : ButtonViewComponent,
-        onComponentInitFunction : (instance : any) => {
+        title: 'Modificar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
             this.modificarPlazo(row);
@@ -82,7 +75,7 @@ export class PlazoDistribucionComponent implements OnInit {
   }
 
 
-    listarPlazosDistribucion(){
+  listarPlazosDistribucion() {
     this.dataPlazosDistribucion.reset();
     this.plazoDistribucionService.listarPlazosDistribucionAll().subscribe(
       plazos => {
@@ -96,7 +89,8 @@ export class PlazoDistribucionComponent implements OnInit {
               tipoPlazo: plazo.tipoPlazoDistribucion.nombre,
               plazos: plazo.tiempoEnvio,
               region: plazo.region ? plazo.region.nombre : "-",
-              ambito: plazo.ambitos ? plazo.ambitos.map(ambito => ambito.nombre).join(", ") : "-",
+              // ambito: plazo.ambitos ? plazo.ambitos.map(ambito => ambito.nombre).join(", ") : "-",
+              // ambito: this.plazoDistribucionService.listarAmbitosDeUnaRegion(plazo),
               estado: plazo.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
@@ -106,13 +100,13 @@ export class PlazoDistribucionComponent implements OnInit {
     )
   }
 
-  onAgregar(){
+  onAgregar() {
     this.agregarPlazo();
   }
 
-  agregarPlazo(){
+  agregarPlazo() {
     let bsModalRef: BsModalRef = this.modalService.show(AgregarPlazoComponent, {
-      initialState : {
+      initialState: {
         titulo: 'Agregar plazo de distribución',
       },
       class: 'modal-md',
@@ -120,15 +114,15 @@ export class PlazoDistribucionComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.plazoCreadoEvent.subscribe(() => 
-    this.listarPlazosDistribucion()
+    bsModalRef.content.plazoCreadoEvent.subscribe(() =>
+      this.listarPlazosDistribucion()
     )
   }
 
-  
-  modificarPlazo(row){
+
+  modificarPlazo(row) {
     this.plazo = this.plazos.find(plazo => plazo.id == row.id)
-  
+
     let bsModalRef: BsModalRef = this.modalService.show(ModificarPlazoComponent, {
       initialState: {
         id: this.plazo.id,
@@ -140,8 +134,8 @@ export class PlazoDistribucionComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
-    bsModalRef.content.confirmarEvent.subscribe(() => 
-    this.listarPlazosDistribucion()
+    bsModalRef.content.confirmarEvent.subscribe(() =>
+      this.listarPlazosDistribucion()
     )
   }
 
