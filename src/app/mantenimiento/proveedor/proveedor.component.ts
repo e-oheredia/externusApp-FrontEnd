@@ -10,7 +10,6 @@ import { Proveedor } from 'src/model/proveedor.model';
 import { Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { ButtonViewComponent } from 'src/app/table-management/button-view/button-view.component';
-import { MensajeExitoComponent } from 'src/app/modals/mensaje-exito/mensaje-exito.component';
 import { ModificarProveedorComponent } from './modificar-proveedor/modificar-proveedor.component';
 import { AgregarProveedorComponent } from './agregar-proveedor/agregar-proveedor.component';
 
@@ -50,11 +49,11 @@ export class ProveedorComponent implements OnInit {
       nombre: {
         title : 'Nombre'
       },
+      region: {
+        title : 'Región'
+      },
       ambito: {
         title : 'Ámbito'
-      },
-      plazos: {
-        title : 'Plazos de distribución'
       },
       activo: {
         title : 'Estado'
@@ -84,8 +83,8 @@ export class ProveedorComponent implements OnInit {
             dataProveedores.push({
               id: proveedor.id,
               nombre: proveedor.nombre,
+              // region: this.proveedorService.getRegionPorAmbito(proveedor.ambitos),
               ambito: proveedor.ambitos.map(ambito => ambito.nombre).join(", "),
-              plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
               activo: proveedor.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }

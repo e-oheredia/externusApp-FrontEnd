@@ -5,6 +5,9 @@ import { AppSettings } from "./app.settings";
 import { Ambito } from "src/model/ambito.model";
 import { AmbitoDistrito } from "../../model/ambitodistrito";
 import { WriteExcelService } from "./write-excel.service";
+import { ReadExcelService } from "./read-excel.service";
+import { UtilsService } from "./utils.service";
+import { Distrito } from "src/model/distrito.model";
 
 @Injectable()
 export class AmbitoService {
@@ -17,6 +20,8 @@ export class AmbitoService {
     constructor
     (private requester: RequesterService, 
      private writeExcelService: WriteExcelService,
+     private readExcelService: ReadExcelService,
+     private utilsService: UtilsService
     ){
         
         this.listarAmbitosAll().subscribe(
@@ -32,6 +37,10 @@ export class AmbitoService {
     }
 
     public ambitosChanged = new Subject<Ambito[]>();
+
+    getAmbitosparaSubir(){
+        return this.ambitos
+    }
 
     listarAmbitosAll(): Observable<Ambito[]> {
         return this.requester.get<Ambito[]>(this.REQUEST_URL + "ambitos", {});
@@ -65,6 +74,71 @@ export class AmbitoService {
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Ubigeo_Distrito_Ambito");
+    }
+
+    validarDistritosAmbitos(file: File, sheet: number, callback: Function) {
+        this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
+            let i = 1
+            let distritos: Distrito[] = []
+            let distritosconAmbitos: Distrito[] = []
+
+            while (true) {
+
+                if (this.utilsService.isUndefinedOrNull(data[i])) {
+                    if (i === 1) {
+                        callback({
+                            mensaje: "El formato está vacío"
+                        });
+                        return;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (data[i].length === 0) {
+                    break;
+                }
+
+                let distritoValidado: Distrito = new Distrito();
+
+                if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][0])) {
+                    distritoValidado.ubigeo = data[i][0]
+                } else {
+                    callback({
+                        mensaje: "Ingrese el ubigeo en la fila " + (i + 1)
+                    });
+                    return;
+                }
+
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][4])) {
+                    callback({
+                        mensaje: "Ingrese el ámbito en la fila " + (i + 1)
+                    });
+                    return;
+                } else {
+                    let ambito = this.getAmbitosparaSubir().find(
+                        ambito => ambito.nombre === data[i][4]
+                    )
+
+                    if (this.utilsService.isUndefinedOrNullOrEmpty(ambito)) {
+                        callback({
+                            mensaje: "Ingrese un ámbito existente en la fila " + (i + 1)
+                        });
+                        return;
+                    } else {
+                        distritoValidado.ambito = ambito
+                    }
+                }                
+                distritosconAmbitos.push(distritoValidado)
+                distritos = distritosconAmbitos
+                i++;
+            }
+            callback(distritos)
+        });
+    }
+
+    subirDistritosconAmbitos(distritos: Distrito[]): Observable<any> {
+        return this.requester.put<any>(this.REQUEST_URL2, distritos, {});
     }
 
 

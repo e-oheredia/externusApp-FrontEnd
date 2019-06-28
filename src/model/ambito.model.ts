@@ -9,5 +9,5 @@ export class Ambito {
     public nombre: string;
     public activo: boolean;
     public region: Region;
-    public plazos: PlazoDistribucion[] = [];
+    // public plazos: PlazoDistribucion[] = [];
 }  

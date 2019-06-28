@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AmbitoService } from 'src/app/shared/ambito.service';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -12,6 +12,11 @@ import { ModificarAmbitoComponent } from './modificar-ambito/modificar-ambito.co
 import { AdjuntarUbigeoComponent } from './adjuntar-ubigeo/adjuntar-ubigeo.component';
 import { AmbitoDistrito } from '../../../model/ambitodistrito';
 import { WriteExcelService } from '../../shared/write-excel.service';
+import { DistritoService } from 'src/app/shared/distrito.service';
+import { UtilsService } from 'src/app/shared/utils.service';
+import { NotifierService } from 'angular-notifier';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
+import { Distrito } from 'src/model/distrito.model';
 
 @Component({
   selector: 'app-ambito',
@@ -23,8 +28,12 @@ export class AmbitoComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     public ambitoService: AmbitoService,
-    private writeExcelService: WriteExcelService,
+    private utilsService: UtilsService,
+    private distritoService: DistritoService,
+    private notifierService: NotifierService
   ) { }
+
+  @Output() confirmarEvent = new EventEmitter<File>();
 
   dataAmbitos: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
@@ -34,6 +43,8 @@ export class AmbitoComponent implements OnInit {
   ambitosSubscription: Subscription;
   ambitoForm: FormGroup;
   ambitodistrito: AmbitoDistrito[] = [];
+  excelFile: File;
+  distritosconAmbitos: Distrito[] = [];
 
   ngOnInit() {
     this.generarColumnas();
@@ -52,9 +63,6 @@ export class AmbitoComponent implements OnInit {
       region: {
         title: 'Región'
       },
-      plazo: {
-        title: 'Plazos'
-      },
       estado: {
         title: 'Estado'
       },
@@ -72,8 +80,6 @@ export class AmbitoComponent implements OnInit {
     }
   }
 
-
-
   listarAmbitos() {
     this.dataAmbitos.reset();
     this.ambitoService.listarAmbitosAll().subscribe(
@@ -86,7 +92,6 @@ export class AmbitoComponent implements OnInit {
               id: ambito.id,
               nombre: ambito.nombre,
               region: ambito.region.nombre,
-              plazo: ambito.plazos ? ambito.plazos.map(plazo => plazo.nombre).join(", ") : "-",
               estado: ambito.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
@@ -96,14 +101,9 @@ export class AmbitoComponent implements OnInit {
     )
   }
 
-
-
   onAgregar() {
     this.agregarAmbito();
   }
-
-
-
 
   agregarAmbito() {
     let bsModalRef: BsModalRef = this.modalService.show(AgregarAmbitoComponent, {
@@ -118,8 +118,6 @@ export class AmbitoComponent implements OnInit {
       this.listarAmbitos()
     )
   }
-
-
 
   modificarAmbito(row) {
     this.ambito = this.ambitos.find(ambito => ambito.id == row.id)
@@ -149,21 +147,54 @@ export class AmbitoComponent implements OnInit {
 
 
 
-  onSubmit(){
-    let bsModalRef: BsModalRef = this.modalService.show(AdjuntarUbigeoComponent, {
+
+
+  onChangeExcelFile(file: File) {
+    if (file == null) {
+      this.excelFile = null;
+      return null;
+    } else {
+      this.excelFile = file;
+      this.importarExcel(this.excelFile);
+    }
+  }
+
+  importarExcel(file: File) {
+    this.ambitoService.validarDistritosAmbitos(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        this.distritosconAmbitos = data;
+        return;
+      }
+      this.notifierService.notify('error', data.mensaje);
+    })
+  }
+
+
+  onSubmit(procesarForm: FormGroup) {
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
         titulo: "Adjuntar ubigeos con ámbitos",
+        mensaje: "¿Desea actualizar los distritos con los nuevos ámbitos?"
       },
       class: 'modal-md',
       keyboard: false,
       backdrop: "static"
     });
-    this.modalService.onHide.subscribe(
-      () => {
+
+    bsModalRef.content.confirmarEvent.subscribe(() => {
+      this.registrarDistritosConAmbitos();
+    })
+  }
+
+  registrarDistritosConAmbitos() {
+    this.ambitoService.subirDistritosconAmbitos(this.distritosconAmbitos).subscribe(
+      respuesta => {
+        this.notifierService.notify('success', respuesta.mensaje);
         this.procesarForm.reset();
-        // this.buzonService.listarBuzonesAll().subscribe(buzones => {
-        //   this.buzones = buzones
-        // })
+        this.listarAmbitos();
+      },
+      error => {
+        this.notifierService.notify('error', error.error.mensaje);
       }
     )
   }

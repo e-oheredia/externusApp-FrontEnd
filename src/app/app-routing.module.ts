@@ -118,11 +118,11 @@ const appRoutes: Routes = [
         component: RecepcionarBloqueComponent
     },
     {
-        path: 'reporte-autorizacion',
+        path: 'consulta-autorizacion',
         component: ReporteAutorizacionComponent
     },
     {
-        path: 'reporte-inconsistencia',
+        path: 'consulta-inconsistencia',
         component: ReporteInconsistenciaComponent
     },
     {
@@ -130,7 +130,7 @@ const appRoutes: Routes = [
         component: RecepcionarDevueltosComponent
     },
     {
-        path: 'reporte-asignacion-plazos',
+        path: 'consulta-asignacion-plazos',
         component: ReporteAsignacionPlazoComponent
     },
     {

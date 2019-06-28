@@ -3,6 +3,8 @@ import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable, Subject } from "rxjs";
 import { Proveedor } from "../../model/proveedor.model";
+import { Ambito } from "src/model/ambito.model";
+import { Region } from "src/model/region.model";
 
 @Injectable()
 export class ProveedorService {
@@ -19,6 +21,7 @@ export class ProveedorService {
     }
 
     private proveedores: Proveedor[];
+    regiones: Region[];
 
     getProveedores(): Proveedor[] {
         return this.proveedores;
@@ -45,5 +48,7 @@ export class ProveedorService {
     listarProveedoresAll(): Observable<Proveedor[]>{
         return this.requester.get<Proveedor[]>(this.REQUEST_URL, {});
     }
+
+
     
 }

@@ -9,7 +9,6 @@ import { EstadoDocumento } from 'src/model/estadodocumento.model';
 import { MotivoEstado } from 'src/model/motivoestado.model';
 import { TipoDevolucion } from 'src/model/tipodevolucion.model';
 import { TipoDevolucionService } from 'src/app/shared/tipodevolucion.service';
-import { EstadoDocumentoEnum } from 'src/app/enum/estadodocumento.enum';
 
 @Component({
   selector: 'app-recepcionar-documento',
@@ -43,7 +42,13 @@ export class RecepcionarDocumentoComponent implements OnInit {
       'motivo' : new FormControl(this.documentoService.getUltimoSeguimientoDocumento(this.documento).motivoEstado.nombre, Validators.required),
       'devoluciones': new FormArray([])
     });
+    
     this.listarTiposDevolucion();
+
+    setTimeout(() => {
+      document.getElementById("recepcionarBoton").focus();
+    }, 200)
+
   }
 
   listarTiposDevolucion(){
