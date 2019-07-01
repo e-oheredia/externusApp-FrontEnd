@@ -10,71 +10,59 @@
 
       <div *ngIf="plazo.activo">
 
-          <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="nombre">Nombre de plazo</label>
-                  <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-                  <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
-                    class="text-danger small">
-                    El nombre del plazo no puede estar vacío
-                  </span>
-                </div>
-              </div>
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="nombre">Nombre de plazo</label>
+              <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+              <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+                class="text-danger small">
+                El nombre del plazo no puede estar vacío
+              </span>
             </div>
-      
-            <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="tiempoEnvio">Plazo de distribución (horas)</label>
-                  <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio" formControlName="tiempoEnvio">
-                  <span *ngIf="!modificarForm.get('tiempoEnvio').valid && modificarForm.get('tiempoEnvio').touched"
-                    class="text-danger small">
-                    El tiempo (horas) del plazo no puede estar vacío
-                  </span>
-                </div>
-              </div>
-            </div>
-      
-            <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="tipoPlazoDistribucion">Tipo de plazo</label>
-                  <select class="form-control" id="tipoPlazoDistribucion" formControlName="tipoPlazoDistribucion">
-                    <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">
-                      {{tipoPlazoDistribucion.nombre}}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
+          </div>
+        </div>
 
-            <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="region">Región</label>
-                  <select class="form-control" id="region"
-                  (change)="onRegionSelectedChanged(modificarForm.get('region').value)" formControlName="region">
-                    <option *ngFor="let region of regiones" [ngValue]="region">
-                      {{region.nombre}}
-                    </option>
-                  </select>
-                </div>
-              </div>
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="tiempoEnvio">Plazo de distribución (horas)</label>
+              <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio"
+                formControlName="tiempoEnvio">
+              <span *ngIf="!modificarForm.get('tiempoEnvio').valid && modificarForm.get('tiempoEnvio').touched"
+                class="text-danger small">
+                El tiempo (horas) del plazo no puede estar vacío
+              </span>
             </div>
+          </div>
+        </div>
 
-            <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="ambito">Ámbito</label>
-                  <select class="form-control" id="ambito" formControlName="ambito">
-                    <option *ngFor="let ambito of ambitos" [ngValue]="ambito">
-                      {{ambito.nombre}}
-                    </option>
-                  </select>
-                </div>
-              </div>
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="tipoPlazoDistribucion">Tipo de plazo</label>
+              <select class="form-control" id="tipoPlazoDistribucion" formControlName="tipoPlazoDistribucion">
+                <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">
+                  {{tipoPlazoDistribucion.nombre}}
+                </option>
+              </select>
             </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="region">Región</label>
+              <select class="form-control" id="region"
+                (change)="onRegionSelectedChanged(modificarForm.get('region').value)" formControlName="region">
+                <option *ngFor="let region of regiones" [ngValue]="region">
+                  {{region.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
 
       </div>
 
@@ -88,10 +76,9 @@
               <option value="false">DESACTIVADO
               </option>
             </select>
-            <span *ngIf="!modificarForm.get('activo').value"
-                  class="text-danger small">
-                  No se puede modificar si está desactivado
-                </span>
+            <span *ngIf="!modificarForm.get('activo').value" class="text-danger small">
+              No se puede modificar si está desactivado
+            </span>
           </div>
         </div>
       </div>
@@ -99,7 +86,8 @@
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success" [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
+      <button type="submit" class="btn btn-success"
+        [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 

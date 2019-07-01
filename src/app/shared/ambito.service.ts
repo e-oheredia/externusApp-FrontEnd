@@ -99,6 +99,7 @@ export class AmbitoService {
                     break;
                 }
 
+                // let todoCorrecto: boolean = true;
                 let distritoValidado: Distrito = new Distrito();
 
                 if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][0])) {
@@ -128,7 +129,7 @@ export class AmbitoService {
                     } else {
                         distritoValidado.ambito = ambito
                     }
-                }                
+                }
                 distritosconAmbitos.push(distritoValidado)
                 distritos = distritosconAmbitos
                 i++;
