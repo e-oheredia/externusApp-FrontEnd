@@ -46,7 +46,7 @@ export class AgregarProveedorComponent implements OnInit {
     this.agregarForm = new FormGroup({
       'nombreProveedor' : new FormControl('', Validators.required),
       // 'plazosProveedor' : new FormControl('', Validators.required),
-      'regionesProveedor' : new FormControl('', Validators.required),
+      //'regionesProveedor' : new FormControl('', Validators.required),
       'ambitosProveedor' : new FormControl('', Validators.required),
     });
 
@@ -57,7 +57,7 @@ export class AgregarProveedorComponent implements OnInit {
 
   onSubmit(proveedor){
     let nombreSinEspacios = this.agregarForm.controls['nombreProveedor'].value.trim();
-    if (nombreSinEspacios.length !== 0 && this.regionesElegidas.length !==0 && this.ambitosElegidos.length !==0) {
+    if (nombreSinEspacios.length !== 0 && this.ambitosElegidos.length !==0) {
     let proveedor: Proveedor = new Proveedor();
     proveedor.nombre = nombreSinEspacios;
     proveedor.ambitos = this.ambitosElegidos;
@@ -99,9 +99,9 @@ export class AgregarProveedorComponent implements OnInit {
     )
   }
 
-  onChangeRegionesElegidas(event: any, region: Region) {    
+/*   onChangeRegionesElegidas(event: any, region: Region) {    
     event.srcElement.checked ? this.regionesElegidas.push(region) : this.regionesElegidas.splice(this.regionesElegidas.indexOf(region), 1);
-  }
+  } */
   
 
 

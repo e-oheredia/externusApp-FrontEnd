@@ -136,7 +136,7 @@ export class ModificarProveedorComponent implements OnInit {
 
 
   onSubmit(form: any){
-    if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombreProveedor'].value)){
+    if(!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombreProveedor'].value) && this.ambitosElegidos.length !==0){
       let proveedor = Object.assign({}, this.proveedor)
       let nombreSinEspacios = this.modificarForm.controls['nombreProveedor'].value.trim();
       proveedor.nombre = nombreSinEspacios;

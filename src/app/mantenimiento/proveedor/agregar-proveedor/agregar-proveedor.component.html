@@ -39,6 +39,29 @@
 
       <div class="form-row">
         <div class="col">
+          <div class="form-group" *ngFor="let region of regiones">
+            <div class="form-check">
+              <label class="form-check-label" [for]="'pd-' + region.id">{{region.nombre}}</label>
+            </div>
+            <div class="col">
+                <label for="ambitosProveedor"></label>
+            <div class="form-group" *ngFor="let ambito of ambitos">
+              <div *ngIf="ambito.region.nombre==region.nombre">
+                  <div class="form-check">
+                      <input name="ambitosProveedor" id="ambitosProveedor" formControlName="ambitosProveedor" type="checkbox"
+                        class="form-check-input" [id]="'pd-' + ambito.id"
+                        (change)="onChangeAmbitosElegidos($event, ambito)">
+                      <label class="form-check-label" [for]="'pd-' + ambito.id">{{ambito.nombre}}</label>
+                  </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+<!--       <div class="form-row">
+        <div class="col">
           <label for="regionesProveedor">Regiones</label>
           <div class="form-group" *ngFor="let region of regiones">
             <div class="form-check">
@@ -63,7 +86,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
 
