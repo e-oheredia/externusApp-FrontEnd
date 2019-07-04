@@ -97,8 +97,8 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       motivo: {
         title: 'Motivo'
       },
-      estadocargo: {
-        title: 'Estado del cargo'
+      documentodevuelto: {
+        title: 'Documento devuelto'
       },
       fisicoRecibido: {
         title: 'Físico recibido'
@@ -141,7 +141,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
               estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado,
-              estadocargo: 'a',
+              documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
               fisicoRecibido: documento.recepcionado ? "SI" : "NO",
               autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
@@ -194,7 +194,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
                       estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
                       motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
-                      estadocargo: ' ',
+                      documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
                       fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                       autorizado:  this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
