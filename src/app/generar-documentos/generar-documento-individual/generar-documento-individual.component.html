@@ -66,37 +66,6 @@
           <div class="form-row">
             <div class="col">
               <div class="form-group">
-                <label for="plazoDistribucion">Plazo de Distribución *</label>
-                <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion"
-                  (change)="onPlazoDistribucionSelected($event)">
-                  <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">
-                    {{plazoDistribucion.nombre}}</option>
-                </select>
-                <span
-                  *ngIf="!documentoForm.get('plazoDistribucion').valid && documentoForm.get('plazoDistribucion').touched"
-                  class="text-danger small">
-                  Es necesario ingresar el plazo de distribución
-                </span>
-              </div>
-            </div>
-            <div class="col">
-              <div class="form-group">
-                <label for="clasificacion">Clasificación *</label>
-                <select class="form-control" id="clasificacion" formControlName="clasificacion">
-                  <option *ngFor="let clasificacion of clasificaciones" [ngValue]="clasificacion">
-                    {{clasificacion.nombre}}</option>
-                </select>
-                <span *ngIf="!documentoForm.get('clasificacion').valid && documentoForm.get('clasificacion').touched"
-                  class="text-danger small">
-                  Es necesario ingresar la clasificacion
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="col">
-              <div class="form-group">
                 <label for="tipoSeguridad">Tipo de Seguridad *</label>
                 <select class="form-control" id="tipoSeguridad" formControlName="tipoSeguridad">
                   <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">
@@ -122,27 +91,29 @@
               </div>
             </div>
           </div>
-          <div class="form-row comunicacionDestino" formGroupName="comunicacionDestino">
-            <div class="col-6">
+
+          <div class="form-row">
+            <div class="col">
               <div class="form-group">
-                <label for="razonSocial">Razón Social</label>
-                <input class="form-control" type="text" name="razonSocial" id="razonSocial"
-                  formControlName="razonSocial">
-                <span
-                  *ngIf="!documentoForm.get('comunicacionDestino').valid && documentoForm.get('comunicacionDestino').touched"
+                <label for="clasificacion">Clasificación *</label>
+                <select class="form-control" id="clasificacion" formControlName="clasificacion">
+                  <option *ngFor="let clasificacion of clasificaciones" [ngValue]="clasificacion">
+                    {{clasificacion.nombre}}</option>
+                </select>
+                <span *ngIf="!documentoForm.get('clasificacion').valid && documentoForm.get('clasificacion').touched"
                   class="text-danger small">
-                  Tiene que ingresar la Razón Social o el Contacto
+                  Es necesario ingresar la clasificacion
                 </span>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col">
               <div class="form-group">
-                <label for="contacto">Contacto</label>
-                <input class="form-control" type="text" name="contacto" id="contacto" formControlName="contacto">
+                <label for="telefono">Teléfono</label>
+                <input class="form-control" type="text" name="telefono" id="telefono" formControlName="telefono">
               </div>
             </div>
-
           </div>
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -164,6 +135,9 @@
               </div>
             </div>
           </div>
+
+
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -179,10 +153,40 @@
             </div>
             <div class="col">
               <div class="form-group">
-                <label for="telefono">Teléfono</label>
-                <input class="form-control" type="text" name="telefono" id="telefono" formControlName="telefono">
+                <label for="plazoDistribucion">Plazo de Distribución *</label>
+                <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion"
+                  (change)="onPlazoDistribucionSelected($event)">
+                  <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">
+                    {{plazoDistribucion.nombre}}</option>
+                </select>
+                <span
+                  *ngIf="!documentoForm.get('plazoDistribucion').valid && documentoForm.get('plazoDistribucion').touched"
+                  class="text-danger small">
+                  Es necesario ingresar el plazo de distribución
+                </span>
               </div>
             </div>
+          </div>
+          <div class="form-row comunicacionDestino" formGroupName="comunicacionDestino">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="razonSocial">Razón Social</label>
+                <input class="form-control" type="text" name="razonSocial" id="razonSocial"
+                  formControlName="razonSocial">
+                <span
+                  *ngIf="!documentoForm.get('comunicacionDestino').valid && documentoForm.get('comunicacionDestino').touched"
+                  class="text-danger small">
+                  Tiene que ingresar la Razón Social o el Contacto
+                </span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="contacto">Contacto</label>
+                <input class="form-control" type="text" name="contacto" id="contacto" formControlName="contacto">
+              </div>
+            </div>
+
           </div>
           <div class="form-row">
             <div class="col">

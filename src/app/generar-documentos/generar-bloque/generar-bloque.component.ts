@@ -28,6 +28,8 @@ import { UtilsService } from 'src/app/shared/utils.service';
 import { NotifierService } from 'angular-notifier';
 import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
+import { Region } from 'src/model/region.model';
+import { RegionService } from 'src/app/shared/region.service';
 
 @Component({
   selector: 'app-generar-bloque',
@@ -50,7 +52,8 @@ export class GenerarBloqueComponent implements OnInit {
     private modalService: BsModalService,
     private documentoService: DocumentoService,
     private utilsService: UtilsService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    private regionService: RegionService,
   ) { }
 
   rutaPlantilla: string = AppSettings.PLANTILLA_MASIVO;
@@ -60,8 +63,10 @@ export class GenerarBloqueComponent implements OnInit {
   autogeneradoCreado: string;
   proveedor: Proveedor;
   codigoGuia: string;
+  region: Region;
 
   plazosDistribucion: PlazoDistribucion[];
+  regiones: Region[];
   productos: Producto[];
   clasificaciones: Clasificacion[];
   tiposServicio: TipoServicio[];
@@ -80,6 +85,7 @@ export class GenerarBloqueComponent implements OnInit {
   proveedoresSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
   buzonSubscription: Subscription;
+  regionSubscription: Subscription;
 
   ngOnInit() {
     this.cargarDatosVista();
@@ -92,6 +98,7 @@ export class GenerarBloqueComponent implements OnInit {
       'clasificacion': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
       'proveedor': new FormControl(null, Validators.required),
+      'region': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'excel': new FormControl(null, Validators.required),
       'excel2': new FormControl(null),
@@ -107,6 +114,7 @@ export class GenerarBloqueComponent implements OnInit {
     this.proveedores = this.proveedorService.getProveedores();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.buzon = this.buzonService.getBuzonActual();
+    this.regiones=this.regionService.getRegiones();
 
     this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
       plazosDistribucion => {
@@ -141,6 +149,11 @@ export class GenerarBloqueComponent implements OnInit {
     this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(
       buzon => {
         this.buzon = buzon;
+      }
+    )
+    this.regionSubscription = this.regionService.regionesChanged.subscribe(
+      regiones => {
+        this.regiones = regiones;
       }
     )
   }
@@ -248,6 +261,8 @@ export class GenerarBloqueComponent implements OnInit {
     envioBloque.inconsistenciasDocumento = this.documentosIncorrectos;
     this.codigoGuia = datosBloque.get('codigoGuia').value;
     this.proveedor = datosBloque.get('proveedor').value;
+    this.region = datosBloque.get('region').value;
+    envioBloque.plazoDistribucion.region=this.region;
     this.envioBloqueService.registrarEnvioBloque(envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
       envioBloque => {
         this.documentosCorrectos = [];

@@ -107,8 +107,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             motivo: {
                 title: 'Motivo'
             },
-            estadocargo: {
-                title: 'Estado del cargo'
+            documentodevuelto: {
+                title: 'Documento Devuelto'
             },
             fisicoRecibido: {
                 title: 'Físico recibido'
@@ -159,7 +159,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
                                         estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
                                         motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
-                                        estadocargo: 'a',
+                                        documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
                                         fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                                         autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA" ,
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),

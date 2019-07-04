@@ -103,7 +103,7 @@
             </div>
             <div class="col">
               <div class="form-group">
-                <label for="proveedor">Provedor *</label>
+                <label for="region">Proveedor *</label>
                 <select class="form-control" id="proveedor" formControlName="proveedor">
                   <option *ngFor="let proveedor of proveedores" [ngValue]="proveedor">
                     {{proveedor.nombre}}</option>
@@ -122,6 +122,19 @@
                 <label for="codigoGuia">Número de guía *</label>
                 <input class="form-control" type="text" name="codigoGuia" formControlName="codigoGuia" id="codigoGuia"
                   minlength="5">
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="proveedor">Región *</label>
+                <select class="form-control" id="region" formControlName="region">
+                  <option *ngFor="let region of regiones" [ngValue]="region">
+                    {{region.nombre}}</option>
+                </select>
+                <span *ngIf="!bloqueForm.get('region').valid && bloqueForm.get('region').touched"
+                  class="text-danger small">
+                  Es necesario seleccionar una región
+                </span>
               </div>
             </div>
           </div>
