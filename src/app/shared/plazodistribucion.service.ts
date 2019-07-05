@@ -50,6 +50,9 @@ export class PlazoDistribucionService {
         )
     }
 
+    //DISTRITO_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DISTRITO_URL;
+    PLAZO_DISTRIBUCION_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PLAZO_DISTRIBUCION_URL;
+
     private plazosDistribucion: PlazoDistribucion[];
     private buzonPlazoDistribucionPermitido: PlazoDistribucion;
     private areaPlazoDistribucionPermitido: PlazoDistribucion;
@@ -111,23 +114,10 @@ export class PlazoDistribucionService {
     listarPlazosDistribucionAll(): Observable<PlazoDistribucion[]> {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL, {});
     }
-    
-    // listarAmbitosDeUnaRegion(plazo: PlazoDistribucion){
-    //     return plazo.region.
-    // }
 
-    // exportarAutorizaciones(data) {
-    //     let objects = [];
-    //     data.forEach(entidad => {
-    //         objects.push({
-    //             "Tipo de Asignación": entidad.plazoDistribucion.tipoPlazoDistribucion,
-    //             "Buzón/Area": entidad.nombre,
-    //             "Plazo Actual": entidad.plazoDistribucion.nombre,
-    //             "Fecha de cambio": entidad.fechaAsociacion,
-    //             "Cantidad de documentos": "FALTA",
-    //         })
-    //     });
-    // }
+    listarPlazosDistribucionByDistritoId(distritoId: number): Observable<PlazoDistribucion[]>{
+        return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL + distritoId.toString() + "/distrito", {});
+    }
 
     exportarAutorizaciones(data) {
         let objects = [];
