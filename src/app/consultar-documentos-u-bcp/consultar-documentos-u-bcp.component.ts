@@ -110,9 +110,6 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             documentodevuelto: {
                 title: 'Documento Devuelto'
             },
-            fisicoRecibido: {
-                title: 'Físico recibido'
-            },
             autorizado: {
                 title: 'Autorizado'
             },
@@ -160,7 +157,6 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
                                         motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                                         documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
-                                        fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                                         autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA" ,
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),
                                         fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",

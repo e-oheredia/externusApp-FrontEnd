@@ -100,9 +100,6 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       documentodevuelto: {
         title: 'Documento devuelto'
       },
-      fisicoRecibido: {
-        title: 'Físico recibido'
-      },
       autorizado: {
         title: 'Autorizado'
       },
@@ -142,7 +139,6 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado,
               documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
-              fisicoRecibido: documento.recepcionado ? "SI" : "NO",
               autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
               fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
@@ -195,7 +191,6 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
                       motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                       documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
-                      fisicoRecibido: documento.recepcionado ? "SI" : "NO",
                       autorizado:  this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
                       fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
