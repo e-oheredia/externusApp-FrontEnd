@@ -92,22 +92,22 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.cargarDatosVista();
     this.documentoForm = new FormGroup({
       'sedeDespacho': new FormControl(null, Validators.required),
+      'producto': new FormControl(null, Validators.required),
       'nroDocumento': new FormControl(""),
-      'plazoDistribucion': new FormControl(null, Validators.required),
-      'clasificacion': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
       'tipoServicio': new FormControl(null, Validators.required),
-      'producto': new FormControl(null, Validators.required),
+      'clasificacion': new FormControl(null, Validators.required),
+      'telefono': new FormControl(""),
+      'distrito': new FormControl(null, Validators.required),
+      'plazoDistribucion': new FormControl(null, Validators.required),
       'comunicacionDestino': new FormGroup({
         'razonSocial': new FormControl(""),
         'contacto': new FormControl("")
       }, this.atLeastOne),
-      'distrito': new FormControl(null, Validators.required),
-      'telefono': new FormControl(""),
       'direccion': new FormControl("", Validators.required),
       'referencia': new FormControl(""),
-      'cargoPropio': new FormControl("", Validators.required),
-      'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)])
+      'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)]),
+      'cargoPropio': new FormControl("", Validators.required)      
     });
   }
 
@@ -116,7 +116,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.productos = this.productoService.getProductos();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
-    // this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.departamentos = this.departamentoService.getDepartamentosPeru();
     this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
     this.buzon = this.buzonService.getBuzonActual();
@@ -142,11 +141,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         this.tiposSeguridad = tiposSeguridad;
       }
     )
-    // this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
-    //   plazosDistribucion => {
-    //     this.plazosDistribucion = plazosDistribucion;
-    //   }
-    // )
     this.departamentosSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
       departamentosPeru => {
         this.departamentos = departamentosPeru;
