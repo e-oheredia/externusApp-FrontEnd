@@ -24,6 +24,7 @@
       </div>
       <div class="card-body">
         <form [formGroup]="documentoForm" (ngSubmit)="onSubmit(documentoForm.value)">
+          
 
           <div class="form-row">
             <div class="col">
@@ -41,6 +42,7 @@
             </div>
           </div>
 
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -54,14 +56,15 @@
                 </span>
               </div>
             </div>
-
             <div class="col">
               <div class="form-group">
                 <label for="nroDocumento">Nro. Documento *</label>
-                <input class="form-control" type="text" name="nroDocumento" formControlName="nroDocumento" id="">
+                <input class="form-control" type="text" name="nroDocumento" formControlName="nroDocumento"
+                  id="nroDocumento">
               </div>
             </div>
           </div>
+
 
           <div class="form-row">
             <div class="col">
@@ -92,6 +95,7 @@
             </div>
           </div>
 
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -113,6 +117,7 @@
               </div>
             </div>
           </div>
+
 
           <div class="form-row">
             <div class="col">
@@ -137,12 +142,11 @@
           </div>
 
 
-
           <div class="form-row">
             <div class="col">
               <div class="form-group">
                 <label for="distrito">Distrito *</label>
-                <select class="form-control" id="distrito" [(ngModel)]="distrito"
+                <select class="form-control" id="distrito" [(ngModel)]="distrito" 
                 [ngModelOptions]="{standalone: true}" (change)="onDistritoSelectedChanged(distrito)">
                   <option *ngFor="let distrito of distritos" [ngValue]="distrito">{{distrito.nombre}}</option>
                 </select>
@@ -189,8 +193,9 @@
                 <input class="form-control" type="text" name="contacto" id="contacto" formControlName="contacto">
               </div>
             </div>
-
           </div>
+
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -209,6 +214,8 @@
               </div>
             </div>
           </div>
+
+
           <div class="form-group"
             *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
             <label for="autorizacion">
@@ -217,6 +224,8 @@
             <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion"
               (change)="onChangeFile($event.srcElement.files[0])" accept=".msg">
           </div>
+
+          
           <div class="row">
             <div class="col">
               <div class="form-row align-items-center float-right mb-3 mt-3">
