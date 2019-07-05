@@ -142,7 +142,8 @@
             <div class="col">
               <div class="form-group">
                 <label for="distrito">Distrito *</label>
-                <select class="form-control" id="distrito" formControlName="distrito">
+                <select class="form-control" id="distrito" [(ngModel)]="distrito"
+                [ngModelOptions]="{standalone: true}" (change)="onDistritoSelectedChanged(distrito)">
                   <option *ngFor="let distrito of distritos" [ngValue]="distrito">{{distrito.nombre}}</option>
                 </select>
                 <span *ngIf="!documentoForm.get('distrito').valid && documentoForm.get('distrito').touched"
@@ -167,6 +168,8 @@
               </div>
             </div>
           </div>
+
+
           <div class="form-row comunicacionDestino" formGroupName="comunicacionDestino">
             <div class="col-6">
               <div class="form-group">

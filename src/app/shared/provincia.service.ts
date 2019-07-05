@@ -24,8 +24,7 @@ export class ProvinciaService {
     public provinciasChanged = new Subject<Provincia[]>();
 
     listarProvinciaByDepartamentoId(departamentoId: number): Observable<Provincia[]>{
-        return this.requester.get<Provincia[]>(this.DEPARTAMENTO_REQUEST_URL + departamentoId.toString() + "/" 
-        + AppSettings.PROVINCIA_URL, {});
+        return this.requester.get<Provincia[]>(this.DEPARTAMENTO_REQUEST_URL + departamentoId.toString() + "/" + AppSettings.PROVINCIA_URL, {});
     }
 
     listarAll(): Observable<Provincia[]>{

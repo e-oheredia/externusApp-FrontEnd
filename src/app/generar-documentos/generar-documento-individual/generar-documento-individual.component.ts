@@ -24,7 +24,6 @@ import { Buzon } from '../../../model/buzon.model';
 import { BuzonService } from '../../shared/buzon.service';
 import { Documento } from '../../../model/documento.model';
 import { UtilsService } from '../../shared/utils.service';
-import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
 import { Sede } from 'src/model/sede.model';
 import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
 import { Producto } from 'src/model/producto.model';
@@ -117,12 +116,11 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.productos = this.productoService.getProductos();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
-    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+    // this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.departamentos = this.departamentoService.getDepartamentosPeru();
     this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
     this.buzon = this.buzonService.getBuzonActual();
     this.sedesDespacho = this.sedeDespachoService.getSedesDespacho();
-
 
     this.clasificacionesSubscription = this.clasificacionService.clasificacionesChanged.subscribe(
       clasificaciones => {
@@ -144,11 +142,11 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         this.tiposSeguridad = tiposSeguridad;
       }
     )
-    this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
-      plazosDistribucion => {
-        this.plazosDistribucion = plazosDistribucion;
-      }
-    )
+    // this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
+    //   plazosDistribucion => {
+    //     this.plazosDistribucion = plazosDistribucion;
+    //   }
+    // )
     this.departamentosSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
       departamentosPeru => {
         this.departamentos = departamentosPeru;
@@ -178,6 +176,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       }
     );
     this.distritos = [];
+    this.plazosDistribucion = [];
   }
   onProvinciaSelectedChanged(provincia) {
     this.distritosSubscription = this.distritoService.listarDistritosByProvinciaId(provincia.id).subscribe(
@@ -185,6 +184,13 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         this.distritos = distritos;
       }
     );
+  }
+  onDistritoSelectedChanged(distrito){
+    this.distritosSubscription = this.plazoDistribucionService.listarPlazosDistribucionByDistritoId(distrito.id).subscribe(
+      plazosDistribucion => {
+        this.plazosDistribucion = plazosDistribucion
+      }
+    )
   }
   onPlazoDistribucionSelected() {
     this.autorizationFile = null;
