@@ -119,6 +119,10 @@ export class PlazoDistribucionService {
         return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL + distritoId.toString() + "/distrito", {});
     }
 
+    listarPlazosDistribucionByRegionId(regionId: number): Observable<PlazoDistribucion[]>{
+        return this.requester.get<PlazoDistribucion[]>(this.REQUEST_URL + regionId.toString() + "/plazoregion", {});
+    }
+
     exportarAutorizaciones(data) {
         let objects = [];
         Object.keys(data).forEach(key => {

@@ -30,6 +30,8 @@ import { ClasificacionService } from 'src/app/shared/clasificacion.service';
 import { Clasificacion } from 'src/model/clasificacion.model';
 import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
+import { RegionService } from 'src/app/shared/region.service';
+import { Region } from 'src/model/region.model';
 
 
 @Component({
@@ -51,7 +53,8 @@ export class GenerarMasivoComponent implements OnInit {
     private cargoPdfService: CargoPdfService,
     private modalService: BsModalService,
     private sedeDespachoService: SedeDespachoService,
-    private productoService: ProductoService
+    private productoService: ProductoService,
+    private regionService: RegionService
   ) { }
 
   rutaPlantilla: string = AppSettings.PLANTILLA_MASIVO;
@@ -62,43 +65,13 @@ export class GenerarMasivoComponent implements OnInit {
   tiposServicio: TipoServicio[];
   clasificaciones: Clasificacion[];
   sedesDespacho: Sede[];
+  regiones: Region[];
   plazoDistribucionPermitido: PlazoDistribucion;
   buzon: Buzon;
   excelFile: File;
   autorizacionFile: File;
   documentosCorrectos: Documento[] = [];
   documentosIncorrectos: InconsistenciaDocumento[] = [];
-  columnsDocumentosCargados = {
-    nroDocumento: {
-      title: 'Nro Documento'
-    },
-    razonSocialDestino: {
-      title: 'Razón Social'
-    },
-    contactoDestino: {
-      title: 'Contacto'
-    },
-    departamentoNombre: {
-      title: 'Departamento'
-    },
-    provinciaNombre: {
-      title: 'Provincia'
-    },
-    distritoNombre: {
-      title: 'Distrito'
-    },
-    direccion: {
-      title: 'Dirección'
-    },
-    referencia: {
-      title: 'Referencia'
-    },
-    telefono: {
-      title: 'Teléfono'
-    }
-  };
-
-  tableSettings = AppSettings.tableSettings;
 
   plazosDistribucionSubscription: Subscription;
   tiposSeguridadSubscription: Subscription;
@@ -108,16 +81,17 @@ export class GenerarMasivoComponent implements OnInit {
   productoSubscription: Subscription;
   plazoDistribucionPermitidoSubscription: Subscription;
   buzonSubscription: Subscription;
+  regionSubscription: Subscription;
   autogeneradoCreado: string;
 
   ngOnInit() {
-    this.tableSettings.columns = this.columnsDocumentosCargados;
     this.cargarDatosVista();
     this.masivoForm = new FormGroup({
       'cantidadDocumentos': new FormControl(""),
       'cantidadCorrectos': new FormControl(""),
       'cantidadIncorrectos': new FormControl(""),
       'sedeDespacho': new FormControl(null, Validators.required),
+      'region': new FormControl(null, Validators.required),
       'clasificacion': new FormControl(null, Validators.required),
       'plazoDistribucion': new FormControl(null, Validators.required),
       'producto': new FormControl(null, Validators.required),
@@ -138,6 +112,7 @@ export class GenerarMasivoComponent implements OnInit {
     this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
     this.buzon = this.buzonService.getBuzonActual();
+    this.regiones = this.regionService.getRegiones();
 
     this.clasificacionesSubscription = this.clasificacionService.clasificacionesChanged.subscribe(
       clasificaciones => {
@@ -179,8 +154,21 @@ export class GenerarMasivoComponent implements OnInit {
         this.sedesDespacho = sedesDespacho;
       }
     )
+    this.regionSubscription = this.regionService.regionesChanged.subscribe(
+      regiones => {
+        this.regiones = regiones;
+      }
+    )
   }
 
+  onRegionSelectedChanged(region){
+    console.log(this.regiones)
+    this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByRegionId(region.id).subscribe(
+      plazos => {
+        this.plazosDistribucion = plazos;
+      }
+    );
+  }
 
   onChangeExcelFile(file: File) {
     if (file == null) {
@@ -282,6 +270,7 @@ export class GenerarMasivoComponent implements OnInit {
     envioMasivo.documentos = this.documentosCorrectos;
     envioMasivo.inconsistenciasDocumento = this.documentosIncorrectos;
     envioMasivo.producto = datosMasivo.get("producto").value;
+    envioMasivo.plazoDistribucion.regiones = datosMasivo.get("region").value;
     this.envioMasivoService.registrarEnvioMasivo(envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {
         this.documentosCorrectos = [];

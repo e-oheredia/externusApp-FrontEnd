@@ -96,7 +96,7 @@ export class AgregarPlazoComponent implements OnInit {
       plazo.tiempoEnvio = this.agregarForm.get("tiempoEnvio").value;
       plazo.tipoPlazoDistribucion = this.agregarForm.get('tipoPlazoDistribucion').value;
       let regioness=this.agregarForm.get('regiones').value;
-      plazo.regiones.push(regioness);
+      plazo.regiones.push(regioness );
 
       /*this.plazitos.regiones.push(plazo.regiones); */
 

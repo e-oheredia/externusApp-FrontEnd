@@ -18,8 +18,6 @@ import { EnvioBloque } from 'src/model/enviobloque.model';
 import { Buzon } from 'src/model/buzon.model';
 import { BuzonService } from 'src/app/shared/buzon.service';
 import { EnvioBloqueService } from 'src/app/shared/enviobloque.service';
-import { EnvioService } from 'src/app/shared/envio.service';
-import { CargoPdfService } from 'src/app/shared/cargo-pdf.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AutogeneradoCreadoModalComponent } from '../autogenerado-creado-modal/autogenerado-creado-modal.component';
 import { Documento } from 'src/model/documento.model';
@@ -27,9 +25,9 @@ import { DocumentoService } from 'src/app/shared/documento.service';
 import { UtilsService } from 'src/app/shared/utils.service';
 import { NotifierService } from 'angular-notifier';
 import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
-import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 import { Region } from 'src/model/region.model';
 import { RegionService } from 'src/app/shared/region.service';
+import { ConfirmModalComponent } from 'src/app/modals/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-generar-bloque',
@@ -47,8 +45,6 @@ export class GenerarBloqueComponent implements OnInit {
     private tipoSeguridadService: TipoSeguridadService,
     private buzonService: BuzonService,
     private envioBloqueService: EnvioBloqueService,
-    private envioService: EnvioService,
-    private cargoPdfService: CargoPdfService,
     private modalService: BsModalService,
     private documentoService: DocumentoService,
     private utilsService: UtilsService,
@@ -63,9 +59,9 @@ export class GenerarBloqueComponent implements OnInit {
   autogeneradoCreado: string;
   proveedor: Proveedor;
   codigoGuia: string;
-  region: Region;
 
   plazosDistribucion: PlazoDistribucion[];
+  region: Region;
   regiones: Region[];
   productos: Producto[];
   clasificaciones: Clasificacion[];
@@ -90,37 +86,29 @@ export class GenerarBloqueComponent implements OnInit {
   ngOnInit() {
     this.cargarDatosVista();
     this.bloqueForm = new FormGroup({
-      // 'cantidadDocumentos': new FormControl(""),
       'cantidadCorrectos': new FormControl(""),
       'cantidadIncorrectos': new FormControl(""),
-      'plazoDistribucion': new FormControl(null, Validators.required),
-      'producto': new FormControl(null, Validators.required),
-      'clasificacion': new FormControl(null, Validators.required),
-      'tipoServicio': new FormControl(null, Validators.required),
-      'proveedor': new FormControl(null, Validators.required),
       'region': new FormControl(null, Validators.required),
+      'plazoDistribucion': new FormControl(null, Validators.required),
+      'tipoServicio': new FormControl(null, Validators.required),
       'tipoSeguridad': new FormControl(null, Validators.required),
-      'excel': new FormControl(null, Validators.required),
-      'excel2': new FormControl(null),
-      'codigoGuia': new FormControl(null, Validators.required)
+      'clasificacion': new FormControl(null, Validators.required),
+      'proveedor': new FormControl(null, Validators.required),      
+      'producto': new FormControl(null, Validators.required),
+      'codigoGuia': new FormControl(null, Validators.required),
+      'excel': new FormControl(null, Validators.required)
     })
   }
 
   cargarDatosVista() {
-    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.productos = this.productoService.getProductos();
     this.clasificaciones = this.clasificacionService.getClasificaciones();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.proveedores = this.proveedorService.getProveedores();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
     this.buzon = this.buzonService.getBuzonActual();
-    this.regiones=this.regionService.getRegiones();
+    this.regiones = this.regionService.getRegiones();
 
-    this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
-      plazosDistribucion => {
-        this.plazosDistribucion = plazosDistribucion;
-      }
-    )
     this.productosSubscription = this.productoService.productosChanged.subscribe(
       productos => {
         this.productos = productos
@@ -157,7 +145,15 @@ export class GenerarBloqueComponent implements OnInit {
       }
     )
   }
-
+  
+  onRegionSelectedChanged(region){
+    console.log(this.regiones)
+    this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByRegionId(region.id).subscribe(
+      plazos => {
+        this.plazosDistribucion = plazos;
+      }
+    );
+  }
 
   onChangeExcelFile(file: File) {
     if (file == null) {
@@ -187,10 +183,14 @@ export class GenerarBloqueComponent implements OnInit {
   mostrarDocumentosCargados(file: File) {
     this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        console.log("primeros correctos: " + data.documentos.length)
+        console.log("primeros incorrectos: " + data.inconsistenciasDocumento.length)
         this.documentosCorrectos = data.documentos;
         this.documentosIncorrectos = data.inconsistenciasDocumento;
         // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
+          console.log("primeros correctos: " + this.documentosCorrectos.length)
+          console.log("primeros incorrectos: " + this.documentosIncorrectos.length)
           this.descargarInconsistencias(this.documentosIncorrectos);
         }
         return;
@@ -228,6 +228,9 @@ export class GenerarBloqueComponent implements OnInit {
 
 
   onSubmit(datosBloque: FormGroup) {
+    // console.log(datosBloque)
+    // console.log(datosBloque.get('region').value)
+    // console.log(datosBloque.get('plazoDistribucion').value)
     if (this.documentosIncorrectos.length > 0) {
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {

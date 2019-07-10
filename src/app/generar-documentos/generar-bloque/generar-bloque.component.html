@@ -29,13 +29,14 @@
       <div class="card-body">
         <form [formGroup]="bloqueForm" (ngSubmit)="onSubmit(bloqueForm)">
 
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
-                <label for="proveedor">Región *</label>
-                <select class="form-control" id="region" formControlName="region">
-                  <option *ngFor="let region of regiones" [ngValue]="region">
-                    {{region.nombre}}</option>
+                <label for="region">Región *</label>
+                <select class="form-control" id="region" formControlName="region" [(ngModel)]="region"
+                 (change)="onRegionSelectedChanged(region)">
+                  <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
                 </select>
                 <span *ngIf="!bloqueForm.get('region').valid && bloqueForm.get('region').touched"
                   class="text-danger small">
@@ -56,8 +57,8 @@
                 </span>
               </div>
             </div>
-            
           </div>
+
 
           <div class="form-row">
             <div class="col">
@@ -118,6 +119,7 @@
             </div>
           </div>
 
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -140,6 +142,7 @@
             </div>
           </div>
 
+
           <div class="form-row">
             <div class="col">
               <div class="form-group">
@@ -150,6 +153,7 @@
               </div>
             </div>
           </div>
+
 
           <div class="row" *ngIf="documentosIncorrectos.length === 0 && documentosCorrectos.length > 0">
             <div class="form-row">
@@ -165,6 +169,7 @@
               </div>
             </div>
           </div>
+
 
           <div class="row" *ngIf="documentosIncorrectos.length > 0 && documentosCorrectos.length === 0">
             <div class="form-row">
@@ -185,6 +190,7 @@
             </div>
           </div>
 
+
           <div class="row" *ngIf="documentosIncorrectos.length !== 0 && documentosCorrectos.length !== 0">
             <div class="form-row">
               <div class="col">
@@ -204,6 +210,8 @@
             </div>
           </div>
 
+
+          <!-- [disabled]="!bloqueForm.valid || documentosCorrectos.length === 0" -->
           <div class="row">
             <div class="button-group col text-right mb-4 mt-4">
               <button class="btn btn-outline-success" [disabled]="!bloqueForm.valid || documentosCorrectos.length === 0"
@@ -212,6 +220,7 @@
               </button>
             </div>
           </div>
+
 
           <ngx-barcode id="codebarBloque" [bc-value]="autogeneradoCreado" [bc-display-value]="true" hidden>
           </ngx-barcode>
@@ -222,4 +231,4 @@
     </div>
   </div>
 </div>
-<!-- [disabled]="!bloqueForm.valid"  -->
+
