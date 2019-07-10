@@ -262,7 +262,7 @@ export class GenerarBloqueComponent implements OnInit {
     this.codigoGuia = datosBloque.get('codigoGuia').value;
     this.proveedor = datosBloque.get('proveedor').value;
     this.region = datosBloque.get('region').value;
-    envioBloque.plazoDistribucion.region=this.region;
+    envioBloque.plazoDistribucion.regiones.push(this.region);
     this.envioBloqueService.registrarEnvioBloque(envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
       envioBloque => {
         this.documentosCorrectos = [];
