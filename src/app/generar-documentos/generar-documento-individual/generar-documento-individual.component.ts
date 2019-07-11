@@ -109,6 +109,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)]),
       'cargoPropio': new FormControl("", Validators.required)      
     });
+    console.log(this.documentoForm)
   }
 
   cargarDatosVista() {
@@ -169,6 +170,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         this.provincias = provincias;
       }
     );
+    console.log(departamento);
     this.distritos = [];
     this.plazosDistribucion = [];
   }
@@ -178,14 +180,16 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
         this.distritos = distritos;
       }
     );
+    console.log(provincia);
   }
   onDistritoSelectedChanged(distrito){
-    this.distritosSubscription = this.plazoDistribucionService.listarPlazosDistribucionByDistritoId(distrito.id).subscribe(
+    this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByDistritoId(distrito.id).subscribe(
       plazosDistribucion => {
         this.plazosDistribucion = plazosDistribucion
       }
-    )
+    );
   }
+  
   onPlazoDistribucionSelected() {
     this.autorizationFile = null;
     this.documentoForm.get("autorizacion").reset();
