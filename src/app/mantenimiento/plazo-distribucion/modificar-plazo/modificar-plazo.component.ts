@@ -76,13 +76,13 @@ export class ModificarPlazoComponent implements OnInit {
     this.regiones = this.regionService.getRegiones();
 
     if (this.regiones) {
-      let region = this.regiones.find(region => this.plazo.region.id === region.id);
+      let region = this.regiones.find(region => this.plazo.regiones[0].id === region.id);
       this.modificarForm.get("region").setValue(region);
     } else {
       this.regionesSubscription = this.regionService.regionesChanged.subscribe(
         regiones => {
           this.regiones = regiones;
-          let region = this.regiones.find(region => this.plazo.region.id === region.id);
+          let region = this.regiones.find(region => this.plazo.regiones[0].id === region.id);
           this.modificarForm.get("region").setValue(region);
         }
       )
@@ -100,13 +100,15 @@ export class ModificarPlazoComponent implements OnInit {
       plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
       plazo.activo = this.modificarForm.get('activo').value;
-      plazo.region = this.modificarForm.get('region').value;
+      plazo.regiones.pop();
+      plazo.regiones.push(this.modificarForm.get('region').value);
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
           mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los plazos actuales."
         }
       });
+      
       bsModalRef.content.confirmarEvent.subscribe(() => {
         this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(plazo.id, plazo).subscribe(
           plazo => {

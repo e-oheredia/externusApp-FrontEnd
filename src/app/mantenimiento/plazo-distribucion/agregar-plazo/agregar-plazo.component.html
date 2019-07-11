@@ -52,8 +52,7 @@
         <div class="col">
           <div class="form-group">
             <label for="region">Región</label>
-            <select class="form-control" id="region" [(ngModel)]="region" 
-            (change)="onRegionSelectedChanged(region)" formControlName="region">
+            <select class="form-control" id="region" formControlName="region">
               <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}
               </option>
             </select>

@@ -36,14 +36,15 @@ export class RecepcionarDocumentoComponent implements OnInit {
   recepcionarDocumentoSubscription: Subscription;
 
   ngOnInit() {
+    this.listarTiposDevolucion();
     this.recepcionarForm = new FormGroup({
       'autogenerado' : new FormControl(this.documento.documentoAutogenerado, Validators.required),
       'estado' : new FormControl(this.documentoService.getUltimoEstado(this.documento).nombre, Validators.required),
       'motivo' : new FormControl(this.documentoService.getUltimoSeguimientoDocumento(this.documento).motivoEstado.nombre, Validators.required),
       'devoluciones': new FormArray([])
-    });
-    
-    this.listarTiposDevolucion();
+    }, 
+    this.validarDevolucion.bind(this)
+    )
 
     setTimeout(() => {
       document.getElementById("recepcionarBoton").focus();
@@ -75,6 +76,7 @@ export class RecepcionarDocumentoComponent implements OnInit {
   }
 
   onSubmit(form: any){
+    console.log(form);
       let documento: Documento = new Documento();
       documento = this.documento;
       documento.id = this.documento.id;
@@ -100,6 +102,14 @@ export class RecepcionarDocumentoComponent implements OnInit {
     event.srcElement.checked ? this.tiposDevolucionIniciales.push(tipoDevolucion) : this.tiposDevolucionIniciales.splice(this.tiposDevolucionIniciales.indexOf(this.tiposDevolucionIniciales.find(devolucion => devolucion.id === tipoDevolucion.id)), 1);
   }
 
+
+  
+  validarDevolucion(form: FormGroup): { [key: string]: boolean } | null {
+    if (form.value.devoluciones.findIndex(devolucion => devolucion  === true) > -1) {
+      return null;
+    }    
+    return { 'ingreseDevolucion': true }
+  }
 
 
 }

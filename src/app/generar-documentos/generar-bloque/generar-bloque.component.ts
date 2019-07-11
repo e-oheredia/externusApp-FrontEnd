@@ -61,6 +61,7 @@ export class GenerarBloqueComponent implements OnInit {
   codigoGuia: string;
 
   plazosDistribucion: PlazoDistribucion[];
+  region: Region;
   regiones: Region[];
   productos: Producto[];
   clasificaciones: Clasificacion[];
@@ -263,8 +264,8 @@ export class GenerarBloqueComponent implements OnInit {
     envioBloque.inconsistenciasDocumento = this.documentosIncorrectos;
     this.codigoGuia = datosBloque.get('codigoGuia').value;
     this.proveedor = datosBloque.get('proveedor').value;
-    // this.region = datosBloque.get('region').value;
-    envioBloque.plazoDistribucion.region = datosBloque.get('region').value;
+    this.region = datosBloque.get('region').value;
+    envioBloque.plazoDistribucion.regiones.push(this.region);
     this.envioBloqueService.registrarEnvioBloque(envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
       envioBloque => {
         this.documentosCorrectos = [];
