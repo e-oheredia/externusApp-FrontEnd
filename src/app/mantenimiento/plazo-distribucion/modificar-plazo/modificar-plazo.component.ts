@@ -100,6 +100,7 @@ export class ModificarPlazoComponent implements OnInit {
       plazo.tiempoEnvio = this.modificarForm.get("tiempoEnvio").value;
       plazo.tipoPlazoDistribucion = this.modificarForm.get('tipoPlazoDistribucion').value;
       plazo.activo = this.modificarForm.get('activo').value;
+      plazo.regiones.pop();
       plazo.regiones.push(this.modificarForm.get('region').value);
 
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
@@ -107,6 +108,7 @@ export class ModificarPlazoComponent implements OnInit {
           mensaje: "¿Está seguro que desea modificar?. El cambio se verá reflejado en los plazos actuales."
         }
       });
+      
       bsModalRef.content.confirmarEvent.subscribe(() => {
         this.modificarTipoPlazosSubscription = this.plazoDistribucionService.modificarPlazoDistribucion(plazo.id, plazo).subscribe(
           plazo => {

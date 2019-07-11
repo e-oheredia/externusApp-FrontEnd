@@ -86,12 +86,9 @@ export class PlazoDistribucionComponent implements OnInit {
             dataPlazosDistribucion.push({
               id: plazo.id,
               nombre: plazo.nombre,
-              tipoPlazo: plazo.tipoPlazoDistribucion.nombre,
               plazos: plazo.tiempoEnvio,
-              //region: plazo.region ? plazo.region.nombre : "-",
-              // ambito: plazo.ambitos ? plazo.ambitos.map(ambito => ambito.nombre).join(", ") : "-",
+              tipoPlazo: plazo.tipoPlazoDistribucion.nombre,
               region: plazo.regiones[0] ? plazo.regiones.map(regiones => regiones.nombre).join(", ") : "-",
-              // ambito: this.plazoDistribucionService.listarAmbitosDeUnaRegion(plazo),
               estado: plazo.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }

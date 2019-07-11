@@ -7,11 +7,12 @@ export class PlazoDistribucion {
     constructor(
         public id: number, 
         public nombre:string, 
+        public tiempoEnvio: number,
         public tipoPlazoDistribucion: TipoPlazoDistribucion, 
         public rutaAutorizacion: string, 
-        public tiempoEnvio: number ,
-        public activo: boolean
+        public activo: boolean,
+        public ambitos: Ambito[] = [],
+        public regiones: Region[] = []
         ){}
-        public ambitos: Ambito[] = [];
-        public regiones: Region[] = [];
+
 }

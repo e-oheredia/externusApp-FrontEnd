@@ -52,7 +52,7 @@ export class AgregarPlazoComponent implements OnInit {
       'nombre': new FormControl('', Validators.required),
       'tiempoEnvio': new FormControl('', Validators.required),
       'tipoPlazoDistribucion': new FormControl(null, Validators.required),
-      'regiones': new FormControl(null, Validators.required)
+      'region': new FormControl(null, Validators.required)
     })
   }
 
@@ -85,20 +85,19 @@ export class AgregarPlazoComponent implements OnInit {
 
   onSubmit(form: any) {
 
-
     if (this.agregarForm.controls['nombre'].value.length !== 0 && this.agregarForm.controls['tiempoEnvio'].value.length !== 0 && 
     this.agregarForm.controls['tipoPlazoDistribucion'].value.length !== 0 && 
-    this.agregarForm.controls['regiones'].value.length !== 0) {
+    this.agregarForm.controls['region'].value.length !== 0) {
       
       let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
       let plazo = Object.assign({}, this.plazo);
+
       plazo.nombre = nombreSinEspacios;
       plazo.tiempoEnvio = this.agregarForm.get("tiempoEnvio").value;
       plazo.tipoPlazoDistribucion = this.agregarForm.get('tipoPlazoDistribucion').value;
-      let regioness=this.agregarForm.get('regiones').value;
-      plazo.regiones.push(regioness );
-
-      /*this.plazitos.regiones.push(plazo.regiones); */
+      let region = this.agregarForm.get('region').value;
+      plazo.regiones = [];
+      plazo.regiones.push(region);
 
       this.crearPlazoSubscription = this.plazoDistribucionService.agregarPlazoDistribucion(plazo).subscribe(
         plazo => {
