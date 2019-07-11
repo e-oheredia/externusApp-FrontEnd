@@ -162,7 +162,6 @@ export class GenerarMasivoComponent implements OnInit {
   }
 
   onRegionSelectedChanged(region){
-    console.log(this.regiones)
     this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByRegionId(region.id).subscribe(
       plazos => {
         this.plazosDistribucion = plazos;
@@ -211,8 +210,6 @@ export class GenerarMasivoComponent implements OnInit {
   mostrarDocumentosCargados2(file: File) {
     this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        console.log("primeros correctos: " + this.documentosCorrectos.length)
-        console.log("nuevos correctos: " + data.documentos.length)
         this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
         this.documentosIncorrectos = data.inconsistenciasDocumento;
         // descargar inconsistencias
@@ -270,7 +267,9 @@ export class GenerarMasivoComponent implements OnInit {
     envioMasivo.documentos = this.documentosCorrectos;
     envioMasivo.inconsistenciasDocumento = this.documentosIncorrectos;
     envioMasivo.producto = datosMasivo.get("producto").value;
-    envioMasivo.plazoDistribucion.regiones = datosMasivo.get("region").value;
+    // let region = datosMasivo.get("region").value;
+    // envioMasivo.plazoDistribucion.regiones = [];
+    // envioMasivo.plazoDistribucion.regiones.push(region);
     this.envioMasivoService.registrarEnvioMasivo(envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {
         this.documentosCorrectos = [];
