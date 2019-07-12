@@ -73,8 +73,8 @@ export class RecepcionarDevueltosComponent implements OnInit {
           if (this.documentos.length > 0) {
             instance.mostrarData.subscribe(row => {
               let docu = this.documento = this.documentos.find(documento => documento.documentoAutogenerado == row.autogenerado);
-              let estadito = this.documentoService.getUltimoEstado(docu).id
-              if (estadito == EstadoDocumentoEnum.RECEPCIONADO) {
+              let estadito = this.documentoService.getUltimoEstado(docu)
+              if (estadito.id == EstadoDocumentoEnum.RECEPCIONADO) {
                 instance.claseIcono = "fas fa-edit";
               }
             });

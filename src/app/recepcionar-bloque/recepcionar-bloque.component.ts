@@ -156,7 +156,7 @@ export class RecepcionarBloqueComponent implements OnInit {
               tipoSeguridad: guia.tipoSeguridad.nombre,
               clasificacion: guia.clasificacion.nombre,
               producto: guia.producto.nombre,
-              fechaLimiteResultado: '',
+              fechaLimiteResultado: guia.fechaLimite ? guia.fechaLimite : '-',
               entregados: guia.cantidadEntregados,
               rezagados: guia.cantidadRezagados,
               noDistribuibles: guia.cantidadNoDistribuibles,

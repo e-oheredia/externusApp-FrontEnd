@@ -103,36 +103,36 @@ export class DocumentoService {
                 let documentoIncorrecto: InconsistenciaDocumento = new InconsistenciaDocumento();
 
 
-                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {                                            
+                if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
                     documentoIncorrecto.resumen += "Ingrese la razón social o el contacto. "
                     todoCorrecto = false;
                 } else {
                     let razonsocial = data[i][1];
                     let contacto = data[i][2];
-                    if(!this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])){
-                        if(!this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])){
-                            if(contacto.length < 4 || razonsocial.length < 4){
+                    if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
+                        if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
+                            if (contacto.length < 4 || razonsocial.length < 4) {
                                 documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
-                                todoCorrecto = false;                           
-                            }                              
+                                todoCorrecto = false;
+                            }
 
                         }
                     }
 
-                    if(this.utilsService.isUndefinedOrNullOrEmpty(razonsocial)){
-                        if(contacto.length < 4){
+                    if (this.utilsService.isUndefinedOrNullOrEmpty(razonsocial)) {
+                        if (contacto.length < 4) {
                             documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
-                            todoCorrecto = false;                           
-                        }     
-                    }    
-
-                    if(this.utilsService.isUndefinedOrNullOrEmpty(contacto)){
-                        if(razonsocial.length < 4){
-                            documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
-                            todoCorrecto = false;                           
-                        }     
+                            todoCorrecto = false;
+                        }
                     }
-                    
+
+                    if (this.utilsService.isUndefinedOrNullOrEmpty(contacto)) {
+                        if (razonsocial.length < 4) {
+                            documentoIncorrecto.resumen += "La razón social o el contacto deben tener más de 3 caracteres. "
+                            todoCorrecto = false;
+                        }
+                    }
+
                 }
 
                 if (this.departamentoService.listarDepartamentoByNombre(data[i][3]) === null) {
@@ -161,7 +161,7 @@ export class DocumentoService {
                         documentoIncorrecto.resumen += "Ingrese el teléfono solo con números. "
                         todoCorrecto = false;
                         return;
-                    } 
+                    }
                     if (telefono.length < 4) {
                         documentoIncorrecto.resumen += "Ingrese el teléfono con más de 3 números. "
                         todoCorrecto = false;
@@ -344,7 +344,7 @@ export class DocumentoService {
         return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcion", {}, {});
     }
 
-    
+
     listarCargos(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentoscargos", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
@@ -551,7 +551,6 @@ export class DocumentoService {
                     }
                 }
 
-
                 if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][20])) {
                     if (data[i][20] == "x" || data[i][20] == "X") {
                         let tipodevolucion = new TipoDevolucion();
@@ -564,7 +563,6 @@ export class DocumentoService {
                         return;
                     }
                 }
-
 
                 if (!this.utilsService.isUndefinedOrNullOrEmpty(data[i][21])) {
                     if (data[i][21] == "x" || data[i][21] == "X") {
@@ -753,10 +751,10 @@ export class DocumentoService {
                 "Autogenerado": documento.documentoAutogenerado,
                 "Remitente": documento.envio.buzon.nombre,
                 "Área del remitente": documento.envio.buzon.area.nombre,
-                "Fecha de entrega":  this.getSeguimientoDocumentoByEstadoId(documento, 4) ? this.getSeguimientoDocumentoByEstadoId(documento, 4).fecha : this.getSeguimientoDocumentoByEstadoId(documento, 5) ? this.getSeguimientoDocumentoByEstadoId(documento, 5).fecha : "sin fecha",
+                "Fecha de entrega": this.getSeguimientoDocumentoByEstadoId(documento, 4) ? this.getSeguimientoDocumentoByEstadoId(documento, 4).fecha : this.getSeguimientoDocumentoByEstadoId(documento, 5) ? this.getSeguimientoDocumentoByEstadoId(documento, 5).fecha : "sin fecha",
                 "Estado": this.getUltimoEstado(documento).nombre,
                 "Motivo": this.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
-                "Físicos devueltos": documento.tiposDevolucion.sort((a,b) => a.id - b.id).map(tipoDevolucion => tipoDevolucion.nombre).join(", ")
+                "Físicos devueltos": documento.tiposDevolucion.sort((a, b) => a.id - b.id).map(tipoDevolucion => tipoDevolucion.nombre).join(", ")
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Documentos por cerrar");
