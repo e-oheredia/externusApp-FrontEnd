@@ -11,12 +11,12 @@
         <form [formGroup]="guiaForm" (ngSubmit)="onSubmit(guiaForm.value)">
           <div class="form-group">
             <label for="region">Región *</label>
-            <select class="form-control" id="region" formControlName="region">
+            <select class="form-control" id="region" formControlName="region" [(ngModel)]="region"
+            (change)="onRegionSelectedChanged(region)">
               <option *ngFor="let region of regiones" [ngValue]="region">
                 {{region.nombre}}</option>
             </select>
-            <span *ngIf="!guiaForm.get('region').valid && guiaForm.get('region').touched"
-              class="text-danger small">
+            <span *ngIf="!guiaForm.get('region').valid && guiaForm.get('region').touched" class="text-danger small">
               Es necesario ingresar la región
             </span>
           </div>

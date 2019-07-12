@@ -123,6 +123,14 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
     );
   }
 
+  onRegionSelectedChanged(region){
+    this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByRegionId(region.id).subscribe(
+      plazos => {
+        this.plazosDistribucion = plazos;
+      }
+    );
+  }
+
   onSubmit(guia) {
     this.crearGuiaSubscription = this.guiaService.registrarGuia(guia).subscribe(
       guia => {

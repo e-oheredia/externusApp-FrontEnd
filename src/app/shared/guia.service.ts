@@ -210,9 +210,9 @@ export class GuiaService {
                 "Teléfono": documento.telefono,
                 "Estado": this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre,
                 "Motivo": this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre,
-                "Cargo" : " ",
-                "Rezago" : " ",
-                "Denuncia" : " "
+                "Cargo" : "",
+                "Rezago" : "",
+                "Denuncia" : ""
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Guia: " + guia.numeroGuia);

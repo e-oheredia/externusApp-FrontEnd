@@ -173,8 +173,7 @@ export class ReporteGuiasBloqueComponent implements OnInit {
                       pendienteResultado: guia.cantidadDocumentosPendientes,
                       totalDocumentos: guia.cantidadDocumentos,
                       fechaCreacion: this.guiaService.getFechaCreacion(guia),
-                      // fechalimite: guia.fechaLimite,
-                      fechalimite: " ",
+                      fechalimite: guia.fechaLimite ? guia.fechaLimite : '-',
                       fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre
