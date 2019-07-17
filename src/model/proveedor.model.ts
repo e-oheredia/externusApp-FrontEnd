@@ -4,7 +4,7 @@ export class Proveedor {
     constructor(){}
     public id: number;
     public nombre:string;
-    public plazosDistribucion: PlazoDistribucion[];
+    //public plazosDistribucion: PlazoDistribucion[];
     public activo: boolean;
     public ambitos: Ambito[];   
 }
