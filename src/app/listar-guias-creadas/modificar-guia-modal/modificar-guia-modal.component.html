@@ -27,7 +27,7 @@
           </div>          
           <div class="row">
             <div class="col text-right">
-              <button type="submit" class="btn btn-primary" [disabled]="!guiaForm.valid">Modificar</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!guiaForm.valid || guiaForm.pristine">Modificar</button>
             </div>
           </div>
         </form>

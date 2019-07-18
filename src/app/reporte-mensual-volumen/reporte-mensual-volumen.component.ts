@@ -90,6 +90,8 @@ export class ReporteMensualVolumenComponent implements OnInit {
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
 
+        console.log(this.proveedores)
+
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && 
             !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
