@@ -89,8 +89,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
       regiones => {
         this.regiones = regiones;
       }
-    )
-
+    );
     this.tiposServicioSubscription = this.tipoServicioService.tiposServicioChanged.subscribe(
       tiposServicio => {
         this.tiposServicio = tiposServicio;

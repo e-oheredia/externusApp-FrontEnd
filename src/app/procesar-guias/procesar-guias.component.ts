@@ -130,14 +130,14 @@ export class ProcesarGuiasComponent implements OnInit {
             plazo: guia.plazoDistribucion.nombre,
             tipoServicio: guia.tipoServicio.nombre,
             tipoSeguridad: guia.tipoSeguridad.nombre,
-            fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : "",
-            fechalimite: guia.fechaLimite ? guia.fechaLimite : '-',
+            fechaEnvio: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha : " ",
+            fechalimite: guia.fechaLimite ? guia.fechaLimite : ' ',
             total: guia.cantidadDocumentos,
             entregados: guia.cantidadEntregados,
             rezagados: guia.cantidadRezagados,
             nodistribuibles: guia.cantidadNoDistribuibles,
             pendientesResultado: guia.cantidadPendientes,
-            fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3).fecha : "",
+            fechadescarga: this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3) ? this.guiaService.getSeguimientoGuiaByEstadoGuiaId(guia, 3).fecha : " ",
           })
         })
         this.dataGuiasPorProcesar.load(dataGuiasPorProcesar);

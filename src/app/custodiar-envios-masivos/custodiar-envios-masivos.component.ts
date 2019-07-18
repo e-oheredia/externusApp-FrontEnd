@@ -112,6 +112,7 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
         this.enviosMasivosCreados = enviosMasivosCreados;
       }
     )
+    console.log(this.enviosMasivosCreados);
   }
 
   abrir(masivoAutogenerado: string) {
