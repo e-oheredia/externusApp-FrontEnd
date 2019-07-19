@@ -139,6 +139,8 @@ export class ReporteEficienciaComponent implements OnInit {
         return regiones;
     }
 
+
+
     regionesxproveedor2(proveedor){
       let regiones: any[] = [];
 
