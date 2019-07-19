@@ -2,9 +2,10 @@ import { Envio } from './envio.model';
 
 export class EnvioMasivo extends Envio {
 
-    constructor(){
+    constructor() {
         super();
     }
 
     public masivoAutogenerado: string;
+
 }

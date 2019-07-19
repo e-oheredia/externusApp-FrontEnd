@@ -47,15 +47,13 @@ export class ModificarRegionComponent implements OnInit {
           'id': new FormControl(dia.id, Validators.required),
           'nombre': new FormControl(dia.dia.nombre, Validators.required),
           'activo': new FormControl(dia.activo, Validators.required),
-          'horaini': new FormControl({value: dia.activo == 0  ? null: dia.inicio, disabled: dia.activo == 0}, Validators.required),
-          'horafin': new FormControl({value: dia.activo == 0 ? null: dia.fin, disabled: dia.activo == 0}, Validators.required)
+          'horaini': new FormControl({ value: dia.activo == 0 ? null : dia.inicio, disabled: dia.activo == 0 }, Validators.required),
+          'horafin': new FormControl({ value: dia.activo == 0 ? null : dia.fin, disabled: dia.activo == 0 }, Validators.required)
         }))
-      })
-    console.log(this.modificarForm)
+    })
   }
 
   validarAlMenosUnActivo(form: any): boolean {
-    console.log(this.modificarForm.value);
     let diaActivo = (<Array<DiaLaborable>>this.modificarForm.value.diaslaborables).find(dialaborable => dialaborable.activo == true || dialaborable.activo == 1);
     if (this.utilsService.isUndefinedOrNullOrEmpty(diaActivo)) {
       return false;
@@ -70,7 +68,7 @@ export class ModificarRegionComponent implements OnInit {
       return null;
     }
 
-    return {'atLeastOneActiveRequired': true}
+    return { 'atLeastOneActiveRequired': true }
   }
 
   onSubmit(form: any) {
@@ -106,15 +104,11 @@ export class ModificarRegionComponent implements OnInit {
           this.regionModificadaEvent.emit(region);
         },
         error => {
-          if (error.status === 400){
+          if (error.status === 400) {
             this.notifier.notify('error', error.error.message);
           }
-        }  
-        // error => {
-        //   this.notifier.notify('error', 'NO SE PUEDE MODIFICAR, LLAMA A ORLA');
-        // }
+        }
       )
-      console.log(this.modificarForm)
     })
   }
 

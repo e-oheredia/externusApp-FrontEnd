@@ -31,19 +31,16 @@ export class EnviarGuiabloqueComponent implements OnInit {
     this.enviarForm = new FormGroup({})
   }
 
-  onSubmit(form: any){
+  onSubmit(form: any) {
     let numero = Number(this.guia.id)
     console.log(this.guia)
-      this.enviarGuiaBloqueSubscription = this.guiaService.enviarGuiaBloque(numero).subscribe(
-        guia => {
-          this.notifier.notify('success', 'Se envió la guía con éxito');
-          this.bsModalRef.hide();
-          this.enviarGuiaBloqueEvent.emit(guia);
-        },
-        // error => {
-        //   this.notifier.notify('error', 'El número modificado ya existe');
-        // }
-      );
+    this.enviarGuiaBloqueSubscription = this.guiaService.enviarGuiaBloque(numero).subscribe(
+      guia => {
+        this.notifier.notify('success', 'Se envió la guía con éxito');
+        this.bsModalRef.hide();
+        this.enviarGuiaBloqueEvent.emit(guia);
+      }
+    );
   }
 
 }

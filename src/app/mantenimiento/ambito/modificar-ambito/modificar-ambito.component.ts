@@ -32,7 +32,7 @@ export class ModificarAmbitoComponent implements OnInit {
   ambito: Ambito;
   ambitos: Ambito[] = [];
   regiones: Region[];
-  modificarForm: FormGroup; 
+  modificarForm: FormGroup;
 
   regionesSubscription: Subscription;
   modificarAmbitoSubscription: Subscription;
@@ -46,10 +46,10 @@ export class ModificarAmbitoComponent implements OnInit {
     this.cargarDatosVista();
   }
 
-  cargarDatosVista(){
+  cargarDatosVista() {
     this.regiones = this.regionService.getRegiones();
 
-    if(this.regiones){
+    if (this.regiones) {
       this.modificarForm.get("region").setValue(this.regiones.find(region => this.ambito.region.id === region.id));
     }
     this.regionesSubscription = this.regionService.regionesChanged.subscribe(
@@ -62,7 +62,7 @@ export class ModificarAmbitoComponent implements OnInit {
 
 
   onSubmit(form: any) {
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)) {
       let ambito = Object.assign({}, this.ambito);
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
       ambito.nombre = nombreSinEspacios;
@@ -74,20 +74,20 @@ export class ModificarAmbitoComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarAmbitoSubscription = this.ambitoService.modificarAmbito(ambito.id, ambito).subscribe(
-        ambito => {
-          this.notifier.notify('success', 'Se ha modificado el ámbito correctamente');
-          this.bsModalRef.hide();
-          this.ambitoModificadoEvent.emit(ambito);
-        },
-        error => {
-          this.notifier.notify('error', 'El nombre modificado ya existe');
-        }
+        this.modificarAmbitoSubscription = this.ambitoService.modificarAmbito(ambito.id, ambito).subscribe(
+          ambito => {
+            this.notifier.notify('success', 'Se ha modificado el ámbito correctamente');
+            this.bsModalRef.hide();
+            this.ambitoModificadoEvent.emit(ambito);
+          },
+          error => {
+            this.notifier.notify('error', 'El nombre modificado ya existe');
+          }
         );
       })
     }
   }
 
-  
+
 
 }

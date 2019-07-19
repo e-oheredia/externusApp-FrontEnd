@@ -29,8 +29,8 @@ export class DiaLaborableComponent implements OnInit {
 
   dataRegiones: LocalDataSource = new LocalDataSource();
   dataFeriados: LocalDataSource = new LocalDataSource();
-  settings = Object.assign({},AppSettings.tableSettings);
-  settings2 = Object.assign({},AppSettings.tableSettings);
+  settings = Object.assign({}, AppSettings.tableSettings);
+  settings2 = Object.assign({}, AppSettings.tableSettings);
   feriado: Feriado;
   feriados: Feriado[] = [];
   region: Region;
@@ -80,7 +80,7 @@ export class DiaLaborableComponent implements OnInit {
             dataRegiones.push({
               id: region.id,
               nombre: region ? region.nombre : 'no tiene',
-              dias: region.diasLaborables.filter(dia => dia.activo==1).sort((a,b) => a.id - b.id).map(diaLaborable => diaLaborable.dia.nombre).join(", ")
+              dias: region.diasLaborables.filter(dia => dia.activo == 1).sort((a, b) => a.id - b.id).map(diaLaborable => diaLaborable.dia.nombre).join(", ")
             })
           }
         )
@@ -195,7 +195,7 @@ export class DiaLaborableComponent implements OnInit {
         },
         error => {
           this.notifier.notify('error', error.error.message);
-        }        
+        }
       )
     })
   }

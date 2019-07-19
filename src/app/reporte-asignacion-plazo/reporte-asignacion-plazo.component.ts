@@ -30,7 +30,7 @@ export class ReporteAsignacionPlazoComponent implements OnInit {
   rutaManual: string = AppSettings.MANUAL_REGISTRO;
 
   reportesAsignacion: ReporteAsignacionPlazo[] = [];
-  
+
   plazoSubscription: Subscription;
   plazoForm: FormGroup;
 
@@ -40,7 +40,7 @@ export class ReporteAsignacionPlazoComponent implements OnInit {
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
       "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
     }),
-    this.tituloService.setTitulo("REPORTE DE ASIGNACIÓN DE PLAZOS");
+      this.tituloService.setTitulo("REPORTE DE ASIGNACIÓN DE PLAZOS");
     this.settings.hideSubHeader = false;
     this.generarColumnas();
     this.listarAsignacionesDePlazos();
@@ -80,14 +80,12 @@ export class ReporteAsignacionPlazoComponent implements OnInit {
 
     this.reportesAsignacion = [];
 
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.plazoForm.controls['fechaFin'].value)){
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.plazoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.plazoForm.controls['fechaFin'].value)) {
       this.plazoSubscription = this.plazoService.listarReporteAsignacionPlazos(this.plazoForm.controls['fechaIni'].value, this.plazoForm.controls['fechaFin'].value).subscribe(
         reportesAsignacion => {
           this.dataAsignaciones.reset();
           let dataAsignaciones = [];
-          console.log("reportesAsignacion")
-          console.log(reportesAsignacion)
-          if (!this.utilsService.isUndefinedOrNullOrEmpty(reportesAsignacion)){
+          if (!this.utilsService.isUndefinedOrNullOrEmpty(reportesAsignacion)) {
             this.reportesAsignacion = reportesAsignacion
             reportesAsignacion.forEach(
               asignacion => {

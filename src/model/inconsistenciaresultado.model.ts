@@ -2,8 +2,7 @@ import { Envio } from "./envio.model";
 
 export class InconsistenciaResultado {
 
-
-    constructor(){
+    constructor() {
         this.resumen = "";
     }
 
@@ -30,5 +29,5 @@ export class InconsistenciaResultado {
     public fecharesultado: Date;
     public envio: Envio;
     public resumen: string;
-    
+
 }

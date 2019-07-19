@@ -28,7 +28,6 @@ export class DatosBuzonComponent implements OnInit, OnDestroy {
     this.subscription = this.buzonService.buzonActualChanged.subscribe(
       (buzon: Buzon) => {
         this.buzon = buzon;
-        console.log(this.buzon);
       }
     )
   }

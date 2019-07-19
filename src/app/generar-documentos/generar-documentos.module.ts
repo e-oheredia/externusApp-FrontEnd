@@ -13,21 +13,21 @@ import { GenerarBloqueComponent } from './generar-bloque/generar-bloque.componen
 
 @NgModule({
   imports: [
-    CommonModule, 
-    GenerarDocumentosRoutingModule, 
-    ReactiveFormsModule, 
-    FormsModule, 
+    CommonModule,
+    GenerarDocumentosRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
     Ng2SmartTableModule,
     NgxBarcodeModule
-    
+
   ],
   declarations: [
     GenerarDocumentosComponent,
-    GenerarDocumentoIndividualComponent, 
-    GenerarMasivoComponent, 
-    DatosBuzonComponent, 
+    GenerarDocumentoIndividualComponent,
+    GenerarMasivoComponent,
+    DatosBuzonComponent,
     GenerarBloqueComponent
-  ], 
+  ],
   entryComponents: [
   ]
 })

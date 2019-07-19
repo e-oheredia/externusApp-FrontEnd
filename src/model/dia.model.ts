@@ -1,5 +1,8 @@
 export class Dia {
-    constructor(){}
+
+    constructor() { }
+
     public id: number;
     public nombre: string;
+
 }

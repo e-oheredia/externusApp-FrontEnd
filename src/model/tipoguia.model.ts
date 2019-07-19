@@ -1,6 +1,8 @@
 export class TipoGuia {
+
     constructor(
-        public id: number, 
+        public id: number,
         public nombre: string,
-    ){}
+    ) { }
+
 }

@@ -15,8 +15,8 @@ export class MensajeExitoComponent implements OnInit {
   ngOnInit() {
   }
 
-  aceptar(){
+  aceptar() {
     this.bsModalRef.hide();
   }
-  
+
 }

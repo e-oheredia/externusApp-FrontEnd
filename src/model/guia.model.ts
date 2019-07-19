@@ -9,15 +9,17 @@ import { TipoGuia } from './tipoguia.model';
 import { Producto } from './producto.model';
 import { Clasificacion } from './clasificacion.model';
 import { Region } from './region.model';
+
 export class Guia {
+
     constructor(
-        public id: number, 
-        public numeroGuia:string, 
-        public plazoDistribucion: PlazoDistribucion, 
-        public tipoServicio: TipoServicio, 
+        public id: number,
+        public numeroGuia: string,
+        public plazoDistribucion: PlazoDistribucion,
+        public tipoServicio: TipoServicio,
         public tipoSeguridad: TipoSeguridad,
-        public proveedor: Proveedor, 
-        public documentosGuia: DocumentoGuia[], 
+        public proveedor: Proveedor,
+        public documentosGuia: DocumentoGuia[],
         public seguimientosGuia: SeguimientoGuia[],
         public sede: Sede,
         public cantidadDocumentos: number,
@@ -32,5 +34,6 @@ export class Guia {
         public cantidadValidados: number,
         public fechaLimite: Date,
         public region: Region
-    ){}
+    ) { }
+
 }

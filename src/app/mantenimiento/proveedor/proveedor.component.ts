@@ -29,9 +29,9 @@ export class ProveedorComponent implements OnInit {
   ) { }
 
   settings = AppSettings.tableSettings;
-  dataProveedores : LocalDataSource = new LocalDataSource();
-  proveedores : Proveedor[] = [];
-  proveedor : Proveedor;
+  dataProveedores: LocalDataSource = new LocalDataSource();
+  proveedores: Proveedor[] = [];
+  proveedor: Proveedor;
 
   proveedoresSubscription: Subscription;
   proveedorForm: FormGroup;
@@ -44,25 +44,25 @@ export class ProveedorComponent implements OnInit {
 
   }
 
-  generarColumnas(){
+  generarColumnas() {
     this.settings.columns = {
       nombre: {
-        title : 'Nombre'
+        title: 'Nombre'
       },
       region: {
-        title : 'Región'
+        title: 'Región'
       },
       ambito: {
-        title : 'Ámbito'
+        title: 'Ámbito'
       },
       activo: {
-        title : 'Estado'
+        title: 'Estado'
       },
       buttonModificar: {
-        title : 'Modificar',
-        type : 'custom',
-        renderComponent : ButtonViewComponent,
-        onComponentInitFunction : (instance : any) => {
+        title: 'Modificar',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
             this.modificarProveedor(row);
@@ -72,7 +72,7 @@ export class ProveedorComponent implements OnInit {
     }
   }
 
-  listarProveedores(){
+  listarProveedores() {
     this.dataProveedores.reset();
     this.proveedorService.listarProveedoresAll().subscribe(
       proveedores => {
@@ -83,9 +83,8 @@ export class ProveedorComponent implements OnInit {
             dataProveedores.push({
               id: proveedor.id,
               nombre: proveedor.nombre,
-              region: this.sinrepetir(proveedor.ambitos.map(ambito =>    ambito.region.nombre)).join(", "),
+              region: this.sinrepetir(proveedor.ambitos.map(ambito => ambito.region.nombre)).join(", "),
               ambito: proveedor.ambitos.map(ambito => ambito.nombre).join(", "),
-              //plazos: proveedor.plazosDistribucion.map(plazoDistribucion => plazoDistribucion.nombre).join(", "),
               activo: proveedor.activo ? 'ACTIVADO' : 'DESACTIVADO'
             })
           }
@@ -95,21 +94,21 @@ export class ProveedorComponent implements OnInit {
     )
   }
 
-  sinrepetir(ambitos){
+  sinrepetir(ambitos) {
     let unicos = [];
-    ambitos.forEach( it => {
+    ambitos.forEach(it => {
       if (unicos.indexOf(it) == -1)
-         unicos.push(it);
+        unicos.push(it);
     })
     return unicos;
   }
 
 
-  onAgregar(){
+  onAgregar() {
     this.agregarProveedor();
   }
 
-  agregarProveedor(){
+  agregarProveedor() {
     let bsModalRef: BsModalRef = this.modalService.show(AgregarProveedorComponent, {
       initialState: {
         titulo: 'Agregar proveedor'
@@ -124,9 +123,9 @@ export class ProveedorComponent implements OnInit {
     )
   }
 
-  modificarProveedor(row){
+  modificarProveedor(row) {
     this.proveedor = this.proveedores.find(proveedor => proveedor.id == row.id)
-  
+
     let bsModalRef: BsModalRef = this.modalService.show(ModificarProveedorComponent, {
       initialState: {
         proveedor: this.proveedor,
@@ -137,7 +136,7 @@ export class ProveedorComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.confirmarEvent.subscribe(() => 
+    bsModalRef.content.confirmarEvent.subscribe(() =>
       this.listarProveedores()
     )
   }

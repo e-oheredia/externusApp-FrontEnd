@@ -38,7 +38,6 @@ export class TipoSeguridadComponent implements OnInit {
     this.generarColumnas();
     this.listarTiposSeguridad();
     this.settings.hideSubHeader = false;
-
   }
 
   generarColumnas() {

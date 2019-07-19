@@ -145,10 +145,6 @@ export class AmbitoComponent implements OnInit {
     )
   }
 
-
-
-
-
   onChangeExcelFile(file: File) {
     if (file == null) {
       this.excelFile = null;

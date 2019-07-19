@@ -1,6 +1,9 @@
 export class Clasificacion {
-    constructor(){}
+
+    constructor() { }
+
     public id: number;
-    public nombre:string;
+    public nombre: string;
     public activo: boolean;
+
 }

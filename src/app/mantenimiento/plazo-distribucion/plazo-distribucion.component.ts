@@ -125,7 +125,6 @@ export class PlazoDistribucionComponent implements OnInit {
       initialState: {
         id: this.plazo.id,
         plazo: this.plazo,
-        // region: this.plazo.ambitos[0].region,
         titulo: 'Modificar el plazo de la distribución'
       },
       class: 'modal-md',

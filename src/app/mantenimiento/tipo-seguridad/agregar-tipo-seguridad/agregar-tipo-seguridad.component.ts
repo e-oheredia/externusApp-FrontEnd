@@ -58,6 +58,6 @@ export class AgregarTipoSeguridadComponent implements OnInit {
   }
 
 
-  
+
 
 }

@@ -20,7 +20,8 @@
       </div>
 
       <div class="card-body">
-        <form [formGroup]="envioForm" (ngSubmit)="listarEnviosConInconsistencias(envioForm.get('fechaIni').value, envioForm.get('fechaFin').value)">
+        <form [formGroup]="envioForm"
+          (ngSubmit)="listarEnviosConInconsistencias(envioForm.get('fechaIni').value, envioForm.get('fechaFin').value)">
 
           <div class="form-row">
 
@@ -51,12 +52,12 @@
           <div *ngIf="envios.length !== 0  ; else mensaje">
             <ng2-smart-table [settings]="settings" [source]="dataEnviosConIncidencias"></ng2-smart-table>
           </div>
-          
+
           <ng-template #mensaje>
             <div class="row">
               <div class="col">
                 <div class="alert alert-info" role="alert">
-                  No se encontraron  inconsistencias.
+                  No se encontraron inconsistencias.
                 </div>
               </div>
             </div>

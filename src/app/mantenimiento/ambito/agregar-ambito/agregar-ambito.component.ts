@@ -35,12 +35,12 @@ export class AgregarAmbitoComponent implements OnInit {
   ngOnInit() {
     this.cargarDatosVista();
     this.agregarForm = new FormGroup({
-      'nombre' : new FormControl('', Validators.required),
-      'region' : new FormControl('', Validators.required)
+      'nombre': new FormControl('', Validators.required),
+      'region': new FormControl('', Validators.required)
     })
   }
 
-  cargarDatosVista(){
+  cargarDatosVista() {
     this.regiones = this.regionService.getRegiones();
 
     this.regionSubscription = this.regionService.regionesChanged.subscribe(
@@ -50,7 +50,7 @@ export class AgregarAmbitoComponent implements OnInit {
     )
   }
 
-  onSubmit(ambito){
+  onSubmit(ambito) {
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
     if (nombreSinEspacios.length !== 0) {
       ambito.nombre = nombreSinEspacios;

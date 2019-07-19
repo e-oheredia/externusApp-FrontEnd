@@ -10,7 +10,7 @@
     <button type="button" class="btn btn-primary mb-4" (click)="crearGuia()">Nueva Guía</button>
   </div>
 </div>
-<div  *ngIf="guias.length !== 0; else mensaje" class="center">
+<div *ngIf="guias.length !== 0; else mensaje" class="center">
   <ng2-smart-table [settings]="settings" [source]="dataEnvios"></ng2-smart-table>
 </div>
 <ng-template #mensaje>

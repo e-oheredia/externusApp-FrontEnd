@@ -16,12 +16,12 @@ import { ButtonViewComponent } from 'src/app/table-management/button-view/button
 })
 export class TrackingDocumentoComponent implements OnInit, OnDestroy {
 
-  
+
 
   constructor(
     public bsModalRef: BsModalRef,
     private documentoService: DocumentoService,
-    private router : Router
+    private router: Router
   ) { }
 
   documento: Documento;
@@ -29,7 +29,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
   dataSeguimientosDocumento: LocalDataSource = new LocalDataSource();
 
   ngOnInit() {
-   
+
     this.settings.columns = {
       estado: {
         title: 'Estado'
@@ -44,7 +44,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
         title: 'Fecha'
       },
       link: {
-         title: 'Imagen',
+        title: 'Imagen',
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
@@ -52,15 +52,15 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
             instance.claseIcono = "fa fa-eye";
             let seguimientodocumento = this.documento.seguimientosDocumento.find(x => x.id === row.id);
             let ruta_imagen: any;
-            if(seguimientodocumento.linkImagen===null){
-              ruta_imagen="-";
-              instance.claseIcono = " - "
-            }else{
-              ruta_imagen= seguimientodocumento.linkImagen;
+            if (seguimientodocumento.linkImagen === null) {
+              ruta_imagen = " ";
+              instance.claseIcono = " "
+            } else {
+              ruta_imagen = seguimientodocumento.linkImagen;
             }
             instance.ruta = ruta_imagen;
           })
-        }    
+        }
       },
     };
     this.cargarSeguimientosDocumento();
@@ -69,10 +69,10 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
 
 
 
-  cargarSeguimientosDocumento(){
+  cargarSeguimientosDocumento() {
     this.dataSeguimientosDocumento.reset();
     let dataSeguimientosDocumento = [];
-    this.documento.seguimientosDocumento.sort((a,b) => a.id - b.id).forEach(
+    this.documento.seguimientosDocumento.sort((a, b) => a.id - b.id).forEach(
       segumientoDocumento => {
         dataSeguimientosDocumento.push({
           id: segumientoDocumento.id,
@@ -81,7 +81,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
           observacion: segumientoDocumento.observacion,
           fecha: segumientoDocumento.fecha,
           link: segumientoDocumento.linkImagen,
-          
+
         });
       }
     )

@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.route.snapshot.url);
     this.router.events.subscribe(
       (event) => {
         if (event instanceof NavigationEnd) {
@@ -29,11 +28,8 @@ export class AppComponent implements OnInit {
             this.route.queryParams.subscribe(
               params => {
                 if (params.token !== undefined) {
-                  console.log(params.token);
-                  console.log(params.rt);
                   this.browserStorageService.set("token", params.token);
-                  this.browserStorageService.set("refreshtoken", params.rt); 
-                                   
+                  this.browserStorageService.set("refreshtoken", params.rt);
                 }
                 this.menuService.llenarMenuAutenticado();
               }
@@ -44,9 +40,9 @@ export class AppComponent implements OnInit {
           }
         }
       }
-    );    
+    );
   }
 
-  
+
 
 }

@@ -109,7 +109,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       'autorizacion': new FormControl(null, [this.requiredIfNoAutorizado.bind(this)]),
       'cargoPropio': new FormControl("", Validators.required)      
     });
-    console.log(this.documentoForm)
   }
 
   cargarDatosVista() {
@@ -164,24 +163,25 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     )
 
   }
+
   onDepartamentoSelectedChanged(departamento) {
     this.provinciasSubscription = this.provinciaService.listarProvinciaByDepartamentoId(departamento.id).subscribe(
       provincias => {
         this.provincias = provincias;
       }
     );
-    console.log(departamento);
     this.distritos = [];
     this.plazosDistribucion = [];
   }
+
   onProvinciaSelectedChanged(provincia) {
     this.distritosSubscription = this.distritoService.listarDistritosByProvinciaId(provincia.id).subscribe(
       distritos => {
         this.distritos = distritos;
       }
     );
-    console.log(provincia);
   }
+
   onDistritoSelectedChanged(distrito){
     this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByDistritoId(distrito.id).subscribe(
       plazosDistribucion => {
@@ -243,8 +243,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     );
   }
 
-
-
   onChangeFile(file: File) {
     if (file == undefined || file == null) {
       this.autorizationFile = null;
@@ -257,8 +255,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     this.provinciasSubscription.unsubscribe();
     this.distritosSubscription.unsubscribe();
   }
-
-  // Validators
 
   atLeastOne(form: FormGroup): { [key: string]: boolean } | null {
     let controls = Object.keys(form.controls);
@@ -286,7 +282,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       && (this.documentoForm.get("autorizacion") === null || this.documentoForm.get("autorizacion").value === "" || this.documentoForm.get("autorizacion").value === null)) {
       return { 'requiredIfNoAutorizado': true }
     }
-    console.log(this.documentoForm.get("autorizacion"));
     return null;
 
   }

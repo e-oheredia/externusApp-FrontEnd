@@ -161,7 +161,7 @@ export class GenerarMasivoComponent implements OnInit {
     )
   }
 
-  onRegionSelectedChanged(region){
+  onRegionSelectedChanged(region) {
     this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByRegionId(region.id).subscribe(
       plazos => {
         this.plazosDistribucion = plazos;
@@ -197,7 +197,6 @@ export class GenerarMasivoComponent implements OnInit {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosCorrectos = data.documentos;
         this.documentosIncorrectos = data.inconsistenciasDocumento;
-        // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
         }
@@ -212,7 +211,6 @@ export class GenerarMasivoComponent implements OnInit {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
         this.documentosIncorrectos = data.inconsistenciasDocumento;
-        // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
         }
@@ -240,11 +238,11 @@ export class GenerarMasivoComponent implements OnInit {
         initialState: {
           titulo: "Confirmación de registros",
           mensaje: "Cantidad de documentos correctos : " + this.documentosCorrectos.length,
-          mensaje2: "Cantidad de documentos incorrectos : "+this.documentosIncorrectos.length, 
-          mensaje3: "Solo se subirán los documentos correctos. ¿Desea Continuar?" 
+          mensaje2: "Cantidad de documentos incorrectos : " + this.documentosIncorrectos.length,
+          mensaje3: "Solo se subirán los documentos correctos. ¿Desea Continuar?"
         }
       });
-  
+
       bsModalRef.content.confirmarEvent.subscribe(
         () => {
           this.registrarMasivo(datosMasivo);
@@ -267,9 +265,6 @@ export class GenerarMasivoComponent implements OnInit {
     envioMasivo.documentos = this.documentosCorrectos;
     envioMasivo.inconsistenciasDocumento = this.documentosIncorrectos;
     envioMasivo.producto = datosMasivo.get("producto").value;
-    // let region = datosMasivo.get("region").value;
-    // envioMasivo.plazoDistribucion.regiones = [];
-    // envioMasivo.plazoDistribucion.regiones.push(region);
     this.envioMasivoService.registrarEnvioMasivo(envioMasivo, this.autorizacionFile).subscribe(
       envioMasivo => {
         this.documentosCorrectos = [];

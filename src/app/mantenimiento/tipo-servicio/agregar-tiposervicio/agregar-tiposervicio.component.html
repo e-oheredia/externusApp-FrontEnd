@@ -13,9 +13,10 @@
           <div class="form-group">
             <label for="nombre">Nombre del tipo de servicio</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-            <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched" class="text-danger small">
-                Es necesario ingresar el nombre del tipo de servicio
-              </span>
+            <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+              class="text-danger small">
+              Es necesario ingresar el nombre del tipo de servicio
+            </span>
           </div>
         </div>
       </div>

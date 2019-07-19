@@ -37,13 +37,13 @@ export class RecepcionarDocumentoComponent implements OnInit {
 
   ngOnInit() {
     this.recepcionarForm = new FormGroup({
-      'autogenerado' : new FormControl(this.documento.documentoAutogenerado, Validators.required),
-      'estado' : new FormControl(this.documentoService.getUltimoEstado(this.documento).nombre, Validators.required),
-      'motivo' : new FormControl(this.documentoService.getUltimoSeguimientoDocumento(this.documento).motivoEstado.nombre, Validators.required),
+      'autogenerado': new FormControl(this.documento.documentoAutogenerado, Validators.required),
+      'estado': new FormControl(this.documentoService.getUltimoEstado(this.documento).nombre, Validators.required),
+      'motivo': new FormControl(this.documentoService.getUltimoSeguimientoDocumento(this.documento).motivoEstado.nombre, Validators.required),
       'devoluciones': new FormArray([])
     }, this.validarDevolucion.bind(this)
     )
-    
+
     this.listarTiposDevolucion();
 
     setTimeout(() => {
@@ -52,11 +52,11 @@ export class RecepcionarDocumentoComponent implements OnInit {
 
   }
 
-  listarTiposDevolucion(){
+  listarTiposDevolucion() {
     this.tiposDevolucionIniciales = this.documentoService.getUltimoEstado(this.documento).tiposDevolucion;
     this.tiposDevolucion = this.tipoDevolucionService.getTiposDevolucion();
 
-    if (this.tiposDevolucion){
+    if (this.tiposDevolucion) {
       this.tiposDevolucion.forEach(devolucion => {
         const control = new FormControl(this.tiposDevolucionIniciales.findIndex(devolucionDocumento => devolucionDocumento.id === devolucion.id) > -1);
         (<FormArray>this.recepcionarForm.get('devoluciones')).push(control);
@@ -67,7 +67,6 @@ export class RecepcionarDocumentoComponent implements OnInit {
       tiposDevolucion => {
         this.tiposDevolucion = tiposDevolucion;
         tiposDevolucion.forEach(devolucion => {
-          console.log(this.recepcionarForm);
           const control = new FormControl(this.tiposDevolucionIniciales.findIndex(devolucionDocumento => devolucionDocumento.id === devolucion.id) > -1);
           (<FormArray>this.recepcionarForm.get('devoluciones')).push(control);
         })
@@ -76,22 +75,22 @@ export class RecepcionarDocumentoComponent implements OnInit {
 
   }
 
-  onSubmit(form: any){
-      let documento: Documento = new Documento();
-      documento = this.documento;
-      documento.id = this.documento.id;
-      documento.tiposDevolucion = this.documentoService.getUltimoEstado(this.documento).tiposDevolucion;
-      
-      this.recepcionarDocumentoSubscription = this.documentoService.recepcionarDocumento(documento.id, documento.tiposDevolucion).subscribe(
-        documento => {
-          this.notifier.notify('success', 'Se recepcionó el documento correctamente');
-          this.bsModalRef.hide();
-          this.documentoRecepcionadoEvent.emit(documento);
-        },
-        error => {
-          this.notifier.notify('error', error.error);
-        }
-      );
+  onSubmit(form: any) {
+    let documento: Documento = new Documento();
+    documento = this.documento;
+    documento.id = this.documento.id;
+    documento.tiposDevolucion = this.documentoService.getUltimoEstado(this.documento).tiposDevolucion;
+
+    this.recepcionarDocumentoSubscription = this.documentoService.recepcionarDocumento(documento.id, documento.tiposDevolucion).subscribe(
+      documento => {
+        this.notifier.notify('success', 'Se recepcionó el documento correctamente');
+        this.bsModalRef.hide();
+        this.documentoRecepcionadoEvent.emit(documento);
+      },
+      error => {
+        this.notifier.notify('error', error.error);
+      }
+    );
   }
 
 
@@ -102,11 +101,11 @@ export class RecepcionarDocumentoComponent implements OnInit {
   }
 
 
-  
+
   validarDevolucion(form: FormGroup): { [key: string]: boolean } | null {
-    if (form.value.devoluciones.findIndex(devolucion => devolucion  === true) > -1) {
+    if (form.value.devoluciones.findIndex(devolucion => devolucion === true) > -1) {
       return null;
-    }    
+    }
     return { 'ingreseDevolucion': true }
   }
 

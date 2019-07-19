@@ -40,7 +40,7 @@ export class ProductoComponent implements OnInit {
     this.settings.hideSubHeader = false;
   }
 
-  generarColumnas(){
+  generarColumnas() {
     this.settings.columns = {
       id: {
         title: 'ID'
@@ -55,7 +55,7 @@ export class ProductoComponent implements OnInit {
         title: 'Modificar',
         type: 'custom',
         renderComponent: ButtonViewComponent,
-        onComponentInitFunction : (instance: any) => {
+        onComponentInitFunction: (instance: any) => {
           instance.claseIcono = "fas fa-wrench";
           instance.pressed.subscribe(row => {
             this.modificarProducto(row);
@@ -65,7 +65,7 @@ export class ProductoComponent implements OnInit {
     }
   }
 
-  listarProductos(){
+  listarProductos() {
     this.dataProductos.reset();
     this.productoService.listarProductosAll().subscribe(
       productos => {
@@ -85,11 +85,11 @@ export class ProductoComponent implements OnInit {
     )
   }
 
-  onAgregar(){
+  onAgregar() {
     this.agregarProducto();
   }
 
-  agregarProducto(){
+  agregarProducto() {
     let bsModalRef: BsModalRef = this.modalService.show(AgregarProductoComponent, {
       initialState: {
         titulo: 'Agregar producto',
@@ -99,12 +99,12 @@ export class ProductoComponent implements OnInit {
       backdrop: "static"
     });
 
-    bsModalRef.content.productoCreadoEvent.subscribe(() => 
-    this.listarProductos()
+    bsModalRef.content.productoCreadoEvent.subscribe(() =>
+      this.listarProductos()
     )
   }
 
-  modificarProducto(row){
+  modificarProducto(row) {
     this.producto = this.productos.find(producto => producto.id == row.id)
     let bsModalRef: BsModalRef = this.modalService.show(ModificarProductoComponent, {
       initialState: {
@@ -118,8 +118,8 @@ export class ProductoComponent implements OnInit {
     });
 
     bsModalRef.content.productoModificadoEvent.subscribe(() =>
-          this.listarProductos()
-        )
-    }
+      this.listarProductos()
+    )
+  }
 
 }

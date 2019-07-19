@@ -11,7 +11,7 @@ import { ConsultarDocumentosUtdBcpComponent } from './consultar-documentos-utd-b
 import { ReporteDevolucionCargoComponent } from './reporte-devolucion-cargo/reporte-devolucion-cargo.component';
 import { ReporteIndicadorVolumenComponent } from './reporte-indicador-volumen/reporte-indicador-volumen.component';
 import { ReporteMensualVolumenComponent } from './reporte-mensual-volumen/reporte-mensual-volumen.component';
-import {  ReporteEficaciaComponent } from './reporte-eficacia/reporte-eficacia.component';
+import { ReporteEficaciaComponent } from './reporte-eficacia/reporte-eficacia.component';
 import { ReporteMensualCargosComponent } from './reporte-mensual-cargos/reporte-mensual-cargos.component';
 import { ReporteIndicadorEficaciaComponent } from './reporte-indicador-efectividad/reporte-indicador-efectividad.component';
 import { ReporteIndicadorEficienciaComponent } from './reporte-indicador-eficiencia/reporte-indicador-eficiencia.component';
@@ -85,7 +85,7 @@ const appRoutes: Routes = [
         path: 'reporte-eficacia',
         component: ReporteEficaciaComponent
     },
-    {    
+    {
         path: 'reporte-cargos',
         component: ReporteMensualCargosComponent
     },
