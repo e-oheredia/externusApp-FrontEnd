@@ -11,6 +11,9 @@ import { Proveedor } from '../../model/proveedor.model';
 import * as moment from "moment-timezone";
 import { ReporteService } from '../shared/reporte.service';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
+import { Ambito } from '../../model/ambito.model';
+import { Region } from '../../model/region.model';
+import { RegionService } from '../shared/region.service';
 
 @Component({
   selector: 'app-reporte-distribucion-mes-eficiencia',
@@ -25,7 +28,8 @@ export class ReporteEficienciaComponent implements OnInit {
     private documentoService: DocumentoService,
     private reporteService: ReporteService,
     private notifier: NotifierService,
-    private plazoDistribucionService: PlazoDistribucionService
+    private plazoDistribucionService: PlazoDistribucionService,
+    public regionService: RegionService
   ) { }
 
   busquedaForm: FormGroup;
@@ -47,7 +51,12 @@ export class ReporteEficienciaComponent implements OnInit {
   dataGrafico3: any[] = [];
   sumaDentroPlazoTotal: number = 0;
   sumaFueraPlazoTotal: number = 0;
+  regionesall : Region[] = [];
+  regiones : Region[] = [];
+  regiones2 : Region[] = [];
 
+
+  
   ngOnInit() {
     this.validacion = 0;
     this.busquedaForm = new FormGroup({
@@ -55,7 +64,13 @@ export class ReporteEficienciaComponent implements OnInit {
       "fechaFin": new FormControl(null, Validators.required)
     });
     this.proveedores = this.proveedorService.getProveedores();
+    this.regionesall = this.regionService.getRegiones();
     this.proveedorService.proveedoresChanged.subscribe(proveedores => this.proveedores = proveedores);
+
+    this.regionService.regionesChanged.subscribe(
+      region=>{
+          this.regionesall=region;
+  })
   }
 
 
@@ -106,7 +121,35 @@ export class ReporteEficienciaComponent implements OnInit {
       // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
     }
   }
+  sinrepetir(ambitos){
+    let unicos = [];
+    ambitos.forEach( it => {
+      if (unicos.indexOf(it) == -1)
+         unicos.push(it);
+    })
+    return unicos;
+  }
+    regionesxproveedor(proveedor){
+        let regiones: any[] = [];
 
+        proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito=>{
+            regiones.push(ambito.region);
+        });
+        regiones=this.sinrepetir(regiones);
+        return regiones;
+    }
+
+
+
+    regionesxproveedor2(proveedor){
+      let regiones: any[] = [];
+
+      proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito=>{
+          regiones.push(ambito.region);
+      });
+      regiones=this.sinrepetir(regiones);
+      return regiones;
+  }
 
   //1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO
   llenarEficienciaPorProveedor(data) {
@@ -226,52 +269,121 @@ export class ReporteEficienciaComponent implements OnInit {
 
     this.proveedores.forEach(
       proveedor => {
-        let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
-        proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion => {
-          Object.keys(data).forEach(key => {
-            if (proveedor.id == parseInt(key)) {
-              var obj = data[key];
-              Object.keys(obj).forEach(key1 => {
-                if (plazoDistribucion.id == parseInt(key1)) {
-                  var obj1 = obj[key1];
-                  let total = 0
-                  for (var el in obj1) {
-                    if (obj1.hasOwnProperty(el)) {
-                      total += parseInt(obj1[el]);
-                    }
+        let regiones: any[] = [];
+        proveedor.ambitos.forEach(ambito=>{
+          ambito.region.plazosDistribucion.sort((a, b) => a.id - b.id).forEach(plazoDistribucion => {
+            Object.keys(data).forEach(key => {
+              if (proveedor.id == parseInt(key)) {
+                var obj1 = data[key];
+                Object.keys(obj1).forEach(keyregion => {
+                  let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
+
+                var obj = obj1[keyregion];
+
+                proveedor.ambitos.forEach(ambito=>{
+                    regiones.push(ambito.region);
+                });
+
+                this.regiones=this.sinrepetir(regiones);
+                this.regiones.sort((a, b) => a.id - b.id).forEach(region=>{
+
+                  if( parseInt(keyregion) == region.id){
+                    region.plazosDistribucion.sort((a, b) => a.id - b.id).forEach(                
+                      plazoDistribucion => {
+                        Object.keys(obj).forEach(keyplazo => {
+                          if (plazoDistribucion.id == parseInt(keyplazo)) {
+                            var objf = obj[keyplazo];
+                            let total = 0
+                            for (var el in objf) {
+                              if (objf.hasOwnProperty(el)) {
+                                total += parseInt(objf[el]);
+                              }
+                            }
+                            if (total !== 0) {
+                              Object.keys(objf).forEach(key2 => {
+                                if (key2 == "dentroplazo") {
+                                  var resultadodentro = (objf[key2] * 100) / total;
+                                  if (isNaN(resultadodentro)) {
+                                    resultadodentro = 0;
+                                  }
+                                  valordentroplazo = resultadodentro.toFixed(1) + '%';
+                                } else {
+                                  var resultadofuera = (objf[key2] * 100) / total;
+                                  if (isNaN(resultadofuera)) {
+                                    resultadofuera = 0;
+                                  }
+                                  valorfueraplazo = resultadofuera.toFixed(1) + '%';
+                                }
+                              });
+                            } else {
+                              valordentroplazo = '0.0%';
+                              valorfueraplazo = '0.0%';
+                            }
+                            let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
+                              plazoDistribucion: plazoDistribucion.nombre,
+                              dentroPlazo: valordentroplazo,
+                              fueraPlazo: valorfueraplazo
+                            }
+                            eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
+                          }
+                        });
+                      });
+  
                   }
-                  if (total !== 0) {
-                    Object.keys(obj1).forEach(key2 => {
-                      if (key2 == "dentroplazo") {
-                        var resultadodentro = (obj1[key2] * 100) / total;
-                        if (isNaN(resultadodentro)) {
-                          resultadodentro = 0;
-                        }
-                        valordentroplazo = resultadodentro.toFixed(1) + '%';
-                      } else {
-                        var resultadofuera = (obj1[key2] * 100) / total;
-                        if (isNaN(resultadofuera)) {
-                          resultadofuera = 0;
-                        }
-                        valorfueraplazo = resultadofuera.toFixed(1) + '%';
+
+
+
+
+                });
+
+                this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre+ '-' + keyregion] = eficienciaPorPlazoDistribucionPorProveedor;
+
+                  
+                });
+
+
+                /*Object.keys(obj).forEach(key1 => {
+                  if (plazoDistribucion.id == parseInt(key1)) {
+                    var obj1 = obj[key1];
+                    let total = 0
+                    for (var el in obj1) {
+                      if (obj1.hasOwnProperty(el)) {
+                        total += parseInt(obj1[el]);
                       }
-                    });
-                  } else {
-                    valordentroplazo = '0.0%';
-                    valorfueraplazo = '0.0%';
+                    }
+                    if (total !== 0) {
+                      Object.keys(obj1).forEach(key2 => {
+                        if (key2 == "dentroplazo") {
+                          var resultadodentro = (obj1[key2] * 100) / total;
+                          if (isNaN(resultadodentro)) {
+                            resultadodentro = 0;
+                          }
+                          valordentroplazo = resultadodentro.toFixed(1) + '%';
+                        } else {
+                          var resultadofuera = (obj1[key2] * 100) / total;
+                          if (isNaN(resultadofuera)) {
+                            resultadofuera = 0;
+                          }
+                          valorfueraplazo = resultadofuera.toFixed(1) + '%';
+                        }
+                      });
+                    } else {
+                      valordentroplazo = '0.0%';
+                      valorfueraplazo = '0.0%';
+                    }
+                    let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
+                      plazoDistribucion: plazoDistribucion.nombre,
+                      dentroPlazo: valordentroplazo,
+                      fueraPlazo: valorfueraplazo
+                    }
+                    eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
                   }
-                  let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-                    plazoDistribucion: plazoDistribucion.nombre,
-                    dentroPlazo: valordentroplazo,
-                    fueraPlazo: valorfueraplazo
-                  }
-                  eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
-                }
-              });
-            }
+                });*/
+              }
+            });
           });
         });
-        this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = eficienciaPorPlazoDistribucionPorProveedor;
+        //this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = eficienciaPorPlazoDistribucionPorProveedor;
       });
   }
 
@@ -279,17 +391,23 @@ export class ReporteEficienciaComponent implements OnInit {
     let valor = 0;
     Object.keys(this.dataGrafico2).forEach(key => {
       if (proveedor.id == parseInt(key)) {
-        var plazos = this.dataGrafico2[key]
-        Object.keys(plazos).forEach(key1 => {
-          if (plazoDistribucion.id == parseInt(key1)) {
-            var dentrofuera = plazos[key1]
-            Object.keys(dentrofuera).forEach(key2 => {
-              if (key2 == 'dentroplazo') {
-                valor = dentrofuera[key2]
-              }
-            });
-          }
-        });
+
+        var regiones = this.dataGrafico2[key];
+
+        Object.keys(regiones).forEach(region=>{
+          var plazos = regiones[region]
+          Object.keys(plazos).forEach(key1 => {
+            if (plazoDistribucion.id == parseInt(key1)) {
+              var dentrofuera = plazos[key1]
+              Object.keys(dentrofuera).forEach(key2 => {
+                if (key2 == 'dentroplazo') {
+                  valor = dentrofuera[key2]
+                }
+              });
+            }
+          });
+
+        })
       }
     });
 
@@ -298,23 +416,47 @@ export class ReporteEficienciaComponent implements OnInit {
   getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) {
     let valor = 0;
     Object.keys(this.dataGrafico2).forEach(key => {
+
       if (proveedor.id == parseInt(key)) {
-        var plazos = this.dataGrafico2[key]
-        Object.keys(plazos).forEach(key1 => {
-          if (plazoDistribucion.id == parseInt(key1)) {
-            var dentrofuera = plazos[key1]
-            Object.keys(dentrofuera).forEach(key2 => {
-              if (key2 == 'fueraplazo') {
-                valor = dentrofuera[key2]
-              }
-            });
-          }
+        var regiones = this.dataGrafico2[key];
+
+        Object.keys(regiones).forEach(region=>{
+          var plazos = regiones[region]
+          Object.keys(plazos).forEach(key1 => {
+            if (plazoDistribucion.id == parseInt(key1)) {
+              var dentrofuera = plazos[key1]
+              Object.keys(dentrofuera).forEach(key2 => {
+                if (key2 == 'fueraplazo') {
+                  valor = dentrofuera[key2]
+                }
+              });
+            }
+          });
         });
+
+
       }
+
+
     });
     return valor;
   }
 
+
+  plazosxregion(region){
+    return region.plazosDistribucion;
+  }
+  
+  
+  /*    regionesxproveedor(proveedor){
+        let regiones: any[] = [];
+
+        proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito=>{
+            regiones.push(ambito.region);
+        });
+        regiones=this.sinrepetir(regiones);
+        return regiones;
+    } */
 
 
 
@@ -335,10 +477,13 @@ export class ReporteEficienciaComponent implements OnInit {
 
   //3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO
 
+/*
   llenarEficienciaPorPlazo(data) {
     this.reportesDetalleEficiencia = {};
+
     this.proveedores.forEach(
       proveedor => {
+
         proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(PlazoDistribucion => {
           let eficienciaPorPlazo: any[] = [];
           Object.keys(data).forEach(key => {
@@ -379,7 +524,68 @@ export class ReporteEficienciaComponent implements OnInit {
     )
   }
 
+*/
 
+
+llenarEficienciaPorPlazo(data) {
+  this.reportesDetalleEficiencia = {};
+
+
+  this.proveedores.forEach(
+    proveedor => {
+      let regiones: any[] = [];
+      proveedor.ambitos.forEach(ambito=>{
+        ambito.region.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(PlazoDistribucion => {
+          let eficienciaPorPlazo: any[] = [];
+          Object.keys(data).forEach(key => {
+            if (proveedor.id == parseInt(key)) {
+              let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
+              var arregloregion = data[key];
+              Object.keys(arregloregion).forEach(keyregion=>{
+                  proveedor.ambitos.forEach(ambito=>{
+                  regiones.push(ambito.region);
+                });
+                  this.regiones2=this.sinrepetir(regiones);
+                  this.regiones2.sort((a, b) => a.id - b.id).forEach(region=>{
+                    if( parseInt(keyregion) == region.id){
+                      var datosproveedor = arregloregion[keyregion];
+                      Object.keys(datosproveedor).forEach(key1 => {
+                        if (PlazoDistribucion.id == parseInt(key1)) {
+                          var datosproveedorplazos = datosproveedor[key1]; //{0:1,1:2}
+                          ambito.region.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
+                            Object.keys(datosproveedorplazos).forEach(key2 => {
+                              var iddeplazos = datosproveedorplazos[key2];
+                              if (plazoDistribucion2.id == parseInt(key2)  ) {
+                                let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
+                                  plazoDistribucion: plazoDistribucion2.tiempoEnvio + 'H',
+                                  dentroPlazo: iddeplazos
+                                }
+                                eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
+                              }
+                            });
+                          });
+                          Object.keys(datosproveedorplazos).forEach(key2 => {
+                            if (0 == parseInt(key2)) {
+                              eficienciaPorPlazoDistribucionPorProveedor.push({
+                                plazoDistribucion: 'Más',
+                                dentroPlazo: datosproveedorplazos[key2]
+                              });
+                            }
+                          });
+                          this.reportesDetalleEficiencia[proveedor.nombre +'-'+PlazoDistribucion.id +'-'+region.id] = eficienciaPorPlazoDistribucionPorProveedor;
+                        }
+                      });
+                    }});
+              });
+            }
+          });
+        });
+    })
+    
+
+    }
+  )
+}
 
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------
   /*  llenarDetalleEficiencia(documentos: Documento[]) {

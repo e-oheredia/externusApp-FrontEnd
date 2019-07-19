@@ -51,7 +51,13 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
             }
         )
 
-        this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+        this.plazoDistribucionService.listarPlazosDistribucionAll().subscribe(
+            plazos=>{
+                this.plazosDistribucion=plazos;
+            }
+        );
+
+        
         this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
             plazosDistribucion => {
                 this.plazosDistribucion = plazosDistribucion;
@@ -297,6 +303,7 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                     Object.keys(data).forEach(key1 => {
                         if (3 === parseInt(key1)) {
                             this.proveedores.forEach(
+                                
                                 proveedor => {
                                     let reporteFinal = {
                                         proveedor: "", plazoDistribucion: "", cantidad01: 0, cantidad02: 0, cantidad03: 0, cantidad04: 0, cantidad05: 0,
@@ -357,6 +364,8 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
 
                                         }
                                     });
+
+
                                     reporteFinal.estilo = "proveedor";
                                     this._final.push(reporteFinal);
 
@@ -370,8 +379,11 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                                                         cantidad06: 0, cantidad07: 0, cantidad08: 0, cantidad09: 0, cantidad10: 0, cantidad11: 0, cantidad12: 0, cantidad13: 0, estilo: ""
                                                     }
                                                     reporteFinal.proveedor = proveedor.nombre;
-                                                    reporteFinal.plazoDistribucion = plazoDistribucion.nombre;
+                                                    reporteFinal.plazoDistribucion = plazoDistribucion.nombre +" "+"("+plazoDistribucion.regiones[0].nombre+")";
                                                     var objn1 = this.data[keyn1];
+
+                                                    let suma=0;
+
                                                     Object.keys(objn1).forEach(keyn2 => {
 
                                                         if (proveedor.id == parseInt(keyn2)) {
@@ -423,31 +435,25 @@ export class ReporteIndicadorVolumenComponent implements OnInit {
                                                                                 reporteFinal.cantidad13 = objn4[keyn5];
                                                                             }
                                                                         });
-
                                                                     });
-
+                                                                     suma= reporteFinal.cantidad01+reporteFinal.cantidad02+reporteFinal.cantidad03+reporteFinal.cantidad04+reporteFinal.cantidad05+reporteFinal.cantidad06+reporteFinal.cantidad07+reporteFinal.cantidad08+reporteFinal.cantidad09+reporteFinal.cantidad10+reporteFinal.cantidad11+reporteFinal.cantidad12+reporteFinal.cantidad13;
                                                                 }
                                                             });
 
-
-
-
-
-
                                                         }
                                                     });
-
-                                                    reporteFinal.estilo = "";
-                                                    this._final.push(reporteFinal);
-
+                                                    if(suma>0){
+                                                        reporteFinal.estilo = "";
+                                                        this._final.push(reporteFinal);
+                                                    }
                                                 });
                                         }
                                     });
                                 });
+                                this._registros = this._final.map(function (obj) {
+                                    return [obj.plazoDistribucion, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.proveedor, obj.estilo];
+                                });
 
-                            this._registros = this._final.map(function (obj) {
-                                return [obj.plazoDistribucion, obj.cantidad01, obj.cantidad02, obj.cantidad03, obj.cantidad04, obj.cantidad05, obj.cantidad06, obj.cantidad07, obj.cantidad08, obj.cantidad09, obj.cantidad10, obj.cantidad11, obj.cantidad12, obj.cantidad13, obj.proveedor, obj.estilo];
-                            });
                         }
 
 

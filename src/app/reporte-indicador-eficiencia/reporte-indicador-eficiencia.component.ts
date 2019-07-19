@@ -60,7 +60,12 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
             }
         )
 
-        this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+        this.plazoDistribucionService.listarPlazosDistribucionAll().subscribe(
+            plazos=>{
+                this.plazosDistribucion=plazos;
+            }
+        );
+
         this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
             plazosDistribucion => {
                 this.plazosDistribucion = plazosDistribucion;
@@ -752,20 +757,24 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
 
 
                           reporteDentro.proveedor = proveedor.nombre;
-                          reporteDentro.plazoDistribucion = plazos.nombre;
+                          reporteDentro.plazoDistribucion = plazos.nombre+" ("+plazos.regiones[0].nombre+")";
                           reporteDentro.eficiencia = 'DENTRO';
                           
 
                           reporteFuera.proveedor = proveedor.nombre;
-                          reporteFuera.plazoDistribucion = plazos.nombre;
+                          reporteFuera.plazoDistribucion = plazos.nombre+" ("+plazos.regiones[0].nombre+")";
                           reporteFuera.eficiencia = 'FUERA DE PLAZO';
                          
 
 
                     if (proveedor.id == parseInt(keyn1)) {
+
                         var objn1 = dataGrafico2[keyn1];
+                        let numerototal  = 0; 
                           Object.keys(objn1).forEach(keyn2 => {
                             if (plazos.id == parseInt(keyn2)) {
+                                let dato = 0;
+
                               var objn2 = objn1[keyn2];
                               Object.keys(objn2).forEach(keyn3 => {
                                 var objn3 = objn2[keyn3];
@@ -865,14 +874,22 @@ export class ReporteIndicadorEficienciaComponent implements OnInit {
                                         }                                   
                                     }
                                     });
+                                    
                                   });
                                 
                               });
                             }
+                            
                           });
-                          reporteFinal.estilo = "proveedor";
-                          this._final.push(reporteDentro);                         
-                          this._final.push(reporteFuera);
+
+
+                          numerototal = reporteFuera.cantidad01+reporteDentro.cantidad01+reporteFuera.cantidad02+reporteDentro.cantidad02+reporteFuera.cantidad03+reporteDentro.cantidad03+reporteFuera.cantidad04+reporteDentro.cantidad04+reporteFuera.cantidad05+reporteDentro.cantidad05+reporteFuera.cantidad06+reporteDentro.cantidad06+reporteFuera.cantidad07+reporteDentro.cantidad07+reporteFuera.cantidad08+reporteDentro.cantidad08+reporteFuera.cantidad09+reporteDentro.cantidad09+reporteFuera.cantidad10+reporteDentro.cantidad10+reporteFuera.cantidad11+reporteDentro.cantidad11+reporteFuera.cantidad12+reporteDentro.cantidad12+reporteFuera.cantidad13+reporteDentro.cantidad13;
+                          if(numerototal>0)
+                              {    
+                              reporteFinal.estilo = "proveedor";
+                              this._final.push(reporteDentro);                         
+                              this._final.push(reporteFuera);}
+
                         }
  
                         });
