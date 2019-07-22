@@ -12,12 +12,13 @@
 
     <div class="card-body">
 
-      <div class="col-md-12">        
+      <div class="col-md-12">
         <label for="archivoAdjunto" style="display:inline;">{{mensaje}}</label>
         <p></p>
         <br>
-        <input type="file" class="form-control-file" id="archivoAdjunto" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        (change)="onChangeExcelFile($event.srcElement.files[0])" formControlName="archivoAdjunto">
+        <input type="file" class="form-control-file" id="archivoAdjunto"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="onChangeExcelFile($event.srcElement.files[0])" formControlName="archivoAdjunto">
       </div>
 
     </div>
@@ -29,5 +30,5 @@
     </div>
 
   </form>
-  
+
 </div>

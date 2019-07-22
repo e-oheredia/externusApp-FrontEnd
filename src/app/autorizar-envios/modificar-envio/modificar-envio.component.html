@@ -12,7 +12,8 @@
         <div class="col">
           <div class="form-group">
             <label for="plazoactual">Plazo de distribución actual</label>
-            <input class="form-control" type="text" name="plazoactual" id="plazoactual" formControlName="plazoactual" disabled>
+            <input class="form-control" type="text" name="plazoactual" id="plazoactual" formControlName="plazoactual"
+              disabled>
           </div>
         </div>
       </div>
@@ -26,9 +27,9 @@
               </option>
             </select>
             <span *ngIf="!modificarForm.get('plazonuevo').valid && modificarForm.get('plazonuevo').touched"
-            class="text-danger small">
-            El nuevo plazo no puede estar vacío
-          </span>
+              class="text-danger small">
+              El nuevo plazo no puede estar vacío
+            </span>
           </div>
         </div>
       </div>
@@ -36,7 +37,8 @@
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success" [disabled]="!modificarForm.valid || modificarForm.pristine" >Modificar</button>
+      <button type="submit" class="btn btn-success"
+        [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 

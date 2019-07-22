@@ -11,7 +11,7 @@ export class ButtonViewComponent implements ViewCell, OnInit {
   claseIcono: string = "";
   nombreBoton: string = "";
   ruta: string = "";
-  
+
   constructor() { }
 
   @Input() value: string;

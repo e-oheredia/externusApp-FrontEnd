@@ -47,8 +47,6 @@ export class ReporteGuiasBloqueComponent implements OnInit {
     this.settings.hideSubHeader = false;
     this.generarColumnas();
     this.listarGuias();
-    console.log("GUIA BLOQUE");
-    console.log(this.guias);
   }
 
 
@@ -79,7 +77,7 @@ export class ReporteGuiasBloqueComponent implements OnInit {
       totalDocumentos: {
         title: 'Total de documentos'
       },
-     fechaCreacion: {
+      fechaCreacion: {
         title: 'Fecha Creación'
       },
       fechalimite: {
@@ -101,10 +99,10 @@ export class ReporteGuiasBloqueComponent implements OnInit {
 
   listarGuias() {
     if (this.guiaForm.controls['codigo'].value.length !== 0) {
-      if (this.guiaForm.get("guiaActiva").value =='1'){
-        this.verificador=TipoConsultaGuia.GUIA_ACTIVA;
+      if (this.guiaForm.get("guiaActiva").value == '1') {
+        this.verificador = TipoConsultaGuia.GUIA_ACTIVA;
       }
-      this.guiaSubscription = this.guiaService.listarGuiaPorCodigo(this.guiaForm.controls['codigo'].value,this.verificador, TipoGuiaEnum.GUIA_BLOQUE)
+      this.guiaSubscription = this.guiaService.listarGuiaPorCodigo(this.guiaForm.controls['codigo'].value, this.verificador, TipoGuiaEnum.GUIA_BLOQUE)
         .subscribe(
           guia => {
             this.guias = []
@@ -119,7 +117,7 @@ export class ReporteGuiasBloqueComponent implements OnInit {
               sede: guia.sede.nombre,
               pendienteResultado: guia.cantidadDocumentosPendientes,
               totalDocumentos: guia.cantidadDocumentos,
-              fechaCreacion:this.guiaService.getFechaCreacion(guia),
+              fechaCreacion: this.guiaService.getFechaCreacion(guia),
               fechalimite: guia.fechaLimite ? guia.fechaLimite : '-',
               fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
               fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
@@ -141,24 +139,22 @@ export class ReporteGuiasBloqueComponent implements OnInit {
             }
           }
         );
-        this.verificador=TipoConsultaGuia.GUIA_NORMAL;
+      this.verificador = TipoConsultaGuia.GUIA_NORMAL;
     }
 
     else if (!this.utilsService.isUndefinedOrNullOrEmpty(this.guiaForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaForm.controls['fechaFin'].value)) {
-      if (this.guiaForm.get("guiaActiva").value =='1'){
-        this.verificador=TipoConsultaGuia.GUIA_ACTIVA;
+      if (this.guiaForm.get("guiaActiva").value == '1') {
+        this.verificador = TipoConsultaGuia.GUIA_ACTIVA;
       }
-      this.guiaSubscription = this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_BLOQUE)
+      this.guiaSubscription = this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value, this.verificador, TipoGuiaEnum.GUIA_BLOQUE)
         .subscribe(
           guias => {
             this.guias = guias
             this.guiaForm.controls['codigo'].enable();
 
             this.dataGuias.reset();
-            this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_BLOQUE).subscribe(
+            this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value, this.verificador, TipoGuiaEnum.GUIA_BLOQUE).subscribe(
               guias => {
-                console.log("GUIA BLOQUE");
-                console.log(this.guias);
                 this.guias = guias;
                 let dataGuias = [];
                 guias.forEach(
@@ -178,9 +174,9 @@ export class ReporteGuiasBloqueComponent implements OnInit {
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre
                     })
-                  }                  
+                  }
                 )
-                this.verificador=TipoConsultaGuia.GUIA_NORMAL;
+                this.verificador = TipoConsultaGuia.GUIA_NORMAL;
                 this.dataGuias.load(dataGuias);
               }
             )
@@ -220,7 +216,7 @@ export class ReporteGuiasBloqueComponent implements OnInit {
   }
 
 
-  exportar(){
+  exportar() {
     this.guiaService.exportarGuiasBloque(this.guias)
   }
 

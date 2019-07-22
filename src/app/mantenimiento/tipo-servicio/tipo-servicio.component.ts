@@ -38,7 +38,6 @@ export class TipoServicioComponent implements OnInit {
     this.generarColumnas();
     this.listarTiposDeServicio();
     this.settings.hideSubHeader = false;
-
   }
 
   generarColumnas() {
@@ -126,6 +125,6 @@ export class TipoServicioComponent implements OnInit {
       this.listarTiposDeServicio()
     )
   }
-  
+
 
 }

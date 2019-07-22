@@ -87,39 +87,40 @@
                         </div>
                       </div>
                     </li>
-                    
+
                     <div *ngIf="estadoActualDocumento===2">
-                       
-                        <li class="list-group-item">
-                            <div class="row">
-                              <div class="col-3">
-                                Validado en guía
-                              </div>
-                              <div class="col-1 mr-4">
-                                {{ documento === null || documento === undefined ? '' : documento.documentosGuia[0] === null || documento.documentosGuia[0] === undefined ? 'NO' : documento.documentosGuia[0].validado ? 'SI' : 'NO'}}
-                              </div>
 
-                            
+                      <li class="list-group-item">
+                        <div class="row">
+                          <div class="col-3">
+                            Validado en guía
+                          </div>
+                          <div class="col-1 mr-4">
+                            {{ documento === null || documento === undefined ? '' : documento.documentosGuia[0] === null || documento.documentosGuia[0] === undefined ? 'NO' : documento.documentosGuia[0].validado ? 'SI' : 'NO'}}
+                          </div>
 
-                              <div class="col-5">
-                                <button *ngIf="validado" type="button" class="btn btn-success" (click)="desvalidar(documento.id)">
-                                  DESVALIDAR
-                                </button>
-                              </div>
-                            
-                              <!-- <div class="form-group" *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
+
+
+                          <div class="col-5">
+                            <button *ngIf="validado" type="button" class="btn btn-success"
+                              (click)="desvalidar(documento.id)">
+                              DESVALIDAR
+                            </button>
+                          </div>
+
+                          <!-- <div class="form-group" *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
                                 <label for="autorizacion">
                                   Autorización
                                 </label>
                                 <input type="file" class="form-control-file" id="autorizacion" formControlName="autorizacion" (change)="onChangeFile($event.srcElement.files[0])"
                                   accept=".msg">
                               </div> -->
-      
-                            </div>
-                          </li>
 
-                      </div>
-                    
+                        </div>
+                      </li>
+
+                    </div>
+
                     <li>
                       <div class="row">
                         <div class="col-4 ml-3 mt-2">

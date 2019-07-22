@@ -13,49 +13,36 @@
           <div class="col-9">
             <div class="form-group">
               <label for="nombreProveedor">Nombre del proveedor</label>
-              <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor" formControlName="nombreProveedor">
-              <span *ngIf="!modificarForm.get('nombreProveedor').valid && modificarForm.get('nombreProveedor').touched" class="text-danger small">
+              <input class="form-control" type="text" name="nombreProveedor" id="nombreProveedor"
+                formControlName="nombreProveedor">
+              <span *ngIf="!modificarForm.get('nombreProveedor').valid && modificarForm.get('nombreProveedor').touched"
+                class="text-danger small">
                 El nombre del proveedor no puede estar vacío
               </span>
             </div>
           </div>
         </div>
 
-        <!-- <div class="form-row">
-                <div class="col">
-                  <div formArrayName="plazos">
-                    <label for="plazosProveedor">Plazos del proveedor</label>
-                    <div class="form-group"
-                      *ngFor="let plazoDistribucionControl of modificarForm.get('plazos').controls; let i = index">
-                      <div class="form-check">
-                        <input name="plazosProveedor" type="checkbox" class="form-check-input"
-                          [formControl]="plazoDistribucionControl"
-                          (change)="onChangePlazoDistribucionElegido($event, plazosDistribucion[i])">
-                        <label class="form-check-label">{{plazosDistribucion[i].nombre}}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
 
         <div class="form-row">
           <div class="col">
-              <label for="regionesProveedor"></label>
-              <div class="form-group" *ngFor="let regionControl of modificarForm.get('regiones').controls; let j = index">
-                <div class="form-check">
-                  <label class="form-check-label">{{regiones[j].nombre}}</label>
-                  <div class="form-row">
-                    <div class="col">
-                      <div formArrayName="ambitos">
-                        <label for="ambitosProveedor"></label>
-                        <div class="form-group" *ngFor="let ambitoControl of modificarForm.get('ambitos').controls; let i = index">
-                          <div *ngIf="ambitos[i].region.nombre==regiones[j].nombre">
-                            <div class="form-check">
-                              <div>
-                                <input name="ambitosProveedor" type="checkbox" class="form-check-input" [formControl]="ambitoControl" (change)="onChangeAmbitoElegido($event, ambitos[i])">
-                              </div>
-                              <label class="form-check-label">{{ambitos[i].nombre}}</label>
+            <label for="regionesProveedor"></label>
+            <div class="form-group" *ngFor="let regionControl of modificarForm.get('regiones').controls; let j = index">
+              <div class="form-check">
+                <label class="form-check-label">{{regiones[j].nombre}}</label>
+                <div class="form-row">
+                  <div class="col">
+                    <div formArrayName="ambitos">
+                      <label for="ambitosProveedor"></label>
+                      <div class="form-group"
+                        *ngFor="let ambitoControl of modificarForm.get('ambitos').controls; let i = index">
+                        <div *ngIf="ambitos[i].region.nombre==regiones[j].nombre">
+                          <div class="form-check">
+                            <div>
+                              <input name="ambitosProveedor" type="checkbox" class="form-check-input"
+                                [formControl]="ambitoControl" (change)="onChangeAmbitoElegido($event, ambitos[i])">
                             </div>
+                            <label class="form-check-label">{{ambitos[i].nombre}}</label>
                           </div>
                         </div>
                       </div>
@@ -63,48 +50,10 @@
                   </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
 
-
-
-
-
-
-
-        <!--               <div class="form-row">
-                <div class="col">
-                  <div formArrayName="regiones">
-                    <label for="regionesProveedor">Regiones</label>
-                    <div class="form-group"
-                      *ngFor="let regionControl of modificarForm.get('regiones').controls; let i = index">
-                      <div class="form-check">
-                        <input name="regionesProveedor" type="checkbox" class="form-check-input"
-                          [formControl]="regionControl"
-                          (change)="onChangeRegionElegida($event, regiones[i])">
-                        <label class="form-check-label">{{regiones[i].nombre}}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="col">
-                  <div formArrayName="ambitos">
-                    <label for="ambitosProveedor">Ámbitos</label>
-                    <div class="form-group"
-                      *ngFor="let ambitoControl of modificarForm.get('ambitos').controls; let i = index">
-                      <div class="form-check">
-                        <input name="ambitosProveedor" type="checkbox" class="form-check-input"
-                          [formControl]="ambitoControl"
-                          (change)="onChangeAmbitoElegido($event, ambitos[i])">
-                        <label class="form-check-label">{{ambitos[i].nombre}}</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
 
       </div>
 
@@ -125,15 +74,12 @@
         </div>
       </div>
 
-
-
-
-
     </div>
 
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success" [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
+      <button type="submit" class="btn btn-success"
+        [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 

@@ -29,7 +29,7 @@ export class AgregarProductoComponent implements OnInit {
 
   ngOnInit() {
     this.agregarForm = new FormGroup({
-      'nombre' : new FormControl('', Validators.required),
+      'nombre': new FormControl('', Validators.required),
     })
   }
 

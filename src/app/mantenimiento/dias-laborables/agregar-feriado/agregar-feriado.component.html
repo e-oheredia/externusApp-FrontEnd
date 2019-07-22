@@ -38,7 +38,7 @@
           <div class="form-group">
             <label for="periodo">Periodo</label>
             <select class="form-control" id="periodo" formControlName="periodo">
-              <option *ngFor = "let periodo of periodos" [ngValue]="periodo">{{periodo.nombre}}</option>
+              <option *ngFor="let periodo of periodos" [ngValue]="periodo">{{periodo.nombre}}</option>
             </select>
             <span *ngIf="!agregarForm.get('periodo').valid && agregarForm.get('periodo').touched"
               class="text-danger small">

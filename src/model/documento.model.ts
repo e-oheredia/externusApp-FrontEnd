@@ -6,22 +6,23 @@ import { TipoDevolucion } from "./tipodevolucion.model";
 
 export class Documento {
 
-    constructor(){}
-    
+    constructor() { }
+
     public id: number;
-    public contactoDestino: string; 
-    public direccion: string; 
-    public distrito: Distrito; 
-    public documentoAutogenerado: string; 
+    public contactoDestino: string;
+    public direccion: string;
+    public distrito: Distrito;
+    public documentoAutogenerado: string;
     public nroDocumento: string;
     public razonSocialDestino: string;
     public recepcionado: boolean;
     public referencia: string;
-    public telefono: string; 
+    public telefono: string;
     public envio: Envio;
-    public seguimientosDocumento: SeguimientoDocumento[] = [];    
-    public checked: boolean;   
-    public documentosGuia: DocumentoGuia[] = [];  
+    public seguimientosDocumento: SeguimientoDocumento[] = [];
+    public checked: boolean;
+    public documentosGuia: DocumentoGuia[] = [];
     public codigoDevolucion: string;
     public tiposDevolucion: TipoDevolucion[] = [];
+
 }

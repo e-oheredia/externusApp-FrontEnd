@@ -95,10 +95,10 @@ export class ReporteAutorizacionComponent implements OnInit {
     this.envios = [];
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.envioForm.controls['fechaFin'].value)) {
       this.envioSubscription = this.envioService.listarEnviosParaAutorizarPorFechas(this.envioForm.controls['fechaIni'].value, this.envioForm.controls['fechaFin'].value).subscribe(
-        envios => {          
+        envios => {
           this.dataEnvios.reset();
           let dataEnvios = [];
-          if (!this.utilsService.isUndefinedOrNullOrEmpty(envios)){
+          if (!this.utilsService.isUndefinedOrNullOrEmpty(envios)) {
             this.envios = envios
             envios.forEach(
               envio => {

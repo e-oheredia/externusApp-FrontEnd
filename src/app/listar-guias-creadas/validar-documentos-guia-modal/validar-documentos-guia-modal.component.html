@@ -60,11 +60,13 @@
       <form (submit)="validar(documentoAutogenerado)">
         <div class="form-row align-items-center">
           <div class="col-7 col-md-8">
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Autogenerado" [(ngModel)]="documentoAutogenerado"
-              name="autogenerado" (input)="documentoAutogenerado = documentoAutogenerado.toUpperCase()" required>
+            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Autogenerado"
+              [(ngModel)]="documentoAutogenerado" name="autogenerado"
+              (input)="documentoAutogenerado = documentoAutogenerado.toUpperCase()" required>
           </div>
           <div class="col btn-group">
-            <button [disabled]="documentoAutogenerado === ''" type="submit" class="btn btn-primary mb-2">Validar</button>
+            <button [disabled]="documentoAutogenerado === ''" type="submit"
+              class="btn btn-primary mb-2">Validar</button>
           </div>
         </div>
       </form>

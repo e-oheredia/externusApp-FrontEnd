@@ -162,7 +162,6 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
                                         fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
                                         codigodevolucion: documento.codigoDevolucion
-                                        //IMAGEN
                                     })
                                 }
                             )

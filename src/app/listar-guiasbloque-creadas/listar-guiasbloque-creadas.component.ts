@@ -34,7 +34,6 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
   ngOnInit() {
     this.generarColumnas();
     this.listarGuiasBloque();
-    console.log(this.guia)
     this.settings.hideSubHeader = false;
 
   }
@@ -143,7 +142,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
       backdrop: "static"
     });
     bsModalRef.content.eliminarGuiaBloqueEvent.subscribe(() =>
-    this.listarGuiasBloque()
+      this.listarGuiasBloque()
     )
   }
 
@@ -161,14 +160,13 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
       backdrop: "static"
     });
     bsModalRef.content.modificarGuiaBloqueEvent.subscribe(() =>
-    this.listarGuiasBloque()
+      this.listarGuiasBloque()
     )
   }
 
 
   enviarGuiaBloque(row) {
     this.guia = this.guias.find(guia => guia.numeroGuia == row.numeroGuia)
-    console.log(this.guia)
     let bsModalRef: BsModalRef = this.modalService.show(EnviarGuiabloqueComponent, {
       initialState: {
         id: this.guia.id,
@@ -180,7 +178,7 @@ export class ListarGuiasbloqueCreadasComponent implements OnInit {
       backdrop: "static"
     });
     bsModalRef.content.enviarGuiaBloqueEvent.subscribe(() =>
-    this.listarGuiasBloque()
+      this.listarGuiasBloque()
     )
   }
 

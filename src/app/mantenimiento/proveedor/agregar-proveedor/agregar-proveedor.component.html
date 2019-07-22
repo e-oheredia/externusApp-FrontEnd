@@ -22,21 +22,6 @@
         </div>
       </div>
 
-
-<!-- <div class="form-row">
-        <div class="col">
-          <label for="plazosProveedor">Plazos del proveedor</label>
-          <div class="form-group" *ngFor="let plazoDistribucion of plazosDistribucion">
-            <div class="form-check">
-              <input name="plazosProveedor" id="plazosProveedor" formControlName="plazosProveedor" type="checkbox"
-                class="form-check-input" [id]="'pd-' + plazoDistribucion.id"
-                (change)="onChangePlazoDistribucionElegido($event, plazoDistribucion)">
-              <label class="form-check-label" [for]="'pd-' + plazoDistribucion.id">{{plazoDistribucion.nombre}}</label>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
       <div class="form-row">
         <div class="col">
           <div class="form-group" *ngFor="let region of regiones">
@@ -44,49 +29,21 @@
               <label class="form-check-label" [for]="'pd-' + region.id">{{region.nombre}}</label>
             </div>
             <div class="col">
-                <label for="ambitosProveedor"></label>
-            <div class="form-group" *ngFor="let ambito of ambitos">
-              <div *ngIf="ambito.region.nombre==region.nombre">
+              <label for="ambitosProveedor"></label>
+              <div class="form-group" *ngFor="let ambito of ambitos">
+                <div *ngIf="ambito.region.nombre==region.nombre">
                   <div class="form-check">
-                      <input name="ambitosProveedor" id="ambitosProveedor" formControlName="ambitosProveedor" type="checkbox"
-                        class="form-check-input" [id]="'pd-' + ambito.id"
-                        (change)="onChangeAmbitosElegidos($event, ambito)">
-                      <label class="form-check-label" [for]="'pd-' + ambito.id">{{ambito.nombre}}</label>
+                    <input name="ambitosProveedor" id="ambitosProveedor" formControlName="ambitosProveedor"
+                      type="checkbox" class="form-check-input" [id]="'pd-' + ambito.id"
+                      (change)="onChangeAmbitosElegidos($event, ambito)">
+                    <label class="form-check-label" [for]="'pd-' + ambito.id">{{ambito.nombre}}</label>
                   </div>
+                </div>
               </div>
             </div>
           </div>
-          </div>
         </div>
       </div>
-
-<!--       <div class="form-row">
-        <div class="col">
-          <label for="regionesProveedor">Regiones</label>
-          <div class="form-group" *ngFor="let region of regiones">
-            <div class="form-check">
-              <input name="regionesProveedor" id="regionesProveedor" formControlName="regionesProveedor" type="checkbox"
-                class="form-check-input" [id]="'pd-' + region.id"
-                (change)="onChangeRegionesElegidas($event, region)">
-              <label class="form-check-label" [for]="'pd-' + region.id">{{region.nombre}}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="col">
-          <label for="ambitosProveedor">Ámbitos</label>
-          <div class="form-group" *ngFor="let ambito of ambitos">
-            <div class="form-check">
-              <input name="ambitosProveedor" id="ambitosProveedor" formControlName="ambitosProveedor" type="checkbox"
-                class="form-check-input" [id]="'pd-' + ambito.id"
-                (change)="onChangeAmbitosElegidos($event, ambito)">
-              <label class="form-check-label" [for]="'pd-' + ambito.id">{{ambito.nombre}}</label>
-            </div>
-          </div>
-        </div>
-      </div> -->
 
     </div>
 

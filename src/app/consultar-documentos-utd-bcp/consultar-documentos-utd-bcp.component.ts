@@ -141,7 +141,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
               autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
-              fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : "-",
+              fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
               fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
               codigodevolucion: documento.codigoDevolucion
             })
@@ -191,7 +191,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
                       motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
                       documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
-                      autorizado:  this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
+                      autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
                       fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
                       fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
@@ -256,7 +256,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
 
 
 
-  exportar(){
+  exportar() {
     this.documentoService.exportarDocumentos(this.documentos)
   }
 

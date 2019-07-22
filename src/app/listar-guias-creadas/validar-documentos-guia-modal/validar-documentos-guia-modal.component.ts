@@ -71,14 +71,14 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
 
   }
 
-  //REVISAR
+
   retirarNoValidados() {
 
     let documentosValidadosGuia: Documento[] = this.documentos.filter(documento => documento.documentosGuia[0].validado);
 
-    let documentosNoValidadosGuia = this.documentos.length - documentosValidadosGuia.length 
+    let documentosNoValidadosGuia = this.documentos.length - documentosValidadosGuia.length
 
-    if(documentosNoValidadosGuia === 0){
+    if (documentosNoValidadosGuia === 0) {
       this.notifier.notify('info', 'Todos los documentos están validados');
       return
     }

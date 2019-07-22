@@ -20,29 +20,29 @@
 
           <div class="form-row">
 
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="fechaIni">Fecha Inicial</label>
-                  <input class="form-control" type="date" formControlName="fechaIni">
-                </div>
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaIni">Fecha Inicial</label>
+                <input class="form-control" type="date" formControlName="fechaIni">
               </div>
-  
-              <div class="col-4">
-                <div class="form-group">
-                  <label for="fechaFin">Fecha Final</label>
-                  <input class="form-control" type="date" formControlName="fechaFin">
-                </div>
-              </div>
-  
-              <div class="col-4 mt-4">
-                <div class="col">
-                  <button type="submit" class="btn btn-primary form-control mt-2">
-                    CONSULTAR
-                  </button>
-                </div>
-              </div>
-  
             </div>
+
+            <div class="col-4">
+              <div class="form-group">
+                <label for="fechaFin">Fecha Final</label>
+                <input class="form-control" type="date" formControlName="fechaFin">
+              </div>
+            </div>
+
+            <div class="col-4 mt-4">
+              <div class="col">
+                <button type="submit" class="btn btn-primary form-control mt-2">
+                  CONSULTAR
+                </button>
+              </div>
+            </div>
+
+          </div>
 
           <div *ngIf="documentos.length !== 0; else mensaje">
             <ng2-smart-table [settings]="settings" [source]="dataTodosMisDocumentos"></ng2-smart-table>

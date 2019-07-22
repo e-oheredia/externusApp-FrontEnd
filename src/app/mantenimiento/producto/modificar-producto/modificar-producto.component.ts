@@ -37,10 +37,10 @@ export class ModificarProductoComponent implements OnInit {
       'nombre': new FormControl(this.producto.nombre, Validators.required),
       'activo': new FormControl(this.producto.activo, Validators.required)
     })
-  }  
+  }
 
   onSubmit(form: any) {
-    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)){
+    if (!this.utilsService.isUndefinedOrNullOrEmpty(this.modificarForm.controls['nombre'].value)) {
       let producto = Object.assign({}, this.producto)
       let nombreSinEspacios = this.modificarForm.controls['nombre'].value.trim();
       producto.nombre = nombreSinEspacios;
@@ -52,20 +52,20 @@ export class ModificarProductoComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarProductoSubscription = this.productoService.modificarProducto(producto.id, producto).subscribe(
-        producto => {
-          this.notifier.notify('success', 'Se ha modificado el producto correctamente');
-          this.bsModalRef.hide();
-          this.productoModificadoEvent.emit(producto);
-        },
-        error => {
-          this.notifier.notify('error', 'El nombre modificado ya existe');
-        }
+        this.modificarProductoSubscription = this.productoService.modificarProducto(producto.id, producto).subscribe(
+          producto => {
+            this.notifier.notify('success', 'Se ha modificado el producto correctamente');
+            this.bsModalRef.hide();
+            this.productoModificadoEvent.emit(producto);
+          },
+          error => {
+            this.notifier.notify('error', 'El nombre modificado ya existe');
+          }
         );
       })
     }
   }
 
-  
+
 
 }

@@ -13,17 +13,17 @@ import { InconsistenciaResultado } from './inconsistenciaresultado.model';
 
 export class Envio {
 
-    constructor(){
+    constructor() {
         this.documentos = [];
     }
 
-    public id: number; 
-    public buzon:Buzon; 
-    public autorizacion: File; 
-    public rutaAutorizacion: string; 
-    public plazoDistribucion: PlazoDistribucion; 
+    public id: number;
+    public buzon: Buzon;
+    public autorizacion: File;
+    public rutaAutorizacion: string;
+    public plazoDistribucion: PlazoDistribucion;
     public producto: Producto;
-    public tipoServicio: TipoServicio; 
+    public tipoServicio: TipoServicio;
     public tipoSeguridad: TipoSeguridad;
     public clasificacion: Clasificacion;
     public sede: Sede;
@@ -35,8 +35,9 @@ export class Envio {
     public seguimientosAutorizado: SeguimientoAutorizacion[] = [];
     public inconsistenciasDocumento: InconsistenciaDocumento[] = [];
     public inconsistenciasResultado: InconsistenciaResultado[] = [];
-    
-    public addDocumento(documento: Documento){
+
+    public addDocumento(documento: Documento) {
         this.documentos.push(documento);
     }
+    
 }

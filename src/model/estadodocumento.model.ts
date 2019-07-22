@@ -10,5 +10,6 @@ export class EstadoDocumento {
 
     public estadosDocumentoPermitidos: EstadoDocumento[];
     public motivos: MotivoEstado[];
-    public tiposDevolucion: TipoDevolucion[];    
+    public tiposDevolucion: TipoDevolucion[];
+    
 }

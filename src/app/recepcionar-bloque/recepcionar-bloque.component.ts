@@ -42,7 +42,7 @@ export class RecepcionarBloqueComponent implements OnInit {
 
   generarColumnas() {
     this.settings.columns = {
-      
+
       nroGuia: {
         title: 'Número de guía'
       },

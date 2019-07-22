@@ -13,9 +13,10 @@
           <div class="form-group">
             <label for="nombre">Nombre del plazo</label>
             <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-            <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched" class="text-danger small">
-                Es necesario ingresar el nombre del Plazo de distribución
-              </span>
+            <span *ngIf="!agregarForm.get('nombre').valid && agregarForm.get('nombre').touched"
+              class="text-danger small">
+              Es necesario ingresar el nombre del Plazo de distribución
+            </span>
           </div>
         </div>
       </div>
@@ -25,9 +26,10 @@
           <div class="form-group">
             <label for="tiempoEnvio">Plazo de distribución (horas)</label>
             <input class="form-control" type="number" name="tiempoEnvio" id="tiempoEnvio" formControlName="tiempoEnvio">
-            <span *ngIf="!agregarForm.get('tiempoEnvio').valid && agregarForm.get('tiempoEnvio').touched" class="text-danger small">
-                Es necesario ingresar las horas del plazo de distribución
-              </span>
+            <span *ngIf="!agregarForm.get('tiempoEnvio').valid && agregarForm.get('tiempoEnvio').touched"
+              class="text-danger small">
+              Es necesario ingresar las horas del plazo de distribución
+            </span>
           </div>
         </div>
       </div>
@@ -37,10 +39,12 @@
           <div class="form-group">
             <label for="tipoPlazoDistribucion">Tipo de plazo</label>
             <select class="form-control" id="tipoPlazoDistribucion" formControlName="tipoPlazoDistribucion">
-              <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">{{tipoPlazoDistribucion.nombre}}
+              <option *ngFor="let tipoPlazoDistribucion of tiposPlazos" [ngValue]="tipoPlazoDistribucion">
+                {{tipoPlazoDistribucion.nombre}}
               </option>
             </select>
-            <span *ngIf="!agregarForm.get('tipoPlazoDistribucion').valid && agregarForm.get('tipoPlazoDistribucion').touched"
+            <span
+              *ngIf="!agregarForm.get('tipoPlazoDistribucion').valid && agregarForm.get('tipoPlazoDistribucion').touched"
               class="text-danger small">
               Es necesario la elección de un tipo de plazo
             </span>

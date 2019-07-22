@@ -122,7 +122,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
     );
   }
 
-  onRegionSelectedChanged(region){
+  onRegionSelectedChanged(region) {
     this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByRegionId(region.id).subscribe(
       plazos => {
         this.plazosDistribucion = plazos;
