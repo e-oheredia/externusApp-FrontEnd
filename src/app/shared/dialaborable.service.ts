@@ -7,27 +7,28 @@ import { DiaLaborable } from "src/model/dialaborable.model";
 @Injectable()
 export class DiaLaborableService {
 
-    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_SERVICIO_URL; //falta confirmar
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_SERVICIO_URL;
 
     private diaslaborablesActivos: DiaLaborable[];
 
-    constructor(private requester: RequesterService ){
-        
+    constructor(
+        private requester: RequesterService
+    ) {
         this.listarDiasLaborablesActivos().subscribe(
             diaslaborablesActivos => {
                 this.diaslaborablesActivos = diaslaborablesActivos;
                 this.diaslaborablesChanged.next(this.diaslaborablesActivos);
             }
         )
-    }    
-    
-    getDiasLaborables(): DiaLaborable[] {
-        return this.diaslaborablesActivos;
     }
 
     public diaslaborablesChanged = new Subject<DiaLaborable[]>();
 
-    listarDiasLaborablesActivos(): Observable<DiaLaborable[]>{
+    getDiasLaborables(): DiaLaborable[] {
+        return this.diaslaborablesActivos;
+    }
+
+    listarDiasLaborablesActivos(): Observable<DiaLaborable[]> {
         return this.requester.get<DiaLaborable[]>(this.REQUEST_URL + "activos", {});
     }
 
@@ -35,11 +36,11 @@ export class DiaLaborableService {
         return this.requester.get<DiaLaborable[]>(this.REQUEST_URL + "diaslaborables", {});
     }
 
-    agregarDiaLaborable(dialaborable: DiaLaborable): Observable<DiaLaborable>{
+    agregarDiaLaborable(dialaborable: DiaLaborable): Observable<DiaLaborable> {
         return this.requester.post<DiaLaborable>(this.REQUEST_URL, dialaborable, {});
     }
 
-    modificarDiaLaborable(id:number, dialaborable: DiaLaborable): Observable<DiaLaborable> {
+    modificarDiaLaborable(id: number, dialaborable: DiaLaborable): Observable<DiaLaborable> {
         return this.requester.put<DiaLaborable>(this.REQUEST_URL + id, dialaborable, {});
     }
 

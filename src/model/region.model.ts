@@ -9,4 +9,5 @@ export class Region {
     public nombre: string;
     public diasLaborables: DiaLaborable[];
     public plazosDistribucion: PlazoDistribucion[];
+    
 }

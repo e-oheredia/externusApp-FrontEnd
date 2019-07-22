@@ -114,7 +114,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
 
   listarSinCustodiar() {
     this.dataEnvios.reset();
-    this.guiaService.listarGuiasCreadas().subscribe(
+    this.guiaService.listarGuiasRegularCreadas().subscribe(
       guias => {
         this.guias = guias;
         let dataEnvios = [];
@@ -190,7 +190,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
   }
 
   listarGuiasCreadas() {
-    this.guiasCreadasSubscription = this.guiaService.listarGuiasCreadas().subscribe(
+    this.guiasCreadasSubscription = this.guiaService.listarGuiasRegularCreadas().subscribe(
       guiasCreadas => this.guiasCreadas = guiasCreadas
     );
   }
@@ -243,7 +243,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
 
     bsModalRef.content.confirmarEvent.subscribe(
       () => {
-        this.guiaService.enviarGuia(this.guia.id).subscribe(
+        this.guiaService.enviarGuiaRegular(this.guia.id).subscribe(
           guia => {
             this.notifier.notify('success', 'Se ha enviado correctamente la guía');
             this.listarSinCustodiar();

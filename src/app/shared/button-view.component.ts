@@ -4,11 +4,11 @@ import { ViewCell } from 'ng2-smart-table';
 
 @Component({
   selector: 'button-view',
-  template: `
-    <button (click)="onClick()" [ngClass]="class">{{ renderValue }}</button>
-  `,
+  template: `<button (click)="onClick()" [ngClass]="class">{{ renderValue }}</button>`
 })
+
 export class ButtonViewComponent implements ViewCell, OnInit {
+
   renderValue: string;
   class: string;
 
@@ -24,4 +24,5 @@ export class ButtonViewComponent implements ViewCell, OnInit {
   onClick() {
     this.event.emit(this.rowData);
   }
+  
 }

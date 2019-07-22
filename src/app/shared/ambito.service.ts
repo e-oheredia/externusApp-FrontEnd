@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { Observable, Subject } from "rxjs";
 import { AppSettings } from "./app.settings";
@@ -16,6 +16,7 @@ export class AmbitoService {
     REQUEST_URL2 = AppSettings.API_ENDPOINT + AppSettings.AMBITODISTRITO_URL;
 
     private ambitos: Ambito[];
+    public ambitosChanged = new Subject<Ambito[]>();
 
     constructor(
         private requester: RequesterService,
@@ -35,14 +36,12 @@ export class AmbitoService {
         return this.ambitos;
     }
 
-    public ambitosChanged = new Subject<Ambito[]>();
+    listarAmbitosAll(): Observable<Ambito[]> {
+        return this.requester.get<Ambito[]>(this.REQUEST_URL + "ambitos", {});
+    }
 
     getAmbitosparaSubir() {
         return this.ambitos
-    }
-
-    listarAmbitosAll(): Observable<Ambito[]> {
-        return this.requester.get<Ambito[]>(this.REQUEST_URL + "ambitos", {});
     }
 
     listarAmbitosPorRegion(regionId: number): Observable<Ambito[]> {
