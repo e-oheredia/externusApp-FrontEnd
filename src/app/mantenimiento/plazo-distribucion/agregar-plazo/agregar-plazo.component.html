@@ -55,12 +55,12 @@
       <div class="form-row">
         <div class="col">
           <div class="form-group">
-            <label for="region">Región</label>
-            <select class="form-control" id="region" formControlName="region">
+            <label for="regiones">Región</label>
+            <select class="form-control" id="regiones" formControlName="regiones">
               <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}
               </option>
             </select>
-            <span *ngIf="!agregarForm.get('region').valid && agregarForm.get('region').touched"
+            <span *ngIf="!agregarForm.get('regiones').valid && agregarForm.get('regiones').touched"
               class="text-danger small">
               Es necesario la elección de una región
             </span>
