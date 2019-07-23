@@ -5,6 +5,7 @@ import { RequesterService } from "./requester.service";
 import { Observable } from 'rxjs';
 import * as moment from 'moment-timezone';
 import { SeguimientoAutorizacion } from 'src/model/seguimientoautorizacion.model';
+import { Documento } from 'src/model/documento.model';
 
 @Injectable()
 
@@ -34,6 +35,10 @@ export class EnvioMasivoService {
             (max, seguimentoAutorizado) =>
                 moment(seguimentoAutorizado.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoAutorizado : max, envio.seguimientosAutorizado[0]
         );
+    }
+
+    getDocumentosByEnvioId(id: number){
+        return this.requester.get<Documento[]>(this.REQUEST_URL + id + "/documentos", {});
     }
 
 

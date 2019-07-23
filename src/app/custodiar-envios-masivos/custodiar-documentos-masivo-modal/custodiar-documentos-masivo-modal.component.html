@@ -99,7 +99,7 @@
       </form>
     </div>
   </div>
-  <div class="row" *ngIf="envio.documentos.length !== 0">
+  <div class="row" *ngIf="documentos.length !== 0">
     <div class="col">
       <table class="table">
         <thead>
@@ -113,7 +113,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let documento of envio.documentos">
+          <tr *ngFor="let documento of documentos">
             <td scope="col">
               <input type="checkbox" [(ngModel)]="documento.checked" class="form-control">
             </td>
@@ -129,6 +129,6 @@
   </div>
 </div>
 <div class="row">
-  <ngx-barcode hidden *ngFor="let documento of envio.documentos" id="{{documento.documentoAutogenerado}}"
+  <ngx-barcode hidden *ngFor="let documento of documentos" id="{{documento.documentoAutogenerado}}"
     [bc-value]="documento.documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
 </div>

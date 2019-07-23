@@ -29,6 +29,8 @@ export class Envio {
     public sede: Sede;
     public documentos: Documento[];
     public checked: boolean;
+    public fecha: Date;
+    public cantidadDocumentos: number;
     public autorizado: boolean;
     public autogenerado: string;
     public tipoEnvio: TipoEnvio;
