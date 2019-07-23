@@ -10,35 +10,39 @@ import { Buzon } from "../../model/buzon.model";
 @Injectable()
 export class EmpleadoService {
 
-    constructor(private requester: RequesterService, private buzonService: BuzonService){}
+    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.EMPLEADO_URL;
 
     private empleadoAutenticado: Empleado;
 
-    REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.EMPLEADO_URL;
+    constructor(
+        private requester: RequesterService,
+        private buzonService: BuzonService
+    ) { }
 
-    public getEmpleadoAutenticado(){
+    public getEmpleadoAutenticado() {
         return this.empleadoAutenticado;
-    }   
+    }
 
-    listarEmpleadoAutenticado(){
-        this.requester.get<Empleado>(this.REQUEST_URL + "autenticado", {})
-        .subscribe(
+    listarEmpleadosAll(): Observable<Empleado[]> {
+        return this.requester.get(this.REQUEST_URL, {});
+    }
+
+    listarEmpleadoAutenticado() {
+        this.requester.get<Empleado>(this.REQUEST_URL + "autenticado", {}).subscribe(
             empleado => {
                 this.empleadoAutenticado = empleado;
                 let buzones: Buzon[] = [];
                 empleado.buzones.forEach(buzonEmpleado => {
                     buzones.push(buzonEmpleado.buzon);
                 });
-                this.buzonService.setBuzonesEmpleadoAutenticado(buzones);     
-                this.buzonService.setBuzonActual(buzones[0]);           
-            }, 
+                this.buzonService.setBuzonesEmpleadoAutenticado(buzones);
+                this.buzonService.setBuzonActual(buzones[0]);
+            },
             error => {
                 console.log(error);
-            }            
+            }
         );
     }
 
-    listarEmpleadosAll(): Observable<Empleado[]>{
-        return this.requester.get(this.REQUEST_URL, {});
-    }
+
 }

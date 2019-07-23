@@ -5,19 +5,17 @@ import { Injectable } from '@angular/core';
 import { RequesterService } from './requester.service';
 import { AppSettings } from "./app.settings";
 
-
 @Injectable()
 export class MenuService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.MENU_URL;
+
     private menusAutenticado: Menu[];
     menusAutenticadoChanged = new Subject<Menu[]>();
 
     constructor(
         private requester: RequesterService
-    ) {
-
-    }
+    ) { }
 
     getMenusAutenticado(): Menu[] {
         return this.menusAutenticado;

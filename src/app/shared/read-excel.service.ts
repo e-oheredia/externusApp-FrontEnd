@@ -5,6 +5,7 @@ type AOA = any[][];
 
 @Injectable()
 export class ReadExcelService {
+    
     constructor(){}
 
     excelToJson(file: File, sheet: number, callback: Function){

@@ -18,13 +18,10 @@ import * as moment from 'moment-timezone';
 import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { HttpParams, HttpClient } from '@angular/common/http';
 import { BuzonService } from './buzon.service';
-import { Proveedor } from '../../model/proveedor.model';
 import { DocumentoGuia } from 'src/model/documentoguia.model';
 import { MotivoEstado } from 'src/model/motivoestado.model';
-import { Guia } from 'src/model/guia.model';
 import { TipoDevolucion } from 'src/model/tipodevolucion.model';
 import { TipoDevolucionEnum } from '../enum/tipodevolucion.enum';
-import { MotivoEstadoEnum } from '../enum/motivoestado.enum';
 import { WriteExcelService } from './write-excel.service';
 import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 import { Envio } from 'src/model/envio.model';
@@ -45,7 +42,6 @@ export class DocumentoService {
         private estadoDocumentoService: EstadoDocumentoService,
         private buzonService: BuzonService,
         private writeExcelService: WriteExcelService,
-        private http: HttpClient
     ) {
         this.departamentosPeruSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
             departamentosPeru => {
@@ -101,7 +97,6 @@ export class DocumentoService {
 
                 let documentoCorrecto: Documento = new Documento();
                 let documentoIncorrecto: InconsistenciaDocumento = new InconsistenciaDocumento();
-
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1]) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][2])) {
                     documentoIncorrecto.resumen += "Ingrese la razón social o el contacto. "
@@ -169,8 +164,6 @@ export class DocumentoService {
                     }
                 }
 
-
-
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][7])) {
                     documentoIncorrecto.resumen += "Ingrese la dirección. "
                     todoCorrecto = false;
@@ -209,7 +202,6 @@ export class DocumentoService {
             envio.documentos = registrosCorrectos
             envio.inconsistenciasDocumento = registrosIncorrectos;
             callback(envio);
-
         });
     }
 
@@ -246,7 +238,6 @@ export class DocumentoService {
     }
 
     codigoAutogenerado(id: number, prefijo: String) {
-
         let autogenerado: String;
         let longitud: number = 7;
         var length = id.toString().length;
@@ -259,7 +250,6 @@ export class DocumentoService {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
 
-    //REPORTE
     subirReporte(documentos: Documento[]): Observable<any> {
         return this.requesterService.put<any>(this.REQUEST_URL + "cargaresultado", documentos, {});
     }
@@ -279,7 +269,6 @@ export class DocumentoService {
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
-
 
     listarDocumentosUtdBCPCodigo(codigo: string) {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
@@ -328,22 +317,9 @@ export class DocumentoService {
         return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcioncargo", {}, {});
     }
 
-
-    //actual - modal
-    eleccionDevolucionesDocumento(codigo: number): Observable<Documento[]> {
-        return this.requesterService.get<Documento[]>(this.REQUEST_URL + codigo + "/listarecepcion", {});
-    }
-
-    //actual - setear
     recepcionarDocumento(codigo: number, tiposDevolucion: TipoDevolucion[]): Observable<Documento> {
         return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcion", tiposDevolucion, {});
     }
-
-    //luego se debe eliminar
-    recepcionarDocumentos(codigo: number): Observable<Documento> {
-        return this.requesterService.put<Documento>(this.REQUEST_URL + codigo + "/recepcion", {}, {});
-    }
-
 
     listarCargos(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentoscargos", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
@@ -352,7 +328,6 @@ export class DocumentoService {
     asignarCodigoDevolucionCargo(id: number, codigo: string): Observable<Documento> {
         return this.requesterService.post<Documento>(this.REQUEST_URL + id + "/codigodevolucion", codigo, {});
     }
-
 
     validarResultadosDelProveedor(file: File, sheet: number, callback: Function) {
         this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
@@ -384,8 +359,6 @@ export class DocumentoService {
                 let resultadoIncorrecto: InconsistenciaResultado = new InconsistenciaResultado();
                 let estadoDocumentoValido: EstadoDocumento;
                 let motivoEstadoValido: MotivoEstado;
-
-                // let documentoCargado = new Documento();
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][1])) {
                     resultadoIncorrecto.resumen += "Ingrese el autogenerado. "
@@ -437,14 +410,6 @@ export class DocumentoService {
                     }
                 }
 
-                // if ((estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO ||
-                //     estadoDocumento.id === EstadoDocumentoEnum.REZAGADO ||
-                //     estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) && this.utilsService.isUndefinedOrNullOrEmpty(data[i][18])) {
-
-                //     resultadoIncorrecto.resumen += "Ingrese el motivo del estado. "
-                //     todoCorrecto = false;
-                // }
-
                 if (!todoCorrecto) {
                     resultadoIncorrecto.guia = data[i][0] || "";
                     resultadoIncorrecto.autogenerado = data[i][1] || "";
@@ -477,15 +442,11 @@ export class DocumentoService {
                     resultadoCorrecto.seguimientosDocumento.push(seguimientoDocumento);
                     resultadosCorrectos.push(resultadoCorrecto);
                 }
-
                 i++;
             }
-
             envio.documentos = resultadosCorrectos;
             envio.inconsistenciasResultado = resultadosIncorrectos;
-
             callback(envio);
-
         });
     }
 
@@ -530,7 +491,6 @@ export class DocumentoService {
                 let denunciaDevuelta = data[i][21];
                 let abc = data[i][18];
 
-                //VALIDACIÓN DE LAS 3 DEVOLUCIONES VACÍAS
                 if ((this.utilsService.isUndefinedOrNullOrEmpty(cargoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(rezagoDevuelto)) && (this.utilsService.isUndefinedOrNullOrEmpty(denunciaDevuelta))) {
                     callback({
                         mensaje: "Ingrese una o más devoluciones en la fila " + (i + 1)
@@ -576,92 +536,11 @@ export class DocumentoService {
                         return;
                     }
                 }
-
-
-
-                /* VALIDACIONES
-                //EL ESTADO DEL DOCUMENTO ES ENTREGADO?
-                if (estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO) {
-                    // SI EL ENTREGADO TIENE LA DEVOLUCION CARGO VACÍA
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19])) {
-                        callback({
-                            mensaje: "Ingrese la devolución del Entregado en la fila " + (i + 1)
-                        });
-                        return;
-                    }
-                    if (data[i][19] == "x" || data[i][19] == "X" || data[i][20] == "x" || data[i][20] == "X" || data[i][21] == "x" || data[i][21] == "X") {
-                        let tipodevolucion = new TipoDevolucion();
-                        tipodevolucion.id = TipoDevolucionEnum.CARGO;
-                        documentoDevuelto.tiposDevolucion.push(tipodevolucion)
-                        console.log("CARGO DE ENTREGA RECIBIDO");
-                    } else {
-                        callback({
-                            mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
-                        })
-                        return;
-                    }
-                }
-
-                //EL ESTADO DEL DOCUMENTO ES REZAGADO?
-                if (estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) {
-                    //SI EL REZAGADO TIENE LA DEVOLUCION CARGO O REZAGO VACÍA
-                    if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][19]) || this.utilsService.isUndefinedOrNullOrEmpty(data[i][20])) {
-                        callback({
-                            mensaje: "Ingrese las 2 devoluciones del Rezagado en la fila " + (i + 1)
-                        });
-                        return;
-                    }
-                    if ((data[i][19] == "x" || data[i][19] == "X") && (data[i][20] == "x" || data[i][20] == "X")) {
-                        let tipodevolucion = new TipoDevolucion();
-                        tipodevolucion.id = TipoDevolucionEnum.REZAGO;
-                        documentoDevuelto.tiposDevolucion.push(tipodevolucion);
-                        let tipodevolucion2 = new TipoDevolucion();
-                        tipodevolucion2.id = TipoDevolucionEnum.CARGO;
-                        documentoDevuelto.tiposDevolucion.push(tipodevolucion2)
-                        console.log("CARGO DE REZAGO RECIBIDO");
-                    } else {
-                        callback({
-                            mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
-                        })
-                        return;
-                    }
-                }
-
-                //EL ESTADO DEL DOCUMENTO ES NO_DISTRIBUIBLE?
-                if (estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE) {
-                    //EL MOTIVO DEL DOCUMENTO ES EXTRAVIADO_ROBADO?
-                    if (motivoDocumento.id === MotivoEstadoEnum.EXTRAVIADO_O_ROBADO) {
-                        //SI EL NO_DISTRIBUIBLE TIENE LA DEVOLUCION DENUNCIA VACÍA
-                        if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][21])) {
-                            callback({
-                                mensaje: "Ingrese la devolución del No Distribuible en la fila " + (i + 1)
-                            });
-                            return;
-                        }
-                        //SI LA DEVOLUCION TIENE UNA "X" o "x"
-                        if (data[i][19] == "x" || data[i][19] == "X" || data[i][20] == "x" || data[i][20] == "X" || data[i][21] == "x" || data[i][21] == "X") {
-                            let tipodevolucion = new TipoDevolucion();
-                            tipodevolucion.id = TipoDevolucionEnum.DENUNCIA;
-                            documentoDevuelto.tiposDevolucion.push(tipodevolucion)
-                            console.log("CARGO DE NO_DISTRIBUIBLE RECIBIDO");
-                        } else {
-                            callback({
-                                mensaje: "El caracter ingresado en la columna cargo de la fila " + (i + 1) + ", no es una 'x'"
-                            })
-                            return;
-                        }
-                    }
-                }
-                */
-
-                //-------------------------------------------------------------------------------------------------------------------------------------
-
                 documentosDevueltos.push(documentoDevuelto);
                 i++;
             }
 
             callback(documentosDevueltos);
-
         });
     }
 

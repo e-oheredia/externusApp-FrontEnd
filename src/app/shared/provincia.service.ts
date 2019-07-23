@@ -11,7 +11,13 @@ export class ProvinciaService {
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PROVINCIA_URL;
     DEPARTAMENTO_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DEPARTAMENTO_URL;
 
-    constructor(private requester: RequesterService, private utilsService: UtilsService){
+    private provincias: Provincia[];
+    public provinciasChanged = new Subject<Provincia[]>();
+
+    constructor(
+        private requester: RequesterService,
+        private utilsService: UtilsService
+    ) {
         this.listarAll().subscribe(
             provincias => {
                 this.provincias = provincias;
@@ -20,15 +26,12 @@ export class ProvinciaService {
         )
     }
 
-    private provincias: Provincia[];
-    public provinciasChanged = new Subject<Provincia[]>();
-
-    listarProvinciaByDepartamentoId(departamentoId: number): Observable<Provincia[]>{
-        return this.requester.get<Provincia[]>(this.DEPARTAMENTO_REQUEST_URL + departamentoId.toString() + "/" + AppSettings.PROVINCIA_URL, {});
+    listarAll(): Observable<Provincia[]> {
+        return this.requester.get<Provincia[]>(this.REQUEST_URL, {});
     }
 
-    listarAll(): Observable<Provincia[]>{
-        return this.requester.get<Provincia[]>(this.REQUEST_URL, {});
+    listarProvinciaByDepartamentoId(departamentoId: number): Observable<Provincia[]> {
+        return this.requester.get<Provincia[]>(this.DEPARTAMENTO_REQUEST_URL + departamentoId.toString() + "/" + AppSettings.PROVINCIA_URL, {});
     }
 
     listarProvinciaByNombreProvinciaAndNombreDepartamento(nombreProvincia: string, nombreDepartamento: string): Provincia {

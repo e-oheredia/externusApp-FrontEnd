@@ -13,10 +13,18 @@ export class EstadoDocumentoService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.ESTADO_DOCUMENTO_URL;
     TIPO_ESTADO_DOCUMENTO_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_ESTADO_DOCUMENTO_URL;
-
     MOTIVO_ESTADO_URL = AppSettings.API_ENDPOINT + AppSettings.MOTIVO_ESTADO_DOCUMENTO_URL;
-    
-    constructor(private requesterService: RequesterService) {
+
+    estadosDocumentoResultadosProveedor: EstadoDocumento[] = [];
+    estadosDocumentoResultadosProveedorChanged: Subject<EstadoDocumento[]> = new Subject<EstadoDocumento[]>();
+    motivosEstadoDocumentoResultadosProveedor: MotivoEstado[] = [];
+    motivosEstadoDocumentoResultadosProveedorChanged: Subject<MotivoEstado[]> = new Subject<MotivoEstado[]>();
+    estadosDocumento: EstadoDocumento[] = [];
+    estadosDocumentoChanged = new Subject<EstadoDocumento[]>();
+
+    constructor(
+        private requesterService: RequesterService
+    ) {
         this.listarEstadosDocumento().subscribe(
             estadosDocumento => {
                 this.estadosDocumento = estadosDocumento;
@@ -37,22 +45,13 @@ export class EstadoDocumentoService {
         )
     }
 
-    estadosDocumentoResultadosProveedor: EstadoDocumento[] = [];
-    estadosDocumentoResultadosProveedorChanged: Subject<EstadoDocumento[]> = new Subject<EstadoDocumento[]>();
-    motivosEstadoDocumentoResultadosProveedor: MotivoEstado[] = [];
-    motivosEstadoDocumentoResultadosProveedorChanged: Subject<MotivoEstado[]> = new Subject<MotivoEstado[]>();
-    estadosDocumento: EstadoDocumento[] = [];
-    estadosDocumentoChanged = new Subject<EstadoDocumento[]>();
-
-
     public getEstadosDocumento(): EstadoDocumento[] {
         return this.estadosDocumento;
     }
 
-    listarEstadosDocumento(): Observable<EstadoDocumento[]>{
+    listarEstadosDocumento(): Observable<EstadoDocumento[]> {
         return this.requesterService.get<EstadoDocumento[]>(this.REQUEST_URL, {});
     }
-
 
     getEstadosDocumentoResultadosProveedor() {
         return this.estadosDocumentoResultadosProveedor;
@@ -62,8 +61,6 @@ export class EstadoDocumentoService {
         return this.motivosEstadoDocumentoResultadosProveedor;
     }
 
-
-
     listarEstadosDocumentoByTipoEstadoDocumentoId(tipoEstadoDocumentoId: number): Observable<EstadoDocumento[]> {
         return this.requesterService.get<EstadoDocumento[]>(this.TIPO_ESTADO_DOCUMENTO_REQUEST_URL + tipoEstadoDocumentoId.toString() + "/" + AppSettings.ESTADO_DOCUMENTO_URL, {});
     }
@@ -71,7 +68,5 @@ export class EstadoDocumentoService {
     listarMotivosEstadoDocumento(): Observable<MotivoEstado[]> {
         return this.requesterService.get<MotivoEstado[]>(this.MOTIVO_ESTADO_URL, {});
     }
-
-
 
 }

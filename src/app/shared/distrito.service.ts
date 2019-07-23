@@ -4,17 +4,19 @@ import { AppSettings } from "./app.settings";
 import { Observable, Subject } from "rxjs";
 import { Distrito } from "../../model/distrito.model";
 import { UtilsService } from "./utils.service";
-import { ReadExcelService } from "./read-excel.service";
-import { AmbitoService } from "./ambito.service";
 
 @Injectable()
 export class DistritoService {
 
+    PROVINCIA_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PROVINCIA_URL;
+    DISTRITO_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DISTRITO_URL;
+
+    private distritos: Distrito[];
+    public distritosChanged = new Subject<Distrito[]>();
+
     constructor(
         private requester: RequesterService,
-        private utilsService: UtilsService,
-        private readExcelService: ReadExcelService,
-        private ambitoService: AmbitoService
+        private utilsService: UtilsService
     ) {
         this.listarAll().subscribe(
             distritos => {
@@ -24,19 +26,9 @@ export class DistritoService {
         )
     }
 
-    PROVINCIA_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.PROVINCIA_URL;
-    DISTRITO_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DISTRITO_URL;
-
-
-
-
-    private distritos: Distrito[];
-    public distritosChanged = new Subject<Distrito[]>();
-
     listarDistritosByProvinciaId(provinciaId: number): Observable<Distrito[]> {
         return this.requester.get<Distrito[]>(this.PROVINCIA_REQUEST_URL + provinciaId.toString() + "/" + AppSettings.DISTRITO_URL, {});
     }
-
 
     listarAll(): Observable<Distrito[]> {
         return this.requester.get<Distrito[]>(this.DISTRITO_REQUEST_URL, {});
@@ -52,6 +44,5 @@ export class DistritoService {
         }
         return distritosFiltrados[0].provincia.nombre.toUpperCase() === nombreProvincia.toUpperCase() ? distritosFiltrados[0] : null;
     }
-
 
 }
