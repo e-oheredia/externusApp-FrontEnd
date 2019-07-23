@@ -28,14 +28,13 @@ export class ReporteEficaciaComponent implements OnInit {
         public reporteService: ReporteService
     ) { }
 
-    dataSource = [];
+    documentoForm: FormGroup;
+    documentosSubscription: Subscription;
     estados: EstadoDocumento[] = [];
     proveedores: Proveedor[] = [];
-    documentosSubscription: Subscription;
-    documentoForm: FormGroup;
-    prove: Proveedor[] = [];
-    area : Area[]=[];
+    area: Area[] = [];
     data: any[] = [];
+    dataSource = [];
     validacion: number;
     seriesGroups: any[];
 
@@ -45,7 +44,6 @@ export class ReporteEficaciaComponent implements OnInit {
             "fechaIni": new FormControl(null, Validators.required),
             "fechaFin": new FormControl(null, Validators.required)
         });
-
         this.proveedores = this.proveedorService.getProveedores();
         this.proveedorService.proveedoresChanged.subscribe(
             proveedores => {
@@ -87,7 +85,6 @@ export class ReporteEficaciaComponent implements OnInit {
 
 
     MostrarReportes(fechaIni: Date, fechaFin: Date) {
-
         if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) &&
             !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
@@ -96,23 +93,16 @@ export class ReporteEficaciaComponent implements OnInit {
                     this.validacion = 1;
                     this.data = data;
                     this.llenarEficaciaEstadosPorProveedor(data);
-                    console.log("data")
-                    console.log(data)
                     this.getdatas2();
-                    // console.log("data")
-                    // console.log(data)
                 },
                 error => {
                     if (error.status === 409) {
                         this.validacion = 2
-                        // this.notifier.notify('error', 'No se encontraron registros');
                     }
                     if (error.status === 417) {
-                        // this.validacion = 2
                         this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
                     }
                     if (error.status === 424) {
-                        // this.validacion = 2
                         this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
                     }
                 }
@@ -120,11 +110,8 @@ export class ReporteEficaciaComponent implements OnInit {
         }
         else {
             this.validacion = 0
-            // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
         }
-
     }
-
 
 
 
@@ -162,12 +149,9 @@ export class ReporteEficaciaComponent implements OnInit {
                         this.dataSource.push(reporteEficacia)
                     }
                 });
-            });
-        console.log("this.dataSource");
-        console.log(this.dataSource);
+            }
+        );
     }
-
-
 
     estadoProveedor(proveedor, estado) {
         var cantidad = 0;
@@ -202,8 +186,6 @@ export class ReporteEficaciaComponent implements OnInit {
     }
 
 
-
-
     ngOnDestroy() {
         this.documentosSubscription.unsubscribe();
     }
@@ -223,33 +205,6 @@ export class ReporteEficaciaComponent implements OnInit {
         dataField: 'estado',
         showGridLines: false
     };
-
-    /*
-    seriesGroups: any[] = [
-        {
-            type: 'column',
-            columnsGapPercent: 50,
-            showLabels: true,
-            seriesGapPercent: 0,
-            valueAxis:
-            {
-                visible: true,
-                displayValueAxis: true,
-                axisSize: 'auto',
-                minValue: 0,
-                maxValue: 'auto',
-                tickMarksColor: '#134f8e'
-            },          
-            
-            series: [
-                {
-                        dataField: 'DOCFLOW',    //LO QUE SE PINTA EN EL GRAFICO
-                        displayText: 'DOCFLOW' //LO QUE SE LEE EN LA LEYENDA
-                }
-
-            ]
-        }
-    ];*/
 
     getdatas2() {
         let seriesGroupss: any[] = [];
@@ -282,9 +237,6 @@ export class ReporteEficaciaComponent implements OnInit {
         })
         this.seriesGroups = seriesGroupss;
     }
-
-
-
 
 
 }

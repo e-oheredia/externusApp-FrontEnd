@@ -9,17 +9,13 @@ import { SharedModule} from '../shared/shared.module'
       CommonModule, 
       FormsModule,
       ReactiveFormsModule,
-      SharedModule
-      
+      SharedModule      
     ],
     declarations: [
         ReporteIndicadorVolumenComponent
     ]
   })
-  export class ReporteIndicadorVolumenModule { 
 
-
-
-
+  export class ReporteIndicadorVolumenModule {
 
   }
