@@ -24,7 +24,7 @@
       </div>
       <div class="card-body">
         <form [formGroup]="documentoForm" (ngSubmit)="onSubmit(documentoForm.value)">
-          
+
 
           <div class="form-row">
             <div class="col">
@@ -147,7 +147,7 @@
               <div class="form-group">
                 <label for="distrito">Distrito *</label>
                 <select class="form-control" id="distrito" [(ngModel)]="distrito" formControlName="distrito"
-                (change)="onDistritoSelectedChanged(distrito)">
+                  (change)="onDistritoSelectedChanged(distrito)">
                   <option *ngFor="let distrito of distritos" [ngValue]="distrito">{{distrito.nombre}}</option>
                 </select>
                 <span *ngIf="!documentoForm.get('distrito').valid && documentoForm.get('distrito').touched"
@@ -225,7 +225,7 @@
               (change)="onChangeFile($event.srcElement.files[0])" accept=".msg">
           </div>
 
-          
+
           <div class="row">
             <div class="col">
               <div class="form-row align-items-center float-right mb-3 mt-3">
@@ -261,4 +261,3 @@
     </div>
   </div>
 </div>
-

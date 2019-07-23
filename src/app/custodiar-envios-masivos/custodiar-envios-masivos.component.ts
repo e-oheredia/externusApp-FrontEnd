@@ -94,8 +94,8 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
               seguridad: envio.tipoSeguridad.nombre,
               distribucion: envio.plazoDistribucion.nombre ,
               autorizado: this.envioMasivoService.getUltimoSeguimientoAutorizacion(envio) ? this.envioMasivoService.getUltimoSeguimientoAutorizacion(envio).estadoAutorizado.nombre : "APROBADA",
-              fecha: this.documentoService.getFechaCreacion(envio.documentos[0]),
-              cantidad:envio.documentos.length
+              fecha: envio.fecha,
+              cantidad:envio.cantidadDocumentos
             })
           }
         )
@@ -112,11 +112,9 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
         this.enviosMasivosCreados = enviosMasivosCreados;
       }
     )
-    console.log(this.enviosMasivosCreados);
   }
 
   abrir(masivoAutogenerado: string) {
-
     let envio = this.enviosMasivosCreados.find(
       envio => envio.masivoAutogenerado === masivoAutogenerado);
 
@@ -124,16 +122,14 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
       this.notifier.notify('warning', 'No existe el código ingresado');
       return;
     }
-
+    
     this.masivoAutogenerado = "";
-
     let bsModalRef: BsModalRef = this.modalService.show(CustodiarDocumentosMasivoModalComponent, {
       initialState: {
         envio: envio
       },
       class: "modal-lg"
     });
-
     bsModalRef.content.todosDocumentosCustodiadosEvent.subscribe(
       () => {
         this.listarSinCustodiar();

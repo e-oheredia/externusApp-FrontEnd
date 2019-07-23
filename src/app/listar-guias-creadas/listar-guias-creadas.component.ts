@@ -35,7 +35,6 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
   guia: Guia;
   ngOnInit() {
     this.generarColumnas();
-    //this.listarGuiasCreadas();
     this.listarSinCustodiar();
     this.settings.hideSubHeader = false;
 
@@ -54,14 +53,14 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
             this.abrirGuia(row);
           });
         }
-      }, 
+      },
       numero: {
         title: 'Número de Guía'
-      }, 
+      },
       proveedor: {
         title: 'Proveedor'
       },
-      plazo: {  
+      plazo: {
         title: 'Plazo de Distribución'
       },
       servicio: {
@@ -69,13 +68,13 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
       },
       seguridad: {
         title: 'Tipo de Seguridad'
-      },       
+      },
       total: {
         title: 'Total de Documentos'
-      },     
+      },
       validados: {
         title: 'Validados'
-      },                            
+      },
       buttonEnviar: {
         title: 'Enviar',
         type: 'custom',
@@ -86,7 +85,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
             this.enviar(row);
           });
         }
-      }, 
+      },
       buttonModificar: {
         title: 'Modificar',
         type: 'custom',
@@ -97,7 +96,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
             this.modificar(row);
           });
         }
-      },  
+      },
       buttonEliminar: {
         title: 'Eliminar',
         type: 'custom',
@@ -108,27 +107,27 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
             this.eliminar(row);
           });
         }
-      }         
+      }
     }
   }
 
 
-    listarSinCustodiar(){
+  listarSinCustodiar() {
     this.dataEnvios.reset();
-    this.guiaService.listarGuiasCreadas().subscribe(
+    this.guiaService.listarGuiasRegularCreadas().subscribe(
       guias => {
         this.guias = guias;
         let dataEnvios = [];
         guias.forEach(
           guia => {
             dataEnvios.push({
-              id:guia.id,
-              numero: guia.numeroGuia , 
-              proveedor: guia.proveedor.nombre ,
-              plazo: guia.plazoDistribucion.nombre  ,
-              servicio:guia.clasificacion.nombre ,
+              id: guia.id,
+              numero: guia.numeroGuia,
+              proveedor: guia.proveedor.nombre,
+              plazo: guia.plazoDistribucion.nombre,
+              servicio: guia.clasificacion.nombre,
               seguridad: guia.tipoSeguridad.nombre,
-              total: guia.cantidadDocumentos ,
+              total: guia.cantidadDocumentos,
               validados: guia.cantidadValidados
             })
           }
@@ -145,7 +144,6 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
     bsModalRef.content.guiaCreadaEvent.subscribe(
       guiaCreada => {
         this.listarSinCustodiar();
-        //this.listarGuiasCreadas();
         this.abrirGuiaalcrear(guiaCreada);
       }
     )
@@ -168,10 +166,10 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
   }
 
   eliminar(row) {
-      this.guia = this.guias.find(guia => guia.id == row.id)
-     let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {  
+    this.guia = this.guias.find(guia => guia.id == row.id)
+    let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
       initialState: {
-        id:this.guia.id,
+        id: this.guia.id,
         mensaje: "Se eliminará la guía ¿Desea continuar?"
       }
     });
@@ -192,7 +190,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
   }
 
   listarGuiasCreadas() {
-    this.guiasCreadasSubscription = this.guiaService.listarGuiasCreadas().subscribe(
+    this.guiasCreadasSubscription = this.guiaService.listarGuiasRegularCreadas().subscribe(
       guiasCreadas => this.guiasCreadas = guiasCreadas
     );
   }
@@ -245,7 +243,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
 
     bsModalRef.content.confirmarEvent.subscribe(
       () => {
-        this.guiaService.enviarGuia(this.guia.id).subscribe(
+        this.guiaService.enviarGuiaRegular(this.guia.id).subscribe(
           guia => {
             this.notifier.notify('success', 'Se ha enviado correctamente la guía');
             this.listarSinCustodiar();
@@ -258,7 +256,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
     )
 
 
-    
+
   }
 
   ngOnDestroy() {

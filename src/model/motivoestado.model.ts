@@ -5,5 +5,4 @@ export class MotivoEstado {
         public nombre: string
     ) { }
 
-
 }

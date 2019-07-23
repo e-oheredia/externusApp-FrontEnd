@@ -42,8 +42,6 @@ export class AdjuntarCorreoComponent implements OnInit {
 
   onChangeExcelFile(file: File) {
     this.archivoAdjunto = file;
-    console.log("BUZON: " + this.buzon);
-    console.log("BUZON: " + this.plazoDistribucion);
   }
 
 
@@ -53,7 +51,7 @@ export class AdjuntarCorreoComponent implements OnInit {
       return;
     }
 
-    if (this.valor === "buzon"){
+    if (this.valor === "buzon") {
       this.buzonService.actualizarPlazoDistribucionPermitido(this.buzon.id, this.plazoDistribucion, archivoAdjunto).subscribe(
         plazoDistribucion => {
           this.notifier.notify('success', 'Se ha asignado correctamente el plazo de distribución');

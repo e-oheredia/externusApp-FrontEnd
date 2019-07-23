@@ -8,13 +8,14 @@ import { RequesterService } from "./requester.service";
 export class DocumentoGuiaService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.DOCUMENTO_GUIA_URL;
-
     GUIA_REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
 
-    constructor(private requester: RequesterService){}
+    constructor(
+        private requester: RequesterService
+    ) { }
 
     validarDocumentoGuia(guiaId: number, documentoId: number): Observable<DocumentoGuia> {
-        return this.requester.put<DocumentoGuia>(this.GUIA_REQUEST_URL + guiaId.toString() + "/" + AppSettings.DOCUMENTO_URL + documentoId.toString() + "/" +   "validacion", null, {});
-    }    
+        return this.requester.put<DocumentoGuia>(this.GUIA_REQUEST_URL + guiaId.toString() + "/" + AppSettings.DOCUMENTO_URL + documentoId.toString() + "/" + "validacion", null, {});
+    }
 
 }

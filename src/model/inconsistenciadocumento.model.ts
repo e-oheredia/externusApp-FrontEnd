@@ -2,8 +2,7 @@ import { Envio } from "./envio.model";
 
 export class InconsistenciaDocumento {
 
-
-    constructor(){
+    constructor() {
         this.resumen = "";
     }
 
@@ -19,5 +18,5 @@ export class InconsistenciaDocumento {
     public referencia: string;
     public envio: Envio;
     public resumen: string;
-    
+
 }

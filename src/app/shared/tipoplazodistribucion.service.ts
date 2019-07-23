@@ -9,7 +9,12 @@ export class TipoPlazoDistribucionService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPOPLAZODISTRIBUCION_URL;
 
-    constructor(private requester: RequesterService){
+    tiposPlazosDistribucionChanged = new Subject<TipoPlazoDistribucion[]>();
+    private tiposPlazosDistribucion: TipoPlazoDistribucion[];
+
+    constructor(
+        private requester: RequesterService
+    ) {
         this.listarTiposPlazosDistribucion().subscribe(
             tiposPlazosDistribucion => {
                 this.tiposPlazosDistribucion = tiposPlazosDistribucion;
@@ -18,15 +23,11 @@ export class TipoPlazoDistribucionService {
         )
     }
 
-    private tiposPlazosDistribucion: TipoPlazoDistribucion[];
-
     public getTiposPlazosDistribucion(): TipoPlazoDistribucion[] {
         return this.tiposPlazosDistribucion;
     }
-
-    tiposPlazosDistribucionChanged = new Subject<TipoPlazoDistribucion[]>();
-
-    public listarTiposPlazosDistribucion(): Observable<TipoPlazoDistribucion[]>{
+    
+    public listarTiposPlazosDistribucion(): Observable<TipoPlazoDistribucion[]> {
         return this.requester.get<TipoPlazoDistribucion[]>(this.REQUEST_URL, {});
     }
 

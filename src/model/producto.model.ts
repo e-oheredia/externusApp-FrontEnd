@@ -1,3 +1,9 @@
 export class Producto {
-    constructor(public id: number, public nombre:string, public activo: boolean){}
+
+    constructor(
+        public id: number,
+        public nombre: string,
+        public activo: boolean
+    ) { }
+    
 }   

@@ -10,13 +10,13 @@ const generarDocumentosRoutes: Routes = [
         path: '', component: GenerarDocumentosComponent, children: [
             {
                 path: 'individual', component: GenerarDocumentoIndividualComponent
-            }, 
+            },
             {
                 path: 'masivo', component: GenerarMasivoComponent
-            }, 
+            },
             {
                 path: 'bloque', component: GenerarBloqueComponent
-            } 
+            }
         ]
     }
 ];
@@ -24,8 +24,8 @@ const generarDocumentosRoutes: Routes = [
 @NgModule({
     imports: [
         RouterModule.forChild(generarDocumentosRoutes)
-    ], 
+    ],
     exports: [RouterModule]
 })
 
-export class GenerarDocumentosRoutingModule{}
+export class GenerarDocumentosRoutingModule { }

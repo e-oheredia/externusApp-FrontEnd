@@ -15,11 +15,8 @@ export class BrowserStorageService {
         this.tokenActualChanged.next();
     }
 
-
     get(key:string): string {
         return this.localStorageService.get(key);
     }
-
-
 
 }

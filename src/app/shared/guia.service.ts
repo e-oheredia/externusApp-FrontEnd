@@ -8,12 +8,9 @@ import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable } from "rxjs";
-import { Sede } from 'src/model/sede.model';
 import { HttpParams } from '@angular/common/http';
 import { EstadoGuia } from 'src/model/estadoguia.model';
 import { Documento } from 'src/model/documento.model';
-import { SeguimientoDocumento } from 'src/model/seguimientodocumento.model';
-import { EstadoDocumento } from 'src/model/estadodocumento.model';
 import { UtilsService } from './utils.service';
 
 @Injectable()
@@ -22,15 +19,13 @@ export class GuiaService {
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.GUIA_URL;
 
     constructor(
-        private requester: RequesterService, 
+        private requester: RequesterService,
         private writeExcelService: WriteExcelService,
         private documentoService: DocumentoService,
         private utilsService: UtilsService,
-    ) {
+    ) { }
 
-    }
-
-    listarGuiasCreadas(): Observable<Guia[]> {
+    listarGuiasRegularCreadas(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creados", {});
     }
 
@@ -38,49 +33,43 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "creadosbloque", {});
     }
 
-    listarGuiaPorCodigo(codigo: string, verificador:number, tipoguia: number): Observable<Guia>{
-        return this.requester.get<Guia>(this.REQUEST_URL + tipoguia + "/reporteguias", { params: new HttpParams().append('numeroGuia', codigo.toString()).append('verificador',verificador.toString())});
+    listarGuiaPorCodigo(codigo: string, verificador: number, tipoguia: number): Observable<Guia> {
+        return this.requester.get<Guia>(this.REQUEST_URL + tipoguia + "/reporteguias", { params: new HttpParams().append('numeroGuia', codigo.toString()).append('verificador', verificador.toString()) });
     }
 
-    listarGuiasPorFechas(fechaini: Date, fechafin: Date, verificador:number, tipoguia: number){
-        return this.requester.get<Guia[]>(this.REQUEST_URL + tipoguia + "/reporteguias" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('verificador',verificador.toString()) });
+    listarGuiasPorFechas(fechaini: Date, fechafin: Date, verificador: number, tipoguia: number) {
+        return this.requester.get<Guia[]>(this.REQUEST_URL + tipoguia + "/reporteguias", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('verificador', verificador.toString()) });
     }
-    
-    //DEVOLUCION
+
     subirDocumentosDevolucion(documentos: Documento[]): Observable<any> {
         return this.requester.put<any>(this.REQUEST_URL + "cargadevolucionbloque", documentos, {});
     }
 
-    // COMENTADO 1:
-    // listarDocumentosGuiaValidados(guia: Guia): DocumentoGuia[] {
-    //     return guia.documentosGuia.filter(documentoGuia => documentoGuia.validado === true);
-    // }
-
     retirarNoValidados(guia: Guia) {
         return this.requester.put<any>(this.REQUEST_URL + guia.id + "/retiro", null, {});
     }
-    
-    getCantidadDocumentosPorGuia(guia: Guia){
+
+    getCantidadDocumentosPorGuia(guia: Guia) {
         return this.requester.get<any>(this.REQUEST_URL + guia.id + "/documentos" + null, {});
     }
-    
+
     registrarGuia(guia: Guia): Observable<Guia> {
         return this.requester.post<Guia>(this.REQUEST_URL, guia, {});
     }
 
-    enviarGuia(guiaId: number){
+    enviarGuiaRegular(guiaId: number) {
         return this.requester.put<Guia>(this.REQUEST_URL + guiaId.toString() + "/envio", null, {});
     }
 
-    enviarGuiaBloque(guiaId: number){
+    enviarGuiaBloque(guiaId: number) {
         return this.requester.put<Guia>(this.REQUEST_URL + guiaId.toString() + "/enviobloque", null, {});
     }
 
-    modificarGuia(guia: Guia){
+    modificarGuia(guia: Guia) {
         return this.requester.put<Guia>(this.REQUEST_URL + guia.id.toString(), guia, {});
     }
 
-    eliminarGuia(guiaId: number){
+    eliminarGuia(guiaId: number) {
         return this.requester.delete<Guia>(this.REQUEST_URL + guiaId.toString(), {});
     }
 
@@ -92,32 +81,18 @@ export class GuiaService {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "guiasbloque", {});
     }
 
-    listarGuiasSinCerrar() : Observable<Guia[]> {
+    listarGuiasSinCerrar(): Observable<Guia[]> {
         return this.requester.get<Guia[]>(this.REQUEST_URL + "sincerrar", {});
     }
 
-    // COMENTADO 2:
-    // listarDocumentosGuiaByUltimoEstadoAndGuia(guia: Guia, estadoId: number): DocumentoGuia[] {
-    //     return guia.documentosGuia.filter(
-    //         documentoGuia => this.documentoService.getUltimoEstado(documentoGuia.documento).id === estadoId
-    //     );
-    // }
-
-    fechaLimiteReparto(guia: Guia): Date{
-        let a = guia.plazoDistribucion.tiempoEnvio
-        let fechaInicial = this.getSeguimientoGuiaByEstadoGuiaId(guia,2).fecha                
-        return fechaInicial
-        //FALTA DEFINIR COMO SE MANEJARÁ LA FECHA LÍMITE
-    }
-
-    getFechaCreacion(guia: Guia): Date{
-        return guia.seguimientosGuia.find(seguimientoDocumento => 
+    getFechaCreacion(guia: Guia): Date {
+        return guia.seguimientosGuia.find(seguimientoDocumento =>
             seguimientoDocumento.estadoGuia.id === 1
         ).fecha;
     }
 
-    getFechaEnvio(guia: Guia): Date{
-        let seguimientoDocumento =  guia.seguimientosGuia.find(seguimientoDocumento => 
+    getFechaEnvio(guia: Guia): Date {
+        let seguimientoDocumento = guia.seguimientosGuia.find(seguimientoDocumento =>
             seguimientoDocumento.estadoGuia.id === 2
         );
 
@@ -127,7 +102,7 @@ export class GuiaService {
         return seguimientoDocumento.fecha;
     }
 
-    getEstadoGuia(guia: Guia): EstadoGuia{
+    getEstadoGuia(guia: Guia): EstadoGuia {
         let estadoGuia = guia.seguimientosGuia.reduce(
             (max, seguimientosGuia) =>
                 moment(seguimientosGuia.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimientosGuia : max, guia.seguimientosGuia[0]
@@ -139,22 +114,22 @@ export class GuiaService {
     getFechaUltimoEstadoGuia(guia: Guia): Date | string {
         return guia.seguimientosGuia.reduce(
             (max, seguimientosGuia) =>
-            moment(seguimientosGuia.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimientosGuia : max, guia.seguimientosGuia[0]
+                moment(seguimientosGuia.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimientosGuia : max, guia.seguimientosGuia[0]
         ).fecha
     }
 
-    getSeguimientoGuiaByEstadoGuiaId(guia: Guia, estadoGuiaId: number): SeguimientoGuia{
-        return guia.seguimientosGuia.find(seguimientoDocumento => 
+    getSeguimientoGuiaByEstadoGuiaId(guia: Guia, estadoGuiaId: number): SeguimientoGuia {
+        return guia.seguimientosGuia.find(seguimientoDocumento =>
             seguimientoDocumento.estadoGuia.id === estadoGuiaId
-        ) 
+        )
     }
 
-    asignarFechaDescarga(guia: Guia){
+    asignarFechaDescarga(guia: Guia) {
         return this.requester.put<any>(this.REQUEST_URL + guia.id.toString() + "/descarga", null, {});
     }
 
     listarDocumentosByGuiaId(guia: Guia): Observable<Documento[]> {
-        return this.requester.get<Documento[]>(this.REQUEST_URL + guia.id.toString() + "/documentos" , {});
+        return this.requester.get<Documento[]>(this.REQUEST_URL + guia.id.toString() + "/documentos", {});
     }
 
     getDocumentoGuia(documento: Documento): Observable<DocumentoGuia> {
@@ -165,7 +140,7 @@ export class GuiaService {
         let objects = [];
         documentos.forEach(documento => {
             objects.push({
-                "Guía": guia.numeroGuia, 
+                "Guía": guia.numeroGuia,
                 "Autogenerado": documento.documentoAutogenerado,
                 "Guía + Autogenerado": guia.numeroGuia + documento.documentoAutogenerado,
                 "Sede Remitente": guia.sede.nombre,
@@ -191,7 +166,7 @@ export class GuiaService {
         let objects = [];
         documentos.forEach(documento => {
             objects.push({
-                "Guía": guia.numeroGuia, 
+                "Guía": guia.numeroGuia,
                 "Autogenerado": documento.documentoAutogenerado,
                 "Guía + Autogenerado": guia.numeroGuia + documento.documentoAutogenerado,
                 "Sede Remitente": guia.sede.nombre,
@@ -210,54 +185,52 @@ export class GuiaService {
                 "Teléfono": documento.telefono,
                 "Estado": this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre,
                 "Motivo": this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre,
-                "Cargo" : "",
-                "Rezago" : "",
-                "Denuncia" : ""
+                "Cargo": "",
+                "Rezago": "",
+                "Denuncia": ""
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Guia: " + guia.numeroGuia);
     }
 
-
-
-    exportarGuias(guias){
+    exportarGuias(guias) {
         let objects = [];
         guias.forEach(guia => {
             objects.push({
-                "Número de guía" : guia.numeroGuia,
-                "Proveedor" : guia.proveedor.nombre,
-                "Plazo de distribución" : guia.plazoDistribucion.nombre,
-                "Tipo de servicio" : guia.tipoServicio.nombre,
-                "Tipo de seguridad" : guia.tipoSeguridad.nombre,
-                "Sede" : guia.sede.nombre,
-                "Total de documentos" : guia.cantidadDocumentos,
-                "Fecha creación" : this.getFechaCreacion(guia),
-                "Fecha límite" : guia.fechaLimite,
-                "Fecha envío" : !this.utilsService.isUndefinedOrNullOrEmpty(this.getFechaEnvio(guia)) ? this.getFechaEnvio(guia) : ' ',
-                "Fecha último estado" : this.getFechaUltimoEstadoGuia(guia),
-                "Estado" : this.getEstadoGuia(guia).nombre
+                "Número de guía": guia.numeroGuia,
+                "Proveedor": guia.proveedor.nombre,
+                "Plazo de distribución": guia.plazoDistribucion.nombre,
+                "Tipo de servicio": guia.tipoServicio.nombre,
+                "Tipo de seguridad": guia.tipoSeguridad.nombre,
+                "Sede": guia.sede.nombre,
+                "Total de documentos": guia.cantidadDocumentos,
+                "Fecha creación": this.getFechaCreacion(guia),
+                "Fecha límite": guia.fechaLimite,
+                "Fecha envío": !this.utilsService.isUndefinedOrNullOrEmpty(this.getFechaEnvio(guia)) ? this.getFechaEnvio(guia) : ' ',
+                "Fecha último estado": this.getFechaUltimoEstadoGuia(guia),
+                "Estado": this.getEstadoGuia(guia).nombre
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Reporte de guías: ");
     }
 
-    exportarGuiasBloque(guias){
+    exportarGuiasBloque(guias) {
         let objects = [];
         guias.forEach(guia => {
             objects.push({
-                "Número de guía" : guia.numeroGuia,
-                "Proveedor" : guia.proveedor.nombre,
-                "Plazo de distribución" : guia.plazoDistribucion.nombre,
-                "Tipo de servicio" : guia.tipoServicio.nombre,
-                "Tipo de seguridad" : guia.tipoSeguridad.nombre,
-                "Sede" : guia.sede.nombre,
+                "Número de guía": guia.numeroGuia,
+                "Proveedor": guia.proveedor.nombre,
+                "Plazo de distribución": guia.plazoDistribucion.nombre,
+                "Tipo de servicio": guia.tipoServicio.nombre,
+                "Tipo de seguridad": guia.tipoSeguridad.nombre,
+                "Sede": guia.sede.nombre,
                 "Pendiente de resultado": guia.cantidadDocumentosPendientes,
-                "Total de documentos" : guia.cantidadDocumentos,
-                "Fecha creación" : this.getFechaCreacion(guia),
-                "Fecha límite" : guia.fechaLimite,
-                "Fecha envío" : !this.utilsService.isUndefinedOrNullOrEmpty(this.getFechaEnvio(guia)) ? this.getFechaEnvio(guia) : ' ',
-                "Fecha último estado" : this.getFechaUltimoEstadoGuia(guia),
-                "Estado" : this.getEstadoGuia(guia).nombre
+                "Total de documentos": guia.cantidadDocumentos,
+                "Fecha creación": this.getFechaCreacion(guia),
+                "Fecha límite": guia.fechaLimite,
+                "Fecha envío": !this.utilsService.isUndefinedOrNullOrEmpty(this.getFechaEnvio(guia)) ? this.getFechaEnvio(guia) : ' ',
+                "Fecha último estado": this.getFechaUltimoEstadoGuia(guia),
+                "Estado": this.getEstadoGuia(guia).nombre
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Reporte de guías bloque: ");

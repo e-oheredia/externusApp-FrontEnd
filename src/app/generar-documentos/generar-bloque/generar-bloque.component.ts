@@ -147,7 +147,6 @@ export class GenerarBloqueComponent implements OnInit {
   }
   
   onRegionSelectedChanged(region){
-    console.log(this.regiones)
     this.plazosDistribucionSubscription = this.plazoDistribucionService.listarPlazosDistribucionByRegionId(region.id).subscribe(
       plazos => {
         this.plazosDistribucion = plazos;
@@ -183,14 +182,9 @@ export class GenerarBloqueComponent implements OnInit {
   mostrarDocumentosCargados(file: File) {
     this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        console.log("primeros correctos: " + data.documentos.length)
-        console.log("primeros incorrectos: " + data.inconsistenciasDocumento.length)
         this.documentosCorrectos = data.documentos;
         this.documentosIncorrectos = data.inconsistenciasDocumento;
-        // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
-          console.log("primeros correctos: " + this.documentosCorrectos.length)
-          console.log("primeros incorrectos: " + this.documentosIncorrectos.length)
           this.descargarInconsistencias(this.documentosIncorrectos);
         }
         return;
@@ -203,14 +197,11 @@ export class GenerarBloqueComponent implements OnInit {
   mostrarDocumentosCargados2(file: File) {
     this.documentoService.validarDocumentosMasivosYBloque(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        console.log("primeros correctos: " + this.documentosCorrectos.length)
-        console.log("nuevos correctos: " + data.documentos.length)
         this.documentosCorrectos = this.documentosCorrectos.concat(data.documentos);
         this.documentosIncorrectos = data.inconsistenciasDocumento;
         if(this.utilsService.isUndefinedOrNullOrEmpty(this.documentosIncorrectos)){
           this.documentosIncorrectos = [];
         }
-        // descargar inconsistencias
         if (this.documentosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.documentosIncorrectos);
         }
@@ -228,9 +219,6 @@ export class GenerarBloqueComponent implements OnInit {
 
 
   onSubmit(datosBloque: FormGroup) {
-    // console.log(datosBloque)
-    // console.log(datosBloque.get('region').value)
-    // console.log(datosBloque.get('plazoDistribucion').value)
     if (this.documentosIncorrectos.length > 0) {
       let bsModalRef: BsModalRef = this.modalService.show(ConfirmModalComponent, {
         initialState: {
@@ -264,16 +252,11 @@ export class GenerarBloqueComponent implements OnInit {
     envioBloque.inconsistenciasDocumento = this.documentosIncorrectos;
     this.codigoGuia = datosBloque.get('codigoGuia').value;
     this.proveedor = datosBloque.get('proveedor').value;
-    // this.region = datosBloque.get('region').value;
-    // envioBloque.plazoDistribucion.regiones.push(this.region);
     this.envioBloqueService.registrarEnvioBloque(envioBloque, this.codigoGuia, this.proveedor.id).subscribe(
       envioBloque => {
         this.documentosCorrectos = [];
         this.documentosIncorrectos = [];
         this.autogeneradoCreado = envioBloque.masivoAutogenerado
-        // setTimeout(() =>{
-        //   this.cargoPdfService.generarPdfBloque(envioBloque, document.getElementById("codebarBloque").children[0].children[0]);
-        // }, 200);
         let bsModalRef: BsModalRef = this.modalService.show(AutogeneradoCreadoModalComponent, {
           initialState: {
             autogenerado: envioBloque.masivoAutogenerado

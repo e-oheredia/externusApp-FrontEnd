@@ -1,17 +1,19 @@
 import { EnvioMasivo } from '../../model/enviomasivo.model';
 import { AppSettings } from './app.settings';
-import { Envio } from '../../model/envio.model';
 import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { Observable } from 'rxjs';
 import * as moment from 'moment-timezone';
 import { SeguimientoAutorizacion } from 'src/model/seguimientoautorizacion.model';
-
+import { Documento } from 'src/model/documento.model';
 
 @Injectable()
+
 export class EnvioMasivoService {
 
-    constructor(private requester: RequesterService){}
+    constructor(
+        private requester: RequesterService
+    ) { }
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.ENVIO_MASIVO_URL;
 
@@ -24,17 +26,19 @@ export class EnvioMasivoService {
         return this.requester.post<EnvioMasivo>(this.REQUEST_URL, form, {});
     }
 
-    listarEnviosMasivosCreados(){
+    listarEnviosMasivosCreados() {
         return this.requester.get<EnvioMasivo[]>(this.REQUEST_URL + "creados", {});
     }
-    
+
     getUltimoSeguimientoAutorizacion(envio: EnvioMasivo): SeguimientoAutorizacion {
         return envio.seguimientosAutorizado.reduce(
             (max, seguimentoAutorizado) =>
                 moment(seguimentoAutorizado.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoAutorizado : max, envio.seguimientosAutorizado[0]
         );
+    }
 
-        
+    getDocumentosByEnvioId(id: number){
+        return this.requester.get<Documento[]>(this.REQUEST_URL + id + "/documentos", {});
     }
 
 

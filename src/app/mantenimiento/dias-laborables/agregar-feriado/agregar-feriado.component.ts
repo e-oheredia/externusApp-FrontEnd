@@ -41,15 +41,15 @@ export class AgregarFeriadoComponent implements OnInit {
   ngOnInit() {
     this.cargarDatosVista();
     this.agregarForm = new FormGroup({
-      'nombre' : new FormControl('', Validators.required),
-      'fecha' : new FormControl('', Validators.required),
-      'periodo' : new FormControl(null, Validators.required),
+      'nombre': new FormControl('', Validators.required),
+      'fecha': new FormControl('', Validators.required),
+      'periodo': new FormControl(null, Validators.required),
       'regiones': new FormControl('', Validators.required)
     });
     this.listarRegiones();
   }
 
-  cargarDatosVista(){
+  cargarDatosVista() {
     this.periodos = this.periodoService.getTiposPeriodo();
 
     this.periodoSubscription = this.periodoService.tiposPeriodoChanged.subscribe(
@@ -59,9 +59,7 @@ export class AgregarFeriadoComponent implements OnInit {
     )
   }
 
-  onSubmit(){
-    console.log(this.agregarForm.value);
-    
+  onSubmit() {
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
     if (nombreSinEspacios.length !== 0 && this.regionesElegidas.length !== 0) {
       let feriado: Feriado = new Feriado();
@@ -76,7 +74,7 @@ export class AgregarFeriadoComponent implements OnInit {
           this.feriadoCreadoEvent.emit(feriado);
         },
         error => {
-          if (error.status === 400){
+          if (error.status === 400) {
             this.notifier.notify('error', error.error.message);
           }
         }
@@ -87,14 +85,14 @@ export class AgregarFeriadoComponent implements OnInit {
     }
   }
 
-  listarRegiones(){
+  listarRegiones() {
     this.regiones = this.regionService.getRegiones();
     this.regionService.regionesChanged.subscribe(
       regiones => this.regiones = regiones
     )
   }
 
-  onChangeRegionElegida(event: any, region: Region) {    
+  onChangeRegionElegida(event: any, region: Region) {
     event.srcElement.checked ? this.regionesElegidas.push(region) : this.regionesElegidas.splice(this.regionesElegidas.indexOf(region), 1);
   }
 

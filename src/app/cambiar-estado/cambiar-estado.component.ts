@@ -31,7 +31,7 @@ export class CambiarEstadoComponent implements OnInit {
   documentoForm: FormGroup;
   estadoForm: FormGroup;
   validado: boolean;
-  estadoActualDocumento: number;  
+  estadoActualDocumento: number;
   documentoSubscription: Subscription;
   documento: Documento;
   estadoDocumentoEnum: EstadoDocumentoEnum;
@@ -50,7 +50,7 @@ export class CambiarEstadoComponent implements OnInit {
       "estadoDocumento": new FormControl(null, Validators.required),
       "observacion": new FormControl('', Validators.required)
     })
-    
+
   }
 
 
@@ -64,14 +64,12 @@ export class CambiarEstadoComponent implements OnInit {
             this.estadoForm.controls['observacion'].reset();
             this.notifier.notify('success', 'Código autogenerado encontrado');
             this.cargarCombo(this.documentoService.getUltimoEstado(documento).id);
-            this.estadoActualDocumento=this.documentoService.getUltimoEstado(documento).id;
-            if(documento.documentosGuia.length === 0 || documento.documentosGuia[0].validado===false || documento.documentosGuia.length===0){
-              this.validado=false;
-            }else{
-              this.validado=true;
+            this.estadoActualDocumento = this.documentoService.getUltimoEstado(documento).id;
+            if (documento.documentosGuia.length === 0 || documento.documentosGuia[0].validado === false || documento.documentosGuia.length === 0) {
+              this.validado = false;
+            } else {
+              this.validado = true;
             }
-            console.log("ESTADOS DISPONIBLES : " + this.estados)
-            console.log("NUEVOS ESTADOS : " + this.nuevosEstados)
           },
           error => {
             if (error.status === 400) {
@@ -83,10 +81,10 @@ export class CambiarEstadoComponent implements OnInit {
     else {
       this.notifier.notify('error', 'Debe ingresar el código del documento');
     }
-    
+
   }
 
-  cargarVista(){
+  cargarVista() {
     this.estados = this.estadoService.getEstadosDocumento();
 
     this.estadosSubscription = this.estadoService.estadosDocumentoChanged.subscribe(
@@ -103,7 +101,7 @@ export class CambiarEstadoComponent implements OnInit {
   }
 
 
-  desvalidar(id){
+  desvalidar(id) {
     this.documentoService.desvalidar(id).subscribe(
       () => {
         this.estadoForm.reset();
@@ -114,10 +112,10 @@ export class CambiarEstadoComponent implements OnInit {
           }
         });
         this.bsModalRef.hide();
-        
+
       }
     )
-  
+
 
   }
 

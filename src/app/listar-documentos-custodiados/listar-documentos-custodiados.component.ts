@@ -45,7 +45,7 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
     plazoDistribucion: {
       title: 'Plazo de Distribución'
     },
-    razonSocial : {
+    razonSocial: {
       title: 'Razón Social'
     },
     contacto: {
@@ -56,7 +56,7 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
     },
     autorizado: {
       title: 'Autorizado'
-    }, 
+    },
     fechaCreacion: {
       title: 'Fecha de Creación'
     }
@@ -64,12 +64,12 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.tableSettings.columns = this.columnsDocumentosCustodiados; 
+    this.tableSettings.columns = this.columnsDocumentosCustodiados;
     this.tableSettings.hideSubHeader = false;
     this.listarDocumentoCustodiados();
   }
 
-  listarDocumentoCustodiados(){
+  listarDocumentoCustodiados() {
     this.dataDocumentosCustodiados.reset();
     this.listarDocumentosCustodiadosSubscription = this.documentoService.listarDocumentosCustodiados().subscribe(
       documentosCustodiados => {
@@ -88,13 +88,13 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
               razonSocial: documentoCustodiado.razonSocialDestino,
               contacto: documentoCustodiado.contactoDestino,
               direccion: documentoCustodiado.direccion,
-              autorizado:  this.envioService.getUltimoSeguimientoAutorizacion(documentoCustodiado.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documentoCustodiado.envio).estadoAutorizado.nombre : "APROBADA",
+              autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documentoCustodiado.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documentoCustodiado.envio).estadoAutorizado.nombre : "APROBADA",
               fechaCreacion: this.documentoService.getFechaCreacion(documentoCustodiado)
             })
-        })
+          })
         this.dataDocumentosCustodiados.load(dataDocumentosCustodiados);
         return;
-      }       
+      }
     )
   }
 }

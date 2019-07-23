@@ -10,18 +10,18 @@
 
       <div *ngIf="tipoSeguridad.activo">
 
-          <div class="form-row">
-              <div class="col">
-                <div class="form-group">
-                  <label for="nombre">Nombre de tipo de seguridad</label>
-                  <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
-                  <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
-                    class="text-danger small">
-                    El nombre del tipo de seguridad no puede estar vacío
-                  </span>
-                </div>
-              </div>
+        <div class="form-row">
+          <div class="col">
+            <div class="form-group">
+              <label for="nombre">Nombre de tipo de seguridad</label>
+              <input class="form-control" type="text" name="nombre" id="nombre" formControlName="nombre">
+              <span *ngIf="!modificarForm.get('nombre').valid && modificarForm.get('nombre').touched"
+                class="text-danger small">
+                El nombre del tipo de seguridad no puede estar vacío
+              </span>
             </div>
+          </div>
+        </div>
 
       </div>
 
@@ -35,15 +35,14 @@
               <option value="false">DESACTIVADO
               </option>
             </select>
-            <span *ngIf="!modificarForm.get('activo').value"
-                  class="text-danger small">
-                  No se puede modificar si está desactivado
-                </span>
+            <span *ngIf="!modificarForm.get('activo').value" class="text-danger small">
+              No se puede modificar si está desactivado
+            </span>
           </div>
         </div>
       </div>
 
-      
+
     </div>
 
     <div class="modal-footer">

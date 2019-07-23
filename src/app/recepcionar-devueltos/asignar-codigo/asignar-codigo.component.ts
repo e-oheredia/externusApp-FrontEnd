@@ -28,12 +28,12 @@ export class AsignarCodigoDevolucionComponent implements OnInit {
 
   ngOnInit() {
     this.AsignarForm = new FormGroup({
-      'codigoDevolucion' : new FormControl('', Validators.required)
+      'codigoDevolucion': new FormControl('', Validators.required)
     });
   }
 
-  onSubmit(codigoFormValue){
-    if (this.AsignarForm.controls['codigoDevolucion'].value.length !== 0){
+  onSubmit(codigoFormValue) {
+    if (this.AsignarForm.controls['codigoDevolucion'].value.length !== 0) {
       let documento: Documento = new Documento();
       documento.id = this.documento.id;
       documento.codigoDevolucion = codigoFormValue.codigoDevolucion;

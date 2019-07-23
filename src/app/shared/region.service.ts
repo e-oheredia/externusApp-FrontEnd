@@ -9,6 +9,9 @@ export class RegionService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.REGION_URL;
 
+    public regionesChanged = new Subject<Region[]>();
+    private regiones: Region[];
+
     constructor(private requester: RequesterService ){
         this.listarRegionesAll().subscribe(
             regiones => {
@@ -16,15 +19,11 @@ export class RegionService {
                 this.regionesChanged.next(this.regiones);
             }
         )
-    } 
-    
-    private regiones: Region[];
+    }
     
     getRegiones(): Region[] {
         return this.regiones;
     }
-
-    public regionesChanged = new Subject<Region[]>();
 
     listarRegionesAll(): Observable<Region[]> {
         return this.requester.get<Region[]>(this.REQUEST_URL, {});

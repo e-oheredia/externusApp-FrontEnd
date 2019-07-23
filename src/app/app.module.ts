@@ -11,13 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './layout/layout.module';
 import { ConsultarDocumentosUBCPModule } from './consultar-documentos-u-bcp/consultar-documentos-u-bcp.module';
 import { ConsultarDocumentosUtdBcpModule } from './consultar-documentos-utd-bcp/consultar-documentos-utd-bcp.module';
-
 import { ReporteEficaciaModule } from './reporte-eficacia/reporte-eficacia.module';
-
-
 import { ReporteDevolucionCargoModule } from './reporte-devolucion-cargo/reporte-devolucion-cargo.module';
 import { ReporteIndicadorVolumenModule } from './reporte-indicador-volumen/reporte-indicador-volumen.module';
-
 import { ReporteMensualVolumenModule } from './reporte-mensual-volumen/reporte-mensual-volumen.module';
 import { ReporteMensualCargosModule } from './reporte-mensual-cargos/reporte-mensual-cargos.module';
 import { ReporteDistribucionMesEficienciaModule } from './reporte-distribucion-mes-eficiencia/reporte-distribucion-mes-eficiencia.module';
@@ -41,14 +37,14 @@ import { ReporteGuiasBloqueModule } from './reporte-guias-bloque/reporte-guias-b
     AppComponent,
   ],
   imports: [
-    BrowserModule, 
+    BrowserModule,
     AppRoutingModule,
-    LayoutModule, 
-    AutorizarEnviosModule, 
-    NotifierModule, 
-    CustodiarDocumentosIndividualesModule, 
-    CustodiarEnviosMasivosModule, 
-    ListarGuiasCreadasModule, 
+    LayoutModule,
+    AutorizarEnviosModule,
+    NotifierModule,
+    CustodiarDocumentosIndividualesModule,
+    CustodiarEnviosMasivosModule,
+    ListarGuiasCreadasModule,
     ListarDocumentosCustodiadosModule,
     ConsultarDocumentosUBCPModule,
     ConsultarDocumentosUtdBcpModule,

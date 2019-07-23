@@ -1,6 +1,6 @@
 import { AppSettings } from './app.settings';
 import { Envio } from '../../model/envio.model';
-import { Injectable, ModuleWithComponentFactories } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { Observable } from 'rxjs';
 import { Documento } from '../../model/documento.model';
@@ -8,27 +8,25 @@ import { EstadoDocumentoEnum } from '../enum/estadodocumento.enum';
 import { DocumentoService } from './documento.service';
 import { HttpParams } from '@angular/common/http';
 import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
-import { EstadoAutorizacion } from 'src/model/estadoautorizacion.model';
 import * as moment from 'moment-timezone';
 import { SeguimientoAutorizacion } from 'src/model/seguimientoautorizacion.model';
 import { WriteExcelService } from './write-excel.service';
 import { UtilsService } from './utils.service';
-import { EnvioMasivo } from 'src/model/enviomasivo.model';
 import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
-
 
 @Injectable()
 export class EnvioService {
 
-    constructor(private requester: RequesterService,
-                private documentoService: DocumentoService,
-                private writeExcelService: WriteExcelService,
-                private utilsService: UtilsService
-                ) { }
-
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.ENVIO_URL;
 
-    registrarEnvio(envio: Envio, file: File, codigoGuia: number, proveedor: number): Observable<Envio> {
+    constructor(
+        private requester: RequesterService,
+        private documentoService: DocumentoService,
+        private writeExcelService: WriteExcelService,
+        private utilsService: UtilsService
+    ) { }
+
+    registrarEnvioIndividual(envio: Envio, file: File): Observable<Envio> {
         let form: FormData = new FormData;
         form.append("envio", JSON.stringify(envio));
         if (file !== null && file != undefined) {
@@ -40,9 +38,9 @@ export class EnvioService {
     getAutorizacion(documento: Documento): string {
         let autorizacion = " ";
 
-        if (this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === EstadoDocumentoEnum.DENEGADO){
+        if (this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.id === EstadoDocumentoEnum.DENEGADO) {
             autorizacion = "DENEGADO";
-        } else if(documento.envio.autorizado === false){
+        } else if (documento.envio.autorizado === false) {
             autorizacion = "PENDIENTE";
         } else {
             autorizacion = "APROBADO";
@@ -55,8 +53,6 @@ export class EnvioService {
             (max, seguimentoAutorizado) =>
                 moment(seguimentoAutorizado.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoAutorizado : max, envio.seguimientosAutorizado[0]
         );
-
-        
     }
 
     getUltimaFechaEstadoAutorizacion(envio: Envio): Date | string {
@@ -72,15 +68,14 @@ export class EnvioService {
                 moment(seguimientoAutorizado.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimientoAutorizado : max, envio.seguimientosAutorizado[0]
         ).nombreUsuario
     }
-    
-    getAutogeneradoEnvio(envio: any){
+
+    getAutogeneradoEnvio(envio: any) {
         let auto;
-        if (!this.utilsService.isUndefinedOrNullOrEmpty(envio.masivoAutogenerado)){
+        if (!this.utilsService.isUndefinedOrNullOrEmpty(envio.masivoAutogenerado)) {
             auto = envio.masivoAutogenerado;
         } else {
             auto = envio.documentos[0].documentoAutogenerado
         }
-        
         return auto;
     }
 
@@ -92,11 +87,11 @@ export class EnvioService {
         return this.requester.get<Envio[]>(this.REQUEST_URL + "noautorizados", {});
     }
 
-    listarEnviosParaAutorizarPorFechas(fechaini: Date, fechafin: Date){
-        return this.requester.get<Envio[]>(this.REQUEST_URL + "enviosautorizacion" , { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
+    listarEnviosParaAutorizarPorFechas(fechaini: Date, fechafin: Date) {
+        return this.requester.get<Envio[]>(this.REQUEST_URL + "enviosautorizacion", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    modificarEnvio(envio: Envio, plazoDistribucion: PlazoDistribucion): Observable<Envio>{
+    modificarEnvio(envio: Envio, plazoDistribucion: PlazoDistribucion): Observable<Envio> {
         return this.requester.put<Envio>(this.REQUEST_URL + envio.id.toString() + "/modificautorizacion", plazoDistribucion, {});
     }
 
@@ -108,43 +103,42 @@ export class EnvioService {
         return this.requester.put<Envio>(this.REQUEST_URL + id.toString() + "/denegacion", {}, {});
     }
 
-    exportarAutorizaciones(envios){
+    exportarAutorizaciones(envios) {
         let objects = [];
         envios.forEach(envio => {
             objects.push({
-                "Área" : envio.buzon.area.nombre,
-                "Usuario" : envio.buzon.nombre,
-                "Autogenerado" : this.getAutogeneradoEnvio(envio),
-                "Producto" : envio.producto.nombre,
-                "Plazo Distribución" : envio.plazoDistribucion.nombre,
-                "Cantidad Documentos" : envio.documentos.length,
-                "Autorización" : this.getUltimoSeguimientoAutorizacion(envio).estadoAutorizado.nombre,
-                "Usuario Autorizador" : this.getAutorizador(envio),
-                "Fecha Autorización" : this.getUltimaFechaEstadoAutorizacion(envio)
+                "Área": envio.buzon.area.nombre,
+                "Usuario": envio.buzon.nombre,
+                "Autogenerado": this.getAutogeneradoEnvio(envio),
+                "Producto": envio.producto.nombre,
+                "Plazo Distribución": envio.plazoDistribucion.nombre,
+                "Cantidad Documentos": envio.documentos.length,
+                "Autorización": this.getUltimoSeguimientoAutorizacion(envio).estadoAutorizado.nombre,
+                "Usuario Autorizador": this.getAutorizador(envio),
+                "Fecha Autorización": this.getUltimaFechaEstadoAutorizacion(envio)
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Buzón: ");
-    
     }
 
     listarEnviosConInconsistenciasPorFechas(fechaini: Date, fechafin: Date): Observable<Envio[]> {
-        return this.requester.get<Envio[]>(this.REQUEST_URL + "enviosinconsistencias", {params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString())});
+        return this.requester.get<Envio[]>(this.REQUEST_URL + "enviosinconsistencias", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
-    descargarInconsistenciasEnvio(inconsistencias, envio){
+    descargarInconsistenciasEnvio(inconsistencias, envio) {
         let objects = [];
         inconsistencias.forEach(inconsistencia => {
             objects.push({
-                "Número de envío" : envio.id,
-                "Número de documento" : inconsistencia.numeroDocumento,
-                "Razón social" : inconsistencia.razonSocial,
-                "Contacto" : inconsistencia.contacto,
-                "Departamento" : inconsistencia.departamento,
-                "Provincia" : inconsistencia.provincia,
-                "Distrito" : inconsistencia.distrito,
-                "Teléfono" : inconsistencia.telefono,
-                "Dirección" : inconsistencia.direccion,
-                "Referencia" : inconsistencia.referencia,
+                "Número de envío": envio.id,
+                "Número de documento": inconsistencia.numeroDocumento,
+                "Razón social": inconsistencia.razonSocial,
+                "Contacto": inconsistencia.contacto,
+                "Departamento": inconsistencia.departamento,
+                "Provincia": inconsistencia.provincia,
+                "Distrito": inconsistencia.distrito,
+                "Teléfono": inconsistencia.telefono,
+                "Dirección": inconsistencia.direccion,
+                "Referencia": inconsistencia.referencia,
                 "Resumen de inconsistencias": inconsistencia.resumen
             })
         })

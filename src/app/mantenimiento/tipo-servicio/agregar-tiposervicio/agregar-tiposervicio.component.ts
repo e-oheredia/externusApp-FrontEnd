@@ -22,14 +22,14 @@ export class AgregarTipoServicioComponent implements OnInit {
   @Output() tipoServicioCreadoEvent = new EventEmitter<TipoServicio>();
 
   servicio: TipoServicio;
-  servicios: TipoServicio[]  = [];
+  servicios: TipoServicio[] = [];
   agregarForm: FormGroup;
 
   crearTipoServicioSubscription: Subscription;
 
   ngOnInit() {
     this.agregarForm = new FormGroup({
-      'nombre' : new FormControl('', Validators.required),
+      'nombre': new FormControl('', Validators.required),
     })
   }
 

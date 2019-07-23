@@ -12,7 +12,7 @@
           <div class="form-group">
             <label for="region">Región *</label>
             <select class="form-control" id="region" formControlName="region" [(ngModel)]="region"
-            (change)="onRegionSelectedChanged(region)">
+              (change)="onRegionSelectedChanged(region)">
               <option *ngFor="let region of regiones" [ngValue]="region">
                 {{region.nombre}}</option>
             </select>
@@ -53,7 +53,6 @@
               Es necesario ingresar el tipo de servicio
             </span>
           </div>
-          <!--  -->
           <div class="form-group">
             <label for="clasificacion">Clasificación *</label>
             <select class="form-control" id="clasificacion" formControlName="clasificacion">
@@ -74,7 +73,6 @@
               Es necesario ingresar el producto
             </span>
           </div>
-          <!--  -->
           <div class="form-group">
             <label for="proveedor">Proveedor</label>
             <select class="form-control" id="proveedor" formControlName="proveedor">

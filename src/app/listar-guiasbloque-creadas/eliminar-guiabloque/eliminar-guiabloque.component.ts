@@ -31,18 +31,15 @@ export class EliminarGuiabloqueComponent implements OnInit {
     this.eliminarForm = new FormGroup({})
   }
 
-  onSubmit(form: any){
+  onSubmit(form: any) {
     let numero = Number(this.guia.id)
-      this.eliminarGuiaBloqueSubscription = this.guiaService.eliminarGuia(numero).subscribe(
-        guia => {
-          this.notifier.notify('success', 'Se eliminó la guía con éxito');
-          this.bsModalRef.hide();
-          this.eliminarGuiaBloqueEvent.emit(guia);
-        },
-        // error => {
-        //   this.notifier.notify('error', 'El número modificado ya existe');
-        // }
-      );
+    this.eliminarGuiaBloqueSubscription = this.guiaService.eliminarGuia(numero).subscribe(
+      guia => {
+        this.notifier.notify('success', 'Se eliminó la guía con éxito');
+        this.bsModalRef.hide();
+        this.eliminarGuiaBloqueEvent.emit(guia);
+      },
+    );
   }
 
 }

@@ -52,15 +52,15 @@ export class ModificarTipoSeguridadComponent implements OnInit {
         }
       });
       bsModalRef.content.confirmarEvent.subscribe(() => {
-      this.modificarTipoSeguridadSubscribe = this.tipoSeguridadService.modificarTipoSeguridad(tipoSeguridad.id, tipoSeguridad).subscribe(
-        tiposeguridad => {
-          this.notifier.notify('success', 'Se ha modificado el tipo de seguridad correctamente');
-          this.bsModalRef.hide();
-          this.confirmarEvent.emit(tiposeguridad);
-        },
-        error => {
-          this.notifier.notify('error', 'El nombre modificado ya existe');
-        }
+        this.modificarTipoSeguridadSubscribe = this.tipoSeguridadService.modificarTipoSeguridad(tipoSeguridad.id, tipoSeguridad).subscribe(
+          tiposeguridad => {
+            this.notifier.notify('success', 'Se ha modificado el tipo de seguridad correctamente');
+            this.bsModalRef.hide();
+            this.confirmarEvent.emit(tiposeguridad);
+          },
+          error => {
+            this.notifier.notify('error', 'El nombre modificado ya existe');
+          }
         );
       })
     }

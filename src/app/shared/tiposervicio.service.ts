@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 
 import { Observable, Subject } from "rxjs";
@@ -10,7 +10,12 @@ export class TipoServicioService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_SERVICIO_URL;
 
-    constructor(private requester: RequesterService ){
+    public tiposServicioChanged = new Subject<TipoServicio[]>();
+    private tiposServicio: TipoServicio[];
+
+    constructor(
+        private requester: RequesterService
+    ) {
         this.listarTiposServicio().subscribe(
             tiposServicio => {
                 this.tiposServicio = tiposServicio;
@@ -19,29 +24,23 @@ export class TipoServicioService {
         )
     }
 
-    private tiposServicio: TipoServicio[];
-    
     getTiposServicio(): TipoServicio[] {
         return this.tiposServicio;
     }
 
-    public tiposServicioChanged = new Subject<TipoServicio[]>();
-
-
-
-    listarTiposServicio(): Observable<TipoServicio[]>{
+    listarTiposServicio(): Observable<TipoServicio[]> {
         return this.requester.get<TipoServicio[]>(this.REQUEST_URL + "activos", {});
     }
 
     listarTiposServicioAll(): Observable<TipoServicio[]> {
-        return this.requester.get<TipoServicio[]>(this.REQUEST_URL , {});
+        return this.requester.get<TipoServicio[]>(this.REQUEST_URL, {});
     }
 
-    agregarTipoServicio(servicio: TipoServicio): Observable<TipoServicio>{
+    agregarTipoServicio(servicio: TipoServicio): Observable<TipoServicio> {
         return this.requester.post<TipoServicio>(this.REQUEST_URL, servicio, {});
     }
 
-    modificarTipoServicio(id:number, servicio: TipoServicio): Observable<TipoServicio> {
+    modificarTipoServicio(id: number, servicio: TipoServicio): Observable<TipoServicio> {
         return this.requester.put<TipoServicio>(this.REQUEST_URL + id, servicio, {});
     }
 

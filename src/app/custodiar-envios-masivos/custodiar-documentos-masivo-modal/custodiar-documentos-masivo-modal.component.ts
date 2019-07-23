@@ -5,6 +5,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Envio } from '../../../model/envio.model';
 import { UtilsService } from '../../shared/utils.service';
 import { NotifierService } from 'angular-notifier';
+import { EnvioMasivoService } from 'src/app/shared/enviomasivo.service';
+import { Documento } from 'src/model/documento.model';
 
 @Component({
   selector: 'app-custodiar-documentos-masivo-modal',
@@ -18,24 +20,31 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
     public documentoService: DocumentoService, 
     private utilsService: UtilsService, 
     private notifier: NotifierService, 
-    private cargoPdfService: CargoPdfService
+    private cargoPdfService: CargoPdfService,
+    private envioMasivoService: EnvioMasivoService
   ) { }
 
   envio: Envio;
+  documentos: Documento[] = [];
   documentoAutogenerado = "";
   @Output() todosDocumentosCustodiadosEvent = new EventEmitter();
 
   ngOnInit() {
+    this.listarDocumentosDeLaGuia(this.envio.id);
+  }
 
-    this.envio.documentos = this.envio.documentos.filter( 
-      documento => 
-        this.documentoService.getUltimoEstado(documento).id === 1
-    );
+  listarDocumentosDeLaGuia(id){
+    this.envioMasivoService.getDocumentosByEnvioId(id).subscribe(
+      documentos => {
+        this.documentos = documentos;
+        // this.envio.documentos.push(this.documentos)
+      }
+    )
   }
 
   seleccionar(documentoAutogenerado: string){
     let encuentra = false;
-    this.envio.documentos.forEach(      
+    this.documentos.forEach(      
       documento => {
         if (documento.documentoAutogenerado === documentoAutogenerado ) {
           documento.checked = true;
@@ -50,20 +59,18 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
     }
   }
 
-  custodiar(success: Function = null) {
-    
+  custodiar(success: Function = null) {    
     let documentosACustodiar = this.getDocumentosACustodiar();
 
     if (documentosACustodiar.length === 0) {
       this.notifier.notify('warning', 'Seleccione los documentos que va a custodiar');
       return;
     }
-
     this.documentoService.custodiarDocumentos(documentosACustodiar).subscribe(
       respuesta => {
         this.notifier.notify('success', 'Se han custodiado correctamente los documentos seleccionados');
         let resto = [];
-        this.envio.documentos.forEach(documento => {          
+        this.documentos.forEach(documento => {          
           if (documentosACustodiar.findIndex(doc => documento.id === doc.id) === -1) {
             resto.push(documento);
           }
@@ -76,7 +83,7 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
           this.bsModalRef.hide();
           return;
         }
-        this.envio.documentos = resto;
+        this.documentos = resto;
         
       },
       error => {
@@ -113,7 +120,7 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
 
   getDocumentosACustodiar() {
     let documentosACustodiar = [];
-    this.envio.documentos.forEach(documento => {
+    this.documentos.forEach(documento => {
       let envioInfo = Object.assign({}, this.envio);
       envioInfo.documentos = [];
       envioInfo.documentos.push(documento);

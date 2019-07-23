@@ -35,7 +35,7 @@
               <div class="form-group">
                 <label for="region">Región *</label>
                 <select class="form-control" id="region" formControlName="region" [(ngModel)]="region"
-                 (change)="onRegionSelectedChanged(region)">
+                  (change)="onRegionSelectedChanged(region)">
                   <option *ngFor="let region of regiones" [ngValue]="region">{{region.nombre}}</option>
                 </select>
                 <span *ngIf="!bloqueForm.get('region').valid && bloqueForm.get('region').touched"
@@ -231,4 +231,3 @@
     </div>
   </div>
 </div>
-

@@ -8,10 +8,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ProveedorService } from '../shared/proveedor.service';
 import { Proveedor } from '../../model/proveedor.model';
-import * as moment from "moment-timezone";
 import { ReporteService } from '../shared/reporte.service';
-import { PlazoDistribucion } from 'src/model/plazodistribucion.model';
-import { Ambito } from '../../model/ambito.model';
 import { Region } from '../../model/region.model';
 import { RegionService } from '../shared/region.service';
 
@@ -20,43 +17,38 @@ import { RegionService } from '../shared/region.service';
   templateUrl: './reporte-distribucion-mes-eficiencia.component.html',
   styleUrls: ['./reporte-distribucion-mes-eficiencia.component.css']
 })
+
 export class ReporteEficienciaComponent implements OnInit {
+
+  busquedaForm: FormGroup;
+  documentosSubscription: Subscription;
+  proveedores: Proveedor[] = [];
+  documentos: Documento[] = [];
+  proveedorElegidoDetalle: Proveedor;
+  eficienciaPorProveedor: any[] = [];
+  eficienciaPorPlazoDistribucion: any[] = [];
+  eficienciaPorDetalle: any[] = [];
+  dataGrafico1: any[] = [];
+  dataGrafico2: any[] = [];
+  dataGrafico3: any[] = [];
+  data: any[] = [];
+  reportesEficienciaPorPlazoDistribucion: any = {};
+  reportesDetalleEficiencia: any = {};
+  validacion: number;
+  sumaDentroPlazoTotal: number = 0;
+  sumaFueraPlazoTotal: number = 0;
+  regionesall: Region[] = [];
+  regiones: Region[] = [];
+  regiones2: Region[] = [];
 
   constructor(
     private proveedorService: ProveedorService,
     private utilsService: UtilsService,
-    private documentoService: DocumentoService,
     private reporteService: ReporteService,
     private notifier: NotifierService,
-    private plazoDistribucionService: PlazoDistribucionService,
     public regionService: RegionService
   ) { }
 
-  busquedaForm: FormGroup;
-  proveedores: Proveedor[] = [];
-  documentos: Documento[] = [];
-
-  eficienciaPorProveedor: any[] = [];
-  eficienciaPorPlazoDistribucion: any[] = [];
-  eficienciaPorDetalle: any[] = [];
-
-  reportesEficienciaPorPlazoDistribucion: any = {};
-  reportesDetalleEficiencia: any = {};
-  documentosSubscription: Subscription;
-  validacion: number;
-  proveedorElegidoDetalle: Proveedor;
-  data: any[] = [];
-  dataGrafico1: any[] = [];
-  dataGrafico2: any[] = [];
-  dataGrafico3: any[] = [];
-  sumaDentroPlazoTotal: number = 0;
-  sumaFueraPlazoTotal: number = 0;
-  regionesall : Region[] = [];
-  regiones : Region[] = [];
-  regiones2 : Region[] = [];
-
-
-  
   ngOnInit() {
     this.validacion = 0;
     this.busquedaForm = new FormGroup({
@@ -65,14 +57,16 @@ export class ReporteEficienciaComponent implements OnInit {
     });
     this.proveedores = this.proveedorService.getProveedores();
     this.regionesall = this.regionService.getRegiones();
-    this.proveedorService.proveedoresChanged.subscribe(proveedores => this.proveedores = proveedores);
+    this.proveedorService.proveedoresChanged.subscribe(
+      proveedores =>
+        this.proveedores = proveedores
+    );
 
     this.regionService.regionesChanged.subscribe(
-      region=>{
-          this.regionesall=region;
-  })
+      region =>
+        this.regionesall = region
+    );
   }
-
 
   MostrarReportes(fechaIni: Date, fechaFin: Date) {
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.busquedaForm.controls['fechaIni'].value) &&
@@ -82,12 +76,10 @@ export class ReporteEficienciaComponent implements OnInit {
           this.validacion = 1;
           this.data = data;
 
-
           Object.keys(data).forEach(key => {
             var obj = data[key];
             if (parseInt(key) == 1) {
               this.dataGrafico1 = obj
-
             }
             if (parseInt(key) == 2) {
               this.dataGrafico2 = obj
@@ -103,14 +95,11 @@ export class ReporteEficienciaComponent implements OnInit {
         error => {
           if (error.status === 409) {
             this.validacion = 2
-            // this.notifier.notify('error', 'No se encontraron registros');
           }
           if (error.status === 417) {
-            // this.validacion = 2
             this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
           }
           if (error.status === 424) {
-            // this.validacion = 2
             this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
           }
         }
@@ -118,37 +107,36 @@ export class ReporteEficienciaComponent implements OnInit {
     }
     else {
       this.validacion = 0
-      // this.notifier.notify('error', 'Seleccione el rango de fechas de la búsqueda');
     }
   }
-  sinrepetir(ambitos){
+
+  sinrepetir(ambitos) {
     let unicos = [];
-    ambitos.forEach( it => {
+    ambitos.forEach(it => {
       if (unicos.indexOf(it) == -1)
-         unicos.push(it);
+        unicos.push(it);
     })
     return unicos;
   }
-    regionesxproveedor(proveedor){
-        let regiones: any[] = [];
 
-        proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito=>{
-            regiones.push(ambito.region);
-        });
-        regiones=this.sinrepetir(regiones);
-        return regiones;
-    }
+  regionesxproveedor(proveedor) {
+    let regiones: any[] = [];
 
+    proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito => {
+      regiones.push(ambito.region);
+    });
+    regiones = this.sinrepetir(regiones);
+    return regiones;
+  }
 
+  regionesxproveedor2(proveedor) {
+    let regiones: any[] = [];
 
-    regionesxproveedor2(proveedor){
-      let regiones: any[] = [];
-
-      proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito=>{
-          regiones.push(ambito.region);
-      });
-      regiones=this.sinrepetir(regiones);
-      return regiones;
+    proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito => {
+      regiones.push(ambito.region);
+    });
+    regiones = this.sinrepetir(regiones);
+    return regiones;
   }
 
   //1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO//1-GRAFICO
@@ -185,16 +173,13 @@ export class ReporteEficienciaComponent implements OnInit {
         if (isNaN(porcentajedentroplazo)) {
           porcentajedentroplazo = 0;
         }
-
         if (isNaN(porcentajefueraplazo)) {
           porcentajefueraplazo = 0;
         }
-
         eficienciaPorProveedorObjeto.dentroPlazo = porcentajedentroplazo.toFixed(1) + "%";
         eficienciaPorProveedorObjeto.fueraPlazo = porcentajefueraplazo.toFixed(1) + "%";
         this.eficienciaPorProveedor.push(eficienciaPorProveedorObjeto);
       });
-
   }
 
   dentroPlazoproveedor(proveedor) {
@@ -259,6 +244,7 @@ export class ReporteEficienciaComponent implements OnInit {
     return final;
   }
 
+
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO//2-GRAFICO
 
@@ -270,7 +256,7 @@ export class ReporteEficienciaComponent implements OnInit {
     this.proveedores.forEach(
       proveedor => {
         let regiones: any[] = [];
-        proveedor.ambitos.forEach(ambito=>{
+        proveedor.ambitos.forEach(ambito => {
           ambito.region.plazosDistribucion.sort((a, b) => a.id - b.id).forEach(plazoDistribucion => {
             Object.keys(data).forEach(key => {
               if (proveedor.id == parseInt(key)) {
@@ -278,112 +264,64 @@ export class ReporteEficienciaComponent implements OnInit {
                 Object.keys(obj1).forEach(keyregion => {
                   let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
 
-                var obj = obj1[keyregion];
+                  var obj = obj1[keyregion];
 
-                proveedor.ambitos.forEach(ambito=>{
+                  proveedor.ambitos.forEach(ambito => {
                     regiones.push(ambito.region);
-                });
+                  });
 
-                this.regiones=this.sinrepetir(regiones);
-                this.regiones.sort((a, b) => a.id - b.id).forEach(region=>{
+                  this.regiones = this.sinrepetir(regiones);
+                  this.regiones.sort((a, b) => a.id - b.id).forEach(region => {
 
-                  if( parseInt(keyregion) == region.id){
-                    region.plazosDistribucion.sort((a, b) => a.id - b.id).forEach(                
-                      plazoDistribucion => {
-                        Object.keys(obj).forEach(keyplazo => {
-                          if (plazoDistribucion.id == parseInt(keyplazo)) {
-                            var objf = obj[keyplazo];
-                            let total = 0
-                            for (var el in objf) {
-                              if (objf.hasOwnProperty(el)) {
-                                total += parseInt(objf[el]);
-                              }
-                            }
-                            if (total !== 0) {
-                              Object.keys(objf).forEach(key2 => {
-                                if (key2 == "dentroplazo") {
-                                  var resultadodentro = (objf[key2] * 100) / total;
-                                  if (isNaN(resultadodentro)) {
-                                    resultadodentro = 0;
-                                  }
-                                  valordentroplazo = resultadodentro.toFixed(1) + '%';
-                                } else {
-                                  var resultadofuera = (objf[key2] * 100) / total;
-                                  if (isNaN(resultadofuera)) {
-                                    resultadofuera = 0;
-                                  }
-                                  valorfueraplazo = resultadofuera.toFixed(1) + '%';
+                    if (parseInt(keyregion) == region.id) {
+                      region.plazosDistribucion.sort((a, b) => a.id - b.id).forEach(
+                        plazoDistribucion => {
+                          Object.keys(obj).forEach(keyplazo => {
+                            if (plazoDistribucion.id == parseInt(keyplazo)) {
+                              var objf = obj[keyplazo];
+                              let total = 0
+                              for (var el in objf) {
+                                if (objf.hasOwnProperty(el)) {
+                                  total += parseInt(objf[el]);
                                 }
-                              });
-                            } else {
-                              valordentroplazo = '0.0%';
-                              valorfueraplazo = '0.0%';
+                              }
+                              if (total !== 0) {
+                                Object.keys(objf).forEach(key2 => {
+                                  if (key2 == "dentroplazo") {
+                                    var resultadodentro = (objf[key2] * 100) / total;
+                                    if (isNaN(resultadodentro)) {
+                                      resultadodentro = 0;
+                                    }
+                                    valordentroplazo = resultadodentro.toFixed(1) + '%';
+                                  } else {
+                                    var resultadofuera = (objf[key2] * 100) / total;
+                                    if (isNaN(resultadofuera)) {
+                                      resultadofuera = 0;
+                                    }
+                                    valorfueraplazo = resultadofuera.toFixed(1) + '%';
+                                  }
+                                });
+                              } else {
+                                valordentroplazo = '0.0%';
+                                valorfueraplazo = '0.0%';
+                              }
+                              let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
+                                plazoDistribucion: plazoDistribucion.nombre,
+                                dentroPlazo: valordentroplazo,
+                                fueraPlazo: valorfueraplazo
+                              }
+                              eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
                             }
-                            let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-                              plazoDistribucion: plazoDistribucion.nombre,
-                              dentroPlazo: valordentroplazo,
-                              fueraPlazo: valorfueraplazo
-                            }
-                            eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
-                          }
+                          });
                         });
-                      });
-  
-                  }
-
-
-
-
+                    }
+                  });
+                  this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre + '-' + keyregion] = eficienciaPorPlazoDistribucionPorProveedor;
                 });
-
-                this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre+ '-' + keyregion] = eficienciaPorPlazoDistribucionPorProveedor;
-
-                  
-                });
-
-
-                /*Object.keys(obj).forEach(key1 => {
-                  if (plazoDistribucion.id == parseInt(key1)) {
-                    var obj1 = obj[key1];
-                    let total = 0
-                    for (var el in obj1) {
-                      if (obj1.hasOwnProperty(el)) {
-                        total += parseInt(obj1[el]);
-                      }
-                    }
-                    if (total !== 0) {
-                      Object.keys(obj1).forEach(key2 => {
-                        if (key2 == "dentroplazo") {
-                          var resultadodentro = (obj1[key2] * 100) / total;
-                          if (isNaN(resultadodentro)) {
-                            resultadodentro = 0;
-                          }
-                          valordentroplazo = resultadodentro.toFixed(1) + '%';
-                        } else {
-                          var resultadofuera = (obj1[key2] * 100) / total;
-                          if (isNaN(resultadofuera)) {
-                            resultadofuera = 0;
-                          }
-                          valorfueraplazo = resultadofuera.toFixed(1) + '%';
-                        }
-                      });
-                    } else {
-                      valordentroplazo = '0.0%';
-                      valorfueraplazo = '0.0%';
-                    }
-                    let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-                      plazoDistribucion: plazoDistribucion.nombre,
-                      dentroPlazo: valordentroplazo,
-                      fueraPlazo: valorfueraplazo
-                    }
-                    eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
-                  }
-                });*/
               }
             });
           });
-        });
-        //this.reportesEficienciaPorPlazoDistribucion[proveedor.nombre] = eficienciaPorPlazoDistribucionPorProveedor;
+        });       
       });
   }
 
@@ -391,10 +329,8 @@ export class ReporteEficienciaComponent implements OnInit {
     let valor = 0;
     Object.keys(this.dataGrafico2).forEach(key => {
       if (proveedor.id == parseInt(key)) {
-
         var regiones = this.dataGrafico2[key];
-
-        Object.keys(regiones).forEach(region=>{
+        Object.keys(regiones).forEach(region => {
           var plazos = regiones[region]
           Object.keys(plazos).forEach(key1 => {
             if (plazoDistribucion.id == parseInt(key1)) {
@@ -406,21 +342,18 @@ export class ReporteEficienciaComponent implements OnInit {
               });
             }
           });
-
         })
       }
     });
-
     return valor;
   }
+
   getPorcentajeFueraPlazoPorProveedorYPlazoDistribucion(proveedor, plazoDistribucion) {
     let valor = 0;
     Object.keys(this.dataGrafico2).forEach(key => {
-
       if (proveedor.id == parseInt(key)) {
         var regiones = this.dataGrafico2[key];
-
-        Object.keys(regiones).forEach(region=>{
+        Object.keys(regiones).forEach(region => {
           var plazos = regiones[region]
           Object.keys(plazos).forEach(key1 => {
             if (plazoDistribucion.id == parseInt(key1)) {
@@ -433,32 +366,14 @@ export class ReporteEficienciaComponent implements OnInit {
             }
           });
         });
-
-
       }
-
-
     });
     return valor;
   }
 
-
-  plazosxregion(region){
+  plazosxregion(region) {
     return region.plazosDistribucion;
   }
-  
-  
-  /*    regionesxproveedor(proveedor){
-        let regiones: any[] = [];
-
-        proveedor.ambitos.sort((a, b) => a.region.id - b.region.id).forEach(ambito=>{
-            regiones.push(ambito.region);
-        });
-        regiones=this.sinrepetir(regiones);
-        return regiones;
-    } */
-
-
 
   estadoProveedor(proveedor, estado) {
     var cantidad = 0;
@@ -475,79 +390,28 @@ export class ReporteEficienciaComponent implements OnInit {
     return cantidad;
   }
 
-  //3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO
 
-/*
+  //3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO//3-GRAFICO
   llenarEficienciaPorPlazo(data) {
     this.reportesDetalleEficiencia = {};
 
     this.proveedores.forEach(
       proveedor => {
-
-        proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(PlazoDistribucion => {
-          let eficienciaPorPlazo: any[] = [];
-          Object.keys(data).forEach(key => {
-            if (proveedor.id == parseInt(key)) {
-              let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
-              var datosproveedor = data[key];
-              Object.keys(datosproveedor).forEach(key1 => {
-                if (PlazoDistribucion.id == parseInt(key1)) {
-                  var datosproveedorplazos = datosproveedor[key1]; //{0:1,1:2}
-                  proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
-                    Object.keys(datosproveedorplazos).forEach(key2 => {
-                      var iddeplazos = datosproveedorplazos[key2];
-                      if (plazoDistribucion2.id == parseInt(key2)) {
-                        let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-                          plazoDistribucion: plazoDistribucion2.tiempoEnvio + 'H',
-                          dentroPlazo: iddeplazos
-                        }
-                        eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
-                      }
-                    });
+        let regiones: any[] = [];
+        proveedor.ambitos.forEach(ambito => {
+          ambito.region.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(PlazoDistribucion => {
+            let eficienciaPorPlazo: any[] = [];
+            Object.keys(data).forEach(key => {
+              if (proveedor.id == parseInt(key)) {
+                let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
+                var arregloregion = data[key];
+                Object.keys(arregloregion).forEach(keyregion => {
+                  proveedor.ambitos.forEach(ambito => {
+                    regiones.push(ambito.region);
                   });
-                  Object.keys(datosproveedorplazos).forEach(key2 => {
-                    if (0 == parseInt(key2)) {
-                      eficienciaPorPlazoDistribucionPorProveedor.push({
-                        plazoDistribucion: 'Más',
-                        dentroPlazo: datosproveedorplazos[key2]
-                      });
-                    }
-                  });
-
-                  this.reportesDetalleEficiencia[proveedor.nombre + '-' + PlazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
-                }
-              });
-            }
-          });
-        });
-      }
-    )
-  }
-
-*/
-
-
-llenarEficienciaPorPlazo(data) {
-  this.reportesDetalleEficiencia = {};
-
-
-  this.proveedores.forEach(
-    proveedor => {
-      let regiones: any[] = [];
-      proveedor.ambitos.forEach(ambito=>{
-        ambito.region.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(PlazoDistribucion => {
-          let eficienciaPorPlazo: any[] = [];
-          Object.keys(data).forEach(key => {
-            if (proveedor.id == parseInt(key)) {
-              let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
-              var arregloregion = data[key];
-              Object.keys(arregloregion).forEach(keyregion=>{
-                  proveedor.ambitos.forEach(ambito=>{
-                  regiones.push(ambito.region);
-                });
-                  this.regiones2=this.sinrepetir(regiones);
-                  this.regiones2.sort((a, b) => a.id - b.id).forEach(region=>{
-                    if( parseInt(keyregion) == region.id){
+                  this.regiones2 = this.sinrepetir(regiones);
+                  this.regiones2.sort((a, b) => a.id - b.id).forEach(region => {
+                    if (parseInt(keyregion) == region.id) {
                       var datosproveedor = arregloregion[keyregion];
                       Object.keys(datosproveedor).forEach(key1 => {
                         if (PlazoDistribucion.id == parseInt(key1)) {
@@ -555,7 +419,7 @@ llenarEficienciaPorPlazo(data) {
                           ambito.region.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
                             Object.keys(datosproveedorplazos).forEach(key2 => {
                               var iddeplazos = datosproveedorplazos[key2];
-                              if (plazoDistribucion2.id == parseInt(key2)  ) {
+                              if (plazoDistribucion2.id == parseInt(key2)) {
                                 let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
                                   plazoDistribucion: plazoDistribucion2.tiempoEnvio + 'H',
                                   dentroPlazo: iddeplazos
@@ -572,62 +436,22 @@ llenarEficienciaPorPlazo(data) {
                               });
                             }
                           });
-                          this.reportesDetalleEficiencia[proveedor.nombre +'-'+PlazoDistribucion.id +'-'+region.id] = eficienciaPorPlazoDistribucionPorProveedor;
+                          this.reportesDetalleEficiencia[proveedor.nombre + '-' + PlazoDistribucion.id + '-' + region.id] = eficienciaPorPlazoDistribucionPorProveedor;
                         }
                       });
-                    }});
-              });
-            }
-          });
-        });
-    })
-    
-
-    }
-  )
-}
-
-  //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-  /*  llenarDetalleEficiencia(documentos: Documento[]) {
-      this.reportesDetalleEficiencia = {};
-      let documentosAux: Documento[] = [];
-      this.proveedores.forEach(
-        proveedor => {
-          proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion => {
-            let eficienciaPorPlazoDistribucionPorProveedor: any[] = [];
-            proveedor.plazosDistribucion.sort((a, b) => a.tiempoEnvio - b.tiempoEnvio).forEach(plazoDistribucion2 => {
-              let eficienciaPorPlazoDistribucionPorProveedorObjeto = {
-                plazoDistribucion: plazoDistribucion2.tiempoEnvio + ' H',
-                dentroPlazo: documentos.filter(documento => {
-                  if (documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                    documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                    moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") >= moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
-                  ) {
-                    return true;
-                  }
-                  documentosAux.push(documento);
-                }).length
+                    }
+                  });
+                });
               }
-              documentos = documentosAux;
-              documentosAux = [];
-              eficienciaPorPlazoDistribucionPorProveedor.push(eficienciaPorPlazoDistribucionPorProveedorObjeto);
             });
-            eficienciaPorPlazoDistribucionPorProveedor.push({
-              plazoDistribucion: 'Más',
-              dentroPlazo: documentos.filter(documento =>
-                documento.documentosGuia[0].guia.proveedor.id === proveedor.id &&
-                documento.envio.plazoDistribucion.id === plazoDistribucion.id &&
-                moment(documento.documentosGuia[0].guia.fechaLimite, "DD/MM/YYYY") < moment(this.documentoService.getSeguimientoDocumentoByEstadoId(documento, EstadoDocumentoEnum.ENTREGADO).fecha, "DD/MM/YYYY")
-              ).length
-            });
-            this.reportesDetalleEficiencia[proveedor.nombre + '-' + plazoDistribucion.id] = eficienciaPorPlazoDistribucionPorProveedor;
           });
-        }
-      )
-    }*/
-  //-------------------------------------------------------------------------------------------------------------------------------------------------------------
+        })
+      }
+    )
+  }
 
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   getAxis(dataField: string) {
     return {
@@ -648,7 +472,6 @@ llenarEficienciaPorPlazo(data) {
     }
   }
 
-
   getValueAxis(title: string, flip = false) {
     return {
       title: { text: title },
@@ -661,7 +484,6 @@ llenarEficienciaPorPlazo(data) {
   }
 
   getSeriesGroups(type: string, datas: any[], orientation = 'vertical', columnsGapPercent = 100) {
-   // console.log(datas);
     let series: any[] = [];
     datas.forEach(data => {
       let keys: string[] = Object.keys(data);
@@ -679,9 +501,9 @@ llenarEficienciaPorPlazo(data) {
           colorFunction: (value, itemIndex) => {
             if (data['indiceReporte'] < itemIndex) {
               return '#dc3545';
-            }else if(data['indiceReporte'] == itemIndex){
+            } else if (data['indiceReporte'] == itemIndex) {
               return '#44B876'
-            }else{
+            } else {
               return '#007bff';
             }
 
@@ -699,91 +521,4 @@ llenarEficienciaPorPlazo(data) {
     ]
   }
 
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // llenarEficienciaPorPlazoDistribucion(data) {
-  //   this.eficienciaPorPlazoDistribucion = [];
-  //   let dentroplazoPorplazo = 0;
-  //   let fueraplazoPorplazo = 0;
-  //   let totalPorPlazo = 0;
-
-  //   this.proveedores.forEach(
-  //     proveedor => {
-  //       let dataProveedor = {
-  //         proveedor: "",
-  //         plazosDistribucion: [],
-  //         porcentajePorPlazoDentro: 0,
-  //         porcentajePorPlazoFuera: 0
-  //       };
-  //       let plazo = {
-  //         id: "",
-  //         cantidadDentro: 0,
-  //         cantidadFuera: 0
-  //       }
-  //       dataProveedor.proveedor = proveedor.nombre;
-  //       Object.keys(data).forEach(key => {
-  //         var obj = data[key];
-  //         if (proveedor.id === parseInt(key)) {
-  //           Object.keys(obj).forEach(key1 => {
-  //             var obj2 = obj[key1];
-  //             let plazitoID = proveedor.plazosDistribucion.find(plazo => plazo.id === parseInt(key1))
-  //             if (plazitoID.id === parseInt(key1)) {
-  //               Object.keys(obj2).forEach(key2 => {
-  //                 if (key2 == "dentroplazo") {
-  //                   plazo.id = key1;
-  //                   plazo.cantidadDentro = obj2[key2]
-  //                   dentroplazoPorplazo += obj2[key2]
-  //                 } else {
-  //                   plazo.id = key1;
-  //                   plazo.cantidadFuera = obj2[key2]
-  //                   fueraplazoPorplazo += obj2[key2]
-  //                 }
-  //               });
-  //               dataProveedor.plazosDistribucion.push(plazo);
-  //               totalPorPlazo = dentroplazoPorplazo + fueraplazoPorplazo;
-  //               this.eficienciaPorPlazoDistribucion.push(dataProveedor);
-  //             }
-  //           });
-
-  //           let porcentajedentroplazo = (dentroplazoPorplazo / totalPorPlazo) * 100;
-  //           let porcentajefueraplazo = (fueraplazoPorplazo / totalPorPlazo) * 100;
-  //           dataProveedor.porcentajePorPlazoDentro = porcentajedentroplazo;
-  //           dataProveedor.porcentajePorPlazoFuera = porcentajefueraplazo;
-  //           this.eficienciaPorPlazoDistribucion.push(dataProveedor);
-  //         }
-  //       });
-  //       this.eficienciaPorPlazoDistribucion.push(dataProveedor);
-  //     });
-  // }

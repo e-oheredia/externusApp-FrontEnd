@@ -21,8 +21,8 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
     public bsModalRef: BsModalRef,
     private proveedorService: ProveedorService,
     private guiaService: GuiaService,
-    private notifier: NotifierService, 
-    private utilsService: UtilsService  
+    private notifier: NotifierService,
+    private utilsService: UtilsService
   ) { }
 
   guia: Guia;
@@ -35,27 +35,27 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
   modificarGuiaSubscription: Subscription = new Subscription();
 
   ngOnInit() {
-     
+
     this.guiaForm = new FormGroup({
       'proveedor': new FormControl('', Validators.required),
       'numeroGuia': new FormControl(this.guia.numeroGuia, [Validators.required, Validators.minLength(5), Validators.maxLength(20)])
     });
-    this.cargarDatosVista();   
+    this.cargarDatosVista();
   }
 
-  
 
-  cargarDatosVista() {    
+
+  cargarDatosVista() {
     this.proveedores = this.proveedorService.getProveedores();
 
     if (!this.utilsService.isUndefinedOrNull(this.proveedores)) {
-      this.guiaForm.controls['proveedor'].setValue(this.proveedores.find( proveedor => proveedor.id === this.guia.proveedor.id));
+      this.guiaForm.controls['proveedor'].setValue(this.proveedores.find(proveedor => proveedor.id === this.guia.proveedor.id));
     }
-          
+
     this.proveedoresSubscription = this.proveedorService.proveedoresChanged.subscribe(
       proveedores => {
         this.proveedores = proveedores;
-        this.guiaForm.controls['proveedor'].setValue(this.proveedores.find( proveedor => proveedor.id === this.guia.proveedor.id));
+        this.guiaForm.controls['proveedor'].setValue(this.proveedores.find(proveedor => proveedor.id === this.guia.proveedor.id));
       }
     );
   }

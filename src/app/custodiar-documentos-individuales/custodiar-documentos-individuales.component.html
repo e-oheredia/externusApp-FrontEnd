@@ -7,10 +7,12 @@
 </div>
 <div class="row justify-content-center mb-4">
   <div class="col-6">
-    <form (ngSubmit) = "seleccionar(documentoAutogenerado)">
+    <form (ngSubmit)="seleccionar(documentoAutogenerado)">
       <div class="form-row align-items-center">
         <div class="col-lg-4 col-xl-4">
-          <input type="text" class="form-control" id="inlineFormInput" [ngModelOptions]="{standalone: true}" [(ngModel)]="documentoAutogenerado" (input) = "documentoAutogenerado = documentoAutogenerado.toUpperCase()" placeholder="Autogenerado">
+          <input type="text" class="form-control" id="inlineFormInput" [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="documentoAutogenerado" (input)="documentoAutogenerado = documentoAutogenerado.toUpperCase()"
+            placeholder="Autogenerado">
         </div>
         <div class="col btn-group">
           <button type="button" class="btn btn-primary" (click)="onCustodiar()">Custodiar</button>
@@ -57,7 +59,9 @@
           <td scope="col">{{envioCreado.documentos[0].razonSocialDestino}}</td>
           <td scope="col">{{envioCreado.documentos[0].contactoDestino}}</td>
           <td scope="col">{{envioCreado.documentos[0].direccion}}</td>
-          <td scope="col">{{envioService.getUltimoSeguimientoAutorizacion(envioCreado) ? envioService.getUltimoSeguimientoAutorizacion(envioCreado).estadoAutorizado.nombre : "APROBADA" }}</td>
+          <td scope="col">
+            {{envioService.getUltimoSeguimientoAutorizacion(envioCreado) ? envioService.getUltimoSeguimientoAutorizacion(envioCreado).estadoAutorizado.nombre : "APROBADA" }}
+          </td>
           <td scope="col">{{documentoService.getFechaCreacion(envioCreado.documentos[0])}}</td>
         </tr>
       </tbody>
@@ -75,5 +79,6 @@
   </div>
 </ng-template>
 <div class="row">
-  <ngx-barcode hidden *ngFor="let envioCreado of enviosCreados" id="{{envioCreado.documentos[0].documentoAutogenerado}}" [bc-value]="envioCreado.documentos[0].documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
+  <ngx-barcode hidden *ngFor="let envioCreado of enviosCreados" id="{{envioCreado.documentos[0].documentoAutogenerado}}"
+    [bc-value]="envioCreado.documentos[0].documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
 </div>

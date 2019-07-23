@@ -102,7 +102,7 @@ export class RecepcionarDevueltosComponent implements OnInit {
               fechaEntrega: this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha : this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5).fecha : " ",
               estado: this.documentoService.getUltimoEstado(documento).nombre,
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : " ",
-              fisicosDevueltos: documento.tiposDevolucion.sort((a,b) => a.id - b.id).map(tipoDevolucion => tipoDevolucion.nombre).join(", ")
+              fisicosDevueltos: documento.tiposDevolucion.sort((a, b) => a.id - b.id).map(tipoDevolucion => tipoDevolucion.nombre).join(", ")
             })
           }
         )
@@ -166,66 +166,11 @@ export class RecepcionarDevueltosComponent implements OnInit {
   }
 
 
-  exportar(){
+  exportar() {
     this.documentoService.exportarDevoluciones(this.documentos)
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // recepcionarDocumento(autogenerado) {
-
-  //   if (autogenerado.length !== 0) {
-  //     let documento = this.documentos.find(documentoList => documentoList.documentoAutogenerado === autogenerado);
-
-  //     if (documento === undefined) {
-  //       this.notifier.notify('error', 'No se ha encontrado el código ingresado');
-  //     } else if (autogenerado !== 0) {
-  //       if(documento.recepcionado!=true){
-
-
-
-  //         this.documentoService.recepcionarDocumento(documento.id).subscribe(
-  //           documento => {
-  //             this.notifier.notify('success', 'Documento recepcionado');
-  //             this.documentoForm.controls['autogenerado'].setValue('');
-  //             this.listarDocumentosConResultadosYRecepcionados();
-  //           },
-  //           error => {
-  //             if (error.status === 404) {
-  //               this.documentos = [];
-  //               this.notifier.notify('error', 'Error en back no mapeado');
-  //             }
-  //           }
-  //         );
-  //       }else{
-  //         this.notifier.notify('error', 'El documento ya se encuentra recepcionado');
-  //       }
-  //     }
-  //   }
-  //   else {
-  //     this.notifier.notify('error', 'Código vacío');
-  //   }
-  // }
 
 
 }

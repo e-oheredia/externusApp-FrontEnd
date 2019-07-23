@@ -84,7 +84,6 @@ export class ClasificacionComponent implements OnInit {
         this.dataClasificacion.load(dataClasificacion);
       }
     )
-    console.log(this.clasificaciones)
   }
 
   onAgregar() {
@@ -119,8 +118,8 @@ export class ClasificacionComponent implements OnInit {
       keyboard: false,
       backdrop: "static"
     });
-    bsModalRef.content.clasificacionModificadaEvent.subscribe(() => 
-    this.listarClasificaciones()
+    bsModalRef.content.clasificacionModificadaEvent.subscribe(() =>
+      this.listarClasificaciones()
     )
   }
 

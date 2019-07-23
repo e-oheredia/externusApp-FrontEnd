@@ -82,24 +82,24 @@
   </div>
   <div class="row ">
     <div class="col">
-      <form (ngSubmit) = "seleccionar(documentoAutogenerado)">
+      <form (ngSubmit)="seleccionar(documentoAutogenerado)">
         <div class="form-row">
           <div class="col-12 col-lg-4 ">
-            <input type="text" class="form-control mb-2" id="inlineFormInput" 
-            (input) = "documentoAutogenerado = documentoAutogenerado.toUpperCase()" 
-            [ngModelOptions]="{standalone: true}" [(ngModel)]="documentoAutogenerado"            
-            placeholder="Autogenerado">
+            <input type="text" class="form-control mb-2" id="inlineFormInput"
+              (input)="documentoAutogenerado = documentoAutogenerado.toUpperCase()"
+              [ngModelOptions]="{standalone: true}" [(ngModel)]="documentoAutogenerado" placeholder="Autogenerado">
           </div>
           <div class="col-12 col-lg-8 btn-group justify-content-center">
             <button type="button" class="btn btn-primary mb-2" (click)="onCustodiar()">Custodiar</button>
             <button type="button" class="btn btn-success mb-2" (click)="onCustodiarCargo()">Custodiar con Cargo</button>
-            <button type="button" class="btn btn-warning mb-2" (click)="onCustodiarEtiqueta()">Custodiar con Etiqueta</button>
+            <button type="button" class="btn btn-warning mb-2" (click)="onCustodiarEtiqueta()">Custodiar con
+              Etiqueta</button>
           </div>
         </div>
       </form>
     </div>
   </div>
-  <div class="row" *ngIf="envio.documentos.length !== 0">
+  <div class="row" *ngIf="documentos.length !== 0">
     <div class="col">
       <table class="table">
         <thead>
@@ -113,7 +113,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let documento of envio.documentos">
+          <tr *ngFor="let documento of documentos">
             <td scope="col">
               <input type="checkbox" [(ngModel)]="documento.checked" class="form-control">
             </td>
@@ -129,5 +129,6 @@
   </div>
 </div>
 <div class="row">
-  <ngx-barcode hidden *ngFor="let documento of envio.documentos" id="{{documento.documentoAutogenerado}}" [bc-value]="documento.documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
+  <ngx-barcode hidden *ngFor="let documento of documentos" id="{{documento.documentoAutogenerado}}"
+    [bc-value]="documento.documentoAutogenerado" [bc-display-value]="true"></ngx-barcode>
 </div>

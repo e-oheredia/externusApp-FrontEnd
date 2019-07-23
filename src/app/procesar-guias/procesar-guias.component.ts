@@ -60,7 +60,6 @@ export class ProcesarGuiasComponent implements OnInit {
       'excel2': new FormControl(null),
     })
     this.settings.hideSubHeader = false;
-    console.log(this.guias)
   }
 
   generarColumnas() {
@@ -207,11 +206,8 @@ export class ProcesarGuiasComponent implements OnInit {
   mostrarResultadosCargados2(file: File) {
     this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-        console.log("primeros correctos: " + this.resultadosCorrectos.length)
-        console.log("nuevos correctos: " + data.documentos.length)
         this.resultadosCorrectos = this.resultadosCorrectos.concat(data.documentos);
         this.resultadosIncorrectos = data.inconsistenciasResultado;
-        // descargar inconsistencias
         if (this.resultadosIncorrectos.length > 0) {
           this.descargarInconsistencias(this.resultadosIncorrectos);
         }
@@ -252,48 +248,13 @@ export class ProcesarGuiasComponent implements OnInit {
         this.procesarForm.reset();
         this.resultadosCorrectos = [];
         this.resultadosIncorrectos = [];
-        // this.bsModalRef.hide();
         this.listarGuiasPorProcesar();
-        // this.confirmarEvent.emit();
       },
       error => {
         this.notifier.notify('error', error.error.mensaje);
       }
     )
   }
-
-
-
-
-
-
-
-
-
-
-
-  // subirGuia(row) {
-  //   let guia = this.guias.find(guia => guia.numeroGuia == row.nroGuia)
-  //   let bsModalRef: BsModalRef = this.modalService.show(AdjuntarArchivoComponent, {
-  //     initialState: {
-  //       condicion: "procesar",
-  //       documento: this.documento,
-  //       guia: guia,
-  //       titulo: 'Subir reporte de Guía.',
-  //       mensaje: 'Seleccione el reporte perteneciente a los documentos de la guía.'
-  //     },
-  //     class: 'modal-lg',
-  //     keyboard: false,
-  //     backdrop: "static"
-  //   });
-
-  //   this.modalService.onHide.subscribe(
-  //     () => {
-  //       this.listarGuiasPorProcesar();
-  //     }
-  //   )
-  // }
-
 
 
 

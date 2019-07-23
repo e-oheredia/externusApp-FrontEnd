@@ -5,22 +5,17 @@ import * as jsPDF from "jspdf";
 import { UtilsService } from "./utils.service";
 import { EnvioBloque } from 'src/model/enviobloque.model';
 
-
 @Injectable()
 export class CargoPdfService {
 
-
     constructor(
         private utilsService: UtilsService
-    ) { 
-
-    }
+    ) { }
 
     doc = new jsPDF();
     PAGE_WIDTH = this.doc.internal.pageSize.getWidth();
     PAGE_HEIGHT = this.doc.internal.pageSize.getHeight();
     CODIGO_BARRAS_WIDTH = 150
-
 
     generarPdfIndividual(envio: Envio, codigoBarrasSvg: any) {
         let doc = new jsPDF();  
@@ -205,15 +200,6 @@ export class CargoPdfService {
         }
         image.src = codigoBarrasBase64;
     }
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -56,26 +56,26 @@ export class AdjuntarArchivoComponent implements OnInit {
   }
 
   subirResutados(file: File) {
-      this.documentoService.validarDevolucionesDelProveedor(file, 0, (data) => {
-        if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
-          this.guiaService.subirDocumentosDevolucion(data).subscribe(
-            respuesta => {
-              this.notifier.notify('success', respuesta.mensaje);
-              this.guiaForm.reset();
-              this.confirmarEvent.emit();
-              this.bsModalRef.hide();
-            },
-            error => {
-              this.notifier.notify('error', error.error.mensaje);
-            }
-          )
-          return;
-        }
-        this.notifier.notify('error', data.mensaje);
-      })
-    }
+    this.documentoService.validarDevolucionesDelProveedor(file, 0, (data) => {
+      if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
+        this.guiaService.subirDocumentosDevolucion(data).subscribe(
+          respuesta => {
+            this.notifier.notify('success', respuesta.mensaje);
+            this.guiaForm.reset();
+            this.confirmarEvent.emit();
+            this.bsModalRef.hide();
+          },
+          error => {
+            this.notifier.notify('error', error.error.mensaje);
+          }
+        )
+        return;
+      }
+      this.notifier.notify('error', data.mensaje);
+    })
+  }
 
-  
+
 
 
 }

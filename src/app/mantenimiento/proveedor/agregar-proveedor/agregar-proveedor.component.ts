@@ -22,7 +22,7 @@ export class AgregarProveedorComponent implements OnInit {
   constructor(
     private bsModalRef: BsModalRef,
     private notifier: NotifierService,
-    private proveedorService: ProveedorService, 
+    private proveedorService: ProveedorService,
     private plazoDistribucionService: PlazoDistribucionService,
     private regionService: RegionService,
     private ambitoService: AmbitoService
@@ -44,75 +44,51 @@ export class AgregarProveedorComponent implements OnInit {
 
   ngOnInit() {
     this.agregarForm = new FormGroup({
-      'nombreProveedor' : new FormControl('', Validators.required),
-      // 'plazosProveedor' : new FormControl('', Validators.required),
-      //'regionesProveedor' : new FormControl('', Validators.required),
-      'ambitosProveedor' : new FormControl('', Validators.required),
+      'nombreProveedor': new FormControl('', Validators.required),
+      'ambitosProveedor': new FormControl('', Validators.required),
     });
-
-    // this.listarPlazosDistribucion();
     this.listarRegiones();
     this.listarAmbitos();
   }
 
-  onSubmit(proveedor){
+  onSubmit(proveedor) {
     let nombreSinEspacios = this.agregarForm.controls['nombreProveedor'].value.trim();
-    if (nombreSinEspacios.length !== 0 && this.ambitosElegidos.length !==0) {
-    let proveedor: Proveedor = new Proveedor();
-    proveedor.nombre = nombreSinEspacios;
-    proveedor.ambitos = this.ambitosElegidos;
-    this.crearProveedorSubscription = this.proveedorService.agregarProveedor(proveedor).subscribe(
-      proveedor => {
-        this.notifier.notify('success', 'Se ha agregado el proveedor correctamente');
-        this.bsModalRef.hide();
-        this.proveedorCreadoEvent.emit(proveedor);
-      },
-      error => {
-        this.notifier.notify('error', 'No se puede agregar un nombre existente');
-      }
-    );
+    if (nombreSinEspacios.length !== 0 && this.ambitosElegidos.length !== 0) {
+      let proveedor: Proveedor = new Proveedor();
+      proveedor.nombre = nombreSinEspacios;
+      proveedor.ambitos = this.ambitosElegidos;
+      this.crearProveedorSubscription = this.proveedorService.agregarProveedor(proveedor).subscribe(
+        proveedor => {
+          this.notifier.notify('success', 'Se ha agregado el proveedor correctamente');
+          this.bsModalRef.hide();
+          this.proveedorCreadoEvent.emit(proveedor);
+        },
+        error => {
+          this.notifier.notify('error', 'No se puede agregar un nombre existente');
+        }
+      );
+    }
+    else {
+      this.notifier.notify('error', 'Debe ingresar todos los datos');
+    }
   }
-  else {
-    this.notifier.notify('error', 'Debe ingresar todos los datos');
-  }
-}
 
 
-
-  // listarPlazosDistribucion() {
-  //   this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
-  //   this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
-  //     plazosDistribucion => this.plazosDistribucion = plazosDistribucion
-  //   )
-  // }
-
-  // onChangePlazoDistribucionElegido(event: any, plazoDistribucion: PlazoDistribucion) {    
-  //   event.srcElement.checked ? this.plazosDistribucionElegidos.push(plazoDistribucion) : this.plazosDistribucionElegidos.splice(this.plazosDistribucionElegidos.indexOf(plazoDistribucion), 1);
-  // }
-
-
-
-  listarRegiones(){
+  listarRegiones() {
     this.regiones = this.regionService.getRegiones();
     this.regionService.regionesChanged.subscribe(
       regiones => this.regiones = regiones
     )
   }
 
-/*   onChangeRegionesElegidas(event: any, region: Region) {    
-    event.srcElement.checked ? this.regionesElegidas.push(region) : this.regionesElegidas.splice(this.regionesElegidas.indexOf(region), 1);
-  } */
-  
-
-
-  listarAmbitos(){
+  listarAmbitos() {
     this.ambitos = this.ambitoService.getAmbitos();
     this.ambitoService.ambitosChanged.subscribe(
       ambitos => this.ambitos = ambitos
     )
   }
 
-  onChangeAmbitosElegidos(event: any, ambito: Ambito) {    
+  onChangeAmbitosElegidos(event: any, ambito: Ambito) {
     event.srcElement.checked ? this.ambitosElegidos.push(ambito) : this.ambitosElegidos.splice(this.ambitosElegidos.indexOf(ambito), 1);
   }
 

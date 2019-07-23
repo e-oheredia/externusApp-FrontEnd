@@ -29,10 +29,11 @@ export class AgregarClasificacionComponent implements OnInit {
 
   ngOnInit() {
     this.agregarForm = new FormGroup({
-      'nombre' : new FormControl('', Validators.required)
+      'nombre': new FormControl('', Validators.required)
     })
   }
-  onSubmit(clasificacion){
+
+  onSubmit(clasificacion) {
     let nombreSinEspacios = this.agregarForm.controls['nombre'].value.trim();
     if (nombreSinEspacios.length !== 0) {
       clasificacion.nombre = nombreSinEspacios;
@@ -51,10 +52,6 @@ export class AgregarClasificacionComponent implements OnInit {
       this.notifier.notify('error', 'Debe ingresar el nombre de la clasificación');
     }
   }
-
-
-
-
 
 
 

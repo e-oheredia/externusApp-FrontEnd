@@ -40,9 +40,11 @@
                 </button>
               </div>
             </div>
+
           </div>
         </form>
       </div>
+
     </div>
   </div>
 </div>
@@ -54,13 +56,14 @@
 <div *ngIf="validacion !== 0; else mensaje">
   <div *ngIf="validacion === 1; else mensaje2">
 
-
+    <!-- REPORTE DEVOLUCION DE CARGOS -->
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
           <h4>Devolución de cargos</h4>
         </div>
       </div>
+
       <div class="card-body">
         <div class="row justify-content-center">
           <div class="col-10">
@@ -94,19 +97,11 @@
                   <td scope="col">{{totalcargosdevueltos()}}</td>
                 </tr>
               </tbody>
-              <!-- <tbody>
-              <tr *ngFor="let _r of dataTablaCargoArray">
-                <td scope=col>{{ _r[0]}}</td>
-                <td *ngFor="let proveedor of tablaProveedores" scope="col">{{_r[proveedor.id] }}</td>
-              </tr>
-            </tbody> -->
             </table>
           </div>
         </div>
       </div>
     </div>
-
-
 
     <!-- REPORTE DEVOLUCION DE REZAGOS -->
     <div class="card mb-4">
@@ -153,7 +148,6 @@
       </div>
     </div>
 
-
     <!-- REPORTE DEVOLUCION DE DENUNCIAS -->
     <div class="card mb-4">
       <div class="card-header">
@@ -199,10 +193,6 @@
       </div>
     </div>
 
-
-
-
-
     <!-- REPORTE DE CARGOS, REZAGOS Y DENUNCUAS POR AREAS -->
     <div class="card mb-4">
       <div class="card-header">
@@ -215,8 +205,8 @@
           <div class="col-10">
             <jqxChart #myChart [height]="500" [title]="'Detalle de pendientes por área'" [description]="''"
               [enableAnimations]="true" [showLegend]="true" [padding]="padding" [titlePadding]="titlePadding"
-              [source]="dataGraficoDetallePendienteAreaTop" [xAxis]="xAxis3" [valueAxis]="valueAxis3"
-              [seriesGroups]="seriesGroups3" [colorScheme]="'scheme01'">
+              [source]="dataGraficoDetallePendienteAreaTop" [xAxis]="xAxis2" [valueAxis]="valueAxis2"
+              [seriesGroups]="seriesGroups2" [colorScheme]="'scheme01'">
             </jqxChart>
           </div>
         </div>

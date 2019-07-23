@@ -13,7 +13,8 @@
           <div class="form-group">
             <label for="numeroGuia">Número de guía</label>
             <input class="form-control" type="text" name="numeroGuia" id="numeroGuia" formControlName="numeroGuia">
-            <span *ngIf="!modificarForm.get('numeroGuia').valid && modificarForm.get('numeroGuia').touched" class="text-danger small">
+            <span *ngIf="!modificarForm.get('numeroGuia').valid && modificarForm.get('numeroGuia').touched"
+              class="text-danger small">
               Debe ingresar un número de guía
             </span>
           </div>
@@ -23,7 +24,8 @@
     </div>
 
     <div class="modal-footer">
-      <button type="submit" class="btn btn-success" [disabled]="!modificarForm.valid || modificarForm.pristine" >Modificar</button>
+      <button type="submit" class="btn btn-success"
+        [disabled]="!modificarForm.valid || modificarForm.pristine">Modificar</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Cancelar</button>
     </div>
 

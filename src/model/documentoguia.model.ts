@@ -3,10 +3,12 @@ import { Guia } from './guia.model';
 
 
 export class DocumentoGuia {
+
     constructor(
-        public documento: Documento, 
+        public documento: Documento,
         public guia: Guia,
-        public validado: boolean, 
+        public validado: boolean,
         public fechaAsociacion: Date
-       ){}
+    ) { }
+
 }

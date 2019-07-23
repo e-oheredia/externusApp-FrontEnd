@@ -59,8 +59,8 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
 
   cargarDatosVista() {
 
-    this.areasObservable = this.areaService.listarAreasAll(); //jala de bd en la 1ra
-    this.areaService.listarAreasAll().subscribe(areas => { //cuando cambia
+    this.areasObservable = this.areaService.listarAreasAll();
+    this.areaService.listarAreasAll().subscribe(areas => {
       this.areas = areas
     })
 
@@ -69,7 +69,7 @@ export class PermisoPlazoDistribucionComponent implements OnInit, OnDestroy {
       this.buzones = buzones
     })
 
-    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();//jala del frontend
+    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
     this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(plazosDistribucion => {
       this.plazosDistribucion = plazosDistribucion
     })

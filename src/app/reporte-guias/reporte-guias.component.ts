@@ -9,9 +9,9 @@ import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GuiaService } from '../shared/guia.service';
 import { Guia } from 'src/model/guia.model';
-import {TipoConsultaGuia} from '../enum/tipoconsultaguia.enum'
+import { TipoConsultaGuia } from '../enum/tipoconsultaguia.enum'
 import { TipoGuiaEnum } from '../enum/tipoguia.enum';
- 
+
 @Component({
   selector: 'app-reporte-guias',
   templateUrl: './reporte-guias.component.html',
@@ -25,7 +25,7 @@ export class ReporteGuiasComponent implements OnInit {
     private utilsService: UtilsService,
     private notifier: NotifierService,
     private tituloService: TituloService
-    ) { }
+  ) { }
 
 
   dataGuias: LocalDataSource = new LocalDataSource();
@@ -36,8 +36,8 @@ export class ReporteGuiasComponent implements OnInit {
 
   guiaSubscription: Subscription;
   guiaForm: FormGroup;
-  verificador:number = TipoConsultaGuia.GUIA_NORMAL;
-  
+  verificador: number = TipoConsultaGuia.GUIA_NORMAL;
+
   ngOnInit() {
     this.guiaForm = new FormGroup({
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
@@ -49,8 +49,6 @@ export class ReporteGuiasComponent implements OnInit {
     this.settings.hideSubHeader = false;
     this.generarColumnas();
     this.listarGuias();
-    console.log("GUIA REGULAR");
-    console.log(this.guias);
   }
 
   generarColumnas() {
@@ -79,7 +77,7 @@ export class ReporteGuiasComponent implements OnInit {
       totalDocumentos: {
         title: 'Total de documentos'
       },
-     fechaCreacion: {
+      fechaCreacion: {
         title: 'Fecha Creación'
       },
       fechalimite: {
@@ -99,10 +97,10 @@ export class ReporteGuiasComponent implements OnInit {
 
   listarGuias() {
     if (this.guiaForm.controls['codigo'].value.length !== 0) {
-      if (this.guiaForm.get("guiaActiva").value =='1'){
-        this.verificador=TipoConsultaGuia.GUIA_ACTIVA;
+      if (this.guiaForm.get("guiaActiva").value == '1') {
+        this.verificador = TipoConsultaGuia.GUIA_ACTIVA;
       }
-      this.guiaSubscription = this.guiaService.listarGuiaPorCodigo(this.guiaForm.controls['codigo'].value,this.verificador, TipoGuiaEnum.GUIA_REGULAR)
+      this.guiaSubscription = this.guiaService.listarGuiaPorCodigo(this.guiaForm.controls['codigo'].value, this.verificador, TipoGuiaEnum.GUIA_REGULAR)
         .subscribe(
           guia => {
             this.guias = []
@@ -117,7 +115,7 @@ export class ReporteGuiasComponent implements OnInit {
               sede: guia.sede.nombre,
               pendienteResultado: guia.cantidadDocumentosPendientes,
               totalDocumentos: guia.cantidadDocumentos,
-              fechaCreacion:this.guiaService.getFechaCreacion(guia),
+              fechaCreacion: this.guiaService.getFechaCreacion(guia),
               fechalimite: guia.fechaLimite ? guia.fechaLimite : '-',
               fechaEnvio: !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaService.getFechaEnvio(guia)) ? this.guiaService.getFechaEnvio(guia) : ' ',
               fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
@@ -139,24 +137,22 @@ export class ReporteGuiasComponent implements OnInit {
             }
           }
         );
-        this.verificador=TipoConsultaGuia.GUIA_NORMAL;
+      this.verificador = TipoConsultaGuia.GUIA_NORMAL;
     }
 
     else if (!this.utilsService.isUndefinedOrNullOrEmpty(this.guiaForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.guiaForm.controls['fechaFin'].value)) {
-      if (this.guiaForm.get("guiaActiva").value =='1'){
-        this.verificador=TipoConsultaGuia.GUIA_ACTIVA;
+      if (this.guiaForm.get("guiaActiva").value == '1') {
+        this.verificador = TipoConsultaGuia.GUIA_ACTIVA;
       }
-      this.guiaSubscription = this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_REGULAR)
+      this.guiaSubscription = this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value, this.verificador, TipoGuiaEnum.GUIA_REGULAR)
         .subscribe(
           guias => {
             this.guias = guias
             this.guiaForm.controls['codigo'].enable();
 
             this.dataGuias.reset();
-            this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value,this.verificador, TipoGuiaEnum.GUIA_REGULAR).subscribe(
+            this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value, this.verificador, TipoGuiaEnum.GUIA_REGULAR).subscribe(
               guias => {
-                console.log("GUIA REGULAR");
-                console.log(this.guias);
                 this.guias = guias;
                 let dataGuias = [];
                 guias.forEach(
@@ -168,7 +164,7 @@ export class ReporteGuiasComponent implements OnInit {
                       tipoServicio: guia.tipoServicio.nombre,
                       tipoSeguridad: guia.tipoSeguridad.nombre,
                       sede: guia.sede.nombre,
-                      pendienteResultado:guia.cantidadDocumentosPendientes,
+                      pendienteResultado: guia.cantidadDocumentosPendientes,
                       totalDocumentos: guia.cantidadDocumentos,
                       fechaCreacion: this.guiaService.getFechaCreacion(guia),
                       fechalimite: guia.fechaLimite,
@@ -176,9 +172,9 @@ export class ReporteGuiasComponent implements OnInit {
                       fechaUltimoEstado: this.guiaService.getFechaUltimoEstadoGuia(guia),
                       estado: this.guiaService.getEstadoGuia(guia).nombre
                     })
-                  }                  
+                  }
                 )
-                this.verificador=TipoConsultaGuia.GUIA_NORMAL;
+                this.verificador = TipoConsultaGuia.GUIA_NORMAL;
                 this.dataGuias.load(dataGuias);
               }
             )
@@ -218,7 +214,7 @@ export class ReporteGuiasComponent implements OnInit {
   }
 
 
-  exportar(){
+  exportar() {
     this.guiaService.exportarGuias(this.guias)
   }
 
