@@ -10,20 +10,12 @@ export class ReporteService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.REPORTE_URL;
 
-    constructor(private requester: RequesterService) {
-
-    }
+    constructor(
+        private requester: RequesterService
+    ) { }
 
     getvolumen(fechaini: Date, fechafin: Date): any {
         return this.requester.get(this.REQUEST_URL + 'volumen', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
-    }
-
-    getReporteVolumenporSede(fechaini: Date, fechafin: Date): any {
-        return this.requester.get<any>(this.REQUEST_URL + "volumen/porsede", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
-    }
-
-    getReporteVolumenporproveedorandplazo(fechaini: Date, fechafin: Date): any {
-        return this.requester.get<any>(this.REQUEST_URL + "volumen/plazodistribucion", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
     getReporteEficaciaEstadosPorProveedor(fechaini: Date, fechafin: Date): any {
@@ -32,10 +24,6 @@ export class ReporteService {
 
     getReporteEficienciaPorCourier(fechaini: Date, fechafin: Date): any {
         return this.requester.get<any>(this.REQUEST_URL + "eficiencia", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
-    }
-
-    getReporteEficienciaCourierPorPlazos(fechaini: Date, fechafin: Date): any {
-        return this.requester.get<any>(this.REQUEST_URL + "eficiencia/courierporplazo", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
 
     cantidadDevolucionPorTipoDevolucion(fechaini: Date, fechafin: Date): any {
@@ -57,6 +45,6 @@ export class ReporteService {
     getindicadoreficiencia(fechaini: Date, fechafin: Date): any {
         return this.requester.get(this.REQUEST_URL + 'indicadoreficiencia', { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()) });
     }
-    
+
 
 }

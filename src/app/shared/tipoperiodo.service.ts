@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable, Subject } from "rxjs";
@@ -9,7 +9,12 @@ export class TipoPeriodoService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_PERIODO_URL;
 
-    constructor(private requester: RequesterService) {
+    public tiposPeriodoChanged = new Subject<TipoPeriodo[]>();
+    private tiposPeriodo: TipoPeriodo[];
+
+    constructor(
+        private requester: RequesterService
+    ) {
         this.listarTiposPeriodoAll().subscribe(
             tiposPeriodo => {
                 this.tiposPeriodo = tiposPeriodo;
@@ -18,15 +23,11 @@ export class TipoPeriodoService {
         )
     }
 
-    private tiposPeriodo: TipoPeriodo[];
-
-    getTiposPeriodo() : TipoPeriodo[] {
+    getTiposPeriodo(): TipoPeriodo[] {
         return this.tiposPeriodo;
     }
 
-    public tiposPeriodoChanged = new Subject<TipoPeriodo[]>();
-
     listarTiposPeriodoAll(): Observable<TipoPeriodo[]> {
-        return this.requester.get<TipoPeriodo[]>(this.REQUEST_URL , {});
+        return this.requester.get<TipoPeriodo[]>(this.REQUEST_URL, {});
     }
 }

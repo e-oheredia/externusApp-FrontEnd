@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
-import * as moment from 'moment-timezone';
-
 
 @Injectable()
+
 export class UtilsService {
 
     constructor() { }
@@ -47,11 +46,11 @@ export class UtilsService {
 
     public svgToBase64(element: Element) {
         var s = new XMLSerializer().serializeToString(element);
-        var encodedData = window.btoa(s);   
+        var encodedData = window.btoa(s);
         return 'data:image/svg+xml;base64,' + encodedData;
     }
 
-    public getNombreMes(fecha : Date){
+    public getNombreMes(fecha: Date) {
         var month = new Array();
         month[0] = "Enero";
         month[1] = "Febrero";
@@ -68,10 +67,10 @@ export class UtilsService {
         return month[fecha.getMonth()];
     }
 
-    public getNombreMes2(entero : number){
+    public getNombreMes2(entero: number) {
         var month = new Array();
         var newentero;
-        newentero=entero-1;
+        newentero = entero - 1;
         month[0] = "Enero";
         month[1] = "Febrero";
         month[2] = "Marzo";

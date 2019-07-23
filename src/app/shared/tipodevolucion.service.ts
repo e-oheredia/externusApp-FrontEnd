@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable, Subject } from "rxjs";
@@ -9,7 +9,12 @@ export class TipoDevolucionService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_DEVOLUCION_URL;
 
-    constructor(private requester: RequesterService) {
+    public tiposDevolucionChanged = new Subject<TipoDevolucion[]>();
+    private tiposDevolucion: TipoDevolucion[];
+
+    constructor(
+        private requester: RequesterService
+    ) {
         this.listarTiposDevolucionAll().subscribe(
             tiposDevolucion => {
                 this.tiposDevolucion = tiposDevolucion;
@@ -18,15 +23,11 @@ export class TipoDevolucionService {
         )
     }
 
-    private tiposDevolucion: TipoDevolucion[];
-
-    getTiposDevolucion() : TipoDevolucion[] {
+    getTiposDevolucion(): TipoDevolucion[] {
         return this.tiposDevolucion;
     }
 
-    public tiposDevolucionChanged = new Subject<TipoDevolucion[]>();
-
     listarTiposDevolucionAll(): Observable<TipoDevolucion[]> {
-        return this.requester.get<TipoDevolucion[]>(this.REQUEST_URL , {});
+        return this.requester.get<TipoDevolucion[]>(this.REQUEST_URL, {});
     }
 }

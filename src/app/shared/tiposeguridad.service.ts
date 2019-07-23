@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { RequesterService } from "./requester.service";
 import { AppSettings } from "./app.settings";
 import { Observable, Subject } from "rxjs";
@@ -8,8 +8,13 @@ import { TipoSeguridad } from "../../model/tiposeguridad.model";
 export class TipoSeguridadService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.TIPO_SEGURIDAD_URL;
+    private tiposSeguridad: TipoSeguridad[];
 
-    constructor(private requester: RequesterService) {
+    public tiposSeguridadChanged = new Subject<TipoSeguridad[]>();
+
+    constructor(
+        private requester: RequesterService
+    ) {
         this.listarTiposSeguridad().subscribe(
             tiposSeguridad => {
                 this.tiposSeguridad = tiposSeguridad;
@@ -18,25 +23,23 @@ export class TipoSeguridadService {
         )
     }
 
-    private tiposSeguridad: TipoSeguridad[];
-
-    getTiposSeguridad() : TipoSeguridad[] {
+    getTiposSeguridad(): TipoSeguridad[] {
         return this.tiposSeguridad;
     }
-
-    public tiposSeguridadChanged = new Subject<TipoSeguridad[]>();
 
     listarTiposSeguridad(): Observable<TipoSeguridad[]> {
         return this.requester.get<TipoSeguridad[]>(this.REQUEST_URL + "activos", {});
     }
 
-    agregarTipoSeguridad(tipoSeguridad : TipoSeguridad) :Observable<TipoSeguridad>{
-       return this.requester.post<TipoSeguridad>(this.REQUEST_URL,tipoSeguridad,{}); 
+    agregarTipoSeguridad(tipoSeguridad: TipoSeguridad): Observable<TipoSeguridad> {
+        return this.requester.post<TipoSeguridad>(this.REQUEST_URL, tipoSeguridad, {});
     }
-    modificarTipoSeguridad(id: number, tipoSeguridad : TipoSeguridad) : Observable<TipoSeguridad>{
+
+    modificarTipoSeguridad(id: number, tipoSeguridad: TipoSeguridad): Observable<TipoSeguridad> {
         return this.requester.put<TipoSeguridad>(this.REQUEST_URL + id, tipoSeguridad, {});
     }
+
     listarTiposSeguridadAll(): Observable<TipoSeguridad[]> {
-        return this.requester.get<TipoSeguridad[]>(this.REQUEST_URL , {});
+        return this.requester.get<TipoSeguridad[]>(this.REQUEST_URL, {});
     }
 }

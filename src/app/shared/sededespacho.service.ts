@@ -9,9 +9,12 @@ export class SedeDespachoService {
 
     REQUEST_URL = AppSettings.API_ENDPOINT + AppSettings.SEDE_DESPACHO_URL;
 
+    public sedesDespachoChanged = new Subject<Sede[]>();
+    private sedesDespacho: Sede[];
 
-    constructor(private requester: RequesterService) {
-
+    constructor(
+        private requester: RequesterService
+    ) {
         this.listarSedesDespacho().subscribe(
             sedesDespacho => {
                 this.sedesDespacho = sedesDespacho;
@@ -20,16 +23,11 @@ export class SedeDespachoService {
         )
     }
 
-    private sedesDespacho: Sede[];
-
-    getSedesDespacho(): Sede[]{
+    getSedesDespacho(): Sede[] {
         return this.sedesDespacho;
     }
 
-    public sedesDespachoChanged = new Subject<Sede[]>();
-
-    listarSedesDespacho():Observable<Sede[]>{
-        // return this.requester.get<Sede[]>(this.REQUEST_URL, {});
+    listarSedesDespacho(): Observable<Sede[]> {
         return this.requester.get<Sede[]>(this.REQUEST_URL + "/sedesdespacho", {});
     }
 
