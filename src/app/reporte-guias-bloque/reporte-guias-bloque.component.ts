@@ -98,6 +98,7 @@ export class ReporteGuiasBloqueComponent implements OnInit {
 
 
   listarGuias() {
+
     if (this.guiaForm.controls['codigo'].value.length !== 0) {
       if (this.guiaForm.get("guiaActiva").value == '1') {
         this.verificador = TipoConsultaGuia.GUIA_ACTIVA;
@@ -146,13 +147,30 @@ export class ReporteGuiasBloqueComponent implements OnInit {
       if (this.guiaForm.get("guiaActiva").value == '1') {
         this.verificador = TipoConsultaGuia.GUIA_ACTIVA;
       }
+
+      let fii = this.guiaForm.controls['fechaIni'].value;
+      let fff = this.guiaForm.controls['fechaFin'].value;
+      let fi = new Date(new Date(fii).getTimezoneOffset() * 60 * 1000 + new Date(fii).getTime());
+      let ff = new Date(new Date(fff).getTimezoneOffset() * 60 * 1000 + new Date(fff).getTime());
+      let fechaInicial = new Date(moment(new Date(fi.getFullYear(), fi.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));
+      let fechaFinal = new Date(moment(new Date(ff.getFullYear(), ff.getMonth(), 1), "DD-MM-YYYY HH:mm:ss"));    
+      let aIni = fechaInicial.getFullYear();
+      let mIni = fechaInicial.getMonth();
+      let aFin = fechaFinal.getFullYear();
+      let mFin = fechaFinal.getMonth();  
+  
+      if ((aFin - aIni) * 12 + (mFin - mIni) >= 13) {
+        this.notifierService.notify('error', 'Seleccione como máximo un periodo de 13 meses');
+        return;
+      }
+      
       this.guiaSubscription = this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value, this.verificador, TipoGuiaEnum.GUIA_BLOQUE)
         .subscribe(
           guias => {
             this.guias = guias
             this.guiaForm.controls['codigo'].enable();
-
             this.dataGuias.reset();
+
             this.guiaService.listarGuiasPorFechas(this.guiaForm.controls['fechaIni'].value, this.guiaForm.controls['fechaFin'].value, this.verificador, TipoGuiaEnum.GUIA_BLOQUE).subscribe(
               guias => {
                 this.guias = guias;
@@ -177,7 +195,7 @@ export class ReporteGuiasBloqueComponent implements OnInit {
                   }
                 )
                 this.verificador = TipoConsultaGuia.GUIA_NORMAL;
-                this.dataGuias.load(dataGuias);
+                this.dataGuias.load(dataGuias.sort());
               }
             )
           },

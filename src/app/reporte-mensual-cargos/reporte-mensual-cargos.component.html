@@ -41,6 +41,15 @@
               </div>
             </div>
           </div>
+          <div class="row mb-4">
+            <div class="col">
+              <label for="">Seleccione el Tipo de devolución</label>
+              <select class="form-control" name="tipoDevolucion" [(ngModel)]="devolucionElegida" formControlName="tipoDevolucion">
+                <option *ngFor="let tipodevolucion of tipoDevoluciones" [ngValue]="tipodevolucion">
+                  {{tipodevolucion.nombre}}</option>
+              </select>
+            </div>
+          </div>
         </form>
       </div>
 
@@ -53,17 +62,7 @@
 
 <div *ngIf="validacion !== 0; else mensaje">
   <div *ngIf="validacion === 1; else mensaje2">
-
     
-    <div class="row mb-4">
-      <div class="col">
-        <label for="">Seleccione el Tipo de devolución</label>
-        <select class="form-control" [(ngModel)]="devolucionElegida">
-          <option *ngFor="let tipodevolucion of tipoDevoluciones" [ngValue]="tipodevolucion">{{tipodevolucion.nombre}}</option>
-        </select>
-      </div>
-    </div>
-
 
     <div class="card mb-4">
       <div class="card-header">
@@ -133,7 +132,6 @@
     </div>
 
 
-
   </div>
 </div>
 
@@ -143,7 +141,7 @@
   <div class="row">
     <div class="col">
       <div class="alert alert-info" role="alert" align=center>
-        Seleccione el rango de fechas de la búsqueda.
+        Seleccione el tipo de devolución y el rango de fechas de la búsqueda.
       </div>
     </div>
   </div>

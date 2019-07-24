@@ -54,9 +54,11 @@ export class ReporteMensualCargosComponent implements OnInit {
     this.validacion = 0;
     this.documentoForm = new FormGroup({
       "fechaIni": new FormControl(null, Validators.required),
-      "fechaFin": new FormControl(null, Validators.required)
+      "fechaFin": new FormControl(null, Validators.required),
+      "tipoDevolucion": new FormControl(null, Validators.required)
     })
 
+    
     this.proveedores = this.proveedorService.getProveedores();
     this.proveedorService.proveedoresChanged.subscribe(
       proveedores => {
@@ -89,11 +91,6 @@ export class ReporteMensualCargosComponent implements OnInit {
     this.titulo = this.devolucionElegida.nombre.toLowerCase();
     if (!this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaIni'].value) && !this.utilsService.isUndefinedOrNullOrEmpty(this.documentoForm.controls['fechaFin'].value)) {
 
-      let fechaIniDate = new Date(fechaIni);
-      let fechaFinDate = new Date(fechaFin);
-      fechaIniDate = new Date(fechaIniDate.getTimezoneOffset() * 60 * 1000 + fechaIniDate.getTime());
-      fechaFinDate = new Date(fechaFinDate.getTimezoneOffset() * 60 * 1000 + fechaFinDate.getTime());
-
       this.documentosSubscription = this.reporteService.getControlCargosDocumentosDenuncias(fechaIni, fechaFin, this.devolucionElegida.id).subscribe(
         (data: any) => {
           this.validacion = 1;
@@ -112,12 +109,15 @@ export class ReporteMensualCargosComponent implements OnInit {
         error => {
           if (error.status === 409) {
             this.validacion = 2;
+            return;
           }
           if (error.status === 417) {
             this.notifier.notify('error', 'Seleccionar un rango de fechas correcto');
+            return;
           }
           if (error.status === 424) {
             this.notifier.notify('error', 'Seleccione como máximo un periodo de 13 meses');
+            return;
           }
         }
       );
