@@ -51,8 +51,6 @@
   <div *ngIf="validacion === 1; else mensaje2">
 
 
-
-
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -136,8 +134,6 @@
     </div>
 
 
-
-
     <div class="card mb-4">
       <div class="card-header">
         <div class="titulo">
@@ -149,33 +145,27 @@
           <div class="col-12 center-block " *ngFor="let proveedor of proveedores">
             <br>
             <h4>{{proveedor.nombre}}</h4>
-
-              <div class="col-8 center-block " *ngFor="let region of regionesxproveedor(proveedor)">
-                    <h5>{{region.nombre}}</h5>
-                    <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por plazo de distribución'"
-                      [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="paddingS"
-                      [titlePadding]="titlePaddingS" [source]="dataSource3[proveedor.nombre+ '-' +region.id]" [xAxis]="getAxis('plazo')"
-                      [valueAxis]="getValueAxis('Documentos Asignados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', 
+            <div class="col-8 center-block " *ngFor="let region of regionesxproveedor(proveedor)">
+              <h5>{{region.nombre}}</h5>
+              <jqxChart #myChart [height]="500" [title]="'Reporte de volumen por plazo de distribución'"
+                [description]="''" [showLegend]="true" [enableAnimations]="true" [padding]="paddingS"
+                [titlePadding]="titlePaddingS" [source]="dataSource3[proveedor.nombre+ '-' +region.id]"
+                [xAxis]="getAxis('plazo')" [valueAxis]="getValueAxis('Documentos Asignados', true)" [seriesGroups]="getSeriesGroups('stackedcolumn', 
                       [{cantidad: 'Cantidad'}], 
                       'horizontal')" [colorScheme]="'scheme26'">
-                    </jqxChart>
-                    <br>
-              </div>
-              <br><br>
+              </jqxChart>
+              <br>
+            </div>
+            <br>
+            <br>
           </div>
         </div>
       </div>
     </div>
 
 
-
-
-
-
   </div>
 </div>
-
-
 
 
 <ng-template #mensaje>

@@ -46,9 +46,9 @@
 
 
 
-<div *ngIf="validacion !== 0; else mensaje">
-  <div *ngIf="validacion === 1; else mensaje2">
 
+<div *ngIf="validacion !== 0; else mensaje">
+  <div *ngIf="validacion === 1; else mensaje2">    
 
     <div class="card mb-4">
       <div class="card-header">
@@ -67,14 +67,9 @@
           </div>
         </div>
       </div>
-
-
-
-
       <div class="card-body">
         <div class="row">
           <div class="col">
-
             <table class="table table-bordered">
               <thead>
                 <tr>
@@ -92,15 +87,9 @@
           </div>
         </div>
       </div>
-
-
-
-
-
       <div class="card-body">
         <div class="row">
           <div class="col">
-
             <table class="table table-bordered">
               <thead>
                 <tr>
@@ -120,12 +109,8 @@
       </div>
     </div>
 
-
-
   </div>
 </div>
-
-
 
 
 <ng-template #mensaje>
