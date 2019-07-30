@@ -127,7 +127,7 @@ export class ReporteInconsistenciaComponent implements OnInit {
   }
 
   exportar() {
-    this.documentoService.exportarInconsistenciasMasivoyBloque(this.envios);
+    this.documentoService.exportarInconsistenciasDeConsulta(this.envios);
   }
 
 
