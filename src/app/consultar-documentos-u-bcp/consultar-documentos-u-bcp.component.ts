@@ -83,7 +83,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                 title: 'Autogenerado'
             },
             nroDocumento: {
-                title: 'Nro de documento'
+                title: 'Número de documento'
             },
             producto: {
                 title: 'Producto'
@@ -95,7 +95,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                 title: 'Razón social'
             },
             contactoDestino: {
-                title: 'Contacto Destino'
+                title: 'Contacto destino'
             },
             direccion: {
                 title: 'Dirección'
@@ -113,19 +113,19 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                 title: 'Motivo'
             },
             documentodevuelto: {
-                title: 'Documento Devuelto'
+                title: 'Documento devuelto'
             },
             autorizado: {
                 title: 'Autorizado'
             },
             fechaCreacion: {
-                title: 'Fecha creación'
+                title: 'Fecha de creación'
             },
             fechaEnvio: {
-                title: 'Fecha envío'
+                title: 'Fecha de envío'
             },
             fechaUltimoResultado: {
-                title: 'Fecha último resultado'
+                title: 'Fecha de último resultado'
             },
             codigodevolucion: {
                 title: 'Código de devolución'

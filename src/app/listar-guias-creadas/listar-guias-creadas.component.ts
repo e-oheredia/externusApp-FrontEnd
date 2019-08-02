@@ -55,22 +55,22 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
         }
       },
       numero: {
-        title: 'Número de Guía'
+        title: 'Número de guía'
       },
       proveedor: {
         title: 'Proveedor'
       },
       plazo: {
-        title: 'Plazo de Distribución'
+        title: 'Plazo de distribución'
       },
       servicio: {
-        title: 'Tipo de Servicio'
+        title: 'Tipo de servicio'
       },
       seguridad: {
-        title: 'Tipo de Seguridad'
+        title: 'Tipo de seguridad'
       },
       total: {
-        title: 'Total de Documentos'
+        title: 'Total de documentos'
       },
       validados: {
         title: 'Validados'
@@ -178,7 +178,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
       () => {
         this.guiaService.eliminarGuia(this.guia.id).subscribe(
           () => {
-            this.notifier.notify('success', 'Se ha eliminado correctamente la guía');
+            this.notifier.notify('success', 'GUÍA ELIMINADA');
             this.listarSinCustodiar();
           },
           error => {

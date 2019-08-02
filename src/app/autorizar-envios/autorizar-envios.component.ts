@@ -66,7 +66,7 @@ export class AutorizarEnviosComponent implements OnInit {
         title: 'Plazo de distribución'
       },
       fechaCreacion: {
-        title: 'Fecha creación'
+        title: 'Fecha de creación'
       },
       cantidadDocumentos: {
         title: 'Cantidad de documentos'

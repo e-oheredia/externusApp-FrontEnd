@@ -21,7 +21,7 @@
             </span>
           </div>
           <div class="form-group">
-            <label for="plazoDistribucion">Plazo de Distribución *</label>
+            <label for="plazoDistribucion">Plazo de distribución *</label>
             <select class="form-control" id="plazoDistribucion" formControlName="plazoDistribucion">
               <option *ngFor="let plazoDistribucion of plazosDistribucion" [ngValue]="plazoDistribucion">
                 {{plazoDistribucion.nombre}}</option>
@@ -32,7 +32,7 @@
             </span>
           </div>
           <div class="form-group">
-            <label for="tipoSeguridad">Tipo de Seguridad *</label>
+            <label for="tipoSeguridad">Tipo de seguridad *</label>
             <select class="form-control" id="tipoSeguridad" formControlName="tipoSeguridad">
               <option *ngFor="let tipoSeguridad of tiposSeguridad" [ngValue]="tipoSeguridad">{{tipoSeguridad.nombre}}
               </option>
@@ -43,7 +43,7 @@
             </span>
           </div>
           <div class="form-group">
-            <label for="tipoServicio">Tipo de Servicio *</label>
+            <label for="tipoServicio">Tipo de servicio *</label>
             <select class="form-control" id="tipoServicio" formControlName="tipoServicio">
               <option *ngFor="let tipoServicio of tiposServicio" [ngValue]="tipoServicio">{{tipoServicio.nombre}}
               </option>
@@ -84,7 +84,7 @@
             </span>
           </div>
           <div class="form-group">
-            <label for="numeroGuia">Número de Guía</label>
+            <label for="numeroGuia">Número de guía</label>
             <input class="form-control" type="text" name="numeroGuia"
               (input)="guiaForm.controls['numeroGuia'].setValue(guiaForm.get('numeroGuia').value.toUpperCase())"
               pattern="([a-zA-Z0-9])+" id="numeroGuia" formControlName="numeroGuia">
