@@ -22,22 +22,25 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
     private notifier: NotifierService, 
     private cargoPdfService: CargoPdfService,
     private envioMasivoService: EnvioMasivoService
-  ) { }
+  ) { this.loading = true }
 
   envio: Envio;
+  loading: boolean;
   documentos: Documento[] = [];
   documentoAutogenerado = "";
   @Output() todosDocumentosCustodiadosEvent = new EventEmitter();
 
   ngOnInit() {
+    this.loading = true;
     this.listarDocumentosDeLaGuia(this.envio.id);
   }
 
   listarDocumentosDeLaGuia(id){
+    console.log(this.loading)
     this.envioMasivoService.getDocumentosByEnvioId(id).subscribe(
       documentos => {
         this.documentos = documentos;
-        // this.envio.documentos.push(this.documentos)
+        this.loading = false;
       }
     )
   }

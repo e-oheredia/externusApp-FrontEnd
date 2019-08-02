@@ -5,3 +5,7 @@ input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
 .comunicacionDestino.ng-invalid.ng-touched input{
     border: #dc3545 1px solid;
 }
+
+input{
+    text-transform: uppercase;
+}

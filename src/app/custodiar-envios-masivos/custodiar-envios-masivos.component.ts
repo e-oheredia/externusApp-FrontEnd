@@ -26,7 +26,9 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
     private modalService: BsModalService,
     private utilsService: UtilsService,
     private notifier: NotifierService
-  ) { }
+  ) {
+    this.listarSinCustodiar()
+   }
   dataEnvios: LocalDataSource = new LocalDataSource();
   enviosMasivosCreados = [];
   masivoAutogenerado = "";
@@ -35,7 +37,6 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
   envio:EnvioMasivo;
   ngOnInit() {
     this.generarColumnas(),
-    this.listarSinCustodiar(),
     this.listarEnviosMasivosPorCustodiar(),
     this.settings.hideSubHeader = false  
   }
