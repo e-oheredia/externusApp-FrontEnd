@@ -23,6 +23,7 @@ import { Buzon } from 'src/model/buzon.model';
 })
 
 export class ConsultarDocumentosUBCPComponent implements OnInit {
+    source : LocalDataSource;
 
     constructor(
         public documentoService: DocumentoService,
@@ -32,13 +33,16 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         private utilsService: UtilsService,
         private envioService: EnvioService,
         private buzonService: BuzonService
-    ) { }
+    ) {     
+
+    }
 
     dataTodosMisDocumentos: LocalDataSource = new LocalDataSource();
     settings = AppSettings.tableSettings;
     documentos: Documento[] = [];
     documento: Documento;
     buzon: Buzon;
+    data: any[] = [];
 
     documentosSubscription: Subscription;
     buzonSubscription: Subscription;
@@ -50,16 +54,17 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             "fechaFin": new FormControl(moment().format('YYYY-MM-DD'), Validators.required)
         })
         this.generarColumnas();
-        if (!this.buzonService.getBuzonActual()) {
-            this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(() => {
-                this.listarDocumentos();
-            });
-        } else {
+
+        this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(() => {
             this.listarDocumentos();
-        }
-        this.settings.hideSubHeader = false;
+            this.source = new LocalDataSource(this.data);          
+        });
+
+    this.settings.hideSubHeader = false;        
 
     }
+
+
 
     generarColumnas() {
         this.settings.columns = {
@@ -149,13 +154,13 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         nroDocumento: documento.nroDocumento,
                                         producto: documento.envio.producto.nombre,
                                         plazo: documento.envio.plazoDistribucion.nombre ? documento.envio.plazoDistribucion.nombre : " ",
-                                        razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino : " ",
-                                        contactoDestino: documento.contactoDestino,
-                                        direccion: documento.direccion,
-                                        distrito: documento.distrito.nombre,
+                                        razonSocial: documento.razonSocialDestino ? documento.razonSocialDestino.toUpperCase() : " ",
+                                        contactoDestino: documento.contactoDestino.toUpperCase(),
+                                        direccion: documento.direccion.toUpperCase(),
+                                        distrito: documento.distrito.nombre.toUpperCase(),
                                         clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : " ",
                                         estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
-                                        motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : " ",
+                                        motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre.toUpperCase() : " ",
                                         documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
                                         autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA" ,
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),
@@ -166,6 +171,8 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                 }
                             )
                             this.dataTodosMisDocumentos.load(dataTodosMisDocumentos);
+                            this.data=dataTodosMisDocumentos;
+
                         }
                     )
                 },

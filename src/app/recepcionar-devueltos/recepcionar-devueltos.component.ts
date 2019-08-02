@@ -167,7 +167,11 @@ export class RecepcionarDevueltosComponent implements OnInit {
 
 
   exportar() {
-    this.documentoService.exportarDevoluciones(this.documentos)
+    if(this.documentos.length!=0){
+      this.documentoService.exportarDevoluciones(this.documentos)
+    }else{
+      this.notifier.notify('error', "ACTUALMENTE NO EXISTEN DEVOLUCIONES");
+    }
   }
 
 

@@ -29,7 +29,7 @@ import { ReporteInconsistenciaModule } from './reporte-inconsistencia/reporte-in
 import { RecepcionarDevueltosModule } from './recepcionar-devueltos/recepcionar-devueltos.module';
 import { ReporteAsignacionPlazoModule } from './reporte-asignacion-plazo/reporte-asignacion-plazo.module';
 import { ReporteGuiasBloqueModule } from './reporte-guias-bloque/reporte-guias-bloque.module';
-
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 
 @NgModule({
@@ -65,8 +65,9 @@ import { ReporteGuiasBloqueModule } from './reporte-guias-bloque/reporte-guias-b
     ReporteInconsistenciaModule,
     RecepcionarDevueltosModule,
     ReporteAsignacionPlazoModule,
-    ReporteGuiasBloqueModule
-  ],
+    ReporteGuiasBloqueModule,
+    Ng2SmartTableModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

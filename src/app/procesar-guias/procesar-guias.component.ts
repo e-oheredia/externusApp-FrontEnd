@@ -22,6 +22,7 @@ import { utils } from 'xlsx/types';
   styleUrls: ['./procesar-guias.component.css']
 })
 export class ProcesarGuiasComponent implements OnInit {
+  source : LocalDataSource;
 
   constructor(
     public bsModalRef: BsModalRef,
@@ -37,7 +38,7 @@ export class ProcesarGuiasComponent implements OnInit {
   dataGuiasPorProcesar: LocalDataSource = new LocalDataSource();
   rutaPlantillaResultados: string = AppSettings.PLANTILLA_RESULTADOS;
   settings = AppSettings.tableSettings;
-
+  data:any[]=[];
   procesarForm: FormGroup;
   excelFile: File;
   resultadosCorrectos: Documento[] = [];
@@ -60,6 +61,7 @@ export class ProcesarGuiasComponent implements OnInit {
       'excel2': new FormControl(null),
     })
     this.settings.hideSubHeader = false;
+    this.source = new LocalDataSource(this.data);          
   }
 
   generarColumnas() {
@@ -140,6 +142,7 @@ export class ProcesarGuiasComponent implements OnInit {
           })
         })
         this.dataGuiasPorProcesar.load(dataGuiasPorProcesar);
+        this.data=dataGuiasPorProcesar;
       },
       error => {
         if (error.status === 400) {
