@@ -20,8 +20,6 @@ import { TipoServicioService } from '../../shared/tiposervicio.service';
 import { UtilsService } from '../../shared/utils.service';
 import { EnvioMasivoService } from '../../shared/enviomasivo.service';
 import { NotifierService } from 'angular-notifier';
-import { LocalDataSource } from 'ng2-smart-table';
-import { TipoPlazoDistribucion } from '../../../model/tipoplazodistribucion.model';
 import { SedeDespachoService } from 'src/app/shared/sededespacho.service';
 import { Sede } from 'src/model/sede.model';
 import { ProductoService } from 'src/app/shared/producto.service';

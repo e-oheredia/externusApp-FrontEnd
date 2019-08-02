@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵConsole } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DocumentoService } from '../shared/documento.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -28,18 +28,19 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
     private utilsService: UtilsService,
     private notifier: NotifierService,
     public envioService: EnvioService,
-    private tituloService: TituloService) { }
-
+    private tituloService: TituloService
+  ) { }
 
   dataTodosLosDocumentos: LocalDataSource = new LocalDataSource();
+  documentoForm: FormGroup;
+  documentosSubscription: Subscription;
   settings = AppSettings.tableSettings;
   documentos: Documento[] = [];
   documento: Documento;
   data:any[]=[];
-  documentosSubscription: Subscription;
-  documentoForm: FormGroup;
 
   mySettings = {} 
+
   ngOnInit() {
     this.documentoForm = new FormGroup({
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
@@ -68,8 +69,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
           })
         }
       },
-      noDataMessage: "no datass found",
-      autogenerado: {
+    autogenerado: {
         title: 'Autogenerado'
       },
       remitente: {
@@ -144,7 +144,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               distrito: documento.distrito.nombre,
               clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
               estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
-              motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado,
+              motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
               documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
               autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
@@ -197,11 +197,11 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       distrito: documento.distrito.nombre,
                       clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
                       estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
-                      motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
+                      motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : " ",
                       documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
                       autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
-                      fechaEnvio: this.documentoService.getFechaCreacion(documento), //ACTUALIZAR FECHA
+                      fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
                       fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
                       codigodevolucion: documento.codigoDevolucion
                     })
