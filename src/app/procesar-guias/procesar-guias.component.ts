@@ -83,10 +83,10 @@ export class ProcesarGuiasComponent implements OnInit {
         title: 'Fecha de envío'
       },
       fechalimite: {
-        title: 'Fecha limite de resultado'
+        title: 'Fecha límite de resultado'
       },
       descargarBase: {
-        title: 'Descargar Base',
+        title: 'Descargar base',
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
@@ -100,7 +100,7 @@ export class ProcesarGuiasComponent implements OnInit {
         title: 'Fecha de descarga'
       },
       total: {
-        title: 'Total documentos'
+        title: 'Total de documentos'
       },
       entregados: {
         title: 'Entregados'

@@ -63,7 +63,7 @@ export class ValidarDocumentosGuiaModalComponent implements OnInit {
 
     this.validarDocumentoGuiaSubscription = this.documentoGuiaService.validarDocumentoGuia(this.guia.id, documentoaValidar.id).subscribe(
       () => {
-        this.notifier.notify('success', 'Se ha validado correctamente el documento');
+        this.notifier.notify('success', 'Documento validado');
         this.documentoAutogenerado = "";
         documentoaValidar.documentosGuia[0].validado = true;
       }

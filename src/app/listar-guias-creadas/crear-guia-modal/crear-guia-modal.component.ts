@@ -109,12 +109,12 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
       clasificaciones => {
         this.clasificaciones = clasificaciones;
       }
-    )
+    );
     this.productosSubscription = this.productoService.productosChanged.subscribe(
       productos => {
         this.productos = productos;
       }
-    )
+    );
     this.proveedoresSubscription = this.proveedorService.proveedoresChanged.subscribe(
       proveedores => {
         this.proveedores = proveedores;
@@ -129,6 +129,15 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+ /*  onProveedorSelectedChanged(region) {
+    this.proveedoresSubscription = this.proveedorService.getProveedorByRegionId(this.proveedores, region.id).subscribe(
+      proveedores => {
+        this.proveedores = proveedores;
+      }
+    );
+  } */
+  
 
   onSubmit(guia) {
     this.crearGuiaSubscription = this.guiaService.registrarGuia(guia).subscribe(

@@ -83,7 +83,7 @@ export class RecepcionarDocumentoComponent implements OnInit {
 
     this.recepcionarDocumentoSubscription = this.documentoService.recepcionarDocumento(documento.id, documento.tiposDevolucion).subscribe(
       documento => {
-        this.notifier.notify('success', 'Se recepcionó el documento correctamente');
+        this.notifier.notify('success', 'Documento recepcionado');
         this.bsModalRef.hide();
         this.documentoRecepcionadoEvent.emit(documento);
       },

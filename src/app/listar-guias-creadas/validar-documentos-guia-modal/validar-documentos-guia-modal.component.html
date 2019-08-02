@@ -13,7 +13,7 @@
             <li class="list-group-item">
               <div class="row">
                 <div class="col-5">
-                  Tipo de Servicio
+                  Tipo de servicio
                 </div>
                 <div class="col-7">
                   {{guia.tipoServicio.nombre}}
@@ -23,7 +23,7 @@
             <li class="list-group-item">
               <div class="row">
                 <div class="col-5">
-                  Tipo de Seguridad
+                  Tipo de seguridad
                 </div>
                 <div class="col-7">
                   {{guia.tipoSeguridad.nombre}}
@@ -33,7 +33,7 @@
             <li class="list-group-item">
               <div class="row">
                 <div class="col-5">
-                  Plazo de Distribución
+                  Plazo de distribución
                 </div>
                 <div class="col-7">
                   {{guia.plazoDistribucion.nombre}}
@@ -46,7 +46,7 @@
                   Documentos
                 </div>
                 <div class="col-7">
-                  {{guia.cantidadDocumentos}}
+                  {{this.documentos.length}}
                 </div>
               </div>
             </li>
@@ -79,10 +79,10 @@
           <thead>
             <tr>
               <th scope="col">Código</th>
-              <th scope="col">Razón Social</th>
+              <th scope="col">Razón social</th>
               <th scope="col">Contacto</th>
               <th scope="col">Dirección</th>
-              <th scope="col">Fecha de Creación</th>
+              <th scope="col">Fecha de creación</th>
               <th scope="col">Validado</th>
             </tr>
           </thead>
@@ -103,7 +103,7 @@
   <div class="row">
     <div class="button-group col text-right">
       <button type="button" class="btn btn-outline-danger" (click)="retirarNoValidados()">
-        Quitar no Validados
+        Retirar no validados
       </button>
     </div>
   </div>

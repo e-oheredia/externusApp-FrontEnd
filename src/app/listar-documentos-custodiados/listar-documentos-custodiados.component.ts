@@ -37,16 +37,16 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
       title: 'Clasificación'
     },
     tipoServicio: {
-      title: 'Tipo de Servicio'
+      title: 'Tipo de servicio'
     },
     tipoSeguridad: {
-      title: 'Tipo de Seguridad'
+      title: 'Tipo de seguridad'
     },
     plazoDistribucion: {
-      title: 'Plazo de Distribución'
+      title: 'Plazo de distribución'
     },
     razonSocial: {
-      title: 'Razón Social'
+      title: 'Razón social'
     },
     contacto: {
       title: 'Contacto'
@@ -58,7 +58,7 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
       title: 'Autorizado'
     },
     fechaCreacion: {
-      title: 'Fecha de Creación'
+      title: 'Fecha de creación'
     }
 
   };
