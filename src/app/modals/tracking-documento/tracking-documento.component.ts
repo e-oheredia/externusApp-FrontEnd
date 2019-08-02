@@ -38,7 +38,7 @@ export class TrackingDocumentoComponent implements OnInit, OnDestroy {
         title: 'Motivo'
       },
       observacion: {
-        title: 'Observacion'
+        title: 'Observación'
       },
       fecha: {
         title: 'Fecha'

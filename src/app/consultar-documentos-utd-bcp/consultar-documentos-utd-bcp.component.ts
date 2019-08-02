@@ -20,6 +20,7 @@ import { ButtonViewComponent } from '../table-management/button-view/button-view
   styleUrls: ['./consultar-documentos-utd-bcp.component.css']
 })
 export class ConsultarDocumentosUtdBcpComponent implements OnInit {
+  source : LocalDataSource;
 
   constructor(
     public documentoService: DocumentoService,
@@ -34,11 +35,11 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
   settings = AppSettings.tableSettings;
   documentos: Documento[] = [];
   documento: Documento;
-
+  data:any[]=[];
   documentosSubscription: Subscription;
   documentoForm: FormGroup;
 
-
+  mySettings = {} 
   ngOnInit() {
     this.documentoForm = new FormGroup({
       "fechaIni": new FormControl(moment().format('YYYY-MM-DD'), Validators.required),
@@ -49,9 +50,12 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
     this.generarColumnas();
     this.listarDocumentos();
     this.settings.hideSubHeader = false;
+
   }
 
   generarColumnas() {
+
+
     this.settings.columns = {
       linkTracking: {
         title: 'Tracking',
@@ -64,6 +68,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
           })
         }
       },
+      noDataMessage: "no datass found",
       autogenerado: {
         title: 'Autogenerado'
       },
@@ -116,7 +121,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
         title: 'Código de devolución'
       }
     }
+    
   }
+
 
   listarDocumentos() {
     if (this.documentoForm.controls['codigo'].value.length !== 0) {
@@ -147,6 +154,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
             })
             this.documentos.push(documento);
             this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);
+            this.data=dataTodosLosDocumentos;
             this.documentoForm.controls['codigo'].setValue('');
             this.documentoForm.controls['fechaIni'].reset();
             this.documentoForm.controls['fechaFin'].reset();

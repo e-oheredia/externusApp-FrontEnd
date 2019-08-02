@@ -19,27 +19,30 @@ import { ModificarEnvioComponent } from './modificar-envio/modificar-envio.compo
   styleUrls: ['./autorizar-envios.component.css']
 })
 export class AutorizarEnviosComponent implements OnInit {
+  source : LocalDataSource;
 
   constructor(
     private envioService: EnvioService,
     public documentoService: DocumentoService,
     private notifier: NotifierService,
-    private modalService: BsModalService
-  ) { }
+    private modalService: BsModalService,
+  ) { 
+    this.source = new LocalDataSource(this.data);
+
+  }
 
   dataEnviosPendientesDeAutorizacion: LocalDataSource = new LocalDataSource();
   settings = AppSettings.tableSettings;
   envios: Envio[] = [];
   envio: Envio;
-
   enviosNoAutorizadosSubscription: Subscription;
   envioForm: FormGroup;
+  data: any[] = [];
 
   ngOnInit() {
     this.generarColumnas();
     this.listarEnviosNoAutorizados();
     this.settings.hideSubHeader = false;
-
   }
 
   generarColumnas() {
@@ -139,6 +142,7 @@ export class AutorizarEnviosComponent implements OnInit {
           }
         )
         this.dataEnviosPendientesDeAutorizacion.load(dataEnviosPendientesDeAutorizacion);
+        this.data=dataEnviosPendientesDeAutorizacion;
       }
     )
   }
