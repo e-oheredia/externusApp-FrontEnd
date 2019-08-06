@@ -43,7 +43,7 @@ export class ProcesarGuiasComponent implements OnInit {
   excelFile: File;
   resultadosCorrectos: Documento[] = [];
   resultadosIncorrectos: InconsistenciaResultado[] = [];
-
+  util : UtilsService;
   guias: Guia[] = [];
   documentos: Documento[] = [];
 
@@ -61,7 +61,6 @@ export class ProcesarGuiasComponent implements OnInit {
       'excel2': new FormControl(null),
     })
     this.settings.hideSubHeader = false;
-    this.source = new LocalDataSource(this.data);          
   }
 
   generarColumnas() {
@@ -85,10 +84,10 @@ export class ProcesarGuiasComponent implements OnInit {
         title: 'Fecha de envío'
       },
       fechalimite: {
-        title: 'Fecha límite de resultado'
+        title: 'Fecha limite de resultado'
       },
       descargarBase: {
-        title: 'Descargar base',
+        title: 'Descargar Base',
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
@@ -102,7 +101,7 @@ export class ProcesarGuiasComponent implements OnInit {
         title: 'Fecha de descarga'
       },
       total: {
-        title: 'Total de documentos'
+        title: 'Total documentos'
       },
       entregados: {
         title: 'Entregados'
@@ -143,6 +142,7 @@ export class ProcesarGuiasComponent implements OnInit {
         })
         this.dataGuiasPorProcesar.load(dataGuiasPorProcesar);
         this.data=dataGuiasPorProcesar;
+        this.source = new LocalDataSource(this.data);          
       },
       error => {
         if (error.status === 400) {
@@ -191,9 +191,9 @@ export class ProcesarGuiasComponent implements OnInit {
     }
     this.mostrarResultadosCargados(this.excelFile);
   }
-
+  
   mostrarResultadosCargados(file: File) {
-    this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
+    this.documentoService.validarResultadosDelProveedor(file,this.guias, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.resultadosCorrectos = data.documentos;
         this.resultadosIncorrectos = data.inconsistenciasResultado;
@@ -207,7 +207,7 @@ export class ProcesarGuiasComponent implements OnInit {
   }
 
   mostrarResultadosCargados2(file: File) {
-    this.documentoService.validarResultadosDelProveedor(file, 0, (data) => {
+    this.documentoService.validarResultadosDelProveedor(file,this.guias, 0, (data) => {
       if (this.utilsService.isUndefinedOrNullOrEmpty(data.mensaje)) {
         this.resultadosCorrectos = this.resultadosCorrectos.concat(data.documentos);
         this.resultadosIncorrectos = data.inconsistenciasResultado;

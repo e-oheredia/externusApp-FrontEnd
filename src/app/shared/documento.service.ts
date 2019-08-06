@@ -10,7 +10,7 @@ import { DistritoService } from './distrito.service';
 import { DepartamentoService } from './departamento.service';
 import { Documento } from '../../model/documento.model';
 import { ReadExcelService } from './read-excel.service';
-import { Injectable } from "@angular/core";
+import { Injectable, inject, forwardRef } from "@angular/core";
 import { AppSettings } from "./app.settings";
 import { Subscription, Observable } from "rxjs";
 import { Provincia } from '../../model/provincia.model';
@@ -26,6 +26,8 @@ import { WriteExcelService } from './write-excel.service';
 import { InconsistenciaDocumento } from 'src/model/inconsistenciadocumento.model';
 import { Envio } from 'src/model/envio.model';
 import { InconsistenciaResultado } from 'src/model/inconsistenciaresultado.model';
+import { Guia } from '../../model/guia.model';
+import { SeguimientoGuia } from '../../model/seguimientoguia.model';
 
 @Injectable()
 export class DocumentoService {
@@ -40,7 +42,7 @@ export class DocumentoService {
         private utilsService: UtilsService,
         private requesterService: RequesterService,
         private estadoDocumentoService: EstadoDocumentoService,
-        private buzonService: BuzonService,
+        private buzonService: BuzonService,              
         private writeExcelService: WriteExcelService,
     ) {
         this.departamentosPeruSubscription = this.departamentoService.departamentosPeruChanged.subscribe(
@@ -60,6 +62,7 @@ export class DocumentoService {
         )
     }
 
+    documentosBD : any [] = [];
     documentos = [];
     departamentosPeru: Departamento[];
     provincias: Provincia[];
@@ -68,6 +71,8 @@ export class DocumentoService {
     departamentosPeruSubscription: Subscription;
     provinciasSubscription: Subscription;
     distritosSubscription: Subscription;
+    datas: any[] = [];
+    valor = [];
 
     validarDocumentosMasivosYBloque(file: File, sheet: number, callback: Function) {
         this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
@@ -299,6 +304,12 @@ export class DocumentoService {
             seguimientoDocumento => seguimientoDocumento.estadoDocumento.id === estadoId);
     }
 
+    getSeguimientoGuiaByEstadoGuiaId(guia: Guia, estadoGuiaId: number): SeguimientoGuia {
+        return guia.seguimientosGuia.find(seguimientoDocumento =>
+            seguimientoDocumento.estadoGuia.id === estadoGuiaId
+        )
+    }
+
     getUltimoSeguimientoDocumento(documento: Documento) {
         return documento.seguimientosDocumento.reduce(
             (max, seguimentoDocumento) =>
@@ -329,13 +340,30 @@ export class DocumentoService {
         return this.requesterService.post<Documento>(this.REQUEST_URL + id + "/codigodevolucion", codigo, {});
     }
 
-    validarResultadosDelProveedor(file: File, sheet: number, callback: Function) {
+/*     traerdata(documentos: any[]) : Observable<any[]> {
+        return this.requesterService.post<Documento[]>(this.REQUEST_URL + "autogenerados", documentos,{});
+    }    */
+
+        validarResultadosDelProveedor(file: File,guias: Guia[], sheet: number, callback: Function) {
         this.readExcelService.excelToJson(file, sheet, (data: Array<any>) => {
             let i = 1
             let envio: Envio = new Envio();
             let resultadosCorrectos: Documento[] = [];
-            let resultadosIncorrectos: InconsistenciaResultado[] = [];
+            let resultadosIncorrectos: InconsistenciaResultado[] = [];    
+            let fechaenvio : any;        
 
+
+/*             while(true){
+                this.datas.push(data[i][1]);
+                if (data[i].length === 0) {
+                    break;
+                }
+                i++;
+            } */
+           // var databd = this.traerdata(this.datas);
+           // this.documentosBD.push(databd);
+
+            i = 1;
             while (true) {
 
                 if (this.utilsService.isUndefinedOrNull(data[i])) {
@@ -397,8 +425,18 @@ export class DocumentoService {
                             todoCorrecto = false;
                         }
 
+
+
                     }
                 }
+
+
+                guias.forEach(guia => {
+                    if(guia.numeroGuia==data[i][0]){
+                        fechaenvio=this.getSeguimientoGuiaByEstadoGuiaId(guia, 2).fecha;
+                    }
+                });
+
 
                 if (this.utilsService.isUndefinedOrNullOrEmpty(data[i][20])) {
                     resultadoIncorrecto.resumen += "Ingrese la fecha de resultado. "
@@ -408,15 +446,29 @@ export class DocumentoService {
                         resultadoIncorrecto.resumen += "Ingrese la fecha en el formato correcto. "
                         todoCorrecto = false;
                     }
-                    var dateDay = new Date();
-                    var fechaReporte = data[i][20];
-                    var fechaalgo = this.util.getJsDateFromExcel(fechaReporte);
-                    var b = fechaReporte
+                    var dateDay = moment(new Date()).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
+                    var fechaReporte = moment(this.utilsService.getJsDateFromExcel(data[i][20])).tz("America/Lima").format('DD-MM-YYYY HH:mm:ss');
                     var a = fechaReporte;
+
+/*                     this.documentosBD.forEach(data => {
+                        
+                    }); */
+
+
                     if (dateDay < a) {
-                        resultadoIncorrecto.resumen += "La fecha de resultado es incorrecta."
+                        resultadoIncorrecto.resumen += "La fecha de resultado debe ser menor a la fecha actual"
                         todoCorrecto = false;
                     }
+
+                    if(fechaenvio>a){
+                        resultadoIncorrecto.resumen += "La fecha de resultado debe ser mayor a la fecha de envío"
+                        todoCorrecto = false;                        
+                    }
+                   /*  if(  ){
+                        resultadoIncorrecto.resumen += "La fecha de resultado es incorrecta."
+                        todoCorrecto = false;
+                    } */
+
                 }
 
 
