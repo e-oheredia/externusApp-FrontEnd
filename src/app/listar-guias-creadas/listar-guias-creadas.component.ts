@@ -245,7 +245,7 @@ export class ListarGuiasCreadasComponent implements OnInit, OnDestroy {
       () => {
         this.guiaService.enviarGuiaRegular(this.guia.id).subscribe(
           guia => {
-            this.notifier.notify('success', 'Se ha enviado correctamente la guía');
+            this.notifier.notify('success', 'Guía enviada');
             this.listarSinCustodiar();
           },
           error => {

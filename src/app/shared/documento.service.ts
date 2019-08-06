@@ -408,7 +408,7 @@ export class DocumentoService {
                         resultadoIncorrecto.resumen += "Ingrese la fecha en el formato correcto. "
                         todoCorrecto = false;
                     }
-                    var dateDay = new Date();
+                    /* var dateDay = new Date();
                     var fechaReporte = data[i][20];
                     var fechaalgo = this.util.getJsDateFromExcel(fechaReporte);
                     var b = fechaReporte
@@ -416,7 +416,7 @@ export class DocumentoService {
                     if (dateDay < a) {
                         resultadoIncorrecto.resumen += "La fecha de resultado es incorrecta."
                         todoCorrecto = false;
-                    }
+                    } */
                 }
 
 

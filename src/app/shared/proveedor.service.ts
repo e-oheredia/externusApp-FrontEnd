@@ -49,10 +49,10 @@ export class ProveedorService {
         return this.requester.put<Proveedor>(this.REQUEST_URL + id, proveedor, {});
     }
 
-   /*  getProveedorByRegionId(proveedores: Proveedor[], regionId: number){
-        return proveedores.forEach(proveedor=>{
-            proveedor.ambitos.fi
-        })
-    } */
-
+    getProveedorByRegionId(regionId: number): Proveedor[]{
+        return this.proveedores.filter(proveedor =>
+                proveedor.ambitos.findIndex(ambito=>
+                    ambito.region.id===regionId) > -1
+            )
+    }
 }
