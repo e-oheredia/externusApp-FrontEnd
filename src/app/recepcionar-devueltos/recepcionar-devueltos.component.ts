@@ -135,7 +135,7 @@ export class RecepcionarDevueltosComponent implements OnInit {
             this.listarDocumentosConResultadosYRecepcionados()
           )
         } else {
-          this.notifier.notify('error', 'El documento ya se encuentra recepcionado');
+          this.notifier.notify('error', 'Documento ya está recepcionado');
           this.documentoForm.reset();
         }
       }

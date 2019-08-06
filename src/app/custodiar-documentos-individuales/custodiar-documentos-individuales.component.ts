@@ -81,7 +81,7 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
 
     this.documentoService.custodiarDocumentos(documentosACustodiar).subscribe(
       respuesta => {
-        this.notifier.notify('success', 'Se han custodiado correctamente los documentos seleccionados');
+        this.notifier.notify('success', 'Documentos custodiados');
         this.listarDocumentosIndividualesPorCustodiar();
         if (success !== null) {
           success(documentosACustodiar);

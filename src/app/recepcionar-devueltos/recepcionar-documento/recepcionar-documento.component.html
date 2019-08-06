@@ -1,7 +1,7 @@
 <div class="card">
 
   <div class="modal-header">
-    <h4>Recepcionar documento</h4>
+    <h4>Confirmar devoluciones</h4>
   </div>
 
   <form [formGroup]="recepcionarForm" (ngSubmit)=onSubmit(recepcionarForm.value)>
@@ -41,7 +41,7 @@
       <div class="form-row">
         <div class="col">
           <div formArrayName="devoluciones">
-            <label for="devolucion">Devoluciones</label>
+            <label for="devolucion">Tipo de devoluciones</label>
             <div class="form-group"
               *ngFor="let tipoDevolucionControl of recepcionarForm.get('devoluciones').controls; let i = index">
               <div class="form-check">

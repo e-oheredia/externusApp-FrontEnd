@@ -56,13 +56,13 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
         title: 'Clasificación'
       },
       servicio: {
-        title: 'Tipo de Servicio'
+        title: 'Tipo de servicio'
       },
       seguridad: {
-        title: 'Tipo de Seguridad'
+        title: 'Tipo de seguridad'
       },
       distribucion: {
-        title: 'Plazo de Distribución'
+        title: 'Plazo de distribución'
       },          
       autorizado: {
         title: 'Autorizado'
@@ -71,7 +71,7 @@ export class CustodiarEnviosMasivosComponent implements OnInit {
         title: 'Fecha de creación'
       },
       cantidad:{
-        title: 'Cantidad de Documentos'
+        title: 'Cantidad de documentos'
       }          
     }
   }

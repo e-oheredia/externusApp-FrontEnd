@@ -128,10 +128,11 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
         this.plazosDistribucion = plazos;
       }
     );
+    this.proveedores = this.proveedorService.getProveedorByRegionId(region.id);
   }
 
- /*  onProveedorSelectedChanged(region) {
-    this.proveedoresSubscription = this.proveedorService.getProveedorByRegionId(this.proveedores, region.id).subscribe(
+/*   onProveedorSelectedChanged(region) {
+    this.proveedoresSubscription = this.proveedorService.getProveedorByRegionId(region.id).subscribe(
       proveedores => {
         this.proveedores = proveedores;
       }
@@ -142,7 +143,7 @@ export class CrearGuiaModalComponent implements OnInit, OnDestroy {
   onSubmit(guia) {
     this.crearGuiaSubscription = this.guiaService.registrarGuia(guia).subscribe(
       guia => {
-        this.notifier.notify('success', 'Se ha registrado la guía correctamente');
+        this.notifier.notify('success', 'Guía registrada');
         this.bsModalRef.hide();
         this.guiaCreadaEvent.emit(guia);
       },

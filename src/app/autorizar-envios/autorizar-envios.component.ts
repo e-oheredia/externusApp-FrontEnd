@@ -179,7 +179,7 @@ export class AutorizarEnviosComponent implements OnInit {
     bsModalRef.content.confirmarEvent.subscribe(() => {
       this.envioService.autorizarEnvio(this.envio.id).subscribe(
         () => {
-          this.notifier.notify('success', 'Se ha autorizado correctamente el envío');
+          this.notifier.notify('success', 'Envío autorizado');
           this.listarEnviosNoAutorizados();
         },
         error => {
@@ -199,7 +199,7 @@ export class AutorizarEnviosComponent implements OnInit {
     bsModalRef.content.confirmarEvent.subscribe(() => {
       this.envioService.denegarEnvio(this.envio.id).subscribe(
         () => {
-          this.notifier.notify('success', 'Se ha denegado correctamente el envío');
+          this.notifier.notify('success', 'Envío denegado');
           this.listarEnviosNoAutorizados();
         },
         error => {

@@ -499,15 +499,15 @@ export class ReporteMensualCargosComponent implements OnInit {
               total = total + tipo1[key3];
             }
             if (parseInt(key2) == 11) {
-              regtotal.cantidad10 = regtotal.cantidad11 + tipo1[key3];
+              regtotal.cantidad11 = regtotal.cantidad11 + tipo1[key3];
               total = total + tipo1[key3];
             }
             if (parseInt(key2) == 12) {
-              regtotal.cantidad10 = regtotal.cantidad12 + tipo1[key3];
+              regtotal.cantidad12 = regtotal.cantidad12 + tipo1[key3];
               total = total + tipo1[key3];
             }
             if (parseInt(key2) == 13) {
-              regtotal.cantidad10 = regtotal.cantidad13 + tipo1[key3];
+              regtotal.cantidad13 = regtotal.cantidad13 + tipo1[key3];
               total = total + tipo1[key3];
             }
           });

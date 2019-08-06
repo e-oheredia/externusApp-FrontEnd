@@ -79,7 +79,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
         title: 'Producto'
       },
       plazo: {
-        title: 'Plazo distribución'
+        title: 'Plazo de distribución'
       },
       razonSocial: {
         title: 'Razón social'

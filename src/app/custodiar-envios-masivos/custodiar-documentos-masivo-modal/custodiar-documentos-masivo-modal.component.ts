@@ -71,7 +71,7 @@ export class CustodiarDocumentosMasivoModalComponent implements OnInit {
     }
     this.documentoService.custodiarDocumentos(documentosACustodiar).subscribe(
       respuesta => {
-        this.notifier.notify('success', 'Se han custodiado correctamente los documentos seleccionados');
+        this.notifier.notify('success', 'Documentos custodiados');
         let resto = [];
         this.documentos.forEach(documento => {          
           if (documentosACustodiar.findIndex(doc => documento.id === doc.id) === -1) {
