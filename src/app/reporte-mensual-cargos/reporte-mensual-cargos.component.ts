@@ -274,7 +274,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad01 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad01;
                     }
-                    regpro.cantidad01 = devuelto.cantidad01 + devuelto.cantidad02;
+                    regpro.cantidad01 = devuelto.cantidad01 + pendiente.cantidad01;
                     regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 2) {
@@ -287,7 +287,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad02 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad02;
                     }
-                    regpro.cantidad02 = devuelto.cantidad02 + devuelto.cantidad02;
+                    regpro.cantidad02 = devuelto.cantidad02 + pendiente.cantidad02;
                     regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 3) {
@@ -300,7 +300,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad03 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad03;
                     }
-                    regpro.cantidad03 = devuelto.cantidad03 + devuelto.cantidad03;
+                    regpro.cantidad03 = devuelto.cantidad03 + pendiente.cantidad03;
                     regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 4) {
@@ -313,7 +313,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad04 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad04;
                     }
-                    regpro.cantidad04 = devuelto.cantidad04 + devuelto.cantidad04;
+                    regpro.cantidad04 = devuelto.cantidad04 + pendiente.cantidad04;
                     regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 5) {
@@ -326,7 +326,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad05 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad05;
                     }
-                    regpro.cantidad05 = devuelto.cantidad05 + devuelto.cantidad05;
+                    regpro.cantidad05 = devuelto.cantidad05 + pendiente.cantidad05;
                     regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 6) {
@@ -352,7 +352,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad07 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad07;
                     }
-                    regpro.cantidad07 = devuelto.cantidad07 + devuelto.cantidad07;
+                    regpro.cantidad07 = devuelto.cantidad07 + pendiente.cantidad07;
                     regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 8) {
@@ -365,7 +365,7 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad08 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad08;
                     }
-                    regpro.cantidad08 = devuelto.cantidad08 + devuelto.cantidad08;
+                    regpro.cantidad08 = devuelto.cantidad08 + pendiente.cantidad08;
                     regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 9) {
@@ -378,7 +378,8 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad09 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad09;
                     }
-                    regpro.cantidad09 = devuelto.cantidad09 + devuelto.cantidad09;
+                    regpro.cantidad09 = devuelto.cantidad09 + pendiente.cantidad09;
+                    regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 10) {
                     if (key3 == "devuelto") {
@@ -390,7 +391,9 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad10 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad10;
                     }
-                    regpro.cantidad10 = devuelto.cantidad10 + devuelto.cantidad10;
+                    regpro.cantidad10 = devuelto.cantidad10 + pendiente.cantidad10;
+                    regpro.total = devuelto.total + pendiente.total;
+
                   }
                   if (parseInt(key2) == 11) {
                     if (key3 == "devuelto") {
@@ -402,7 +405,9 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad11 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad11;
                     }
-                    regpro.cantidad11 = devuelto.cantidad11 + devuelto.cantidad11;
+                    regpro.cantidad11 = devuelto.cantidad11 + pendiente.cantidad11;
+                    regpro.total = devuelto.total + pendiente.total;
+
                   }
                   if (parseInt(key2) == 12) {
                     if (key3 == "devuelto") {
@@ -414,7 +419,8 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad12 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad12;
                     }
-                    regpro.cantidad12 = devuelto.cantidad12 + devuelto.cantidad12;
+                    regpro.cantidad12 = devuelto.cantidad12 + pendiente.cantidad12;
+                    regpro.total = devuelto.total + pendiente.total;
                   }
                   if (parseInt(key2) == 13) {
                     if (key3 == "devuelto") {
@@ -426,7 +432,8 @@ export class ReporteMensualCargosComponent implements OnInit {
                       pendiente.cantidad13 = tipo1[key3];
                       pendiente.total = pendiente.total + pendiente.cantidad13;
                     }
-                    regpro.cantidad13 = devuelto.cantidad13 + devuelto.cantidad13;
+                    regpro.cantidad13 = devuelto.cantidad13 + pendiente.cantidad13;
+                    regpro.total = devuelto.total + pendiente.total;
                   }
                 });
               });
