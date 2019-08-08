@@ -1,3 +1,7 @@
 .pointable {
     cursor: pointer;
 }
+
+#tablaAutorizaciones{
+    overflow-x: scroll;
+}
