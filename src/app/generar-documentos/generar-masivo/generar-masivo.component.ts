@@ -107,8 +107,8 @@ export class GenerarMasivoComponent implements OnInit {
     this.productos = this.productoService.getProductos();
     this.tiposServicio = this.tipoServicioService.getTiposServicio();
     this.tiposSeguridad = this.tipoSeguridadService.getTiposSeguridad();
-    this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
-    this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
+    //this.plazosDistribucion = this.plazoDistribucionService.getPlazosDistribucion();
+    //this.plazoDistribucionPermitido = this.plazoDistribucionService.getPlazoDistribucionPermitido();
     this.buzon = this.buzonService.getBuzonActual();
     this.regiones = this.regionService.getRegiones();
 
@@ -134,7 +134,7 @@ export class GenerarMasivoComponent implements OnInit {
     )
 /*     this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
       plazosDistribucion => {
-        this.plazosDistribucion = plazosDistribucion;
+        this.plazosDistribucion = plazosDistribucion; 
       }
     ) */
     this.plazoDistribucionPermitidoSubscription = this.plazoDistribucionService.plazoDistribucionPermitidoChanged.subscribe(
