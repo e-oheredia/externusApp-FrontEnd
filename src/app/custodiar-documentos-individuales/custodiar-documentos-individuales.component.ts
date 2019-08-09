@@ -125,6 +125,7 @@ export class CustodiarDocumentosIndividualesComponent implements OnInit {
           id: envioCreado.documentos[0].id,
           documentoAutogenerado: envioCreado.documentos[0].documentoAutogenerado,
           envioInfo: envioCreado
+          
         });
       }
     });

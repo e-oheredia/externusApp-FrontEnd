@@ -30,23 +30,22 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
 
   @Output() guiaModificadaEvent = new EventEmitter();
   proveedores: Proveedor[];
-
+  proveedoress : Proveedor[];
   proveedoresSubscription: Subscription = new Subscription();
   modificarGuiaSubscription: Subscription = new Subscription();
 
   ngOnInit() {
-
+   // this.proveedoress = this.proveedorService.getProveedores();
     this.guiaForm = new FormGroup({
       'proveedor': new FormControl('', Validators.required),
       'numeroGuia': new FormControl(this.guia.numeroGuia, [Validators.required, Validators.minLength(5), Validators.maxLength(20)])
     });
-    this.cargarDatosVista();
+    this.cargarDatosVista(this.guia);
   }
 
 
 
-  cargarDatosVista() {
-    this.proveedores = this.proveedorService.getProveedores();
+  cargarDatosVista(guia) {
 
     if (!this.utilsService.isUndefinedOrNull(this.proveedores)) {
       this.guiaForm.controls['proveedor'].setValue(this.proveedores.find(proveedor => proveedor.id === this.guia.proveedor.id));
@@ -54,7 +53,7 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
 
     this.proveedoresSubscription = this.proveedorService.proveedoresChanged.subscribe(
       proveedores => {
-        this.proveedores = proveedores;
+        this.proveedores = this.proveedorService.getProveedorByRegionId(guia.regionId);
         this.guiaForm.controls['proveedor'].setValue(this.proveedores.find(proveedor => proveedor.id === this.guia.proveedor.id));
       }
     );
