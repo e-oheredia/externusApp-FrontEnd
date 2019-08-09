@@ -9,7 +9,7 @@
 
 <br>
 
-<div *ngIf="envios.length !== 0; else mensaje" class="center">
+<div *ngIf="envios.length !== 0; else mensaje" class="center" id="tablaAutorizaciones">
   <ng2-smart-table [settings]="settings" [source]="dataEnviosPendientesDeAutorizacion"></ng2-smart-table>
 </div>
 

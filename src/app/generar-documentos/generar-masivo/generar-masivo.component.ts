@@ -132,11 +132,11 @@ export class GenerarMasivoComponent implements OnInit {
         this.tiposSeguridad = tiposSeguridad;
       }
     )
-    this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
+/*     this.plazosDistribucionSubscription = this.plazoDistribucionService.plazosDistribucionChanged.subscribe(
       plazosDistribucion => {
         this.plazosDistribucion = plazosDistribucion; 
       }
-    )
+    ) */
     this.plazoDistribucionPermitidoSubscription = this.plazoDistribucionService.plazoDistribucionPermitidoChanged.subscribe(
       plazoDistribucionPermitido => {
         this.plazoDistribucionPermitido = plazoDistribucionPermitido;
