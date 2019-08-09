@@ -70,7 +70,7 @@ const appRoutes: Routes = [
         component: ConsultarDocumentosUtdBcpComponent
     },
     {
-        path: 'reporte-devolucion-cargo',
+        path: 'reporte-devoluciones',
         component: ReporteDevolucionCargoComponent
     },
     {
@@ -86,7 +86,7 @@ const appRoutes: Routes = [
         component: ReporteEficaciaComponent
     },
     {
-        path: 'reporte-cargos',
+        path: 'control-devoluciones',
         component: ReporteMensualCargosComponent
     },
     {
