@@ -55,4 +55,11 @@ export class ProveedorService {
                     ambito.region.id===regionId) > -1
             )
     }
+
+    getProveedorByRegionId2(regionId: number, proveedores: Proveedor[]): Proveedor[]{
+        return proveedores.filter(proveedor =>
+                proveedor.ambitos.findIndex(ambito=>
+                    ambito.region.id===regionId) > -1
+            )
+    }
 }

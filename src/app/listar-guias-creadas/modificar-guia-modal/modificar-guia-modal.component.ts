@@ -27,17 +27,17 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
 
   guia: Guia;
   guiaForm: FormGroup;
-
+  proveedor : Proveedor;
   @Output() guiaModificadaEvent = new EventEmitter();
   proveedores: Proveedor[];
-  proveedoress : Proveedor[];
-  proveedoresSubscription: Subscription = new Subscription();
-  modificarGuiaSubscription: Subscription = new Subscription();
+  proveedores2 : Proveedor[];
+  proveedoresSubscription: Subscription; //= new Subscription();
+  modificarGuiaSubscription: Subscription; //= new Subscription();
 
   ngOnInit() {
-   // this.proveedoress = this.proveedorService.getProveedores();
+    this.proveedores = this.proveedorService.getProveedores();
     this.guiaForm = new FormGroup({
-      'proveedor': new FormControl('', Validators.required),
+      'proveedor':  new FormControl(null, Validators.required),
       'numeroGuia': new FormControl(this.guia.numeroGuia, [Validators.required, Validators.minLength(5), Validators.maxLength(20)])
     });
     this.cargarDatosVista(this.guia);
@@ -47,17 +47,29 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
 
   cargarDatosVista(guia) {
 
+    
+    //this.proveedores = this.proveedorService.getProveedores();
+
+
     if (!this.utilsService.isUndefinedOrNull(this.proveedores)) {
-      this.guiaForm.controls['proveedor'].setValue(this.proveedores.find(proveedor => proveedor.id === this.guia.proveedor.id));
+      this.proveedores2 = this.proveedorService.getProveedorByRegionId(guia.regionId);
+      this.guiaForm.controls['proveedor'].setValue(this.proveedores2.find(proveedor => proveedor.id === guia.proveedor.id));
+    }else{
+      this.proveedoresSubscription = this.proveedorService.proveedoresChanged.subscribe(
+        proveedores => {
+          this.proveedores = proveedores;//
+          this.proveedores2 = this.proveedorService.getProveedorByRegionId(guia.regionId);          
+          this.guiaForm.controls['proveedor'].setValue(this.proveedores2.find(proveedor => proveedor.id ===guia.proveedor.id));
+        },
+        error => {
+          this.notifier.notify('error', "error en la ejecución");
+        }
+      );
     }
 
-    this.proveedoresSubscription = this.proveedorService.proveedoresChanged.subscribe(
-      proveedores => {
-        this.proveedores = this.proveedorService.getProveedorByRegionId(guia.regionId);
-        this.guiaForm.controls['proveedor'].setValue(this.proveedores.find(proveedor => proveedor.id === this.guia.proveedor.id));
-      }
-    );
+    
   }
+//this.proveedores = this.proveedorService.getProveedorByRegionId2(guia.regionId,proveedores);
 
   onSubmit(guia) {
     guia.id = this.guia.id;
@@ -74,8 +86,8 @@ export class ModificarGuiaModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.proveedoresSubscription.unsubscribe();
-    this.modificarGuiaSubscription.unsubscribe();
+/*     this.proveedoresSubscription.unsubscribe();
+    this.modificarGuiaSubscription.unsubscribe(); */
   }
 
 }
