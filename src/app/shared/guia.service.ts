@@ -165,30 +165,32 @@ export class GuiaService {
     exportarResultadosGuia(documentos, guia) {
         let objects = [];
         documentos.forEach(documento => {
-            objects.push({
-                "Guía": guia.numeroGuia,
-                "Autogenerado": documento.documentoAutogenerado,
-                "Guía + Autogenerado": guia.numeroGuia + documento.documentoAutogenerado,
-                "Sede Remitente": guia.sede.nombre,
-                "Plazo de Distribución": documento.envio.plazoDistribucion.nombre,
-                "Tipo de Seguridad": documento.envio.tipoSeguridad.nombre,
-                "Tipo de Servicio": documento.envio.tipoServicio.nombre,
-                "Clasificación": documento.envio.clasificacion.nombre,
-                "Producto": documento.envio.producto ? documento.envio.producto.nombre : 'NO TIENE',
-                "Razón Social": documento.razonSocialDestino,
-                "Contacto": documento.contactoDestino,
-                "Departamento": documento.distrito.provincia.departamento.nombre,
-                "Provincia": documento.distrito.provincia.nombre,
-                "Distrito": documento.distrito.nombre,
-                "Direccion": documento.direccion,
-                "Referencia": documento.referencia,
-                "Teléfono": documento.telefono,
-                "Estado": this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre,
-                "Motivo": this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre,
-                "Cargo": "",
-                "Rezago": "",
-                "Denuncia": ""
-            })
+            if((this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre=="EXTRAVIADO / ROBADO") || (this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre!="NO DISTRIBUIBLE")) {
+                objects.push({
+                    "Guía": guia.numeroGuia,
+                    "Autogenerado": documento.documentoAutogenerado,
+                    "Guía + Autogenerado": guia.numeroGuia + documento.documentoAutogenerado,
+                    "Sede Remitente": guia.sede.nombre,
+                    "Plazo de Distribución": documento.envio.plazoDistribucion.nombre,
+                    "Tipo de Seguridad": documento.envio.tipoSeguridad.nombre,
+                    "Tipo de Servicio": documento.envio.tipoServicio.nombre,
+                    "Clasificación": documento.envio.clasificacion.nombre,
+                    "Producto": documento.envio.producto ? documento.envio.producto.nombre : 'NO TIENE',
+                    "Razón Social": documento.razonSocialDestino,
+                    "Contacto": documento.contactoDestino,
+                    "Departamento": documento.distrito.provincia.departamento.nombre,
+                    "Provincia": documento.distrito.provincia.nombre,
+                    "Distrito": documento.distrito.nombre,
+                    "Direccion": documento.direccion,
+                    "Referencia": documento.referencia,
+                    "Teléfono": documento.telefono,
+                    "Estado": this.documentoService.getUltimoSeguimientoDocumento(documento).estadoDocumento.nombre,
+                    "Motivo": this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre,
+                    "Cargo": "",
+                    "Rezago": "",
+                    "Denuncia": ""
+                })
+            }
         });
         this.writeExcelService.jsonToExcel(objects, "Guia: " + guia.numeroGuia);
     }
