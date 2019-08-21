@@ -5,6 +5,7 @@ import { DocumentoService } from '../shared/documento.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { EnvioService } from '../shared/envio.service';
+import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
 
 @Component({
   selector: 'app-listar-documentos-custodiados',
@@ -18,6 +19,7 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
     private envioService: EnvioService
   ) { }
 
+  documento: Documento;
   documentosCustodiados: Documento[] = [];
   listarDocumentosCustodiadosSubscription: Subscription;
   dataDocumentosCustodiados: LocalDataSource = new LocalDataSource();
@@ -60,7 +62,6 @@ export class ListarDocumentosCustodiadosComponent implements OnInit {
     fechaCreacion: {
       title: 'Fecha de creación'
     }
-
   };
 
   ngOnInit() {

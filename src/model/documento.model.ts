@@ -24,5 +24,6 @@ export class Documento {
     public documentosGuia: DocumentoGuia[] = [];
     public codigoDevolucion: string;
     public tiposDevolucion: TipoDevolucion[] = [];
+    public numeroGuia: string;
 
 }

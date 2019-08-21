@@ -317,6 +317,13 @@ export class DocumentoService {
         )
     }
 
+    // getUltimoSeguimientoDocumentoId(id: number) {
+    //     return documentos.seguimientosDocumento.reduce(
+    //         (max, seguimentoDocumento) =>
+    //             moment(seguimentoDocumento.fecha, "DD-MM-YYYY HH:mm:ss") > moment(max.fecha, "DD-MM-YYYY HH:mm:ss") ? seguimentoDocumento : max, documento.seguimientosDocumento[0]
+    //     )
+    // }
+
     getUltimaFechaEstado(documento: Documento): Date | string {
         return documento.seguimientosDocumento.reduce(
             (max, seguimentoDocumento) =>
@@ -628,7 +635,8 @@ export class DocumentoService {
                 "Fecha de creación": this.getFechaCreacion(documento),
                 "Fecha de envío": this.getFechaCreacion(documento),
                 "Fecha último resultado": this.getUltimaFechaEstado(documento),
-                "Código  de devolución": documento.codigoDevolucion
+                "Código  de devolución": documento.codigoDevolucion,
+                "Número de guía": documento.numeroGuia
             })
         });
         this.writeExcelService.jsonToExcel(objects, "Permisos de plazos por Áreas: ");

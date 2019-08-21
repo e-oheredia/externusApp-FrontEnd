@@ -13,6 +13,7 @@ import { TituloService } from '../shared/titulo.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TrackingDocumentoComponent } from '../modals/tracking-documento/tracking-documento.component';
 import { ButtonViewComponent } from '../table-management/button-view/button-view.component';
+import { SeguimientoDocumento } from 'src/model/seguimientodocumento.model';
 
 @Component({
   selector: 'app-consultar-documentos-utd-bcp',
@@ -20,7 +21,7 @@ import { ButtonViewComponent } from '../table-management/button-view/button-view
   styleUrls: ['./consultar-documentos-utd-bcp.component.css']
 })
 export class ConsultarDocumentosUtdBcpComponent implements OnInit {
-  source : LocalDataSource;
+  source: LocalDataSource;
 
   constructor(
     public documentoService: DocumentoService,
@@ -37,9 +38,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
   settings = AppSettings.tableSettings;
   documentos: Documento[] = [];
   documento: Documento;
-  data:any[]=[];
+  data: any[] = [];
 
-  mySettings = {} 
+  mySettings = {}
 
   ngOnInit() {
     this.documentoForm = new FormGroup({
@@ -69,7 +70,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
           })
         }
       },
-    autogenerado: {
+      autogenerado: {
         title: 'Autogenerado'
       },
       remitente: {
@@ -119,9 +120,55 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       },
       codigodevolucion: {
         title: 'Código de devolución'
-      }
+      },
+      guia: {
+        title: 'Guía'
+      },
+      imagen: {
+        title: 'Imagen',
+        type: 'custom',
+        renderComponent: ButtonViewComponent,
+        onComponentInitFunction: (instance: any) => {
+          if (this.documentos.length > 0){
+            instance.mostrarData.subscribe(row => {
+              let documentoElegido = this.documentos.find(documento => documento.documentoAutogenerado === row.autogenerado)
+              let seguimientosOrdenados = documentoElegido.seguimientosDocumento.sort((a,b) => b.id - a.id)
+              let seguimientodocumento: SeguimientoDocumento = seguimientosOrdenados[0]
+              let ruta_imagen: any;
+              if (seguimientodocumento.linkImagen === null) {
+                ruta_imagen = " ";
+                instance.claseIcono = " "
+              } else {
+                instance.claseIcono = "fa fa-eye";
+                ruta_imagen = seguimientodocumento.linkImagen;
+              }
+              instance.ruta = ruta_imagen;
+            })
+          }
+
+        }
+      },
+      // link: {
+      //   title: 'Imagen',
+      //   type: 'custom',
+      //   renderComponent: ButtonViewComponent,
+      //   onComponentInitFunction: (instance: any) => {
+      //     instance.mostrarData.subscribe(row => {
+      //       instance.claseIcono = "fa fa-eye";
+      //       let seguimientodocumento = this.documento.seguimientosDocumento.find(x => x.id === row.id);
+      //       let ruta_imagen: any;
+      //       if (seguimientodocumento.linkImagen === null) {
+      //         ruta_imagen = " ";
+      //         instance.claseIcono = " "
+      //       } else {
+      //         ruta_imagen = seguimientodocumento.linkImagen;
+      //       }
+      //       instance.ruta = ruta_imagen;
+      //     })
+      //   }
+      // },
     }
-    
+
   }
 
 
@@ -150,11 +197,13 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               fechaCreacion: this.documentoService.getFechaCreacion(documento),
               fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
               fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
-              codigodevolucion: documento.codigoDevolucion
+              codigodevolucion: documento.codigoDevolucion,
+              guia: documento.numeroGuia,
+              // link: this.documentoService.getUltimoSeguimientoDocumento(documento).linkImagen
             })
             this.documentos.push(documento);
             this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);
-            this.data=dataTodosLosDocumentos;
+            this.data = dataTodosLosDocumentos;
             this.documentoForm.controls['codigo'].setValue('');
             this.documentoForm.controls['fechaIni'].reset();
             this.documentoForm.controls['fechaFin'].reset();
@@ -203,7 +252,9 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       fechaCreacion: this.documentoService.getFechaCreacion(documento),
                       fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
                       fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
-                      codigodevolucion: documento.codigoDevolucion
+                      codigodevolucion: documento.codigoDevolucion,
+                      guia: documento.numeroGuia,
+                      // link: this.documentoService.getUltimoSeguimientoDocumento(documento).linkImagen
                     })
                   }
                 )

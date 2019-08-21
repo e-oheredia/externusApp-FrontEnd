@@ -11,5 +11,4 @@ export class SeguimientoDocumento {
     public fecha: Date | string;
     public estadoDocumento: EstadoDocumento;
     public motivoEstado: MotivoEstado;
-
 }
