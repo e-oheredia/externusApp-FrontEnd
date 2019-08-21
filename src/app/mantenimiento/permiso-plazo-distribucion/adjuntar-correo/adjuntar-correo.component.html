@@ -12,7 +12,7 @@
         <label for="archivoAdjunto" style="display:inline;">Autorización: </label>
         <p></p>
         <input type="file" class="form-control-file" id="archivoAdjunto"
-          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          accept=".msg"
           (change)="onChangeExcelFile($event.srcElement.files[0])" formControlName="archivoAdjunto">
       </div>
 
