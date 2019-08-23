@@ -15,6 +15,7 @@ import { TrackingDocumentoComponent } from '../modals/tracking-documento/trackin
 import * as moment from "moment-timezone";
 import { BuzonService } from '../shared/buzon.service';
 import { Buzon } from 'src/model/buzon.model';
+import { SeguimientoDocumento } from 'src/model/seguimientodocumento.model';
 
 @Component({
     selector: 'app-consultar-documentos-u-bcp',
@@ -23,7 +24,7 @@ import { Buzon } from 'src/model/buzon.model';
 })
 
 export class ConsultarDocumentosUBCPComponent implements OnInit {
-    source : LocalDataSource;
+    source: LocalDataSource;
 
     constructor(
         public documentoService: DocumentoService,
@@ -33,7 +34,7 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
         private utilsService: UtilsService,
         private envioService: EnvioService,
         private buzonService: BuzonService
-    ) {     
+    ) {
 
     }
 
@@ -57,10 +58,10 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
 
         this.buzonSubscription = this.buzonService.buzonActualChanged.subscribe(() => {
             this.listarDocumentos();
-            this.source = new LocalDataSource(this.data);          
+            this.source = new LocalDataSource(this.data);
         });
 
-    this.settings.hideSubHeader = false;        
+        this.settings.hideSubHeader = false;
 
     }
 
@@ -106,8 +107,11 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             clasificacion: {
                 title: 'Clasificación'
             },
-            estadodocumento: {
+            estadodoc: {
                 title: 'Estado del documento'
+            },
+            estadopro: {
+                title: 'Estado de distribución'
             },
             motivo: {
                 title: 'Motivo'
@@ -129,7 +133,33 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
             },
             codigodevolucion: {
                 title: 'Código de devolución'
-            }
+            },
+            guia: {
+                title: 'Guía'
+            },
+            imagen: {
+                title: 'Imagen',
+                type: 'custom',
+                renderComponent: ButtonViewComponent,
+                onComponentInitFunction: (instance: any) => {
+                    if (this.documentos.length > 0) {
+                        instance.mostrarData.subscribe(row => {
+                            let documentoElegido = this.documentos.find(documento => documento.documentoAutogenerado === row.autogenerado)
+                            let seguimientosOrdenados = documentoElegido.seguimientosDocumento.sort((a, b) => b.id - a.id)
+                            let seguimientodocumento: SeguimientoDocumento = seguimientosOrdenados[0]
+                            let ruta_imagen: any;
+                            if (seguimientodocumento.linkImagen === null) {
+                                ruta_imagen = " ";
+                                instance.claseIcono = " "
+                            } else {
+                                instance.claseIcono = "fa fa-eye";
+                                ruta_imagen = seguimientodocumento.linkImagen;
+                            }
+                            instance.ruta = ruta_imagen;
+                        })
+                    }
+                }
+            },
         }
     }
 
@@ -159,19 +189,21 @@ export class ConsultarDocumentosUBCPComponent implements OnInit {
                                         direccion: documento.direccion.toUpperCase(),
                                         distrito: documento.distrito.nombre.toUpperCase(),
                                         clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : " ",
-                                        estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
+                                        estadodoc: this.documentoService.getUltimoEstado(documento).nombre,
+                                        estadopro: this.documentoService.getEstadoResultadoProveedor(documento) ? this.documentoService.getEstadoResultadoProveedor(documento).nombre : " ",
                                         motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre.toUpperCase() : " ",
                                         documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
-                                        autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA" ,
+                                        autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
                                         fechaCreacion: this.documentoService.getFechaCreacion(documento),
                                         fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
                                         fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
-                                        codigodevolucion: documento.codigoDevolucion
+                                        codigodevolucion: documento.codigoDevolucion,
+                                        guia: documento.numeroGuia ? documento.numeroGuia : ' '
                                     })
                                 }
                             )
                             this.dataTodosMisDocumentos.load(dataTodosMisDocumentos);
-                            this.data=dataTodosMisDocumentos;
+                            this.data = dataTodosMisDocumentos;
 
                         }
                     )

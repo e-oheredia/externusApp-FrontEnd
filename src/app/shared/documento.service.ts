@@ -234,6 +234,29 @@ export class DocumentoService {
         return estadoDocumento;
     }
 
+    getEstadoResultadoProveedor(documento: Documento): EstadoDocumento {
+        let estadoResultadoProveedor
+        let seguimientosOrdenados = documento.seguimientosDocumento.sort((a,b) => a.id - b.id)
+
+        if (seguimientosOrdenados.length >= 4){
+            let seguimientodocumento: SeguimientoDocumento = seguimientosOrdenados[3]
+
+            if (seguimientodocumento.estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO){
+                estadoResultadoProveedor = seguimientodocumento.estadoDocumento;
+            }
+            if (seguimientodocumento.estadoDocumento.id === EstadoDocumentoEnum.REZAGADO) {
+                estadoResultadoProveedor = seguimientodocumento.estadoDocumento;
+            }
+            if (seguimientodocumento.estadoDocumento.id === EstadoDocumentoEnum.NO_DISTRIBUIBLE){
+                estadoResultadoProveedor = seguimientodocumento.estadoDocumento;
+            }
+        }
+
+
+
+        return estadoResultadoProveedor
+    }
+
     custodiarDocumentos(documentos: Documento[]): Observable<Documento[]> {
         return this.requesterService.put<Documento[]>(this.REQUEST_URL + "custodia", documentos, {});
     }
@@ -270,11 +293,11 @@ export class DocumentoService {
     listarDocumentosConResultadosYRecepcionados(): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "documentosrecepcion", {});
     }
-
+//
     listarDocumentosUsuarioBCP(fechaini: Date, fechafin: Date): Observable<Documento[]> {
         return this.requesterService.get<Documento[]>(this.REQUEST_URL + "consultabcp", { params: new HttpParams().append('fechaini', fechaini.toString()).append('fechafin', fechafin.toString()).append('idbuzon', this.buzonService.getBuzonActual().id.toString()) });
     }
-
+//
     listarDocumentosUtdBCPCodigo(codigo: string) {
         return this.requesterService.get<Documento>(this.REQUEST_URL + "consultautd", { params: new HttpParams().append('autogenerado', codigo.toString()) });
     }

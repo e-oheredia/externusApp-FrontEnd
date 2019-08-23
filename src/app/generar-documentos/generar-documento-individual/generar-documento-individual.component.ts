@@ -63,7 +63,6 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
   departamento = {};
   provincia = {};
 
-
   plazosDistribucion: PlazoDistribucion[];
   tiposSeguridad: TipoSeguridad[];
   tiposServicio: TipoServicio[];
@@ -110,6 +109,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       'cargoPropio': new FormControl("", Validators.required)      
     });
   }
+
 
   cargarDatosVista() {
     this.clasificaciones = this.clasificacionService.getClasificaciones();
@@ -200,15 +200,15 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     delete envio.inconsistenciasResultado;
     envio.buzon = this.buzon;
     envio.sede = this.documentoForm.get("sedeDespacho").value
-    this.documento.contactoDestino = this.documentoForm.get("comunicacionDestino.contacto").value;
+    this.documento.contactoDestino = this.documentoForm.get("comunicacionDestino.contacto").value ? this.documentoForm.get("comunicacionDestino.contacto").value : "";
     this.documento.direccion = this.documentoForm.get("direccion").value;
     this.documento.distrito = this.documentoForm.get("distrito").value;
     this.documento.nroDocumento = this.documentoForm.get("nroDocumento").value;
     envio.clasificacion = this.documentoForm.get("clasificacion").value;
     envio.plazoDistribucion = this.documentoForm.get("plazoDistribucion").value;
-    this.documento.razonSocialDestino = this.documentoForm.get("comunicacionDestino.razonSocial").value;
-    this.documento.referencia = this.documentoForm.get("referencia").value;
-    this.documento.telefono = this.documentoForm.get("telefono").value;
+    this.documento.razonSocialDestino = this.documentoForm.get("comunicacionDestino.razonSocial").value ? this.documentoForm.get("comunicacionDestino.razonSocial").value : "";
+    this.documento.referencia = this.documentoForm.get("referencia").value ? this.documentoForm.get("referencia").value : "";
+    this.documento.telefono = this.documentoForm.get("telefono").value ? this.documentoForm.get("telefono").value : "";
     envio.tipoSeguridad = this.documentoForm.get("tipoSeguridad").value;
     envio.tipoServicio = this.documentoForm.get("tipoServicio").value;
     envio.producto = this.documentoForm.get("producto").value;
@@ -260,7 +260,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
     let controls = Object.keys(form.controls);
     let encuentra = false;
     controls.forEach(control => {
-      if (form.controls[control].value !== "") {
+      if (form.controls[control].value !== "" && form.controls[control].value !== null) {
         encuentra = true;
       }
     });
