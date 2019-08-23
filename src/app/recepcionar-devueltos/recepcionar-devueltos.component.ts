@@ -56,8 +56,11 @@ export class RecepcionarDevueltosComponent implements OnInit {
       fechaEntrega: {
         title: 'Fecha de entrega'
       },
-      estado: {
-        title: 'Estado'
+      estadodoc: {
+        title: 'Estado del documento'
+      },
+      estadopro: {
+        title: 'Estado de distribución'
       },
       motivo: {
         title: 'Motivo'
@@ -100,7 +103,8 @@ export class RecepcionarDevueltosComponent implements OnInit {
               remitente: documento.envio.buzon.nombre,
               area: documento.envio.buzon.area.nombre,
               fechaEntrega: this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 4).fecha : this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5) ? this.documentoService.getSeguimientoDocumentoByEstadoId(documento, 5).fecha : " ",
-              estado: this.documentoService.getUltimoEstado(documento).nombre,
+              estadodoc: this.documentoService.getUltimoEstado(documento).nombre,
+              estadopro: this.documentoService.getEstadoResultadoProveedor(documento) ? this.documentoService.getEstadoResultadoProveedor(documento).nombre : " ",
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : " ",
               fisicosDevueltos: documento.tiposDevolucion.sort((a, b) => a.id - b.id).map(tipoDevolucion => tipoDevolucion.nombre).join(", ")
             })

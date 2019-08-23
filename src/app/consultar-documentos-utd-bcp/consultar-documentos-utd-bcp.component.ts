@@ -97,8 +97,11 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
       clasificacion: {
         title: 'Clasificación'
       },
-      estadodocumento: {
+      estadodoc: {
         title: 'Estado del documento'
+      },
+      estadopro: {
+        title: 'Estado de distribución'
       },
       motivo: {
         title: 'Motivo'
@@ -129,10 +132,10 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
         type: 'custom',
         renderComponent: ButtonViewComponent,
         onComponentInitFunction: (instance: any) => {
-          if (this.documentos.length > 0){
+          if (this.documentos.length > 0) {
             instance.mostrarData.subscribe(row => {
               let documentoElegido = this.documentos.find(documento => documento.documentoAutogenerado === row.autogenerado)
-              let seguimientosOrdenados = documentoElegido.seguimientosDocumento.sort((a,b) => b.id - a.id)
+              let seguimientosOrdenados = documentoElegido.seguimientosDocumento.sort((a, b) => b.id - a.id)
               let seguimientodocumento: SeguimientoDocumento = seguimientosOrdenados[0]
               let ruta_imagen: any;
               if (seguimientodocumento.linkImagen === null) {
@@ -145,28 +148,8 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               instance.ruta = ruta_imagen;
             })
           }
-
         }
       },
-      // link: {
-      //   title: 'Imagen',
-      //   type: 'custom',
-      //   renderComponent: ButtonViewComponent,
-      //   onComponentInitFunction: (instance: any) => {
-      //     instance.mostrarData.subscribe(row => {
-      //       instance.claseIcono = "fa fa-eye";
-      //       let seguimientodocumento = this.documento.seguimientosDocumento.find(x => x.id === row.id);
-      //       let ruta_imagen: any;
-      //       if (seguimientodocumento.linkImagen === null) {
-      //         ruta_imagen = " ";
-      //         instance.claseIcono = " "
-      //       } else {
-      //         ruta_imagen = seguimientodocumento.linkImagen;
-      //       }
-      //       instance.ruta = ruta_imagen;
-      //     })
-      //   }
-      // },
     }
 
   }
@@ -190,7 +173,8 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               direccion: documento.direccion,
               distrito: documento.distrito.nombre,
               clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
-              estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
+              estadodoc: this.documentoService.getUltimoEstado(documento).nombre,
+              estadopro: this.documentoService.getEstadoResultadoProveedor(documento) ? this.documentoService.getEstadoResultadoProveedor(documento).nombre : " ",
               motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : "",
               documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
               autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
@@ -198,8 +182,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
               fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
               fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
               codigodevolucion: documento.codigoDevolucion,
-              guia: documento.numeroGuia,
-              // link: this.documentoService.getUltimoSeguimientoDocumento(documento).linkImagen
+              guia: documento.numeroGuia ? documento.numeroGuia : ' '
             })
             this.documentos.push(documento);
             this.dataTodosLosDocumentos.load(dataTodosLosDocumentos);
@@ -245,7 +228,8 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       direccion: documento.direccion,
                       distrito: documento.distrito.nombre,
                       clasificacion: documento.envio.clasificacion ? documento.envio.clasificacion.nombre : "no tiene",
-                      estadodocumento: this.documentoService.getUltimoEstado(documento).nombre,
+                      estadodoc: this.documentoService.getUltimoEstado(documento).nombre,
+                      estadopro: this.documentoService.getEstadoResultadoProveedor(documento) ? this.documentoService.getEstadoResultadoProveedor(documento).nombre : " ",
                       motivo: this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado ? this.documentoService.getUltimoSeguimientoDocumento(documento).motivoEstado.nombre : " ",
                       documentodevuelto: documento.tiposDevolucion ? documento.tiposDevolucion.map(tipodevolucion => tipodevolucion.nombre).join(", ") : " ",
                       autorizado: this.envioService.getUltimoSeguimientoAutorizacion(documento.envio) ? this.envioService.getUltimoSeguimientoAutorizacion(documento.envio).estadoAutorizado.nombre : "APROBADA",
@@ -253,8 +237,7 @@ export class ConsultarDocumentosUtdBcpComponent implements OnInit {
                       fechaEnvio: this.documentoService.getFechaEnvio(documento) ? this.documentoService.getFechaEnvio(documento) : " ",
                       fechaUltimoResultado: this.documentoService.getUltimaFechaEstado(documento),
                       codigodevolucion: documento.codigoDevolucion,
-                      guia: documento.numeroGuia,
-                      // link: this.documentoService.getUltimoSeguimientoDocumento(documento).linkImagen
+                      guia: documento.numeroGuia ? documento.numeroGuia : ' '
                     })
                   }
                 )
