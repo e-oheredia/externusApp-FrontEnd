@@ -4,7 +4,7 @@ import { CustodiarEnviosMasivosModule } from './custodiar-envios-masivos/custodi
 import { CustodiarDocumentosIndividualesModule } from './custodiar-documentos-individuales/custodiar-documentos-individuales.module';
 import { AutorizarEnviosModule } from './autorizar-envios/autorizar-envios.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NotifierModule } from "angular-notifier";
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +30,8 @@ import { RecepcionarDevueltosModule } from './recepcionar-devueltos/recepcionar-
 import { ReporteAsignacionPlazoModule } from './reporte-asignacion-plazo/reporte-asignacion-plazo.module';
 import { ReporteGuiasBloqueModule } from './reporte-guias-bloque/reporte-guias-bloque.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+
+import { NgxSpinnerModule } from "ngx-spinner";
 
 
 @NgModule({
@@ -66,8 +68,10 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     RecepcionarDevueltosModule,
     ReporteAsignacionPlazoModule,
     ReporteGuiasBloqueModule,
-    Ng2SmartTableModule
+    Ng2SmartTableModule, 
+    NgxSpinnerModule,
     ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
   bootstrap: [AppComponent]
 })

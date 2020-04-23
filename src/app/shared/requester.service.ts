@@ -1,6 +1,6 @@
 import { HttpClient, HttpRequest, HttpHeaders, HttpEvent } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, throwError } from "rxjs";
+import { Observable, throwError, Subject } from "rxjs";
 import { NotifierService } from "angular-notifier";
 
 
@@ -8,6 +8,7 @@ import { NotifierService } from "angular-notifier";
 export class RequesterService {
 
     headers: HttpHeaders;
+    onLoading: Subject<boolean> = new Subject<boolean>();
 
     constructor(
         private httpClient: HttpClient,
@@ -15,9 +16,14 @@ export class RequesterService {
     ) { }
 
     request(url: string, method: string, body: {}, options: {}): Observable<HttpEvent<any>> {
+        this.onLoading.next(true);
         return this.httpClient.request(new HttpRequest(method, url, body, options)).do(
-            data => data,
+            data => {
+                this.onLoading.next(false);    
+                return data;
+            },
             error => {
+                this.onLoading.next(false);
                 if (error.status === 500  && (error.message.includes('Bad chunk') || error.message.includes('length'))) {
                     this.notifier.notify('error', 'Ha ocurrido un problema. Recargue la página');
                 }
@@ -28,9 +34,14 @@ export class RequesterService {
     }
 
     get<T>(url: string, options: {}): Observable<T> {
+        this.onLoading.next(true);
         return this.httpClient.get<T>(url, options).do(
-            data => data,
+            data => {
+                this.onLoading.next(false);    
+                return data;
+            },
             error => {
+                this.onLoading.next(false);    
                 if (error.status === 500  && (error.message.includes('Bad chunk') || error.message.includes('length'))) {
                     this.notifier.notify('error', 'Ha ocurrido un problema. Recargue la página');
                 }
@@ -41,9 +52,14 @@ export class RequesterService {
     }
 
     post<T>(url: string, body: any, options: {}): Observable<T> {
+        this.onLoading.next(true);
         return this.httpClient.post<T>(url, body, options).do(
-            data => data,
+            data => {
+                this.onLoading.next(false);    
+                return data;
+            },
             error => {
+                this.onLoading.next(false);    
                 if (error.status === 500  && (error.message.includes('Bad chunk') || error.message.includes('length'))) {
                     this.notifier.notify('error', 'Ha ocurrido un problema. Recargue la página');
                 }
@@ -54,9 +70,14 @@ export class RequesterService {
     }
 
     put<T>(url: string, body: any, options: {}): Observable<T> {
+        this.onLoading.next(true);
         return this.httpClient.put<T>(url, body, options).do(
-            data => data,
+            data => {
+                this.onLoading.next(false);    
+                return data;
+            },
             error => {
+                this.onLoading.next(false);    
                 if (error.status === 500  && (error.message.includes('Bad chunk') || error.message.includes('length'))) {
                     this.notifier.notify('error', 'Ha ocurrido un problema. Recargue la página');
                 }
@@ -67,9 +88,14 @@ export class RequesterService {
     }
 
     delete<T>(url: string, options: {}): Observable<T> {
+        this.onLoading.next(true);
         return this.httpClient.delete<T>(url, options).do(
-            data => data,
+            data => {
+                this.onLoading.next(false);    
+                return data;
+            },
             error => {
+                this.onLoading.next(false);    
                 if (error.status === 500  && (error.message.includes('Bad chunk') || error.message.includes('length'))) {
                     this.notifier.notify('error', 'Ha ocurrido un problema. Recargue la página');
                 }

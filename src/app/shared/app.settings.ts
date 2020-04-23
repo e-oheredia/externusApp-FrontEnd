@@ -2,7 +2,9 @@ export class AppSettings {
     
     /* URL */ 
     
+    public static LOGIN_PAGE = "http://localhost:4200/"
     public static API_ENDPOINT = "http://localhost:8092/";
+
     public static BUZON_URL = "buzones/";
     public static EMPLEADO_URL = "empleados/";
     public static PLAZO_DISTRIBUCION_URL = "plazosdistribucion/";

@@ -10,4 +10,11 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto" app-tree-view [menus]="menus"></ul>
     </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link pointable" (click) = cerrarSesion()>Cerrar sesión</a>
+          </li>
+        </ul>
+      </div>
 </nav>

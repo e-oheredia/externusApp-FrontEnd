@@ -278,7 +278,7 @@ export class GenerarDocumentoIndividualComponent implements OnInit, OnDestroy {
       return { 'requiredIfNoAutorizado': true }
     }
 
-    if (this.documentoForm.get("plazoDistribucion").value.id > this.plazoDistribucionPermitido.id
+    if ((this.documentoForm.get("plazoDistribucion").value.id > this.plazoDistribucionPermitido.id &&  this.documentoForm.get("plazoDistribucion").value.tipoPlazoDistribucion.id !== 1)
       && (this.documentoForm.get("autorizacion") === null || this.documentoForm.get("autorizacion").value === "" || this.documentoForm.get("autorizacion").value === null)) {
       return { 'requiredIfNoAutorizado': true }
     }

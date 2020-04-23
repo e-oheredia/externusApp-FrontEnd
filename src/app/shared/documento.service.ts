@@ -239,7 +239,7 @@ export class DocumentoService {
         let seguimientosOrdenados = documento.seguimientosDocumento.sort((a,b) => a.id - b.id)
 
         if (seguimientosOrdenados.length >= 4){
-            let seguimientodocumento: SeguimientoDocumento = seguimientosOrdenados[3]
+            let seguimientodocumento: SeguimientoDocumento = seguimientosOrdenados[seguimientosOrdenados.length - 1]
 
             if (seguimientodocumento.estadoDocumento.id === EstadoDocumentoEnum.ENTREGADO){
                 estadoResultadoProveedor = seguimientodocumento.estadoDocumento;

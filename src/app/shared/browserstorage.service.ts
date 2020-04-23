@@ -19,4 +19,8 @@ export class BrowserStorageService {
         return this.localStorageService.get(key);
     }
 
+    remove(...keys: string[]) {
+        this.localStorageService.remove(...keys);
+    }
+
 }

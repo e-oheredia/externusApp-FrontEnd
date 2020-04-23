@@ -3,6 +3,8 @@ import { BrowserStorageService } from './shared/browserstorage.service';
 import { Component, OnInit } from '@angular/core';
 import { EmpleadoService } from './shared/empleado.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { RequesterService } from './shared/requester.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +19,14 @@ export class AppComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private menuService: MenuService,
-  ) { }
+    private requesterService: RequesterService,
+    private spinnerService: NgxSpinnerService,
+  ) { 
+
+
+   }
+
+
 
   ngOnInit() {
     this.router.events.subscribe(
@@ -41,6 +50,33 @@ export class AppComponent implements OnInit {
         }
       }
     );
+    this.subscribeToLoading();
+  }
+
+  subscribeToLoading(){
+    
+    var i = 0;
+
+    this.requesterService.onLoading.subscribe(action => {
+      
+      
+
+      if (action) {
+        i++;
+        if (i== 1) {
+          setTimeout(() => {
+            if (i>=1) {
+              this.spinnerService.show();
+            }
+          }, 1000);          
+        }        
+      }else{
+        i--;
+        if (i == 0) {
+          this.spinnerService.hide();
+        }        
+      }
+    });
   }
 
 

@@ -217,7 +217,7 @@
 
 
           <div class="form-group"
-            *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id">
+            *ngIf="documentoForm.get('plazoDistribucion') && documentoForm.get('plazoDistribucion').value && documentoForm.get('plazoDistribucion').value.id > plazoDistribucionPermitido.id && this.documentoForm.get('plazoDistribucion').value.tipoPlazoDistribucion.id !== 1">
             <label for="autorizacion">
               Autorización
             </label>
