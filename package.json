@@ -30,7 +30,7 @@
     "core-js": "^2.5.4",
     "jqwidgets-scripts": "^6.1.0",
     "jsbarcode": "^3.11.0",
-    "jspdf": "^1.4.1",
+    "jspdf": "^2.3.1",
     "jszip": "^3.1.5",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
