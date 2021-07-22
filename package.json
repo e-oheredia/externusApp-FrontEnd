@@ -43,7 +43,7 @@
     "open-iconic": "^1.1.1",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.3.2",
-    "xlsx": "^0.14.0",
+    "xlsx": "^0.17.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
